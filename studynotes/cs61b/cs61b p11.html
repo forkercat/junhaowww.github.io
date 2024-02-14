@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Topological SortDefinitionSuppose we have a collection of different tasks or activities, some of which must happen before another. How do we find the way to sort the tasks such that for each task $v">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CS 61B | Part 11 | Topological Sort, DAG-LPT, DAG-SPT, DP, LIS &#x2F; LLIS">
+<meta property="og:url" content="https://junhaow.com/studynotes/cs61b/cs61b%20p11.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Topological SortDefinitionSuppose we have a collection of different tasks or activities, some of which must happen before another. How do we find the way to sort the tasks such that for each task $v">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yy1rk.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dt6zd.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2vgex.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/h2frk.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yy1rk.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/aokft.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/k4xzm.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/smmyn.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yo37r.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jem4a.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/u2fl2.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fzqpv.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5ipik.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fkak2.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yp0zz.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7851z.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2gu42.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/txeaz.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vywko.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gl2ib.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jn0ft.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/894i6.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4pvtt.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sjd83.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bk95t.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9g8zt.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/teahw.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.189Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.189Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yy1rk.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CS 61B | Part 11 | Topological Sort, DAG-LPT, DAG-SPT, DP, LIS / LLIS</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<h2 id="Topological-Sort"><a href="#Topological-Sort" class="headerlink" title="Topological Sort"></a>Topological Sort</h2><h3 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h3><p>Suppose we have a collection of different tasks or activities, some of which must happen before another. How do we find the way to sort the tasks such that for each task $v$, the tasks that <code>happen before</code> $v$ come earlier in our sort?</p>
+<p>In the graph, each node represents a task. An edge $v\rightarrow w$ indicates that $v$ must happen before $w$. Now our original problem is <code>reduced</code> to finding a <code>topological sort</code>.</p>
+<p><strong>Topological Sort:</strong> An ordering of a graph’s vertices such that for every directed edge $u \rightarrow v$, $u$ comes before $v$ in the ordering.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yy1rk.jpg"></p>
+<p>Valid orderings including: </p>
+<ul>
+<li><code>D, B, A, E, C ,F</code></li>
+<li><code>E, D, C, B, A, F</code></li>
+</ul>
+<p>Note: If I purely run DFS, the output is <code>D, B, A, F, E, C, E, F</code>. It is not correct.</p>
+<p><strong>Certain Types of Graphs (DAG):</strong></p>
+<p>Also, it only makes sense to topological sort some <code>certain types of graphs</code>. Here is an invalid example:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dt6zd.jpg" alt="Invalid Graph"></p>
+<p>Since we have a cycle, topological sort is not defined. Also, it includes undirected graphs (each edge corresponds to a cycle):</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2vgex.jpg" alt="Undirected Graph"></p>
+<p>All in all, topological sorts only apply to <strong>directed, acyclic graphs</strong>, or <code>DAGs</code>.</p>
+<blockquote>
+<p>DAG (&#x2F;dag&#x2F;) is a very important type of graphs.</p>
+</blockquote>
+<p><strong>Topological Sort:</strong> An ordering of <code>DAG</code>‘s vertices such that for every directed edge $u \rightarrow v$, $u$ comes before $v$ in the ordering. Each <code>DAG</code> corresponds to a <code>Topological Sort</code>.</p>
+<p>For any topological ordering, you can redraw the graph so that the vertices are all in one line. Thus, topological sort is sometimes called a <code>linearization</code> of the graph.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/h2frk.jpg" alt="Linearization"></p>
+<p>In the above DAG, $D$ or $E$ must be the <code>source</code>, $F$ or $C$ must be the <code>end</code>, also called <code>sink</code>.</p>
+<h3 id="TS-Algorithm"><a href="#TS-Algorithm" class="headerlink" title="TS Algorithm"></a>TS Algorithm</h3><p>Topological Sort Algorithm:</p>
+<ol>
+<li>Perform a <code>DFS</code> traversal from every vertex (any order) in the graph, <code>not</code> clearing markings between traversals (means not traversing marked vertices).</li>
+<li>Record DFS <code>post-order</code> along the way (add to list when backtracking).</li>
+<li>Topological ordering is the <code>reverse</code> of the post-order.</li>
+</ol>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yy1rk.jpg"></p>
+<p>If we use DFS only, the ordering is wrong. For example: </p>
+<ul>
+<li><code>D, C, B, A, F, E</code> (C comes before E)</li>
+</ul>
+<p><strong>Why it works:</strong></p>
+<p>Each vertex $v$ gets added to the end of the post-order list <strong>only after</strong> considering <code>all descendants</code> of $v$, which means all of them are already on the list. For example, if I want to add vertex $D$, it happens only after I’ve added $C$ and other descendants ($B$, $A$, $F$) to the list. It is guaranteed in the process.</p>
+<p>Runtime: $O(V + E)$</p>
+<h3 id="Pseudocode"><a href="#Pseudocode" class="headerlink" title="Pseudocode"></a>Pseudocode</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">topological(DAG):</span><br><span class="line">  Init markList array</span><br><span class="line">  Init postOrderList <span class="comment">// its reversed version is the output</span></span><br><span class="line">  <span class="keyword">for</span> all vertices in DAG:</span><br><span class="line">    <span class="keyword">if</span> vertex is not marked: <span class="comment">// dfs: check mark before dfs</span></span><br><span class="line">      dfs(vertex, markList, postOrderList)</span><br><span class="line">  <span class="keyword">return</span> postOrderList.reversed()</span><br><span class="line"></span><br><span class="line">dfs(vertex, markList, postOrderList):</span><br><span class="line">  <span class="comment">// dfs: mark when visited or before forloop neighbors</span></span><br><span class="line">  markList[vertex] = <span class="literal">true</span></span><br><span class="line">  <span class="comment">// dfs: output when visited. But in this case, we want post-order.</span></span><br><span class="line">  <span class="keyword">for</span> neighbor of vertex:</span><br><span class="line">    <span class="comment">// Error in the slide? Need to check mark before dfs</span></span><br><span class="line">    <span class="keyword">if</span> neighbor is not marked: <span class="comment">// Or put it at the beginning of dfs</span></span><br><span class="line">      dfs(neighbor, markList, postOrderList)</span><br><span class="line">  postOrderList.add(vertex) <span class="comment">// post-order</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Using BFS:</strong></p>
+<p>Reference: <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/25229624/using-bfs-for-topological-sort">Using BFS for topological sort</a></p>
+<p>How to calculate the 0-in-degree vertices from all vertices?</p>
+<ul>
+<li>Adj Matrix: Foreach columns and store 0-in-degree vertices.</li>
+<li>Adj List &amp; Edge List: Foreach all vertices, count, and store 0-in-degree vertices.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">topological(DAG):</span><br><span class="line">  Init fringe <span class="comment">// queue</span></span><br><span class="line">  Init degreeList <span class="comment">// store in-degree of each vertex</span></span><br><span class="line">  Init markList</span><br><span class="line">  Init outputList</span><br><span class="line"></span><br><span class="line">  Calculate the in-degrees of all vertices <span class="comment">// O(V + E)</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Init possible sources (0-in-degree vertices)</span></span><br><span class="line">  <span class="keyword">for</span> v in degreeList: <span class="comment">// O(V)</span></span><br><span class="line">    <span class="keyword">if</span> (degreeList[v] == <span class="number">0</span>):</span><br><span class="line">      fringe.enqueue(v) <span class="comment">// O(1 ~ V)</span></span><br><span class="line">      markList[v] = <span class="literal">true</span> <span class="comment">// bfs: mark when enqueued</span></span><br><span class="line">  bfs(fringe, markList, outputList)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Runtime is related to the degree of nodes.</span></span><br><span class="line"><span class="comment">// And the degree is related to the number of edges E.</span></span><br><span class="line">bfs(fringe, markList, outputList): <span class="comment">// O(V + E)</span></span><br><span class="line">  <span class="keyword">while</span> (fringe.isEmpty() == <span class="literal">false</span>):</span><br><span class="line">    v = fringe.dequeue() <span class="comment">// ~V times in total, bfs: output when dequeued</span></span><br><span class="line">    degreeList[v] -= <span class="number">1</span>; <span class="comment">// Decrease in-degree by 1</span></span><br><span class="line">    <span class="keyword">if</span> (degreeList[v] &lt;= <span class="number">0</span>): <span class="comment">// Additional checking, O(1)</span></span><br><span class="line">      outputList.add(v)</span><br><span class="line">      <span class="keyword">for</span> neighbor of v:</span><br><span class="line">        <span class="keyword">if</span> (markList[neighbor] == <span class="literal">false</span>): <span class="comment">// O(E), bfs: check mark before enqueued</span></span><br><span class="line">          markList[neighbor] = <span class="literal">true</span> <span class="comment">// bfs: mark when enqueued</span></span><br><span class="line">          fringe.enqueue(neighbor)</span><br></pre></td></tr></table></figure>
+
+<p>Or, we can modify it a little bit (change the output ordering of zero in-degree vertices):</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Init zeroInDegreeList <span class="comment">// LinkedList is great</span></span><br><span class="line"><span class="keyword">while</span> (zeroInDegreeList.isEmpty() == <span class="literal">false</span>):</span><br><span class="line">  fringe.enqueue(zeroInDegreeList.dequeue())</span><br><span class="line">  <span class="keyword">while</span> (fringe.isEmpty() == <span class="literal">false</span>):</span><br><span class="line">    <span class="comment">// same process</span></span><br><span class="line">    <span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+
+
+<p>Alternative (From GitBook):</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/aokft.png"></p>
+<h2 id="DAG-LPT"><a href="#DAG-LPT" class="headerlink" title="DAG-LPT"></a>DAG-LPT</h2><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/k4xzm.png"></p>
+<p>Consider the longest paths problem on DAGs:</p>
+<ul>
+<li>From a new copy of the graph $G’$ with signs of all edge weights flipped.</li>
+<li>Run <code>DAG-SPT</code> on $G’$ yielding result $X$.</li>
+<li>Flip signs of all values in $X$.distTo.</li>
+<li>$X$.edgeTo is already correct.</li>
+</ul>
+<p>There is no real need to prove anything or show demos. </p>
+<ul>
+<li>We know DAG-SPT works on graphs with negative edge weights to get the shortest paths. </li>
+<li>Assuming weights are $w_1, w_2, \ldots, w_E$,<br>we know that $-(-a + -b + -c + -d) &#x3D; a + b + c + d$.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/smmyn.png" alt="Idea of Reduction"></p>
+<h2 id="DAG-SPT"><a href="#DAG-SPT" class="headerlink" title="DAG-SPT"></a>DAG-SPT</h2><p>In a DAG, we can use Dijkstra’s algorithm to find the SPT. It’s simpler: <code>DAG-SPT Algorithm</code>.</p>
+<p>Walkthrough Demo: <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1hoj3YQCoE8C-YIScaBkKV-BEeoQbvwT9UbJxOYJaMHU/edit#slide=id.g76e0dad85_2_380">link</a></p>
+<p>One Simple Idea: Visit vertices in topological order.</p>
+<ul>
+<li>When we visit a vertex: Relax all of its going edges.</li>
+<li>Each vertex is visited only when all possible info about it has been used.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yo37r.png" alt="DAG &amp; Linearization"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jem4a.png" alt="Relax all of its going edges"></p>
+<p><strong>Note:</strong> DAG-SPT can solve SPT in DAGs with negative weights.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/u2fl2.png" alt="Handle with negative weights"></p>
+<p>Dijkstra’s can’t handle the negative weight and the result is incorrect.</p>
+<p>Walkthrough Demo: <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1CfnLS3FSXV8X2sXPTravZGXeBUUkcFQv7Uf2iGWGUfs/edit#slide=id.g55eae46bdb_0_456">link</a></p>
+<p><strong>Runtime:</strong> $\Theta(E + V)$</p>
+<ul>
+<li>Step 1: Have to do a topological sort, which is $\Theta(E + V)$ time.</li>
+<li>Step 2: Initialize some arrays of size $V$. In total, takes $\Theta(V)$ time.</li>
+<li>Step 3: Each edge gets relaxed exactly once, so $\Theta(E)$.</li>
+</ul>
+<p><strong>DP In DAG:</strong></p>
+<p>The DAG-SPT algorithm can be thought of as solving increasingly large subproblems:</p>
+<ul>
+<li>Distance from source to source is very easy, and is just zero.</li>
+<li>We then tackle distances to vertices that are a bit farther to the right.</li>
+<li>We repeat this until we get all the way to the end of the graph.</li>
+</ul>
+<h2 id="Dynamic-Programming"><a href="#Dynamic-Programming" class="headerlink" title="Dynamic Programming"></a>Dynamic Programming</h2><p>Dynamic Programming is a <code>terrible name</code> for a simple and powerful idea for solving “big problems”.</p>
+<ul>
+<li><code>Identify</code> a collection of subproblems.</li>
+<li><code>Solve subproblems</code> one by one, working from smallest to largest.</li>
+<li>Use the answers to the <code>smaller problems</code> to help solve the <code>larger ones</code>.</li>
+</ul>
+<p>Why is the name so bad? It was by design! (<a target="_blank" rel="noopener" href="https://www.quora.com/Why-is-dynamic-programming-called-dynamic-programming">link</a>)</p>
+<blockquote>
+<p>by design &#x3D; as a result of a plan; intentionally</p>
+</blockquote>
+<h2 id="LIS-LLIS"><a href="#LIS-LLIS" class="headerlink" title="LIS &#x2F; LLIS"></a>LIS &#x2F; LLIS</h2><p>Problem: Given a sequence of numbers, find the longest increasing subsequence (LIS).</p>
+<p>Example:</p>
+<ul>
+<li>Sequence: <code>6, 2, 8, 4, 5, 7</code></li>
+<li>The LIS: <code>2, 4, 5, 7</code> (LLIS &#x3D; 4)</li>
+</ul>
+<p>Related Problem: Find the length of the longest increasing subsequence (<code>LLIS</code>).</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fzqpv.png" alt="LIS / LLIS Example"></p>
+<h3 id="LLIS-DAG"><a href="#LLIS-DAG" class="headerlink" title="LLIS &amp; DAG"></a>LLIS &amp; DAG</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5ipik.png" alt="The Connection Between LIS and DAG"></p>
+<h4 id="Conversion-DAG"><a href="#Conversion-DAG" class="headerlink" title="Conversion (DAG)"></a>Conversion (DAG)</h4><p>Goal: Describe the <code>LLIS</code> problem in terms of a DAG problem. What property of the DAG are we looking for?</p>
+<p>Property: The longest path from any vertex to any vertex in the entire DAG (actually plus one).</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fkak2.png" alt="The Longest Path in DAG"></p>
+<p>So our goal is boiled down to design an algorithm for finding the length of the longest path in a DAG.</p>
+<h4 id="Clever-Idea-1"><a href="#Clever-Idea-1" class="headerlink" title="Clever Idea (-1)"></a>Clever Idea (-1)</h4><p><strong>Clever Idea:</strong> Using a <code>Negative Weight</code> Graph to Find Longest paths.</p>
+<ul>
+<li>Create copy with edge weights set to $-1$. &#x3D;&#x3D;&gt; $\Theta(E+V)$ (applied to adjacency list)</li>
+<li>For each vertex $v$: &#x3D;&#x3D;&gt; $V$ times<ul>
+<li>Run <code>DAG-SPT</code> Algorithm from $v$ to the end. (Recall this is a DP algorithm) &#x3D;&#x3D;&gt; $\Theta(E+V)$<ul>
+<li>Stops when a vertex is not <code>reachable</code> from $v$.</li>
+</ul>
+</li>
+<li>Let <code>LPLS[v] = abs(min(distTo))</code>, i.e. length of the longest path starting at $v$.</li>
+<li>Each time you need to reset <code>distTo</code> and <code>edgeTo</code>.</li>
+</ul>
+</li>
+<li>Return <code>max(LPLS)</code>. &#x3D;&#x3D;&gt; $\Theta(V)$</li>
+</ul>
+<p>In the worst case, total runtime is $\Theta(EV + V^2)$.</p>
+<p><strong>Note:</strong> In the worst case:</p>
+<ul>
+<li><p>$\Theta(N) &#x3D; \Theta(V)$</p>
+</li>
+<li><p>$\Theta(E) &#x3D; \Theta(V^2) &#x3D; \Theta(N^2)$. (Each vertex connects other vertices)</p>
+</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yp0zz.png" alt="Runtime of LIS Problem"></p>
+<h4 id="Demo-Example"><a href="#Demo-Example" class="headerlink" title="Demo Example"></a>Demo Example</h4><p>Walkthrough Demo: <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1RlGUoB0bvKlHkxZXogmWGEzsI9ZXRWlg3ngf1FJkpac/edit#slide=id.g3768494610_0_173">link</a> (Page 23)</p>
+<p>Initialized all edges with $-1$:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7851z.png" alt="Initialize all edges with -1"></p>
+<p>DAG-SPT with <code>s = 8</code>:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2gu42.png" alt="DAG-SPT with s = 8"></p>
+<p>Note: Stops at vertex 9, since vertex 2 is not reachable from vertex 8.</p>
+<p>DAG-SPT with <code>s = 2</code>:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/txeaz.png" alt="DAG-SPT with s = 2"></p>
+<p>Note: Go through all vertices since vertex 9, 4, 5, 7, 3 are all reachable.</p>
+<p>The final state of the algorithm:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vywko.png" alt="Final State"></p>
+<h4 id="Reduction"><a href="#Reduction" class="headerlink" title="Reduction"></a>Reduction</h4><p>Given a sequence of integers, we transformed our problem into a problem on DAGs. This process is called <code>reduction</code>. We “reduced” LLIS to $N$ solutions of the longest paths problem on DAGs.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gl2ib.jpg" alt="Algorithm for P"></p>
+<p>Other informal examples: </p>
+<ul>
+<li>Reduce <code>illuminating a room</code> to <code>flipping a light switch</code>.</li>
+<li>Reduce <code>getting to work</code> to <code>riding BART</code>.</li>
+<li>Reduce <code>8puzzle</code> to <code>A*</code>.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jn0ft.png" alt="Reduction"></p>
+<h3 id="Using-DP"><a href="#Using-DP" class="headerlink" title="Using DP"></a>Using DP</h3><h4 id="Redundancy"><a href="#Redundancy" class="headerlink" title="Redundancy"></a>Redundancy</h4><p>In effect, we are solving a bunch of subproblems in the <code>wrong order</code>.</p>
+<p>The process we described was <code>redundant</code>. Example: DAG-SPT for <code>s = 4</code> is a <code>subproblem</code> of DAG-SPT for <code>s = 2</code>, but we ran both in their entirety.</p>
+<h4 id="New-Subproblem"><a href="#New-Subproblem" class="headerlink" title="New Subproblem"></a>New Subproblem</h4><p>Usually, finding a “right” subproblem of DP is very hard.</p>
+<p>Rather than choosing where it starts, we can choose the following subproblem for LLIS: </p>
+<ul>
+<li>Length of the Longest Subsequence <code>Ending At</code> (LLSEA)</li>
+</ul>
+<h4 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h4><p>Let’s see some examples.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/894i6.png" alt="Examples of the LLSEA Problem"></p>
+<p>$Q(2) &#x3D; \text{max}(Q(0) + 1, Q(1) + 1) &#x3D; 2$<br>$Q(3) &#x3D; Q(1) + 1 &#x3D; 2$</p>
+<p>Recall that $Q(K)$ is the solution to <code>LLSEA(K)</code> (they are equivalent).</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4pvtt.png" alt="Example Q(5)"></p>
+<p>$Q(5) &#x3D; \text{max}{ Q(1) + 1, Q(3) + 1, Q(4) + 1 } &#x3D; Q(5) + 1 &#x3D; 4$</p>
+<h4 id="Fact-1-Memo"><a href="#Fact-1-Memo" class="headerlink" title="Fact #1: Memo"></a>Fact #1: Memo</h4><p><strong>Fact #1:</strong> We can use results for small $Q$ to compute results for larger $Q$.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sjd83.png" alt="Consider larger Q"></p>
+<p>The answer is $62$. Because of all the increasing subsequences that have an edge pointing to <code>vertex 104</code>, the longest one was of length $61$ (ending at <code>vertex 100</code>).</p>
+<p>The $Q$ values are memorized answers to smaller subproblems.</p>
+<ul>
+<li>The LLIS ending at <code>vertex 417</code> is the max of $1 + Q(100)$.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bk95t.png" alt="Memorization"></p>
+<h4 id="Fact-2-Solvable"><a href="#Fact-2-Solvable" class="headerlink" title="Fact #2: Solvable"></a>Fact #2: Solvable</h4><p><strong>Fact #2:</strong> We can use our $Q$ values to solve LLIS of the entire sequence.</p>
+<p>$Q(K)$ is the <code>LLSEA(K)</code>. Thus, LLIS is just the maximum of all $Q$ values.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9g8zt.png" alt="Max of All Q values"></p>
+<h4 id="DP-Solution"><a href="#DP-Solution" class="headerlink" title="DP Solution"></a>DP Solution</h4><p><strong>Note:</strong> The slide’s solution has some bugs. $Q$ should be initialized with $1$, otherwise $Q[K] &#x3D; Q[L] + 1$ would make $Q$ values $-\infty + 1$.</p>
+<p>Setting them as $1$ is sensible since each number itself is already a 1-length increasing subsequence.</p>
+<ul>
+<li>Create $Q$, an array of length $N$. Set $Q[0] &#x3D; 1$, and $Q[K] &#x3D; -\infty$ for rest of the vertices. (Check the <strong>Note</strong> above. It should be $1$)</li>
+<li>Create a DAG with $N$ vertices. Draw an edge between vertices if left vertex is less than right vertex. (Optional)</li>
+</ul>
+<p>For each $K &#x3D; 1,\ \ldots, N$:</p>
+<ul>
+<li>Then for each $L &#x3D; 0,\ \ldots, K - 1$:<ul>
+<li>If there exists an edge from $L$ to $K$: (or $L &lt; K$)<ul>
+<li>If $Q[L] + 1 &gt; Q[K]$  (update when necessary)<ul>
+<li>Set $Q[K] &#x3D; Q[L] + 1$</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Note:</strong> The DAG is not necessary. We can remove it and change the following:</p>
+<ul>
+<li>If there <code>exists an edge</code> from $L$ to $K$</li>
+</ul>
+<p>to:</p>
+<ul>
+<li>If item $L$ is <code>less than</code> item $K$</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  <span class="type">int</span>[] a = &#123; <span class="number">8</span>, <span class="number">2</span>, <span class="number">9</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">3</span> &#125;;</span><br><span class="line">  System.out.println(<span class="string">&quot;Result: &quot;</span> + LLIS(a));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">LLIS</span><span class="params">(<span class="type">int</span> num[])</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (num == <span class="literal">null</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">  <span class="type">int</span> <span class="variable">max</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span>[] Q = <span class="keyword">new</span> <span class="title class_">int</span>[num.length]; <span class="comment">// or setting 0, return max + 1</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; num.length; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; i; ++j) &#123;</span><br><span class="line">      <span class="keyword">if</span> (num[j] &lt; num[i] &amp;&amp; Q[j] + <span class="number">1</span> &gt; Q[i]) &#123;</span><br><span class="line">        <span class="comment">// edge exists and need update</span></span><br><span class="line">        Q[i] = Q[j] + <span class="number">1</span>;</span><br><span class="line">        max = (Q[i] &gt; max) ? Q[i] : max; <span class="comment">// update max</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  System.out.println(Arrays.toString(Q));</span><br><span class="line">  <span class="keyword">return</span> max + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Runtime:</strong></p>
+<p>Note: The runtimes are worst case.</p>
+<ul>
+<li>Initialization: Creating $Q$ array and DAG is $\Theta(N)$ and $\Theta(N^2)$ respectively.</li>
+<li>Execution: Nested for loops with constant time <code>if</code> statement take $\Theta(N^2)$.</li>
+</ul>
+<h4 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h4><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/teahw.png" alt="Summary"></p>
+<h2 id="Independent-Set-Problem"><a href="#Independent-Set-Problem" class="headerlink" title="Independent Set Problem"></a>Independent Set Problem</h2><p>Reference: <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1srzyUpmXrwSLHaAZDYVCpmPFFsq5q-sTwPwdCJkIQVI/edit#slide=id.g55ec4e88d2_1_1719">link</a> (Page 50)</p>
+<p>Idea: <code>3SAT Problem</code> can reduce to <code>Independent Set Problem</code>.</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

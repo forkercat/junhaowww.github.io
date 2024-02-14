@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium My Post: Java Solutions Backtracking (Memoization) + DP with Detailed Exp. Problem Given a non-empty string s and a dictionary wordDict containing a list of non">
+<meta property="og:type" content="website">
+<meta property="og:title" content="139. Word Break I">
+<meta property="og:url" content="https://junhaow.com/lc/problems/backtracking/uncategorized/139_word-break.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium My Post: Java Solutions Backtracking (Memoization) + DP with Detailed Exp. Problem Given a non-empty string s and a dictionary wordDict containing a list of non">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.112Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.112Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>139. Word Break I</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/word-break/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/word-break/discuss/434582">Java Solutions Backtracking (Memoization) + DP with Detailed Exp.</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a <strong>non-empty</strong> string <code>s</code> and a dictionary <code>wordDict</code> containing a list of <strong>non-empty</strong> words, determine if <code>s</code> can be segmented into a space-separated sequence of one or more dictionary words.</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>The same word in the dictionary <strong>may be reused multiple times</strong> in the segmentation.</li>
+<li>You may assume the dictionary does not contain duplicate words.</li>
+</ul>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Input: s = <span class="string">&quot;leetcode&quot;</span>, wordDict = [<span class="string">&quot;leet&quot;</span>, <span class="string">&quot;code&quot;</span>]</span><br><span class="line">Output: <span class="literal">true</span></span><br><span class="line">Explanation: Return <span class="literal">true</span> because <span class="string">&quot;leetcode&quot;</span> can be segmented as <span class="string">&quot;leet code&quot;</span>.</span><br><span class="line"></span><br><span class="line">Input: s = <span class="string">&quot;applepenapple&quot;</span>, wordDict = [<span class="string">&quot;apple&quot;</span>, <span class="string">&quot;pen&quot;</span>]</span><br><span class="line">Output: <span class="literal">true</span></span><br><span class="line">Explanation: Return <span class="literal">true</span> because <span class="string">&quot;applepenapple&quot;</span> can be segmented as <span class="string">&quot;apple pen apple&quot;</span>.</span><br><span class="line">             Note that you are allowed to reuse a dictionary word.</span><br><span class="line"></span><br><span class="line">Input: s = <span class="string">&quot;catsandog&quot;</span>, wordDict = [<span class="string">&quot;cats&quot;</span>, <span class="string">&quot;dog&quot;</span>, <span class="string">&quot;sand&quot;</span>, <span class="string">&quot;and&quot;</span>, <span class="string">&quot;cat&quot;</span>]</span><br><span class="line">Output: <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Backtracking"><a href="#Backtracking" class="headerlink" title="Backtracking"></a>Backtracking</h3><p>First, we put <code>wordSet</code> into a hash set for quick <code>contains</code> examination.</p>
+<p>For each character <code>S[depth]</code>, we consider substrings <code>S[depth, i]</code> including <code>S[depth]</code>, <code>S[depth, depth + 1]</code>, …, <code>S[depth, n - 1]</code>. If one of them is in <code>wordDict</code>, we then redo the task on character <code>S[i + 1]</code>; otherwise, return <code>false</code>.</p>
+<p>One of the most difficult part is to write the <code>reject &amp; accept</code> code. Think about it carefully, we notice that if the recursive call goes into a situation where <code>n == s.length()</code>, it means the string <code>s</code> can be successfully segmented; otherwise, it won’t go into that situation. <strong>We don’t write reject case in this backtracking function.</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span> &#123;</span><br><span class="line">  <span class="comment">// assume s and wordDict are non-empty</span></span><br><span class="line">  <span class="keyword">return</span> backtracking(<span class="number">0</span>, s, <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;(wordDict));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">backtracking</span><span class="params">(<span class="type">int</span> depth, String s, Set&lt;String&gt; wordSet)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">  <span class="comment">// accept</span></span><br><span class="line">  <span class="keyword">if</span> (depth == n) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> depth; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> s.substring(depth, i + <span class="number">1</span>); <span class="comment">// substring[depth, i]</span></span><br><span class="line">    <span class="keyword">if</span> (wordSet.contains(str)) &#123;</span><br><span class="line">      <span class="keyword">if</span> (backtracking(i + <span class="number">1</span>, s, wordSet)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^N)$ since each time it has at most $N$ choices and the depth (problem size) is $N$. (this is an <code>upper bound</code>)<br><strong>Space:</strong> $O(N)$ (string length and call stack depth)</p>
+<p><span class="purple">Marked</span> For the time complexity, if we count <code>substring</code> operation ($O(N)$), it would be $O(N \times N^N) &#x3D; O(N^(N + 1))$.</p>
+<h3 id="Backtracking-Memoization"><a href="#Backtracking-Memoization" class="headerlink" title="Backtracking (Memoization)"></a>Backtracking (Memoization)</h3><p>Let’s use an example to see if we can optimize the above method.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// String: &quot;abcde&quot; | wordDict: [&quot;a&quot;, ...]</span></span><br><span class="line"></span><br><span class="line">depth = <span class="number">0</span> (<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line">we have substrings: <span class="string">&quot;a&quot;</span>, <span class="string">&quot;ab&quot;</span>, <span class="string">&quot;abc&quot;</span>, <span class="string">&quot;abcd&quot;</span>, <span class="string">&quot;abcde&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>For the first substring <code>&quot;a&quot;</code>, it is in <code>wordDict</code>, so <code>depth</code> becomes 1 and we would examine if <code>&quot;bcde&quot;</code> is breakable.</p>
+<p>In the process of checking if <code>&quot;bcde&quot;</code> is breakable, we may check if <code>&quot;cde&quot;, &quot;de&quot;, &quot;e&quot;</code> are breakable. Once we know the answers, we can cache them for future usage no matter they are true or false.</p>
+<p>In future when we’ve done processing the first substring <code>&quot;a&quot;</code>, we will examine <code>&quot;b&quot;</code>, and you will see there could be a lot of repeated computation for <code>&quot;cde&quot;, &quot;de&quot;, &quot;e&quot;</code>.</p>
+<p><strong>Difficulty:</strong> Using memoization in a backtracking-style recursive function is quite uncommon than other DP memoization. This is the new form I learned. There are three places that we need to set and get <code>memo[]</code>.</p>
+<p><strong>Note:</strong> We use <code>Boolean</code> since initially we want values to be <code>null</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span> &#123;</span><br><span class="line">  <span class="comment">// assume s and wordDict are non-empty</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">  Boolean[] memo = <span class="keyword">new</span> <span class="title class_">Boolean</span>[n]; <span class="comment">// memo[i] --&gt; S[i...] is breakable or not</span></span><br><span class="line">  <span class="keyword">return</span> backtracking(<span class="number">0</span>, s, <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;(wordDict), memo);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">backtracking</span><span class="params">(<span class="type">int</span> depth, String s, Set&lt;String&gt; wordSet, Boolean[] memo)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">  <span class="comment">// accept</span></span><br><span class="line">  <span class="keyword">if</span> (depth == n) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// memoization</span></span><br><span class="line">  <span class="keyword">if</span> (memo[depth] != <span class="literal">null</span>) &#123; <span class="comment">// memo</span></span><br><span class="line">    <span class="keyword">return</span> memo[depth];</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> depth; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> s.substring(depth, i + <span class="number">1</span>); <span class="comment">// substring[depth, i]</span></span><br><span class="line">    <span class="keyword">if</span> (wordSet.contains(str)) &#123;</span><br><span class="line">      <span class="keyword">if</span> (backtracking(i + <span class="number">1</span>, s, wordSet, memo)) &#123;</span><br><span class="line">        memo[depth] = <span class="literal">true</span>; <span class="comment">// memo</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  memo[depth] = <span class="literal">false</span>; <span class="comment">// memo</span></span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^2)$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="DP"><a href="#DP" class="headerlink" title="DP"></a>DP</h3><p>The idea is that given a problem(s) we can divide it into two subproblems <code>s1</code> and <code>s2</code>. If both of them are <strong>breakable</strong>, <code>s</code> is breakable (by saying breakable I mean it satisfies the required conditions).</p>
+<p><strong>Note:</strong> Substring <code>s(i, j)</code> (character <code>i</code> to <code>j</code>) in Java is denoted by <code>s.substring(i, j + 1)</code>.</p>
+<p>First, we define our <code>dp[]</code> array, where <code>dp[i]</code> is <code>true</code> if the substring <code>s(0, i - 1)</code> or <code>s.substring(0, i)</code> is breakable; otherwise, it should be <code>false</code>.</p>
+<p>Then, we process string length from <code>1</code> to <code>n</code> in <code>dp[i]</code>. For each substring <code>s(0, i - 1)</code>, we examine each combination of substrings <code>s(0, j - 1)</code> (<code>s.substring(0, j)</code>) and <code>s(j, i - 1)</code> (<code>s.substring(j, i)</code>). The first subproblem can be calculated directly by <code>dp[j]</code> while the second one can be checked by <code>wordDict</code> set. <strong>Question:</strong> Why don’t we break the second substring and examine it further? (e.g. <code>abc</code> is not in <code>wordDict</code>, but <code>ab</code> and <code>c</code> could be in <code>wordDict</code>)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// String: a b c d e f</span></span><br><span class="line">In the <span class="keyword">final</span> round, we are looking into the whole string. We would examine the follow pair of two substrings:</span><br><span class="line">a     bcdef</span><br><span class="line">ab    cdef</span><br><span class="line">abc   def</span><br><span class="line">abcd  ef</span><br><span class="line">abcde f</span><br></pre></td></tr></table></figure>
+
+<p><strong>The question is:</strong> what happen if <code>&quot;cdef&quot;</code> is not in wordDict while <code>&quot;cd&quot;</code> and <code>&quot;ef&quot;</code> are both in <code>wordDict</code>?</p>
+<p>It is handled previously! If <code>&quot;cd&quot;</code> is in <code>wordDict</code>, in the previously fourth round for substring <code>&quot;abcd&quot;</code>, we would examine <code>&quot;ab&quot;</code> and <code>&quot;cd&quot;</code>. If <code>dp(&quot;ab&quot;)</code> is true and <code>&quot;cd&quot;</code> is in <code>wordDict</code>, we would mark <code>dp(&quot;abcd&quot;)</code> as true!</p>
+<p>Then in the final round, <code>dp(&quot;abcd&quot;)</code> is true and <code>&quot;ef&quot;</code> is in <code>wordDict</code>, so we have the whole string breakable.</p>
+<p><strong>Note:</strong> In addition, please think about the <code>initialization step</code> and the <code>break statement</code> in the code.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span> &#123;</span><br><span class="line">  <span class="comment">// assume s and wordDict are non-empty</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">  Set&lt;String&gt; set = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;(wordDict);</span><br><span class="line">  </span><br><span class="line">  <span class="type">boolean</span>[] dp = <span class="keyword">new</span> <span class="title class_">boolean</span>[n + <span class="number">1</span>];</span><br><span class="line">  dp[<span class="number">0</span>] = <span class="literal">true</span>; <span class="comment">// consider the begining! (&quot;&quot; + &quot;a&quot;)</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt;= n; ++i) &#123; <span class="comment">// for each length</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; i; ++j) &#123;</span><br><span class="line">      <span class="comment">// s1 = substring(0, j) = dp[j]</span></span><br><span class="line">      <span class="comment">// s2 = substring(j, i) = s[j, i - 1]</span></span><br><span class="line">      <span class="keyword">if</span> (dp[j] &amp;&amp; set.contains(s.substring(j, i))) &#123;</span><br><span class="line">        dp[i] = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> dp[n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^3)$ since <code>substring</code> takes $O(N)$.<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="BFS"><a href="#BFS" class="headerlink" title="BFS"></a>BFS</h3><p>Go To: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/word-break/solution/">LeetCode Solution</a></p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

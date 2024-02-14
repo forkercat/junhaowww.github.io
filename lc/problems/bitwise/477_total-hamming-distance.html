@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode EPI 4.4Difficulty: Medium Problem The Hamming distance between two integers is the number of positions at which the corresponding bits are different.   Now your job is to find th">
+<meta property="og:type" content="website">
+<meta property="og:title" content="477. Total Hamming Distance">
+<meta property="og:url" content="https://junhaow.com/lc/problems/bitwise/477_total-hamming-distance.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode EPI 4.4Difficulty: Medium Problem The Hamming distance between two integers is the number of positions at which the corresponding bits are different.   Now your job is to find th">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.119Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.119Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>477. Total Hamming Distance</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/total-hamming-distance/">LeetCode</a> <span class="gray">EPI 4.4</span><br>Difficulty: <span class="orange">Medium</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>The <code>Hamming distance</code> between two integers is the number of positions at which the corresponding bits are different.</p>
+</blockquote>
+<blockquote>
+<p>Now your job is to find the total Hamming distance between all pairs of the given numbers.</p>
+</blockquote>
+<p>Refer to: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/hamming-distance/">461. Hamming Distance</a> or <span class="gray">EPI 4.4</span></p>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>Elements of the given array are in the range of <code>0</code> to <code>10^9</code>.</li>
+<li>Length of the array will not exceed <code>10^4</code>.</li>
+</ul>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="number">4</span>, <span class="number">14</span>, <span class="number">2</span></span><br><span class="line">Output: <span class="number">6</span></span><br><span class="line">Explanation: In binary representation, the <span class="number">4</span> is <span class="number">0100</span>, <span class="number">14</span> is <span class="number">1110</span>, and <span class="number">2</span> is <span class="number">0010</span> (just</span><br><span class="line">showing the four bits relevant in <span class="built_in">this</span> <span class="keyword">case</span>). So the answer will be:</span><br><span class="line">HammingDistance(<span class="number">4</span>, <span class="number">14</span>) + HammingDistance(<span class="number">4</span>, <span class="number">2</span>) + HammingDistance(<span class="number">14</span>, <span class="number">2</span>) = <span class="number">2</span> + <span class="number">2</span> + <span class="number">2</span> = <span class="number">6.</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p><strong>Methods:</strong></p>
+<ol>
+<li><p>Brute-Force (Time Limit Exceeded)</p>
+<ul>
+<li>Check all the unique pairs of elements for differing bits.</li>
+<li><code>xor</code> of two bits <code>1</code> if they are not the same, and <code>0</code> otherwise.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">totalHammingDistance</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i + <span class="number">1</span>; j &lt; n; ++j) &#123;</span><br><span class="line">      count += hammingDistance(nums[i], nums[j]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">hammingDistance</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">xor</span> <span class="operator">=</span> x ^ y;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (xor != <span class="number">0</span>) &#123;</span><br><span class="line">    xor = xor &amp; (xor - <span class="number">1</span>);</span><br><span class="line">    count += <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong>Time:</strong> $O(N^2 \cdot \log{V}) \sim O(N^2)$ where $V$ is the largest value any of the elements can ever take. Since all elements are less than $10^9$, the value $\log{V}$ is approximately $30$, which is a small constant.<br><strong>Space:</strong> $O(1)$</li>
+</ul>
+</li>
+<li><p>Combination &#x2F; Pair</p>
+<ul>
+<li>For any particular bit position, count the number $k$ of elements with this bit <code>ON / 1</code>. Hence the number of elements with the bit <code>OFF / 0</code> should be $(n - k)$.</li>
+<li>For each bit position (32 in total), we have $k$ <code>1</code> bits and $(n - k)$ <code>0</code> bits, and we want the total number of of combinations (pairs) of <code>1</code> and <code>0</code>, which equals <code>k * (n - k)</code>.</li>
+<li><strong>Note:</strong> We can switch the order of loops to reduce space complexity like the code below.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//      0 1 0 0 -&gt; 4</span></span><br><span class="line"><span class="comment">//      1 1 1 0 -&gt; 14</span></span><br><span class="line"><span class="comment">//      0 0 1 0 -&gt; 2</span></span><br><span class="line"><span class="comment">// -----------------</span></span><br><span class="line"><span class="comment">// ON:  1 2 2 0</span></span><br><span class="line"><span class="comment">// OFF: 2 1 1 3</span></span><br><span class="line"><span class="comment">//      2 2 2 0  &lt;--- # combination = 6</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">totalHammingDistance</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">32</span>; ++i) &#123; <span class="comment">// outer loop</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">onCount</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">      val = (val &gt;&gt; i) &amp; <span class="number">1</span>; <span class="comment">// isolate the bit on the lsd position</span></span><br><span class="line">      onCount += val &amp; <span class="number">1</span>; <span class="comment">// 1&amp;1=1  0&amp;1=0</span></span><br><span class="line">      <span class="comment">// onCount += val ^ 0; // 1^0=1  0^0=0</span></span><br><span class="line">    &#125;</span><br><span class="line">    sum += onCount * (n - onCount); <span class="comment">// combination calculation</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong>Time:</strong> $O(N\log{V}) \sim O(N)$<br><strong>Space:</strong> $O(\log{V})$ or $O(1)$</li>
+</ul>
+</li>
+<li><p>Vectorized Method</p>
+<ul>
+<li>Vectorized operations can result in small, elegant, and good performance code. It is supported in Python. The takeaway is that we don’t need the outer loop and instead we process every bit at the same time. For example:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">count = [<span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>];</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">  <span class="comment">// val is like [0 1 0 0]</span></span><br><span class="line">  count += val; <span class="comment">// [0 0 0 0] + [0 1 0 0] = [0 1 0 0]</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> sum(count); <span class="comment">// sum([2 2 2 0]) = 6</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

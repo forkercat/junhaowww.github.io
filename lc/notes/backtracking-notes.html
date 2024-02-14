@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference:   Wikipedia - Backtracking GeeksforGeeks - Backtracking What’s the difference between backtracking and depth first search? difference between back tracking and Dynamic programming  Defini">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Backtracking Notes 🥊">
+<meta property="og:url" content="https://junhaow.com/lc/notes/backtracking-notes.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference:   Wikipedia - Backtracking GeeksforGeeks - Backtracking What’s the difference between backtracking and depth first search? difference between back tracking and Dynamic programming  Defini">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.090Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.090Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Backtracking Notes 🥊</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: </p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Backtracking">Wikipedia - Backtracking</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/backtracking-algorithms/">GeeksforGeeks - Backtracking</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1294720/whats-the-difference-between-backtracking-and-depth-first-search">What’s the difference between backtracking and depth first search?</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/3592943/difference-between-back-tracking-and-dynamic-programming">difference between back tracking and Dynamic programming</a></li>
+</ul>
+<h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p><strong>Wiki:</strong> Backtracking is a general algorithm for finding all (or some) solutions to some <code>computational problems</code>, notably <code>constraint satisfaction problems</code>, that <strong>incrementally</strong> builds candidates to the solutions, and abandons a candidate (“backtracks”) as soon as it determines that the candidate cannot possibly be completed to a valid solution.</p>
+<p><strong>GeeksforGeeks:</strong> Backtracking is an algorithmic-technique for solving problems recursively by trying to build a solution incrementally, <strong>one piece at a time</strong>, removing those solutions that fail to satisfy the constraints of the problem <code>at any point of time</code> (by time, here, is referred to the time elapsed till reaching any level of the search tree).</p>
+<p>Notice the difference between “backtracking” and “backtracks”. The latter one is more like <code>delete</code> or <code>remove</code> a candidate or a selection.</p>
+<h2 id="Backtracking-vs-DFS"><a href="#Backtracking-vs-DFS" class="headerlink" title="Backtracking vs. DFS"></a>Backtracking vs. DFS</h2><ul>
+<li><code>Backtracking</code> is a more <strong>general</strong> purpose algorithm. It iterates through a <strong>problem space</strong>. It can be used on any type of structure where portions of the domain can be eliminated, that is, you can look at a specific move and eliminate it.</li>
+<li><code>Depth-First search</code> is a <strong>specific</strong> form of backtracking related to searching tree or graph structures. It iterates through an actual <strong>tree&#x2F;graph structure</strong>. DFS is described in Wikipedia as follows:</li>
+</ul>
+<blockquote>
+<p>One starts at the root (selecting some node as the root in the graph case) and explores as far as possible along each branch before backtracking.</p>
+</blockquote>
+<p>If we extend DFS to general problems, we can call it <code>backtracking</code>. If we use backtracking to tree&#x2F;graph related problems, we can call it <code>DFS</code>.</p>
+<p>According to Donald Knuth, it is the same.</p>
+<blockquote>
+<p>Backtracking, also called depth-first search. — His paper about Dancing Links algorithm</p>
+</blockquote>
+<h2 id="Backtracking-vs-DP"><a href="#Backtracking-vs-DP" class="headerlink" title="Backtracking vs. DP"></a>Backtracking vs. DP</h2><p><strong>Note:</strong> I think they should not be compared since they are very different algorithmic approaches.</p>
+<ul>
+<li><p>Dynamic programming problems usually rely on the <code>principle of optimality</code>. The principle of optimality states that an optimal sequence of decision or choices each sub sequence must also be optimal. Also, DP <strong>breaks down</strong> the problem into many smaller overlapped subproblems.</p>
+</li>
+<li><p>Backtracking problems are usually not optimal on their way. They can only be applied to problems which admit the concept of <code>partial candidate solution</code>. It does not include any “break down” step, but builds the solution <strong>incrementally</strong>.</p>
+</li>
+</ul>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

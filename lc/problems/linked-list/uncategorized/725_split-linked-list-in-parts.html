@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium Problem Given a (singly) linked list with head node root, write a function to split the linked list into k consecutive linked list “parts”.The length of each pa">
+<meta property="og:type" content="website">
+<meta property="og:title" content="725. Split Linked List in Parts">
+<meta property="og:url" content="https://junhaow.com/lc/problems/linked-list/uncategorized/725_split-linked-list-in-parts.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium Problem Given a (singly) linked list with head node root, write a function to split the linked list into k consecutive linked list “parts”.The length of each pa">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.131Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.131Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>725. Split Linked List in Parts</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/split-linked-list-in-parts/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a (singly) linked list with head node <code>root</code>, write a function to split the linked list into <code>k</code> consecutive linked list “parts”.<br>The length of each part should be as equal as possible: no two parts should have a size differing by more than <code>1</code>. This may lead to some parts being null.<br>The parts should be in order of occurrence in the input list, and parts occurring earlier should always have a size greater than or equal parts occurring later.<br>Return a List of ListNode’s representing the linked list parts that are formed.</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>The length of <code>root</code> will be in the range <code>[0, 1000]</code>.</li>
+<li>Each value of a node in the input will be an integer in the range <code>[0, 999]</code>.</li>
+<li><code>k</code> will be an integer in the range <code>[1, 50]</code>.</li>
+</ul>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Input: root = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], k = <span class="number">5</span></span><br><span class="line">Output: [[<span class="number">1</span>],[<span class="number">2</span>],[<span class="number">3</span>],[],[]]</span><br><span class="line"></span><br><span class="line">Input: </span><br><span class="line">root = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>], k = <span class="number">3</span></span><br><span class="line">Output: [[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>], [<span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p><strong>Methods:</strong></p>
+<ol>
+<li>In-Place<ul>
+<li>The length of the list is <code>n</code>.</li>
+<li>There are <code>k</code> groups, so the <code>result</code> should initialized with size <code>k</code>.</li>
+<li>The width of each part is <code>width</code> which is equal to <code>n / k</code>.</li>
+<li>We also notice that the width of some parts at the beginning should <code>width + 1</code>. The number of these parts is <code>n % k</code>.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode[] splitListToParts(ListNode root, <span class="type">int</span> k) &#123;</span><br><span class="line">  ListNode[] result = <span class="keyword">new</span> <span class="title class_">ListNode</span>[k];</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> getLength(root);</span><br><span class="line">  <span class="type">int</span> <span class="variable">width</span> <span class="operator">=</span> n / k;</span><br><span class="line">  <span class="type">int</span> <span class="variable">numOfOneMore</span> <span class="operator">=</span> n % k;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> root;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//   1  2  3  4  5</span></span><br><span class="line">  <span class="comment">//   -------</span></span><br><span class="line">  <span class="comment">//   p     p</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; k; ++i) &#123;</span><br><span class="line">    result[i] = p;</span><br><span class="line">    <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> (i &lt; numOfOneMore) ? width + <span class="number">1</span> : width;</span><br><span class="line">    <span class="keyword">while</span> (count &gt; <span class="number">1</span>) &#123;</span><br><span class="line">      p = p.next;</span><br><span class="line">      count -= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (p != <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="type">ListNode</span> <span class="variable">nextTemp</span> <span class="operator">=</span> p.next;</span><br><span class="line">      p.next = <span class="literal">null</span>;</span><br><span class="line">      p = nextTemp;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">getLength</span><span class="params">(ListNode root)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (root != <span class="literal">null</span>) &#123;</span><br><span class="line">    root = root.next;</span><br><span class="line">    count += <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(k)$ the size of the <code>result</code>.</li>
+</ul>
+</li>
+</ol>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

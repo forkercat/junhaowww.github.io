@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode EPI 10.1Difficulty: Hard My Post: JAVA SUMMARY of all solutions (B-F, minPQ, Divide-And-Conquer) Problem Merge $k$ sorted linked lists and return it as one sorted list. Analyze a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="23. Merge k Sorted Lists">
+<meta property="og:url" content="https://junhaow.com/lc/problems/linked-list/add-and-merge-two-lists/23_merge-k-sorted-lists.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode EPI 10.1Difficulty: Hard My Post: JAVA SUMMARY of all solutions (B-F, minPQ, Divide-And-Conquer) Problem Merge $k$ sorted linked lists and return it as one sorted list. Analyze a">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qpogs.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.128Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.128Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qpogs.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>23. Merge k Sorted Lists</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/merge-k-sorted-lists/">LeetCode</a> <span class="gray">EPI 10.1</span><br>Difficulty: <span class="red">Hard</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/merge-k-sorted-lists/discuss/429518">JAVA SUMMARY of all solutions (B-F, minPQ, Divide-And-Conquer)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Merge $k$ sorted linked lists and return it as one sorted list. Analyze and describe its complexity.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">[</span><br><span class="line">  <span class="number">1</span>-&gt;<span class="number">4</span>-&gt;<span class="number">5</span>,</span><br><span class="line">  <span class="number">1</span>-&gt;<span class="number">3</span>-&gt;<span class="number">4</span>,</span><br><span class="line">  <span class="number">2</span>-&gt;<span class="number">6</span></span><br><span class="line">]</span><br><span class="line">Output: <span class="number">1</span>-&gt;<span class="number">1</span>-&gt;<span class="number">2</span>-&gt;<span class="number">3</span>-&gt;<span class="number">4</span>-&gt;<span class="number">4</span>-&gt;<span class="number">5</span>-&gt;<span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p><strong>Focus on the third and fifth solution.</strong></p>
+<p><strong>Test Case:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line">[[<span class="number">1</span>,<span class="number">4</span>,<span class="number">5</span>],[<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">2</span>,<span class="number">6</span>]]</span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">[[], [], []]</span><br><span class="line">[]</span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line">[[<span class="number">1</span>,<span class="number">2</span>],[],[<span class="number">5</span>]]</span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>,<span class="number">5</span>]</span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line">[[<span class="number">1</span>,<span class="number">4</span>,<span class="number">5</span>],[<span class="number">2</span>,<span class="number">4</span>]]</span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line">[[<span class="number">1</span>]]</span><br><span class="line">[<span class="number">1</span>]</span><br><span class="line"><span class="comment">// 6 ---- Be careful of this one</span></span><br><span class="line">[]</span><br></pre></td></tr></table></figure>
+
+<h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p>It is okay if $N$ is not too large.</p>
+<ul>
+<li>Traverse all the linked lists and collect the values of the nodes into an <code>array</code>. - $O(N)$</li>
+<li>Sort the array. - $O(N\log{N})$</li>
+<li>Traverse the array and make the linked list. - $O(N)$</li>
+</ul>
+<p><strong>Time:</strong> $O(N\log{N})$ where $N$ is the total number of nodes.<br><strong>Space:</strong> $O(N)$ since we need an array and a new linked list.</p>
+<h3 id="Compare-One-By-One"><a href="#Compare-One-By-One" class="headerlink" title="Compare One-By-One"></a>Compare One-By-One</h3><p>(if $k$ is much less than $N$, $k$ is the number of lists)</p>
+<p>Compare every $k$ nodes (head of every list) and get the smallest node.</p>
+<p><strong>Note:</strong></p>
+<ul>
+<li>Use <code>minIdx</code> to record the location and to check if the list is empty.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">mergeKLists</span><span class="params">(ListNode[] lists)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (lists == <span class="literal">null</span> || lists.length == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">dummy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(-<span class="number">1</span>);</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> dummy;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">minNode</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">minIdx</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Iterate over lists</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; lists.length; ++i) &#123;</span><br><span class="line">      <span class="type">ListNode</span> <span class="variable">currList</span> <span class="operator">=</span> lists[i];</span><br><span class="line">      <span class="keyword">if</span> (currList == <span class="literal">null</span>) <span class="keyword">continue</span>;</span><br><span class="line">      <span class="keyword">if</span> (minNode == <span class="literal">null</span> || currList.val &lt; minNode.val) &#123;</span><br><span class="line">        minNode = currList;</span><br><span class="line">        minIdx = i;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// check if finished</span></span><br><span class="line">    <span class="keyword">if</span> (minNode == <span class="literal">null</span>) <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// link</span></span><br><span class="line">    prev.next = minNode;</span><br><span class="line">    prev = prev.next;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// delete</span></span><br><span class="line">    lists[minIdx] = minNode.next; <span class="comment">// may be null</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Time:</strong> $O(kN)$ where $k$ is the number of linked lists. <code>311 ms</code><br><strong>Space:</strong> $O(N)$ creating a new linked list. Or $O(1)$ if we apply an in-place method. Connect selected nodes instead of creating new nodes.</p>
+<h3 id="Compare-One-By-One-minPQ"><a href="#Compare-One-By-One-minPQ" class="headerlink" title="Compare One-By-One (minPQ)"></a>Compare One-By-One (minPQ)</h3><p>Use a minimum <code>priority queue</code> to store $k$ nodes. Pop the smallest node and offer its next node if it is not <code>null</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Compare One-By-One (PQ)</span></span><br><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">mergeKLists</span><span class="params">(ListNode[] lists)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (lists == <span class="literal">null</span> || lists.length == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">dummy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(-<span class="number">1</span>);</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> dummy;</span><br><span class="line"></span><br><span class="line">  PriorityQueue&lt;ListNode&gt; minPQ = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;((o1, o2) -&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> o1.val - o2.val;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Init PQ</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; lists.length; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (lists[i] != <span class="literal">null</span>) &#123;</span><br><span class="line">      minPQ.offer(lists[i]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Play with PQ</span></span><br><span class="line">  <span class="keyword">while</span> (minPQ.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">curr</span> <span class="operator">=</span> pq.poll();</span><br><span class="line">    prev.next = curr;</span><br><span class="line">    prev = prev.next; <span class="comment">// update</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// you don&#x27;t need to set curr.next as null since the last node is always be one of the last node of each list. Its next must be null.</span></span><br><span class="line">    <span class="keyword">if</span> (curr.next != <span class="literal">null</span>) &#123;</span><br><span class="line">      minPQ.offer(curr.next);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N\log{k})$ <code>34 ms</code></p>
+<ul>
+<li>Initializing the priority queue takes $O(k\log{k})$</li>
+<li>Pop $N$ nodes from the priority queue takes $O(N\log{k})$</li>
+</ul>
+<p><strong>Space:</strong> $O(k)$ since priority queue stores $k$ nodes. $O(1)$ or $O(N)$ depends on the input $N$ and $k$ and whether we create a new linked list.</p>
+<h3 id="Merge-Lists-One-By-One"><a href="#Merge-Lists-One-By-One" class="headerlink" title="Merge Lists One-By-One"></a>Merge Lists One-By-One</h3><p>We need to merge $k$ lists by merging $(k-1)$ times.</p>
+<p><strong>Note:</strong></p>
+<ul>
+<li><code>mergeList(dummy.next, n)</code> is thoughtful. At the beginning, <code>dummy.next</code> is null, but it does not matter.</li>
+<li>Alternatively, we can use the first place of the array to store merged list.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">mergeKLists</span><span class="params">(ListNode[] lists)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (lists == <span class="literal">null</span> || lists.length == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Use the 0-th list as a return list</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; lists.length; ++i) &#123;</span><br><span class="line">    lists[<span class="number">0</span>] = mergeList(lists[<span class="number">0</span>], lists[i]);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> lists[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> ListNode <span class="title function_">mergeList</span><span class="params">(ListNode n1, ListNode n2)</span> &#123;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">dummy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(-<span class="number">1</span>);</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> dummy;</span><br><span class="line">  <span class="keyword">while</span> (n1 != <span class="literal">null</span> &amp;&amp; n2 != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (n1.val &lt; n2.val) &#123;</span><br><span class="line">      prev.next = n1;</span><br><span class="line">      n1 = n1.next;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      prev.next = n2;</span><br><span class="line">      n2 = n2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    prev = prev.next;</span><br><span class="line">  &#125;</span><br><span class="line">  prev.next = (n1 != <span class="literal">null</span>) ? n1 : n2;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Time:</strong> $O(kN)$ <code>250 ms</code></p>
+<ul>
+<li>Merge two sorted lists in $O(n)$ time where $n$ is the total number of nodes in two lists. (worst case)</li>
+<li>To sum up we have: $O(\sum_{i&#x3D;1}^{k-1}(i * \frac{N}{k} + \frac{N}{k}) &#x3D; O(kN)$. (key: $n &#x3D; \frac{N}{k}$)</li>
+</ul>
+<p><strong>Space:</strong> $O(1)$ since we merge in place.</p>
+<h3 id="Merge-Lists-with-Divide-And-Conquer"><a href="#Merge-Lists-with-Divide-And-Conquer" class="headerlink" title="Merge Lists with Divide And Conquer"></a>Merge Lists with Divide And Conquer</h3><p>In effect, we don’t need to traverse most nodes many times repeatedly. We can divide lists in half until there is only one list. Merge them one by one to get the final result. It’s similar to mergesort.</p>
+<p><strong>Note:</strong></p>
+<ul>
+<li>Recall of the <code>left-leaning</code> and <code>right-leaning</code> cases.</li>
+<li>The base case is thoughtful. <code>lo &gt; hi</code> actually won’t occur. And <code>lists[lo]</code> won’t change other elements on the other side.</li>
+<li><code>lists.length == 0</code> condition is very important.<ul>
+<li>Input case: <code>[]</code>.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// mergeDivideAndConquer - O(kN)</span></span><br><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">mergeDivideAndConquer</span><span class="params">(ListNode[] lists)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (lists == <span class="literal">null</span> || lists.length == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> divideAndConquer(lists, <span class="number">0</span>, lists.length - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> ListNode <span class="title function_">divideAndConquer</span><span class="params">(ListNode[] lists, <span class="type">int</span> lo, <span class="type">int</span> hi)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (lo &gt; hi) &#123; <span class="comment">// invalid</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (lo == hi) &#123; <span class="comment">// size = 1</span></span><br><span class="line">    <span class="keyword">return</span> lists[lo];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> lo + (hi - lo) / <span class="number">2</span>; <span class="comment">// left-leaning</span></span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">left</span> <span class="operator">=</span> divideAndConquer(lists, lo, mid);</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">right</span> <span class="operator">=</span> divideAndConquer(lists, mid + <span class="number">1</span>, hi);</span><br><span class="line">  <span class="keyword">return</span> mergeList(left, right);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> ListNode <span class="title function_">mergeList</span><span class="params">(ListNode n1, ListNode n2)</span> &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Time:</strong> $O(N\log{k})$ <code>2 ms</code><br><strong>Space:</strong> $O(\log{k})$ if we use recursion (depth of the recursion tree).</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qpogs.jpg" alt="Merge with Divide And Conquer"></p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium Problem Given an array of integers and an integer k, you need to find the total number of continuous subarrays whose sum equals to k.  Example:  12Input:nums &#x3D;">
+<meta property="og:type" content="website">
+<meta property="og:title" content="560. Subarray Sum Equals K">
+<meta property="og:url" content="https://junhaow.com/lc/problems/array/subarray-sum/560_subarray-sum-equals-k.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium Problem Given an array of integers and an integer k, you need to find the total number of continuous subarrays whose sum equals to k.  Example:  12Input:nums &#x3D;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ute1f.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.104Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.104Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ute1f.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>560. Subarray Sum Equals K</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/subarray-sum-equals-k/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given an array of integers and an integer <code>k</code>, you need to find the total number of continuous subarrays whose sum equals to <code>k</code>.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input:nums = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>], k = <span class="number">2</span></span><br><span class="line">Output: <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong> </p>
+<ul>
+<li>The length of the array is in range <code>[1, 20,000]</code>.</li>
+<li>The range of numbers in the array is <code>[-1000, 1000]</code> and the range of the integer k is <code>[-1e7, 1e7]</code>.</li>
+</ul>
+<p><strong>Follow up:</strong> Can you reduce the time complexity to $O(N)$?</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p><strong>Time:</strong> $O(N^3)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Cummulative-Sum"><a href="#Cummulative-Sum" class="headerlink" title="Cummulative Sum"></a>Cummulative Sum</h3><p>The idea is based on <code>sum(start, end) = sum(0, end) - sum(0, start)</code>.</p>
+<p><strong>Time:</strong> $O(N^2)$<br><strong>Space:</strong> $O(N)$</p>
+<p><strong>Improvement:</strong></p>
+<p>Actually, we can do it without extra space. The following code iterate through each possible subarray. We notice that we can accumulate the sum in each step.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">subarraySum</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="comment">// assume nums is not null</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i; j &lt; n; ++j) &#123;</span><br><span class="line">      sum += nums[j];</span><br><span class="line">      <span class="keyword">if</span> (sum == k) &#123;</span><br><span class="line">        ++count;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^2)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Hash-Map"><a href="#Hash-Map" class="headerlink" title="Hash Map"></a>Hash Map</h3><p><strong>Intuition:</strong></p>
+<p>First, let’s assume <code>k = 0</code>. We denote <code>sum[i]</code> be the sum of elements in <code>[0, i]</code>, which is like a <strong>prefix sum</strong>.</p>
+<p>For <code>sum[i]</code> and <code>sum[j]</code> (<code>i &lt;= j</code>), if they are equal, we would say the sum of elements at <code>i+1, i+2, ..., j</code> between <code>i</code> and <code>j</code> is <code>0</code>.</p>
+<p>Generally, we can have the difference between <code>sum[i]</code> and <code>sum[j]</code> is <code>k</code>, so the the sum of these elements in between is <code>k</code>.</p>
+<p>Based on this idea, we can write the code, but it is not easy. Consider the following:</p>
+<ul>
+<li>How do we use a map? <code>&lt;prefixSum, count&gt;</code>?</li>
+<li>Why do we need <code>map.put(0, 1)</code>?</li>
+</ul>
+<p>Consider the examples:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]       k = <span class="number">2</span>               <span class="comment">// 2</span></span><br><span class="line">[-<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>]    k = -<span class="number">2</span>              <span class="comment">// 2</span></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, -<span class="number">10</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]  k = <span class="number">3</span>   <span class="comment">// 6</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ute1f.jpg"></p>
+<p><strong>Note:</strong> <span class="purple">Difficult</span></p>
+<ul>
+<li>Why should we do it in <code>one pass</code> and update count in <code>map</code> dynamically?</li>
+<li>Why do we use <code>sum - k</code> instead of <code>sum + k</code>?</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">subarraySum</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="comment">// assume nums is not null</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;(); <span class="comment">// &lt;prefixSum, count&gt;</span></span><br><span class="line">  map.put(<span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    sum += nums[i];</span><br><span class="line">    <span class="keyword">if</span> (map.containsKey(sum - k)) &#123;</span><br><span class="line">      count += map.get(sum - k);</span><br><span class="line">    &#125;</span><br><span class="line">    map.put(sum, map.getOrDefault(sum, <span class="number">0</span>) + <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

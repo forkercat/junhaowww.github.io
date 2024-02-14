@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Easy Problem Write a program that outputs the string representation of numbers from 1 to n.   But for multiples of three it should output &quot;Fizz&quot; instead of t">
+<meta property="og:type" content="website">
+<meta property="og:title" content="412. Fizz Buzz">
+<meta property="og:url" content="https://junhaow.com/lc/problems/string/basic/412_fizz-buzz.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Easy Problem Write a program that outputs the string representation of numbers from 1 to n.   But for multiples of three it should output &quot;Fizz&quot; instead of t">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.137Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.137Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>412. Fizz Buzz</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/fizz-buzz/">LeetCode</a><br>Difficulty: <span class="green">Easy</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Write a program that outputs the string representation of numbers from <code>1</code> to <code>n</code>.</p>
+</blockquote>
+<blockquote>
+<p>But for multiples of three it should output <code>&quot;Fizz&quot;</code> instead of the number and for the multiples of five output <code>&quot;Buzz&quot;</code>. For numbers which are multiples of both three and five output <code>&quot;FizzBuzz&quot;</code>.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">n = <span class="number">15</span>,</span><br><span class="line"></span><br><span class="line">Return:</span><br><span class="line">[</span><br><span class="line">    <span class="string">&quot;1&quot;</span>,</span><br><span class="line">    <span class="string">&quot;2&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Fizz&quot;</span>,</span><br><span class="line">    <span class="string">&quot;4&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Buzz&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Fizz&quot;</span>,</span><br><span class="line">    <span class="string">&quot;7&quot;</span>,</span><br><span class="line">    <span class="string">&quot;8&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Fizz&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Buzz&quot;</span>,</span><br><span class="line">    <span class="string">&quot;11&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Fizz&quot;</span>,</span><br><span class="line">    <span class="string">&quot;13&quot;</span>,</span><br><span class="line">    <span class="string">&quot;14&quot;</span>,</span><br><span class="line">    <span class="string">&quot;FizzBuzz&quot;</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;String&gt; <span class="title function_">fizzBuzz</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (n &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  List&lt;String&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (i % <span class="number">3</span> == <span class="number">0</span> &amp;&amp; i % <span class="number">5</span> == <span class="number">0</span>) &#123;</span><br><span class="line">      result.add(<span class="string">&quot;FizzBuzz&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (i % <span class="number">3</span> == <span class="number">0</span>) &#123;</span><br><span class="line">      result.add(<span class="string">&quot;Fizz&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (i % <span class="number">5</span> == <span class="number">0</span>) &#123;</span><br><span class="line">      result.add(<span class="string">&quot;Buzz&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      result.add(String.valueOf(i));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="String-Concatenation"><a href="#String-Concatenation" class="headerlink" title="String Concatenation"></a>String Concatenation</h3><p>If a new requirement is that if the number is divisible by <code>7</code>, we would add more <code>if</code>s. A better way of doing this is to use string concatenation.</p>
+<ul>
+<li>Divisible by 3</li>
+<li>Divisible by 5</li>
+<li>Divisible by 7</li>
+<li>Divisible by 3 and 5</li>
+<li>Divisible by 3 and 7</li>
+<li>Divisible by 7 and 3</li>
+<li>Divisible by 3 and 5 and 7</li>
+<li>Not divisible by 3 or 5 or 7.</li>
+</ul>
+<p><strong>Note:</strong> String to Integer -&gt; Use <code>String.valueOf()</code> or <code>Integer.toString()</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;String&gt; <span class="title function_">fizzBuzz</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (n &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  List&lt;String&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;String&gt;();</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">    <span class="type">boolean</span> <span class="variable">divisibleBy3</span> <span class="operator">=</span> (i % <span class="number">3</span> == <span class="number">0</span>);</span><br><span class="line">    <span class="type">boolean</span> <span class="variable">divisibleBy5</span> <span class="operator">=</span> (i % <span class="number">5</span> == <span class="number">0</span>);</span><br><span class="line">    <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (divisibleBy3) &#123;</span><br><span class="line">      str += <span class="string">&quot;Fizz&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (divisibleBy5) &#123;</span><br><span class="line">      str += <span class="string">&quot;Buzz&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// if (divisibleBy7) &#123;</span></span><br><span class="line">    <span class="comment">//   str += &quot;Jazz&quot;;</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (str.equals(<span class="string">&quot;&quot;</span>)) &#123; <span class="comment">// Not divisible by 3 or 5, add the number</span></span><br><span class="line">      str += Integer.toString(i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    result.add(str);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Hash-It"><a href="#Hash-It" class="headerlink" title="Hash It!"></a>Hash It!</h3><p>Reference: LeetCode Solution</p>
+<blockquote>
+<p>This approach is an optimization over approach 2. When the number of mappings are limited, approach 2 looks good. But what if you face a tricky interviewer and he decides to add too many mappings?</p>
+</blockquote>
+<blockquote>
+<p>Having a condition for every mapping is not feasible or may be we can say the code might get ugly and tough to maintain.</p>
+</blockquote>
+<p><strong>Note:</strong> Learn that a collection object can be initialized in this way.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;String&gt; <span class="title function_">fizzBuzz</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (n &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  List&lt;String&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">  Map&lt;Integer, String&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;() &#123;&#123;</span><br><span class="line">    put(<span class="number">3</span>, <span class="string">&quot;Fizz&quot;</span>);</span><br><span class="line">    put(<span class="number">5</span>, <span class="string">&quot;Buzz&quot;</span>);</span><br><span class="line">  &#125;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> key : map.keySet()) &#123;</span><br><span class="line">      <span class="keyword">if</span> (num % key == <span class="number">0</span>) &#123;</span><br><span class="line">        str += map.get(key);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (str.equals(<span class="string">&quot;&quot;</span>)) &#123;</span><br><span class="line">      str += Integer.toString(num);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    result.add(str);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

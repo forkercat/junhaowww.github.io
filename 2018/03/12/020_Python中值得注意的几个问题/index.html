@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="可变和不可变对象参考文章: 这里 可变：list, dict, set不可变：int, str, float, tuple">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 中值得注意的几个问题">
+<meta property="og:url" content="https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="可变和不可变对象参考文章: 这里 可变：list, dict, set不可变：int, str, float, tuple">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-03-12T07:02:10.000Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.062Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Python 中值得注意的几个问题</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Posts</a></li><!--
+     --><!--
+       --><li><a href="/studynotes/">Notes</a></li><!--
+     --><!--
+       --><li><a href="/lc/">Leetcode</a></li><!--
+     --><!--
+       --><li><a href="/games/">Games</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">Me</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/04/11/021_%E4%B8%8D%E9%9D%A0%E8%B0%B1%E7%9A%84%E6%A6%82%E7%8E%87%E7%AC%94%E8%AE%B0/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/&text=Python 中值得注意的几个问题"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/&title=Python 中值得注意的几个问题"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/&is_video=false&description=Python 中值得注意的几个问题"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Python 中值得注意的几个问题&body=Check out this article: https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/&title=Python 中值得注意的几个问题"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/&title=Python 中值得注意的几个问题"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/&title=Python 中值得注意的几个问题"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/&title=Python 中值得注意的几个问题"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/&name=Python 中值得注意的几个问题&description=&lt;h2 id=&#34;可变和不可变对象&#34;&gt;&lt;a href=&#34;#可变和不可变对象&#34; class=&#34;headerlink&#34; title=&#34;可变和不可变对象&#34;&gt;&lt;/a&gt;可变和不可变对象&lt;/h2&gt;&lt;p&gt;参考文章: &lt;a href=&#34;https://www.jianshu.com/p/c5582e23b26c&#34;&gt;这里&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;可变：list, dict, set&lt;br&gt;不可变：int, str, float, tuple&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/&t=Python 中值得注意的几个问题"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E5%8F%98%E5%92%8C%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.</span> <span class="toc-text">可变和不可变对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92"><span class="toc-number">2.</span> <span class="toc-text">函数的参数传递</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Copy-Deepcopy"><span class="toc-number">3.</span> <span class="toc-text">Copy &amp; Deepcopy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#is-%E5%92%8C-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">4.</span> <span class="toc-text">is 和 &#x3D;&#x3D; 的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#By-The-Way"><span class="toc-number">4.1.</span> <span class="toc-text">By The Way</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-Python-%E4%B8%8D%E6%94%AF%E6%8C%81%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">为什么 Python 不支持函数重载？</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Python 中值得注意的几个问题
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Junhao Wang</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-03-12T07:02:10.000Z" class="dt-published" itemprop="datePublished">2018-03-12</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Python/">Python</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Python/" rel="tag">Python</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="可变和不可变对象"><a href="#可变和不可变对象" class="headerlink" title="可变和不可变对象"></a>可变和不可变对象</h2><p>参考文章: <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c5582e23b26c">这里</a></p>
+<p>可变：list, dict, set<br>不可变：int, str, float, tuple</p>
+<span id="more"></span>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">int_test</span>():  <span class="comment"># 不可变，会复制一份 </span></span><br><span class="line">    i = <span class="number">77</span></span><br><span class="line">    j = <span class="number">77</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">id</span>(<span class="number">77</span>))                  <span class="comment">#140396579590760</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;i id:&#x27;</span> + <span class="built_in">str</span>(<span class="built_in">id</span>(i)))      <span class="comment">#i id:140396579590760</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;j id:&#x27;</span> + <span class="built_in">str</span>(<span class="built_in">id</span>(j)))      <span class="comment">#j id:140396579590760</span></span><br><span class="line">    <span class="built_in">print</span> i <span class="keyword">is</span> j                    <span class="comment">#True</span></span><br><span class="line">    j = j + <span class="number">1</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;new i id:&#x27;</span> + <span class="built_in">str</span>(<span class="built_in">id</span>(i)))  <span class="comment">#new i id:140396579590760</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;new j id:&#x27;</span> + <span class="built_in">str</span>(<span class="built_in">id</span>(j)))  <span class="comment">#new j id:140396579590736</span></span><br><span class="line">    <span class="built_in">print</span> i <span class="keyword">is</span> j                    <span class="comment">#False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dict_test</span>():  <span class="comment"># 可变，不会复制一份</span></span><br><span class="line">    a = &#123;&#125;</span><br><span class="line">    b = a   <span class="comment"># 浅复制</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">id</span>(a))          <span class="comment"># 140367329543360</span></span><br><span class="line">    a[<span class="string">&#x27;a&#x27;</span>] = <span class="string">&#x27;hhhh&#x27;</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;id a:&#x27;</span> + <span class="built_in">str</span>(<span class="built_in">id</span>(a)))   <span class="comment"># id a:140367329543360</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;a:&#x27;</span> + <span class="built_in">str</span>(a))</span><br><span class="line">    b[<span class="string">&#x27;hah&#x27;</span>] = <span class="number">50</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;id b:&#x27;</span> + <span class="built_in">str</span>(<span class="built_in">id</span>(b)))   <span class="comment"># id b:140367329543360</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;b:&#x27;</span> + <span class="built_in">str</span>(b))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;a:&#x27;</span> + <span class="built_in">str</span>(a))       <span class="comment"># 这里a也跟着变了！</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="函数的参数传递"><a href="#函数的参数传递" class="headerlink" title="函数的参数传递"></a>函数的参数传递</h2><p>由于 Python 规定参数传递都是传递引用，也就是传递给函数的是原变量实际所指向的内存空间，修改的时候就会根据该引用的指向去修改该内存中的内容，所以按道理说我们在函数内改变了传递过来的参数的值的话，原来外部的变量也应该受到影响。但是上面我们说到了 Python 中有可变类型和不可变类型，这样的话，当传过来的是可变类型<code>list、dict</code>时，我们在函数内部修改就会影响函数外部的变量。而传入的是不可变类型时在函数内部修改变量并不会影响函数外部的变量，因为修改的时候会先复制一份。</p>
+<p>在很多的其他语言中在传递参数的时候允许程序员选择值传递还是引用传递（比如 C 语言加上<code>*</code>号传递指针就是引用传递，而直接传递变量名就是值传递），而 Python 只允许使用引用传递，但是它加上了可变类型和不可变类型，让我们感觉有点混乱了。听说 Python 只允许引用传递是为方便内存管理，因为 Python 使用的内存回收机制是计数器回收，就是每块内存上有一个计数器，表示当前有多少个对象指向该内存。每当一个变量不再使用时，就让该计数器<code>-1</code>，有新对象指向该内存时就让计数器<code>+1</code>，当计时器为<code>0</code>时，就可以收回这块内存了。</p>
+<h2 id="Copy-Deepcopy"><a href="#Copy-Deepcopy" class="headerlink" title="Copy &amp; Deepcopy"></a>Copy &amp; Deepcopy</h2><p>Python 中的对象之间赋值时是按引用传递的，如果需要拷贝对象，需要使用标准库中的 copy 模块。</p>
+<ol>
+<li>copy.copy（浅拷贝）：只拷贝父对象，不会拷贝对象的内部的子对象。</li>
+<li>copy.deepcopy（深拷贝）：拷贝对象及其子对象</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> copy</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>]]  <span class="comment">#原始对象</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = a  <span class="comment">#赋值，传对象的引用</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c = copy.copy(a)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d = copy.deepcopy(a)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.append(<span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">4</span>].append(<span class="string">&#x27;c&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span> <span class="string">&#x27;a=&#x27;</span>,a   <span class="comment"># id: 4529531272</span></span><br><span class="line">a= [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>], <span class="number">5</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span> <span class="string">&#x27;b=&#x27;</span>,b   <span class="comment"># id: 4529531272</span></span><br><span class="line">b= [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>], <span class="number">5</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span> <span class="string">&#x27;c=&#x27;</span>,c   <span class="comment"># id: 4529487240</span></span><br><span class="line">c= [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>]]    <span class="comment"># 为什么还是这样abc呢？因为子对象没有被复制</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span> <span class="string">&#x27;d=&#x27;</span>,d   <span class="comment"># id: 4529611080</span></span><br><span class="line">d= [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>]]</span><br></pre></td></tr></table></figure>
+
+<h2 id="is-和-的区别"><a href="#is-和-的区别" class="headerlink" title="is 和 &#x3D;&#x3D; 的区别"></a>is 和 &#x3D;&#x3D; 的区别</h2><p><code>is</code>比较的是 id 是不是一样，<code>==</code>比较的是值是不是一样。在 Python 中，<strong>万物皆对象！万物皆对象！万物皆对象！</strong>（很重要，重复 3 遍）</p>
+<p>每个对象包含 3 个属性：id，type，value。id 就是对象地址，可以通过内置函数<code>id()</code>查看对象引用的地址；type 就是对象类型，可以通过内置函数<code>type()</code>查看对象的类型；value 就是对象的值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br><span class="line">b = a       <span class="comment"># 如果a是-10，a is b 为 False</span></span><br><span class="line">c = <span class="number">1</span></span><br><span class="line">d = <span class="number">1.0</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">id</span>(a)   <span class="comment"># 35556792L</span></span><br><span class="line"><span class="built_in">id</span>(b)   <span class="comment"># 35556792L</span></span><br><span class="line"><span class="built_in">id</span>(c)   <span class="comment"># 35556792L</span></span><br><span class="line"><span class="built_in">id</span>(d)   <span class="comment"># 21253459L</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a <span class="keyword">is</span> b  <span class="comment"># id(a) == id(b)</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a <span class="keyword">is</span> d</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a == d</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>所以大多数情况下当用<code>is</code>和<code>==</code>的结果是一样时，用<code>is</code>的效率是会高于<code>==</code>的效率。<code>==</code>是通过对象的一个<code>__eq__()</code>方法实现的。</p>
+<h3 id="By-The-Way"><a href="#By-The-Way" class="headerlink" title="By The Way"></a>By The Way</h3><p>Python为了实现对内存的有效利用，对小整数<code>[-5,256]</code>内的整数会进行缓存，不在该范围内的则不会缓存，具体如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="number">255</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = <span class="number">255</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a <span class="keyword">is</span> b</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c = <span class="number">257</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d = <span class="number">257</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c <span class="keyword">is</span> d</span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="为什么-Python-不支持函数重载？"><a href="#为什么-Python-不支持函数重载？" class="headerlink" title="为什么 Python 不支持函数重载？"></a>为什么 Python 不支持函数重载？</h2><p>这个问题，最近在 cpyug 上面讨论得很火热。为了考虑为什么 Python 不提供函数重载，首先我们要研究为什么需要提供函数重载。函数重载主要是为了解决两个问题：</p>
+<ul>
+<li>可变参数类型</li>
+<li>可变参数个数</li>
+</ul>
+<p>另外，一个基本的设计原则是，仅仅当两个函数除了参数类型和参数个数不同以外，其功能是完全相同的，此时才使用函数重载，如果两个函数的功能其实不同，那么不应当使用重载，而应当使用一个名字不同的函数。</p>
+<p>好吧，那么对于情况 1，函数功能相同，但是参数类型不同，Python 如何处理？答案是根本不需要处理，因为 Python 可以接受任何类型的参数，如果函数的功能相同，那么不同的参数类型在 Python 中很可能是相同的代码，没有必要做成两个不同函数。</p>
+<p>那么对于情况 2，函数功能相同，但参数个数不同，Python 如何处理？大家知道，答案就是缺省参数。对那些缺少的参数设定为缺省参数即可解决问题。因为你假设函数功能相同，那么那些缺少的参数终归是需要用的。</p>
+<p>好了，鉴于情况 1 跟情况 2 都有了解决方案，Python 自然就不需要函数重载了。</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Posts</a></li>
+        
+          <li><a href="/studynotes/">Notes</a></li>
+        
+          <li><a href="/lc/">Leetcode</a></li>
+        
+          <li><a href="/games/">Games</a></li>
+        
+          <li><a href="/links/">Links</a></li>
+        
+          <li><a href="/about/">Me</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E5%8F%98%E5%92%8C%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.</span> <span class="toc-text">可变和不可变对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92"><span class="toc-number">2.</span> <span class="toc-text">函数的参数传递</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Copy-Deepcopy"><span class="toc-number">3.</span> <span class="toc-text">Copy &amp; Deepcopy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#is-%E5%92%8C-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">4.</span> <span class="toc-text">is 和 &#x3D;&#x3D; 的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#By-The-Way"><span class="toc-number">4.1.</span> <span class="toc-text">By The Way</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-Python-%E4%B8%8D%E6%94%AF%E6%8C%81%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">为什么 Python 不支持函数重载？</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/&text=Python 中值得注意的几个问题"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/&title=Python 中值得注意的几个问题"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/&is_video=false&description=Python 中值得注意的几个问题"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Python 中值得注意的几个问题&body=Check out this article: https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/&title=Python 中值得注意的几个问题"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/&title=Python 中值得注意的几个问题"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/&title=Python 中值得注意的几个问题"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/&title=Python 中值得注意的几个问题"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/&name=Python 中值得注意的几个问题&description=&lt;h2 id=&#34;可变和不可变对象&#34;&gt;&lt;a href=&#34;#可变和不可变对象&#34; class=&#34;headerlink&#34; title=&#34;可变和不可变对象&#34;&gt;&lt;/a&gt;可变和不可变对象&lt;/h2&gt;&lt;p&gt;参考文章: &lt;a href=&#34;https://www.jianshu.com/p/c5582e23b26c&#34;&gt;这里&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;可变：list, dict, set&lt;br&gt;不可变：int, str, float, tuple&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/&t=Python 中值得注意的几个问题"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode EPI 6.9Difficulty: Medium My Post: Java Solutions with Explanations and Comments (Backtracking &amp; Iteration) Problem Given a string containing only digits, restore it by retur">
+<meta property="og:type" content="website">
+<meta property="og:title" content="93. Restore IP Addresses">
+<meta property="og:url" content="https://junhaow.com/lc/problems/backtracking/uncategorized/93_restore-ip-addresses.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode EPI 6.9Difficulty: Medium My Post: Java Solutions with Explanations and Comments (Backtracking &amp; Iteration) Problem Given a string containing only digits, restore it by retur">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.114Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.114Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>93. Restore IP Addresses</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/restore-ip-addresses/">LeetCode</a> <span class="gray">EPI 6.9</span><br>Difficulty: <span class="orange">Medium</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/restore-ip-addresses/discuss/401496">Java Solutions with Explanations and Comments (Backtracking &amp; Iteration)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a string containing only digits, restore it by returning all possible valid IP address combinations.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="string">&quot;25525511135&quot;</span></span><br><span class="line">Output: [<span class="string">&quot;255.255.11.135&quot;</span>, <span class="string">&quot;255.255.111.35&quot;</span>]</span><br><span class="line"></span><br><span class="line">Input: <span class="string">&quot;11000&quot;</span></span><br><span class="line">Output: [<span class="string">&quot;1.10.0.0&quot;</span>, <span class="string">&quot;11.0.0.0&quot;</span>]</span><br><span class="line"><span class="comment">// Notice that &quot;00&quot; cannot be a valid part</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Backtracking"><a href="#Backtracking" class="headerlink" title="Backtracking"></a>Backtracking</h3><p>The <code>build</code> consists of numbers of each part in an address. It is at most of size $4$. So the base case of the recursive function is when <code>build.size()</code> equals $4$. In terms of whether we should concatenate each part and put it in the result list, we should check if the depth <code>d</code> has reached its end <code>s.length()</code>. If yes, it is a valid address; if no, there are still some elements left and we can’t say it is a valid address.</p>
+<p>As for the main part of the recursive function, we should at most consider three characters in the string: <code>d + 0</code>, <code>d + 1</code>, <code>d + 2</code>. But notice that if the first character is <code>0</code>, then we should not consider the following characters that give <code>00</code>, <code>01</code>, <code>001</code>. All of these combinations are invalid.</p>
+<p>To write succinct code, we can first check if the first character is $0$ and then  we know whether we should consider $1$ character (<code>0</code> itself) or $3$ characters as usual (eg. <code>123</code>). Before backtracking, check if the part we have constructed is valid.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;String&gt; <span class="title function_">restoreIpAddresses</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">  List&lt;String&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  backtracking(<span class="number">0</span>, s, <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(), result);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">backtracking</span><span class="params">(<span class="type">int</span> d, String s, List&lt;Integer&gt; build, List&lt;String&gt; result)</span> &#123;</span><br><span class="line">  <span class="comment">// base case</span></span><br><span class="line">  <span class="keyword">if</span> (build.size() == <span class="number">4</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (d &gt;= s.length()) &#123; <span class="comment">// add to the result</span></span><br><span class="line">      <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; build.size(); ++i) &#123;</span><br><span class="line">        sb.append(build.get(i));</span><br><span class="line">        <span class="keyword">if</span> (i &lt; build.size() - <span class="number">1</span>) sb.append(<span class="string">&quot;.&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      result.add(sb.toString());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// check the first num if it is &quot;0&quot;</span></span><br><span class="line">  <span class="keyword">if</span> (d &gt;= s.length()) <span class="keyword">return</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">firstNum</span> <span class="operator">=</span> s.charAt(d) - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span>  (firstNum == <span class="number">0</span>) ? <span class="number">1</span> : <span class="number">3</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; count; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (d + i &gt;= s.length()) <span class="keyword">break</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">digit</span> <span class="operator">=</span> s.charAt(d + i) - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">    sum = sum * <span class="number">10</span> + digit;</span><br><span class="line">    <span class="keyword">if</span> (sum &gt;= <span class="number">0</span> &amp;&amp; sum &lt;= <span class="number">255</span>) &#123;</span><br><span class="line">      build.add(sum);</span><br><span class="line">      backtracking(d + i + <span class="number">1</span>, s, build, result);</span><br><span class="line">      build.remove(build.size() - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(1)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Iteration"><a href="#Iteration" class="headerlink" title="Iteration"></a>Iteration</h3><p>We use three loops to express the idea. Before we need a function to determine if a string is a valid part of an address.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isValidStr</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (s.length() == <span class="number">0</span> || s.length() &gt;= <span class="number">4</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">if</span> (s.startsWith(<span class="string">&quot;0&quot;</span>) &amp;&amp; s.length() &gt;= <span class="number">2</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">val</span> <span class="operator">=</span> Integer.parseInt(s);</span><br><span class="line">  <span class="keyword">return</span> val &gt;= <span class="number">0</span> &amp;&amp; val &lt;= <span class="number">255</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>If the length of the string does not satisfy, return false. If the string starts with $0$, we should not consider cases such as <code>00</code>, <code>000</code>, etc. We only allow <code>0</code> to be in a part. Finally, check the value of the string if it is in <code>[0, 255]</code>.</p>
+<p>In each loop, we consider strings <code>first</code>, <code>second</code>, <code>third</code> and <code>fourth</code>. The first three strings can be enumerated in three times. For example, <code>first</code> can only be the first three characters in the string.</p>
+<p><strong>Note:</strong> Remember to check the upper bound index for <code>substring</code>. It should not be greater than <code>n</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;String&gt; <span class="title function_">restoreIpAddresses</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">  List&lt;String&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt;= <span class="number">3</span> &amp;&amp; i &lt;= n; ++i) &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">first</span> <span class="operator">=</span> s.substring(<span class="number">0</span>, i);</span><br><span class="line">    <span class="keyword">if</span> (isValidStr(first)) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &lt;= <span class="number">3</span> &amp;&amp; i + j &lt;= n; ++j) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">second</span> <span class="operator">=</span> s.substring(i, i + j);</span><br><span class="line">        <span class="keyword">if</span> (isValidStr(second)) &#123;</span><br><span class="line">          <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> <span class="number">1</span>; k &lt;= <span class="number">3</span> &amp;&amp; i + j + k &lt;= n; ++k) &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">third</span> <span class="operator">=</span> s.substring(i + j, i + j + k);</span><br><span class="line">            <span class="type">String</span> <span class="variable">fourth</span> <span class="operator">=</span> s.substring(i + j + k, n);</span><br><span class="line">            <span class="keyword">if</span> (isValidStr(third) &amp;&amp; isValidStr(fourth)) &#123;</span><br><span class="line">              result.add(first + <span class="string">&quot;.&quot;</span> + second + <span class="string">&quot;.&quot;</span> + third + <span class="string">&quot;.&quot;</span> +  fourth);</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(1)$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

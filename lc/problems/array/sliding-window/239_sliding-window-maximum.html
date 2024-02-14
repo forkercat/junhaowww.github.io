@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Hard My Post: [Java] All Solutions (B-F, PQ, Deque, DP) with Explanation and Complexity Analysis Problem Given an array nums, there is a sliding window of size k which">
+<meta property="og:type" content="website">
+<meta property="og:title" content="239. Sliding Window Maximum">
+<meta property="og:url" content="https://junhaow.com/lc/problems/array/sliding-window/239_sliding-window-maximum.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Hard My Post: [Java] All Solutions (B-F, PQ, Deque, DP) with Explanation and Complexity Analysis Problem Given an array nums, there is a sliding window of size k which">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dq7aw.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4hlzv.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.102Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.102Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dq7aw.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>239. Sliding Window Maximum</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/sliding-window-maximum/">LeetCode</a><br>Difficulty: <span class="red">Hard</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/sliding-window-maximum/discuss/458121">[Java] All Solutions (B-F, PQ, Deque, DP) with Explanation and Complexity Analysis</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given an array <code>nums</code>, there is a sliding window of size <code>k</code> which is moving from the very left of the array to the very right. You can only see the <code>k</code> numbers in the window. Each time the sliding window moves right by one position. Return the max sliding window.</p>
+</blockquote>
+<p><strong>Note:</strong> You may assume <code>k</code> is always valid, 1 ≤ <code>k</code> ≤ input array’s size for non-empty array.</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Input: nums = [<span class="number">1</span>,<span class="number">3</span>,-<span class="number">1</span>,-<span class="number">3</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">7</span>], <span class="type">and</span> <span class="variable">k</span> <span class="operator">=</span> <span class="number">3</span></span><br><span class="line">Output: [<span class="number">3</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>] </span><br><span class="line">Explanation: </span><br><span class="line"></span><br><span class="line">Window position                Max</span><br><span class="line">---------------               -----</span><br><span class="line">[<span class="number">1</span>  <span class="number">3</span>  -<span class="number">1</span>] -<span class="number">3</span>  <span class="number">5</span>  <span class="number">3</span>  <span class="number">6</span>  <span class="number">7</span>       <span class="number">3</span></span><br><span class="line"> <span class="number">1</span> [<span class="number">3</span>  -<span class="number">1</span>  -<span class="number">3</span>] <span class="number">5</span>  <span class="number">3</span>  <span class="number">6</span>  <span class="number">7</span>       <span class="number">3</span></span><br><span class="line"> <span class="number">1</span>  <span class="number">3</span> [-<span class="number">1</span>  -<span class="number">3</span>  <span class="number">5</span>] <span class="number">3</span>  <span class="number">6</span>  <span class="number">7</span>       <span class="number">5</span></span><br><span class="line"> <span class="number">1</span>  <span class="number">3</span>  -<span class="number">1</span> [-<span class="number">3</span>  <span class="number">5</span>  <span class="number">3</span>] <span class="number">6</span>  <span class="number">7</span>       <span class="number">5</span></span><br><span class="line"> <span class="number">1</span>  <span class="number">3</span>  -<span class="number">1</span>  -<span class="number">3</span> [<span class="number">5</span>  <span class="number">3</span>  <span class="number">6</span>] <span class="number">7</span>       <span class="number">6</span></span><br><span class="line"> <span class="number">1</span>  <span class="number">3</span>  -<span class="number">1</span>  -<span class="number">3</span>  <span class="number">5</span> [<span class="number">3</span>  <span class="number">6</span>  <span class="number">7</span>]      <span class="number">7</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> Could you solve it in linear time?</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p>Check every sliding window and compute the maximum value.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] maxSlidingWindow(<span class="type">int</span>[] nums, <span class="type">int</span> k) &#123;</span><br><span class="line">  <span class="comment">// assume nums is not null</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="keyword">if</span> (n == <span class="number">0</span> || k == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">0</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> <span class="variable">numOfWindow</span> <span class="operator">=</span> n - k + <span class="number">1</span>;</span><br><span class="line">  <span class="type">int</span>[] result = <span class="keyword">new</span> <span class="title class_">int</span>[numOfWindow]; <span class="comment">// number of windows</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">start</span> <span class="operator">=</span> <span class="number">0</span>; start &lt; numOfWindow; ++start) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">end</span> <span class="operator">=</span> start + k - <span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">maxVal</span> <span class="operator">=</span> nums[start];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> start + <span class="number">1</span>; i &lt;= end; ++i) &#123;</span><br><span class="line">      <span class="keyword">if</span> (nums[i] &gt; maxVal) &#123; <span class="comment">// update</span></span><br><span class="line">        maxVal = nums[i];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    result[start] = maxVal;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(Nk)$<br><strong>Space:</strong> $O(1)$ not including the output array</p>
+<h3 id="Priority-Queue"><a href="#Priority-Queue" class="headerlink" title="Priority Queue"></a>Priority Queue</h3><p>In theory, we can use priority queue to achieve $O(N\log{k})$. However, if we stick to the build-in <code>PriorityQueue</code> in Java, it still takes $O(Nk)$:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">remove</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> indexOf(o);</span><br><span class="line">  <span class="keyword">if</span> (i == -<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    removeAt(i);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">indexOf</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (o != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">final</span> Object[] es = queue;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>, n = size; i &lt; n; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (o.equals(es[i])) <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The code in <code>indexOf()</code> shows that this naive method takes $O(N)$ time in the worst case. Therefore, if we use the built-in method in Java, it takes $O(Nk)$.</p>
+<p>In terms of $O(N\log{k})$, the basic idea is that we are keeping the size of the heap as at most <code>k</code> by removing the elements that are out of the k-size window. If we assume that <code>remove()</code> takes $O(\log{k})$ time (if we implement the priority queue by ourselves), it would have that logarithmic time complexity.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] maxSlidingWindow(<span class="type">int</span>[] nums, <span class="type">int</span> k) &#123;</span><br><span class="line">  <span class="comment">// assume nums is not null</span></span><br><span class="line">  <span class="keyword">if</span> (nums.length == <span class="number">0</span> || k == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">0</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="type">int</span>[] result = <span class="keyword">new</span> <span class="title class_">int</span>[n - k + <span class="number">1</span>]; <span class="comment">// number of windows</span></span><br><span class="line">  </span><br><span class="line">  PriorityQueue&lt;Integer&gt; maxPQ = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;((o1, o2) -&gt; (o2 - o1)); <span class="comment">// stores values</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">start</span> <span class="operator">=</span> i - k;</span><br><span class="line">    <span class="keyword">if</span> (start &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">      maxPQ.remove(nums[start]); <span class="comment">// remove the out-of-bound value</span></span><br><span class="line">    &#125;</span><br><span class="line">    maxPQ.offer(nums[i]);</span><br><span class="line">    <span class="keyword">if</span> (maxPQ.size() == k) &#123;</span><br><span class="line">      result[i - k + <span class="number">1</span>] = maxPQ.peek();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>This is the first version I came up with. I think for this solution we can dive deeper to see how <code>PriorityQueue</code> in Java works. Consider what would happen if there are duplicates in the heap. Which one to be removed?</p>
+<p>Also notice that when we are using the wrapper class <code>Integer</code> in Java we notice the caching feature.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Integer</span> <span class="variable">val1</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"><span class="type">Integer</span> <span class="variable">val2</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"><span class="type">Integer</span> <span class="variable">val3</span> <span class="operator">=</span> <span class="number">200</span>;</span><br><span class="line"><span class="type">Integer</span> <span class="variable">val4</span> <span class="operator">=</span> <span class="number">200</span>;</span><br><span class="line"><span class="comment">// comparing the values</span></span><br><span class="line">val1.equals(val2); <span class="comment">// true</span></span><br><span class="line">val3.equals(val4); <span class="comment">// true</span></span><br><span class="line"><span class="comment">// comparing the address</span></span><br><span class="line">val1 == val2;      <span class="comment">// true</span></span><br><span class="line">val3 == val4;      <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<p>This occurs because Java does caching for integers between <code>-128</code> and <code>127</code> for better performance. Here is the code in <code>Integer</code> class:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Java 1.6 source code</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title function_">valueOf</span><span class="params">(<span class="type">int</span> i)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (i &gt;= -<span class="number">128</span> &amp;&amp; i &lt;= IntegerCache.high) &#123; <span class="comment">// IntegerCache.high = 127</span></span><br><span class="line">    <span class="keyword">return</span> IntegerCache.cache[i + <span class="number">128</span>];</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Integer</span>(i);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Back to the problem. Therefore, if there are duplicates between <code>-128</code> and <code>127</code> in the heap, we cannot delete the object that we want (the leftmost element in the sliding window).</p>
+<p>But do duplicates actually matter? In other words, do we really need to consider the case where we have duplicate elements in the window and decide which one to remove?</p>
+<p><strong>The answer is NO.</strong> We can just remove one of them. For the example <code>&#123;2, 4, 2, 5&#125;, k = 3</code>, removing the first or the second <code>2</code> is the same.</p>
+<p>However, we can modify the code a little bit and let the priority queue know the specific element we want to remove.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Use indices since they are unique</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] maxSlidingWindow(<span class="type">int</span>[] nums, <span class="type">int</span> k) &#123;</span><br><span class="line">  <span class="comment">// assume nums is not null</span></span><br><span class="line">  <span class="keyword">if</span> (nums.length == <span class="number">0</span> || k == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">0</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="type">int</span>[] result = <span class="keyword">new</span> <span class="title class_">int</span>[n - k + <span class="number">1</span>]; <span class="comment">// number of windows</span></span><br><span class="line">  </span><br><span class="line">  PriorityQueue&lt;Integer&gt; maxPQ = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;((i1, i2) -&gt; (nums[i2] - nums[i1])); <span class="comment">// stores values</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">start</span> <span class="operator">=</span> i - k;</span><br><span class="line">    <span class="keyword">if</span> (start &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">      maxPQ.remove(start); <span class="comment">// remove the out-of-bound value by index</span></span><br><span class="line">    &#125;</span><br><span class="line">    maxPQ.offer(i);</span><br><span class="line">    <span class="keyword">if</span> (maxPQ.size() == k) &#123;</span><br><span class="line">      result[i - k + <span class="number">1</span>] = nums[maxPQ.peek()];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(Nk)$ (if we implement PQ by ourselves, it is $O(N\log{k})$)<br><strong>Space:</strong> $O(k)$</p>
+<h3 id="Deque"><a href="#Deque" class="headerlink" title="Deque"></a>Deque</h3><p>If we can add and remove elements from both sides of the sliding window, we can solve this problem in linear time. It turns out that we can use <code>Deque</code> to achieve the goal. In the <code>Deque</code>, we add and remove indices.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dq7aw.jpg"></p>
+<p>Basically, for each element <code>nums[i]</code> in the array that we are about to insert, we first check whether the leftmost index in the sliding window is out of bound. If so, we remove it by <code>pollFirst()</code> in constant time.</p>
+<p>Then we continuously remove the rightmost indices if their corresponding elements are less than <code>nums[i]</code> (the element we are about to insert). The idea is that the elements that are less than the element we’ll insert won’t have any contributions to the maximum element of the sliding window. So it is safe to remove them.</p>
+<p>After removal <code>pollLast()</code> and insertion <code>offerLast(i)</code> (the element <code>nums[i]</code>), we can say that the leftmost element in the window is maximum. Think about it why. Notice that the maximum element could be the one we just insert.</p>
+<p>Last but not least, adding the maximum elements to the result array when necessary.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] maxSlidingWindow(<span class="type">int</span>[] nums, <span class="type">int</span> k) &#123;</span><br><span class="line">  <span class="comment">// assume nums is not null</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="keyword">if</span> (n == <span class="number">0</span> || k == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">0</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span>[] result = <span class="keyword">new</span> <span class="title class_">int</span>[n - k + <span class="number">1</span>]; <span class="comment">// number of windows</span></span><br><span class="line">  Deque&lt;Integer&gt; win = <span class="keyword">new</span> <span class="title class_">ArrayDeque</span>&lt;&gt;(); <span class="comment">// stores indices</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="comment">// remove indices that are out of bound</span></span><br><span class="line">    <span class="keyword">while</span> (win.size() &gt; <span class="number">0</span> &amp;&amp; win.peekFirst() &lt;= i - k) &#123;</span><br><span class="line">      win.pollFirst();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// remove indices whose corresponding values are less than nums[i]</span></span><br><span class="line">    <span class="keyword">while</span> (win.size() &gt; <span class="number">0</span> &amp;&amp; nums[win.peekLast()] &lt; nums[i]) &#123;</span><br><span class="line">      win.pollLast();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// add nums[i]</span></span><br><span class="line">    win.offerLast(i);</span><br><span class="line">    <span class="comment">// add to result</span></span><br><span class="line">    <span class="keyword">if</span> (i &gt;= k - <span class="number">1</span>) &#123;</span><br><span class="line">      result[i - k + <span class="number">1</span>] = nums[win.peekFirst()];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$ since each element is processed (add&#x2F;remove) at most twice.<br><strong>Space:</strong> $O(k)$</p>
+<h3 id="DP"><a href="#DP" class="headerlink" title="DP"></a>DP</h3><p>This method is very hacky. The explanation in <a target="_blank" rel="noopener" href="https://leetcode.com/problems/sliding-window-maximum/solution/">solution section</a> is readable.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4hlzv.jpg"></p>
+<p><strong>Note:</strong> Don’t read the code of my first attempt.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// my first attempt</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] maxSlidingWindow(<span class="type">int</span>[] nums, <span class="type">int</span> k) &#123;</span><br><span class="line">  <span class="comment">// assume nums is not null</span></span><br><span class="line">  <span class="keyword">if</span> (nums.length == <span class="number">0</span> || k == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">0</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="type">int</span>[] result = <span class="keyword">new</span> <span class="title class_">int</span>[n - k + <span class="number">1</span>]; <span class="comment">// number of windows</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// left &amp; right</span></span><br><span class="line">  <span class="type">int</span>[] left = <span class="keyword">new</span> <span class="title class_">int</span>[n];</span><br><span class="line">  <span class="type">int</span>[] right = <span class="keyword">new</span> <span class="title class_">int</span>[n];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="comment">// left</span></span><br><span class="line">    <span class="keyword">if</span> (i % k == <span class="number">0</span>) &#123; <span class="comment">// beginning of the group</span></span><br><span class="line">      left[i] = nums[i];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      left[i] = Math.max(left[i - <span class="number">1</span>], nums[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// right (* to be improved)</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> (i / k + <span class="number">1</span>) * k - <span class="number">1</span>; <span class="comment">// last of the group</span></span><br><span class="line">    <span class="keyword">if</span> (temp &gt; n - <span class="number">1</span>) temp = n - <span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> temp - i % k;</span><br><span class="line">    <span class="keyword">if</span> (j % k == (k - <span class="number">1</span>) || j == n - <span class="number">1</span>) &#123;</span><br><span class="line">      right[j] = nums[j];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      right[j] = Math.max(right[j + <span class="number">1</span>], nums[j]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// dp</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>, j = i + k - <span class="number">1</span>; j &lt; n; ++i, ++j) &#123;</span><br><span class="line">    result[i] = Math.max(right[i], left[j]);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The better version:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] maxSlidingWindow(<span class="type">int</span>[] nums, <span class="type">int</span> k) &#123;</span><br><span class="line">  <span class="comment">// assume nums is not null</span></span><br><span class="line">  <span class="keyword">if</span> (nums.length == <span class="number">0</span> || k == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">0</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="type">int</span>[] result = <span class="keyword">new</span> <span class="title class_">int</span>[n - k + <span class="number">1</span>]; <span class="comment">// number of windows</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// left &amp; right</span></span><br><span class="line">  <span class="type">int</span>[] left = <span class="keyword">new</span> <span class="title class_">int</span>[n];</span><br><span class="line">  <span class="type">int</span>[] right = <span class="keyword">new</span> <span class="title class_">int</span>[n];</span><br><span class="line">  left[<span class="number">0</span>] = nums[<span class="number">0</span>]; <span class="comment">// init</span></span><br><span class="line">  right[n - <span class="number">1</span>] = nums[n - <span class="number">1</span>];</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="comment">// left</span></span><br><span class="line">    <span class="keyword">if</span> (i % k == <span class="number">0</span>) left[i] = nums[i];</span><br><span class="line">    <span class="keyword">else</span>            left[i] = Math.max(left[i - <span class="number">1</span>], nums[i]);</span><br><span class="line">    <span class="comment">// right</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> n - i - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (j % k == (k - <span class="number">1</span>)) right[j] = nums[j];</span><br><span class="line">    <span class="keyword">else</span>                  right[j] = Math.max(right[j + <span class="number">1</span>], nums[j]);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// dp</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>, j = i + k - <span class="number">1</span>; j &lt; n; ++i, ++j) &#123;</span><br><span class="line">    result[i] = Math.max(right[i], left[j]);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

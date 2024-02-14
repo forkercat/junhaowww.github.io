@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: EPI 5.1 Description: The quicksort algorithm would have a bad performance when the array contains many duplicates because the subarrays may differ greatly in size. One solution is reorder">
+<meta property="og:type" content="website">
+<meta property="og:title" content="EPI 5.1 | The Dutch National Flag Problem">
+<meta property="og:url" content="https://junhaow.com/lc/problems/array/in-place-removal-and-swapping/epi_5_1-the-dutch-national-flag-problem.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: EPI 5.1 Description: The quicksort algorithm would have a bad performance when the array contains many duplicates because the subarrays may differ greatly in size. One solution is reorder">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/61a7y.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.095Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.095Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/61a7y.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>EPI 5.1 | The Dutch National Flag Problem</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <span class="gray">EPI 5.1</span></p>
+<p><strong>Description:</strong></p>
+<p>The quicksort algorithm would have a bad performance when the array contains many duplicates because the subarrays may differ greatly in size.</p>
+<p>One solution is reordering or shuffling the array before sorting. Another solution is known as Dutch national flag partitioning since the Dutch national flag consists of three horizontal bands (red, white, blue).</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/61a7y.png" alt="The Dutch National Flag"></p>
+<p>Let say an example <code>[0, 1, 2, 0, 2, 1, 1]</code>, and the pivot index is $3$ (<code>A[3] = 0</code>), so the correct partitioning is <code>[0, 0, 1, 2, 2, 1, 1]</code>. The elements larger than $0$ should be after $0$, but the ordering does not matter.</p>
+<p>If the pivot index is $1$ (<code>A[1] = 1</code>), so the correct partitioning is <code>[0, 0, 1, 1, 1, 2, 2]</code>.</p>
+<p>We have three groups: <code>smaller</code>, <code>equal</code>, <code>larger</code>. To simply the problem we have a enum class as follows:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">Color</span> &#123; RED, WHITE, BLUE &#125;</span><br><span class="line"><span class="comment">// their ordinal()   0     1     2</span></span><br></pre></td></tr></table></figure>
+
+<p>We use <code>RED</code> to denote elements in the <code>smaller</code> group. They could be duplicates or different elements, but that is okay as long as they are less than the <code>WHITE</code> elements in the <code>equal</code> group.</p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Write a problem that takes an array <code>A</code> and an index <code>i</code> into <code>A</code>, and rearranges the elements such that all elements less than <code>A[i]</code> (the “pivot”) appear first, followed by elements equal to the pivot, followed by elements greater than the pivot.</p>
+</blockquote>
+<p><strong>Note:</strong> The problem is trivial to solve with $O(N)$ extra space. We can put elements into three arrays and then merge them.</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p>We can avoid the extra space. In the first pass, we iterate through the array and seek an element smaller than the pivot. As soon as we find it, we move it to the subarray of smaller elements via swapping. In the second pass, we do the same thing but moving the larger element to the subarray of larger elements.</p>
+<p><strong>Note:</strong> In the second pass, we can stop when hitting an element smaller than the pivot, because smaller elements should all lie on the left part of the array.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">dutchFlagPartition</span><span class="params">(<span class="type">int</span> pivotIndex, List&lt;Color&gt; A)</span> &#123;</span><br><span class="line">  <span class="type">Color</span> <span class="variable">pivot</span> <span class="operator">=</span> A.get(pivotIndex);</span><br><span class="line">  <span class="comment">// First pass: group elements smaller than pivot.</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; A.size(); ++i) &#123;</span><br><span class="line">    <span class="comment">// Look for a smaller element</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i + <span class="number">1</span>; j &lt; A.size(); ++j) &#123;</span><br><span class="line">      <span class="keyword">if</span> (A.get(j).ordinal() &lt; pivot.ordinal()) &#123;</span><br><span class="line">        Collections.swap(A, i, j);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Second pass: group elements larger than pivot.</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> A.size()  - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">    <span class="comment">// Stop when hitting an element smaller than the pivot.</span></span><br><span class="line">    <span class="keyword">if</span> (A.get(i).ordinal() &lt; pivot.ordinal()) <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i - <span class="number">1</span>; j &gt;= <span class="number">0</span>; --j) &#123;</span><br><span class="line">      <span class="keyword">if</span> (A.get(j).ordinal() &gt; pivot.ordinal()) &#123;</span><br><span class="line">        Collections.swap(A, i, j);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^2)$<br><strong>Space:</strong> $O(1)$</p>
+<p>The worst case occurs when the pivot is in the middle and all elements on its left are larger and the elements on its right are smaller, for example <code>[5, 6, 9, 7, &lt;5&gt;, 3, 2, 4, 1]</code>. As for the first element (<code>i = 0</code>), <code>j</code> has to go through half of the array, which takes $O(N&#x2F;2)$ time, to find element <code>3</code>.</p>
+<h3 id="Two-Passes"><a href="#Two-Passes" class="headerlink" title="Two Passes"></a>Two Passes</h3><p>We can improve the time complexity by making a single pass to move smaller elements to the beginning and by making another pass starting from the end to move larger elements to the end.</p>
+<p>Alternatively, in the second pass, we can instead move elements which are equal to the pivot, so we don’t need an extra variable to store the current index.</p>
+<p><strong>Note:</strong> The element in the original <code>pivotIndex</code> may change when the pivot element is swapped. It does not affect the result since we have backed up the pivot at the beginning of the program, so the value of pivot won’t change.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Example:  2  6  3  7  &lt;5&gt;  3  2  7  1</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">dutchFlagPartition</span><span class="params">(<span class="type">int</span> pivotIndex, List&lt;Color&gt; A)</span> &#123;</span><br><span class="line">  <span class="type">Color</span> <span class="variable">pivot</span> <span class="operator">=</span> A.get(pivotIndex); <span class="comment">// back up the pivot</span></span><br><span class="line">  <span class="comment">// First pass</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; A.size(); ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (A.get(i).ordinal() &lt; pivot.ordinal()) &#123;</span><br><span class="line">      Collections.swap(A, i, count++);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="comment">// now &quot;count&quot; is pointing to first position of the &quot;equal&quot; group</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Second pass - Move elements equal to pivot</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> count; i &lt; A.size(); ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (A.get(i).ordinal() == pivot.ordinal()) &#123;</span><br><span class="line">      Collections.swap(A, i, count++);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// larger elements are automatically arranged.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="One-Pass"><a href="#One-Pass" class="headerlink" title="One Pass"></a>One Pass</h3><p>Similar to the two-pass approach, the difference is that it performs classification into elements <code>less than</code>, <code>equal to</code>, and <code>greater than</code> the pivot in a single pass. We can do this by maintaining four subarrays: <code>smaller</code>, <code>equal</code>, <code>unclassified</code>, <code>larger</code>. In the code, we use three pointers <code>smaller</code>, <code>equal</code>, <code>larger</code> to denote the elements in the four subarrays.</p>
+<p>The explanation is in the comments. Notice the <code>equal</code> always points to the incoming unclassified element. And the elements before <code>smaller</code> and the elements after <code>larger</code> are finalized.</p>
+<p>Example:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2</span>   <span class="number">6</span>   <span class="number">3</span>   <span class="number">7</span>  &lt;<span class="number">5</span>&gt;  <span class="number">3</span>   <span class="number">2</span>   <span class="number">7</span>   <span class="number">1</span></span><br><span class="line">sm                              lg</span><br><span class="line">eq</span><br><span class="line"><span class="number">2</span>   <span class="number">6</span>   <span class="number">3</span>   <span class="number">7</span>  &lt;<span class="number">5</span>&gt;  <span class="number">3</span>   <span class="number">2</span>   <span class="number">7</span>   <span class="number">1</span></span><br><span class="line">    sm                          lg</span><br><span class="line">    eq</span><br><span class="line"><span class="number">2</span>   <span class="number">1</span>   <span class="number">3</span>   <span class="number">7</span>  &lt;<span class="number">5</span>&gt;  <span class="number">3</span>   <span class="number">2</span>   <span class="number">7</span>   <span class="number">6</span></span><br><span class="line">    sm                      lg</span><br><span class="line">    eq</span><br><span class="line"><span class="number">2</span>   <span class="number">1</span>   <span class="number">3</span>   <span class="number">7</span>  &lt;<span class="number">5</span>&gt;  <span class="number">3</span>   <span class="number">2</span>   <span class="number">7</span>   <span class="number">6</span></span><br><span class="line">        sm                  lg</span><br><span class="line">        eq</span><br><span class="line"><span class="number">2</span>   <span class="number">1</span>   <span class="number">3</span>   <span class="number">7</span>  &lt;<span class="number">5</span>&gt;  <span class="number">3</span>   <span class="number">2</span>   <span class="number">7</span>   <span class="number">6</span></span><br><span class="line">            sm              lg</span><br><span class="line">            eq</span><br><span class="line"><span class="number">2</span>   <span class="number">1</span>   <span class="number">3</span>   <span class="number">7</span>  &lt;<span class="number">5</span>&gt;  <span class="number">3</span>   <span class="number">2</span>   <span class="number">7</span>   <span class="number">6</span></span><br><span class="line">            sm          lg</span><br><span class="line">            eq</span><br><span class="line"><span class="number">2</span>   <span class="number">1</span>   <span class="number">3</span>   <span class="number">2</span>  &lt;<span class="number">5</span>&gt;  <span class="number">3</span>   <span class="number">7</span>   <span class="number">7</span>   <span class="number">6</span></span><br><span class="line">            sm      lg</span><br><span class="line">            eq</span><br><span class="line"><span class="number">2</span>   <span class="number">1</span>   <span class="number">3</span>   <span class="number">2</span>  &lt;<span class="number">5</span>&gt;  <span class="number">3</span>   <span class="number">7</span>   <span class="number">7</span>   <span class="number">6</span></span><br><span class="line">                sm  lg</span><br><span class="line">                eq</span><br><span class="line"><span class="number">2</span>   <span class="number">1</span>   <span class="number">3</span>   <span class="number">2</span>  &lt;<span class="number">5</span>&gt;  <span class="number">3</span>   <span class="number">7</span>   <span class="number">7</span>   <span class="number">6</span></span><br><span class="line">                sm  lg</span><br><span class="line">                    eq</span><br><span class="line"><span class="number">2</span>   <span class="number">1</span>   <span class="number">3</span>   <span class="number">2</span>   <span class="number">3</span>  &lt;<span class="number">5</span>&gt;  <span class="number">7</span>   <span class="number">7</span>   <span class="number">6</span></span><br><span class="line">                    sm</span><br><span class="line">                    lg</span><br><span class="line">                        eq       <span class="comment">// end</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong> This is my solution based on <code>larger = A.size() - 1</code> and <code>while (equal &lt;= larger)</code>. The solution in the book is based on <code>larger = A.size()</code> and <code>while (equal &lt; larger)</code>. They are equivalent.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">dutchFlagPartition</span><span class="params">(<span class="type">int</span> pivotIndex, List&lt;Color&gt; A)</span> &#123;</span><br><span class="line">  <span class="type">Color</span> <span class="variable">pivot</span> <span class="operator">=</span> A.get(pivotIndex);</span><br><span class="line">  <span class="type">int</span> <span class="variable">smaller</span> <span class="operator">=</span> <span class="number">0</span>, equal = <span class="number">0</span>, larger = A.size() - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (equal &lt;= larger) &#123;</span><br><span class="line">    <span class="comment">// A.get(equal) is the incoming unclassified element</span></span><br><span class="line">    <span class="keyword">if</span> (A.get(equal).ordinal() &lt; pivot.ordinal()) &#123;</span><br><span class="line">      Collections.swap(A, equal++, smaller++);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (A.get(equal).ordinal() &gt; pivot.ordinal()) &#123;</span><br><span class="line">      Collections.swap(A, equal, larger--); <span class="comment">// equal not changing since its element is not processed</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// A.get(equal).ordinal() == pivot.ordinal()</span></span><br><span class="line">      equal += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$ since each time at least one of the pointers is moved and each subarray is either expended by one or shrunk by one.<br><strong>Space:</strong> $O(1)$</p>
+<h2 id="Variant-1"><a href="#Variant-1" class="headerlink" title="Variant 1"></a>Variant 1</h2><p>Bring duplicate elements all together, but the ordering is not required.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">variant1</span><span class="params">(List&lt;Color&gt; A)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (A.size() == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (count &lt; A.size()) &#123;</span><br><span class="line">    <span class="type">Color</span> <span class="variable">curr</span> <span class="operator">=</span> A.get(count);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> count; i &lt; A.size(); ++i) &#123;</span><br><span class="line">      <span class="keyword">if</span> (A.get(i).ordinal() == curr.ordinal()) &#123;</span><br><span class="line">        Collections.swap(A, i, count++);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: EasyTwo Pointers My Post: Java Solution with Explanations and Illustrations Problem Given a linked list, determine if it has a cycle in it.  Note:   To represent a cyc">
+<meta property="og:type" content="website">
+<meta property="og:title" content="141. Linked List Cycle">
+<meta property="og:url" content="https://junhaow.com/lc/problems/linked-list/cycle-detection/141_linked-list-cycle.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: EasyTwo Pointers My Post: Java Solution with Explanations and Illustrations Problem Given a linked list, determine if it has a cycle in it.  Note:   To represent a cyc">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jtr5l.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vlrjw.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/c7fpv.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.128Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.128Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jtr5l.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>141. Linked List Cycle</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/linked-list-cycle/">LeetCode</a><br>Difficulty: <span class="green">Easy</span><span class="blue">Two Pointers</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/linked-list-cycle/discuss/407885">Java Solution with Explanations and Illustrations</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a linked list, determine if it has a cycle in it.</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>To represent a cycle in the given linked list, we use an integer <code>pos</code> which represents the position (0-indexed) in the linked list where tail connects to. If <code>pos</code> is <code>-1</code>, then there is no cycle in the linked list.</li>
+<li><strong>There could be duplicates</strong>.</li>
+</ul>
+<p><strong>Example:</strong> </p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jtr5l.jpg"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: head = [<span class="number">3</span>,<span class="number">2</span>,<span class="number">0</span>,-<span class="number">4</span>], pos = <span class="number">1</span></span><br><span class="line">Output: <span class="literal">true</span></span><br><span class="line">Explanation: There is a cycle in the linked list, where tail connects to the second node.</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vlrjw.jpg"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: head = [<span class="number">1</span>,<span class="number">2</span>], pos = <span class="number">0</span></span><br><span class="line">Output: <span class="literal">true</span></span><br><span class="line">Explanation: There is a cycle in the linked list, where tail connects to the first node.</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: head = [<span class="number">1</span>], pos = -<span class="number">1</span></span><br><span class="line">Output: <span class="literal">false</span></span><br><span class="line">Explanation: There is no cycle in the linked list.</span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> Can you solve it using $O(1)$ (i.e. constant) memory?</p>
+<ul>
+<li>Yes. Use two pointers or modify the next.</li>
+</ul>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p><strong>Note:</strong> In terms of <code>duplicate nodes</code>, they are different node objects. So it is okay to use <code>hashCode()</code> and <code>==</code>.</p>
+<p><strong>Test Case:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">3</span>,<span class="number">2</span>,<span class="number">0</span>,-<span class="number">4</span>]  pos = <span class="number">1</span>   <span class="literal">true</span></span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>]       pos = <span class="number">0</span>   <span class="literal">true</span></span><br><span class="line">[<span class="number">1</span>]         pos = -<span class="number">1</span>  <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Hash-Set"><a href="#Hash-Set" class="headerlink" title="Hash Set"></a>Hash Set</h3><p>Use <code>Set&lt;ListNode&gt;</code> instead of <code>Set&lt;Integer&gt;</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">hasCycle</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> head;</span><br><span class="line">  Set&lt;ListNode&gt; seen = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">while</span> (p != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (seen.contains(p)) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    set.add(p);</span><br><span class="line">    p = p.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$.<br><strong>Space:</strong> $O(N)$.</p>
+<h3 id="Two-Pointers"><a href="#Two-Pointers" class="headerlink" title="Two Pointers"></a>Two Pointers</h3><p>The space complexity can be reduced to $O(1)$ by considering two pointers at different speed. A <code>slow</code> pointer and a <code>fast</code> pointer. The slow pointer moves one step at a time while the fast pointer moves two steps at a time. If there is no cycle in the list, the fast pointer will eventually reach the end and we can return <code>false</code> in this case.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/c7fpv.png"></p>
+<ul>
+<li><strong>No cycle</strong><br>The fast pointer reaches the end first and the run time depends on the list’s length, which is $O(N)$.</li>
+<li><strong>Cycle exists</strong><ul>
+<li><code>Non-cyclic part</code>:<ul>
+<li>The slow pointer takes non-cyclic length steps to enter the cycle. The length is $L1$.</li>
+</ul>
+</li>
+<li><code>Cyclic part</code>:<ul>
+<li>When two pointers enter into the cycle, it will take:</li>
+<li>(<code>distance between two pointers</code> (at most $C$) &#x2F; <code>difference of speed</code>) moves for the fast pointer to catch up with the slow runner.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Therefore, the worst case runtime is $O(L1 + C)$, which is $O(N)$.</p>
+<p><strong>Why will the fast pointer eventually meet the slow pointer?</strong></p>
+<p>Consider the <code>one-step</code> case:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  1   2   3   4   5</span></span><br><span class="line"><span class="comment">//  f   s</span></span><br><span class="line"><span class="comment">//      ---&gt;s</span></span><br><span class="line"><span class="comment">//  -------&gt;f</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>If the fast pointer is <code>two steps</code> behind the slower runner, this case will change into the one-step case above (each time the distance decreases by $1$):</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  1   2   3   4   5</span></span><br><span class="line"><span class="comment">//  f       s</span></span><br><span class="line"><span class="comment">//          ---&gt;s</span></span><br><span class="line"><span class="comment">//              ---&gt;s</span></span><br><span class="line"><span class="comment">//  -------&gt;f------&gt;f</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>Note:</strong> So many corner cases.</p>
+<p>My originally bad code (using <code>flag</code>):</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">hasCycle</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">slow</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">fast</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="type">boolean</span> <span class="variable">flag</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">while</span> (slow != <span class="literal">null</span> &amp;&amp; fast != <span class="literal">null</span> &amp;&amp; fast.next != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (slow == fast) &#123; <span class="comment">// skip the beginning</span></span><br><span class="line">      <span class="keyword">if</span> (flag) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">      <span class="keyword">else</span>      flag = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    slow = slow.next;</span><br><span class="line">    fast = fast.next.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Improvement:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">hasCycle</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">slow</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">fast</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="keyword">while</span> (fast != <span class="literal">null</span> &amp;&amp; fast.next != <span class="literal">null</span>) &#123; <span class="comment">// right-leaning</span></span><br><span class="line">    slow = slow.next;</span><br><span class="line">    fast = fast.next.next;</span><br><span class="line">    <span class="keyword">if</span> (fast == slow) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Mark-Node"><a href="#Mark-Node" class="headerlink" title="Mark Node"></a>Mark Node</h3><blockquote>
+<p>By Argondey: I used a slightly faster destructive approach. I created a new node called “mark” and iterated through the list, setting the next value of each node to the mark node. When reaching the new node the first thing I did was check if the node is the mark node. If it ever is the mark node, we have looped. <code>Brilliant!</code></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">hasCycle</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">mark</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(<span class="number">0</span>);</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="keyword">while</span> (p != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (p == mark) &#123;</span><br><span class="line">      <span class="comment">// or p.next == null and return p to get the node</span></span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">nextTemp</span> <span class="operator">=</span> p.next;</span><br><span class="line">    p.next = mark;</span><br><span class="line">    p = nextTemp;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

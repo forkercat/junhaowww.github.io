@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Easy Problem Given a binary tree, find its maximum depth.   The maximum depth is the number of nodes along the longest path from the root node down to the farthest lea">
+<meta property="og:type" content="website">
+<meta property="og:title" content="104. Maximum Depth of Binary Tree">
+<meta property="og:url" content="https://junhaow.com/lc/problems/tree/height-and-depth/104_maximum-depth-of-binary-tree.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Easy Problem Given a binary tree, find its maximum depth.   The maximum depth is the number of nodes along the longest path from the root node down to the farthest lea">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/l17o1.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/l2lyz.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.145Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.145Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/l17o1.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>104. Maximum Depth of Binary Tree</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/maximum-depth-of-binary-tree/">LeetCode</a><br>Difficulty: <span class="green">Easy</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a binary tree, find its maximum depth.</p>
+</blockquote>
+<blockquote>
+<p>The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.</p>
+</blockquote>
+<p><strong>Note:</strong> A leaf is a node with no children.</p>
+<p><strong>Example:</strong> </p>
+<p>Given binary tree <code>[3,9,20,null,null,15,7]</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  <span class="number">3</span></span><br><span class="line"> / \</span><br><span class="line"><span class="number">9</span>  <span class="number">20</span></span><br><span class="line">  /  \</span><br><span class="line"> <span class="number">15</span>   <span class="number">7</span></span><br></pre></td></tr></table></figure>
+
+<p>The return depth should be <code>3</code>.</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p>First, let’s be clear about the definition of <code>height</code> and <code>depth</code> of a tree or a node.</p>
+<p>According to CS 61B, EPI p129, and a <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/2603692/what-is-the-difference-between-tree-depth-and-height">post</a> on Stack Overflow:</p>
+<ul>
+<li>The <code>height</code> of a node is the maximum number of <code>edges / links</code> to any leaf.<ul>
+<li>The <code>height</code> of a tree is the height of the root node.</li>
+</ul>
+</li>
+<li>The <code>depth</code> of a node is the number of <code>edges / links</code> to the root.<ul>
+<li>The <code>maximum depth</code> of a tree is <code>equal</code> to the <code>height</code> of the tree.</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/l17o1.jpg"></p>
+<p><strong>However</strong>, according to the problem description, the maximum depth in this problem equals to the maximum number of <code>nodes</code> to any leaf. In other words, it is one plus our formal definition of <code>height</code> &#x2F; <code>maximum depth</code> of a tree.</p>
+<p><strong>Methods:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/l2lyz.jpg" alt="Whether the tree is balanced or not does not matter."></p>
+<ol>
+<li>Recursion<ul>
+<li>DFS (postorder) traverse the tree.</li>
+<li><strong>Time:</strong> $O(N)$ since we visit each node exactly once <code>no matter the tree is balanced or not</code>.</li>
+<li><strong>Space:</strong> $O(N)$ in the worst case; $O(\log{N})$ in the best case (balanced tree).</li>
+</ul>
+</li>
+<li>Tail Recursion + BFS<ul>
+<li>The above recursion solution is probably not optimal in terms of <code>space complexity</code>. We can tweak the solution and make it <code>tail recursion</code>, so the compiler might optimize our code (reusing the same function call stack frame).</li>
+<li>To make it tail recursion, we just need to make sure that the recursive call is the <code>last action</code> in the function.</li>
+<li><strong>Note:</strong> Optimization of tail recursion is not supported by Python or Java. And it is quite complicated.</li>
+<li><strong>Note:</strong> A function cannot be tail recursion if there are <code>multiple occurrences</code> of recursive calls in the function, even if the last action is the recursive call, e.g. <code>return f(n - 1) + f(n - 1)</code>.</li>
+</ul>
+</li>
+<li>Iteration<ul>
+<li>With the help of a stack, we can simulate the function call process.</li>
+<li><strong>Idea:</strong> Keep the next nodes to visit in a stack</li>
+<li><strong>Time:</strong> $O(N)$</li>
+<li><strong>Space:</strong> $O(N)$ in the worst case; $O(\log{N})$ in the best case (balanced tree).</li>
+</ul>
+</li>
+</ol>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><strong>Test Case:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">3</span>,<span class="number">9</span>,<span class="number">20</span>,<span class="literal">null</span>,<span class="literal">null</span>,<span class="number">15</span>,<span class="number">7</span>]</span><br><span class="line"><span class="number">3</span></span><br><span class="line">[]     <span class="comment">// null</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line">[<span class="number">1</span>]    <span class="comment">// 1 node</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>]  <span class="comment">// 2 nodes</span></span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Recursion"><a href="#Recursion" class="headerlink" title="Recursion"></a>Recursion</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxDepth</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> depth(root);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Formal</span></span><br><span class="line"><span class="comment">//  null     O      O    O</span></span><br><span class="line"><span class="comment">//                 /    / \</span></span><br><span class="line"><span class="comment">//                O    O   O</span></span><br><span class="line"><span class="comment">//   -1      0    1      1     &lt;-- height (formal definition)</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">height</span><span class="params">(TreeNode x)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">  <span class="keyword">return</span> Math.max(height(x.left), height(x.right)) + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// This problem</span></span><br><span class="line"><span class="comment">//  null     O      O    O</span></span><br><span class="line"><span class="comment">//                 /    / \</span></span><br><span class="line"><span class="comment">//                O    O   O</span></span><br><span class="line"><span class="comment">//   0       1    2      2     &lt;-- depth (according to the problem description)</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">depth</span><span class="params">(TreeNode x)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">return</span> Math.max(depth(x.left), depth(x.right)) + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Iteration"><a href="#Iteration" class="headerlink" title="Iteration"></a>Iteration</h3><p><strong>Note:</strong></p>
+<ul>
+<li>The initial depth should be <code>1</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">iteration</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  </span><br><span class="line">  Stack&lt;TreeNode&gt; nodeStack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">  Stack&lt;Integer&gt; dpStack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">  </span><br><span class="line">  nodeStack.push(root);</span><br><span class="line">  dpStack.push(<span class="number">1</span>);</span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> <span class="variable">currentDepth</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">maxDepth</span> <span class="operator">=</span> Integer.MIN_VALUE;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">while</span> (nodeStack.size() &gt; <span class="number">0</span>) &#123; <span class="comment">// postorder</span></span><br><span class="line">    <span class="type">TreeNode</span> <span class="variable">p</span> <span class="operator">=</span> nodeStack.pop();</span><br><span class="line">    currentDepth = dpStack.pop();</span><br><span class="line">    <span class="keyword">if</span> (p != <span class="literal">null</span>) &#123;</span><br><span class="line">      maxDepth = Math.max(maxDepth, currentDepth);</span><br><span class="line">      nodeStack.add(p.left);</span><br><span class="line">      nodeStack.add(p.right);</span><br><span class="line">      dpStack.add(currentDepth + <span class="number">1</span>);</span><br><span class="line">      dpStack.add(currentDepth + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> maxDepth;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

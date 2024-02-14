@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode 105, LeetCode 106 EPI 9.11Difficulty: Medium Problem Given preorder and inorder traversal of a tree, construct the binary tree.  Note:  Example:  12preorder &#x3D; [3,9,20,15,7]inorde">
+<meta property="og:type" content="website">
+<meta property="og:title" content="105. Construct Binary Tree from Preorder &#x2F; Postorder and Inorder Traversal">
+<meta property="og:url" content="https://junhaow.com/lc/problems/tree/recovery-and-construction/105_construct-binary-tree-from-preorder-and-inorder-traversal.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode 105, LeetCode 106 EPI 9.11Difficulty: Medium Problem Given preorder and inorder traversal of a tree, construct the binary tree.  Note:  Example:  12preorder &#x3D; [3,9,20,15,7]inorde">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.148Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.148Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>105. Construct Binary Tree from Preorder / Postorder and Inorder Traversal</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/">LeetCode 105</a>, <a target="_blank" rel="noopener" href="https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/">LeetCode 106</a> <span class="gray">EPI 9.11</span><br>Difficulty: <span class="orange">Medium</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given preorder and inorder traversal of a tree, construct the binary tree.</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">preorder = [<span class="number">3</span>,<span class="number">9</span>,<span class="number">20</span>,<span class="number">15</span>,<span class="number">7</span>]</span><br><span class="line">inorder = [<span class="number">9</span>,<span class="number">3</span>,<span class="number">15</span>,<span class="number">20</span>,<span class="number">7</span>]</span><br></pre></td></tr></table></figure>
+
+<p>Return the following binary tree:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  <span class="number">3</span></span><br><span class="line"> / \</span><br><span class="line"><span class="number">9</span>  <span class="number">20</span></span><br><span class="line">  /  \</span><br><span class="line"> <span class="number">15</span>   <span class="number">7</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p><strong>Methods:</strong></p>
+<ol>
+<li><p>Recursion</p>
+<ul>
+<li><code>Find Root</code>: The node of <code>preorder</code> sequence from left to right is always the root of the current subtree.</li>
+<li><code>Split Subtree Nodes</code>: According to the root, we can split nodes in the inorder array into two parts belonging to left and right subtrees.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">buildTree</span><span class="params">(<span class="type">int</span>[] preorder, <span class="type">int</span>[] inorder)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (preorder == <span class="literal">null</span> || inorder == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// preorder list</span></span><br><span class="line">  LinkedList&lt;Integer&gt; preList = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> p : preorder) &#123;</span><br><span class="line">    preList.add(p);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> build(preList, inorder, <span class="number">0</span>, inorder.length - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> TreeNode <span class="title function_">build</span><span class="params">(LinkedList&lt;Integer&gt; preList, <span class="type">int</span>[] inorder, <span class="type">int</span> lo, <span class="type">int</span> hi)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (lo &gt; hi) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="comment">// Don&#x27;t write &quot;if (lo == hi)&quot;, since you forget to do preList.removeFirst()</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// get the root</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">rootVal</span> <span class="operator">=</span> preList.removeFirst();</span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">root</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(rootVal);</span><br><span class="line">  <span class="type">int</span> <span class="variable">rootIdx</span> <span class="operator">=</span> getRootIdx(inorder, rootVal, lo, hi); <span class="comment">// O(N)</span></span><br><span class="line">  <span class="comment">// left &amp; right</span></span><br><span class="line">  root.left = build(preList, inorder, lo, rootIdx - <span class="number">1</span>);</span><br><span class="line">  root.right = build(preList, inorder, rootIdx + <span class="number">1</span>, hi);</span><br><span class="line">  <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">getRootIdx</span><span class="params">(<span class="type">int</span>[] inorder, <span class="type">int</span> rootVal, <span class="type">int</span> lo, <span class="type">int</span> hi)</span> &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> lo; i &lt;= hi; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (inorder[i] == rootVal) &#123;</span><br><span class="line">      <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong>Time:</strong> $O(N\log{N})$ in the best case, and $O(N^2)$ in the worst case, since at each level it takes $O(N)$ to find the root index.<br><strong>Space:</strong> $O(h)$</li>
+</ul>
+</li>
+<li><p>Recursion (HashMap)</p>
+<ul>
+<li>Use a <code>HashMap</code> to map the values to indices.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">buildTree</span><span class="params">(<span class="type">int</span>[] preorder, <span class="type">int</span>[] inorder)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (preorder == <span class="literal">null</span> || inorder == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// preorder list</span></span><br><span class="line">  LinkedList&lt;Integer&gt; preList = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> p : preorder) &#123;</span><br><span class="line">    preList.add(p);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// inoder mapping (val -&gt; index)</span></span><br><span class="line">  Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; inorder.length; ++i) &#123;</span><br><span class="line">    map.put(inorder[i], i);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> build(preList, inorder, <span class="number">0</span>, inorder.length - <span class="number">1</span>, map);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> TreeNode <span class="title function_">build</span><span class="params">(LinkedList&lt;Integer&gt; preList, <span class="type">int</span>[] inorder, <span class="type">int</span> lo, <span class="type">int</span> hi, Map&lt;Integer, Integer&gt; map)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (lo &gt; hi) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// get the root</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">rootVal</span> <span class="operator">=</span> preList.removeFirst();</span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">root</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(rootVal);</span><br><span class="line">  <span class="type">int</span> <span class="variable">rootIdx</span> <span class="operator">=</span> map.get(rootVal); <span class="comment">// O(1)</span></span><br><span class="line">  <span class="comment">// left &amp; right</span></span><br><span class="line">  root.left = build(preList, inorder, lo, rootIdx - <span class="number">1</span>, map);</span><br><span class="line">  root.right = build(preList, inorder, rootIdx + <span class="number">1</span>, hi, map);</span><br><span class="line">  <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</li>
+</ul>
+</li>
+</ol>
+<p>Here is the version of <code>Postorder + Inorder</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">buildTree</span><span class="params">(<span class="type">int</span>[] inorder, <span class="type">int</span>[] postorder)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (postorder == <span class="literal">null</span> || inorder == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// postorder list</span></span><br><span class="line">  LinkedList&lt;Integer&gt; postList = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> p : postorder) &#123;</span><br><span class="line">    postList.add(p);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// inoder mapping (val -&gt; index)</span></span><br><span class="line">  Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; inorder.length; ++i) &#123;</span><br><span class="line">    map.put(inorder[i], i);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> build(postList, inorder, <span class="number">0</span>, inorder.length - <span class="number">1</span>, map);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> TreeNode <span class="title function_">build</span><span class="params">(LinkedList&lt;Integer&gt; postList, <span class="type">int</span>[] inorder, <span class="type">int</span> lo, <span class="type">int</span> hi, Map&lt;Integer, Integer&gt; map)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (lo &gt; hi) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// get the root</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">rootVal</span> <span class="operator">=</span> postList.removeLast();</span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">root</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(rootVal);</span><br><span class="line">  <span class="type">int</span> <span class="variable">rootIdx</span> <span class="operator">=</span> map.get(rootVal); <span class="comment">// O(1)</span></span><br><span class="line">  <span class="comment">// right &amp; left</span></span><br><span class="line">  root.right = build(postList, inorder, rootIdx + <span class="number">1</span>, hi, map);</span><br><span class="line">  root.left = build(postList, inorder, lo, rootIdx - <span class="number">1</span>, map);</span><br><span class="line">  <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

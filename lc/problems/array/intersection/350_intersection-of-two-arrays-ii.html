@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Easy Problem Given two arrays, write a function to compute their intersection.  Note:  Each element in the result should appear as many times as it shows in both array">
+<meta property="og:type" content="website">
+<meta property="og:title" content="350. Intersection of Two Arrays II">
+<meta property="og:url" content="https://junhaow.com/lc/problems/array/intersection/350_intersection-of-two-arrays-ii.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Easy Problem Given two arrays, write a function to compute their intersection.  Note:  Each element in the result should appear as many times as it shows in both array">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.095Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.095Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>350. Intersection of Two Arrays II</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/intersection-of-two-arrays-ii/">LeetCode</a><br>Difficulty: <span class="green">Easy</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given two arrays, write a function to compute their intersection.</p>
+</blockquote>
+<p><strong>Note:</strong></p>
+<ul>
+<li>Each element in the result should appear as many times as it shows in both arrays.</li>
+<li>The result can be in any order.</li>
+</ul>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input: nums1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>], nums2 = [<span class="number">2</span>,<span class="number">2</span>]</span><br><span class="line">Output: [<span class="number">2</span>,<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">Input: nums1 = [<span class="number">4</span>,<span class="number">9</span>,<span class="number">5</span>], nums2 = [<span class="number">9</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">8</span>,<span class="number">4</span>]</span><br><span class="line">Output: [<span class="number">4</span>,<span class="number">9</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> </p>
+<ol>
+<li>What if the given array is already sorted? How would you optimize your algorithm?</li>
+</ol>
+<ul>
+<li>Binary search</li>
+<li>Two pointers</li>
+</ul>
+<ol start="2">
+<li>What if <code>nums1</code>‘s size is small compared to <code>nums2</code>‘s size? Which algorithm is better? (<a target="_blank" rel="noopener" href="https://leetcode.com/problems/intersection-of-two-arrays-ii/discuss/282372/Java-solution-with-all-3-follow-up-questions">Reference</a>)</li>
+</ol>
+<ul>
+<li>The size of <code>nums1</code> is $M$ ($M &lt; N$).</li>
+<li>Two Pointers: The worst case runtime is $O(N)$.</li>
+<li>Binary Search: The worst case runtime is $O(M\log{N})$.</li>
+<li>So the binary search method is better.</li>
+</ul>
+<ol start="3">
+<li>What if elements of <code>nums2</code> are stored on disk, and the memory is limited such that you cannot load all elements into the memory at once?</li>
+</ol>
+<ul>
+<li>If only <code>nums2</code> cannot fit in memory, put all elements of <code>nums1</code> in a hash map. Read chunks of array that fit into the memory and calculate the intersections. It’s better to use the smaller array (<code>nums1</code>) to construct the counter hash map.</li>
+<li>If both <code>nums1</code> and <code>nums2</code> are so large that neither fit into the memory, sort them individually, then read two elements from each array at a time and calculate their intersections.</li>
+</ul>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Hash-Map"><a href="#Hash-Map" class="headerlink" title="Hash Map"></a>Hash Map</h3><p>Let <code>nums2</code> be the smaller array ($M &gt; N$) and convert it to a hash map. We use this hash map to count the occurrence of elements.</p>
+<p><strong>Note:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] intersect(<span class="type">int</span>[] nums1, <span class="type">int</span>[] nums2) &#123;</span><br><span class="line">  List&lt;Integer&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Optimization for space</span></span><br><span class="line">  <span class="keyword">if</span> (nums1.length &lt; nums2.length) &#123;</span><br><span class="line">    <span class="type">int</span>[] temp = nums1;</span><br><span class="line">    nums1 = nums2;</span><br><span class="line">    nums2 = temp;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Init Map&lt;val2, count&gt; for nums2 (which has smaller size)</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val2 : nums2) &#123; <span class="comment">// O(N)</span></span><br><span class="line">    map.put(val2, map.getOrDefault(val2, <span class="number">0</span>) + <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// For each val1 in nums1</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val1 : nums1) &#123; <span class="comment">// O(M)</span></span><br><span class="line">    <span class="keyword">if</span> (map.containsKey(val1)) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> map.get(val1);</span><br><span class="line">      <span class="keyword">if</span> (count &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        result.add(val1);</span><br><span class="line">        map.put(val1, count - <span class="number">1</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// To array</span></span><br><span class="line">  <span class="type">int</span>[] output = <span class="keyword">new</span> <span class="title class_">int</span>[result.size()];</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; result.size(); ++i) &#123;</span><br><span class="line">    output[i] = result.get(i);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> output;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(M + N)$<br><strong>Space:</strong> $O(N)$ where $M &gt; N$.</p>
+<h3 id="Binary-Search"><a href="#Binary-Search" class="headerlink" title="Binary Search"></a>Binary Search</h3><p>Assume the arrays <code>nums1</code> and <code>nums2</code> are sorted, otherwise it takes $O(M\log{M})$ and $O(N\log{N})$ time to sort them.</p>
+<p>Let the size of <code>nums1</code> is smaller than <code>nums2</code> ($M &lt; N$). For each element in <code>nums1</code>, it takes $O(M)$ and for each step we do a lower bound binary search in <code>nums2</code> so it takes $O(\log{N})$. In total, the runtime should be $O(M\log{N})$ if the arrays are pre-sorted.</p>
+<p><strong>Note:</strong></p>
+<ul>
+<li>Write an extra boundary checking function since we check boundary usually.</li>
+<li>Consider the following cases:<ul>
+<li>Case 1:<ul>
+<li>nums1: <code>[1 1 1 2 3]</code></li>
+<li>nums2: <code>[1 2 3 4 5 6 7]</code></li>
+</ul>
+</li>
+<li>Case 2:<ul>
+<li>nums1: <code>[1 2 3]</code></li>
+<li>nums2: <code>[1 1 1 2 3 4]</code></li>
+</ul>
+</li>
+<li>Case 3:<ul>
+<li>nums1: <code>[1 2 3]</code></li>
+<li>nums2: <code>[1 2 3]</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>So for each iteration in <code>nums1</code> we need to do the following checking:<ul>
+<li>Continue adding to result list when <code>nums1[idx1] == nums2[idx2]</code>.</li>
+<li>In each iteration we are inspecting <code>curr</code> in <code>nums1</code>. As <code>idx1</code> increases, we make sure <code>nums1[idx1] == curr</code>. (Case 3)</li>
+</ul>
+</li>
+<li>When <code>nums1[idx1] != nums2[idx2]</code>, we need to update <code>idx1</code> until <code>nums1[idx1] != curr</code> since we have done with <code>curr</code>. (Case 1)</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] intersect(<span class="type">int</span>[] nums1, <span class="type">int</span>[] nums2) &#123;</span><br><span class="line">  List&lt;Integer&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Sorting</span></span><br><span class="line">  Arrays.sort(nums1); <span class="comment">// O(MlogM)</span></span><br><span class="line">  Arrays.sort(nums2); <span class="comment">// O(NlogN)</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Optimization (let nums2 be the larger one)</span></span><br><span class="line">  <span class="keyword">if</span> (nums1.length &gt; nums2.length) &#123;</span><br><span class="line">    <span class="type">int</span>[] temp = nums1;</span><br><span class="line">    nums1 = nums2;</span><br><span class="line">    nums2 = temp;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// For each val1 in nums1</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">idx1</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (idx1 &lt; nums1.length) &#123; <span class="comment">// O(MlogN) or O(NlogM)</span></span><br><span class="line">    <span class="comment">// current val</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">curr</span> <span class="operator">=</span> nums1[idx1];</span><br><span class="line">    <span class="comment">// lower bound binary search</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">idx2</span> <span class="operator">=</span> lowerBoundBS(nums2, curr);</span><br><span class="line">    <span class="comment">// watch out for the case: if using nums1[idx1] == nums2[idx2]</span></span><br><span class="line">    <span class="comment">// 1 2 3</span></span><br><span class="line">    <span class="comment">// 1 2 3</span></span><br><span class="line">    <span class="keyword">while</span> (inBound(nums1, idx1) &amp;&amp; inBound(nums2, idx2) &amp;&amp; nums1[idx1] == curr &amp;&amp; nums1[idx1] == nums2[idx2]) &#123;</span><br><span class="line">      result.add(nums1[idx1]); <span class="comment">// add to result</span></span><br><span class="line">      idx1 += <span class="number">1</span>;</span><br><span class="line">      idx2 += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// move idx1 to a value not equal to curr</span></span><br><span class="line">    <span class="keyword">while</span> (inBound(nums1, idx1) &amp;&amp; nums1[idx1] == curr) &#123;</span><br><span class="line">      idx1 += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// To array</span></span><br><span class="line">  <span class="type">int</span>[] output = <span class="keyword">new</span> <span class="title class_">int</span>[result.size()];</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; result.size(); ++i) &#123;</span><br><span class="line">    output[i] = result.get(i);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> output;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">inBound</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> index)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> index &gt;= <span class="number">0</span> &amp;&amp; index &lt; nums.length;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">lowerBoundBS</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> target)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">lo</span> <span class="operator">=</span> <span class="number">0</span>, hi = n - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (lo &lt;= hi) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> lo + (hi - lo) / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (nums[mid] &gt;= target) &#123;</span><br><span class="line">      hi = mid - <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      lo = mid + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// check</span></span><br><span class="line">  <span class="keyword">if</span> (inBound(nums, lo) &amp;&amp; nums[lo] == target) &#123;</span><br><span class="line">    <span class="keyword">return</span> lo;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(M\log{N})$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Two-Pointers"><a href="#Two-Pointers" class="headerlink" title="Two Pointers"></a>Two Pointers</h3><p>Based on the solution in <code>349. Intersection of Two Arrays</code>, we change the hash set to a list.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] intersect(<span class="type">int</span>[] nums1, <span class="type">int</span>[] nums2) &#123;</span><br><span class="line">  <span class="comment">// Assume they are sorted</span></span><br><span class="line">  Arrays.sort(nums1);</span><br><span class="line">  Arrays.sort(nums2);</span><br><span class="line"></span><br><span class="line">  List&lt;Integer&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="type">int</span> <span class="variable">n1</span> <span class="operator">=</span> nums1.length, n2 = nums2.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">i1</span> <span class="operator">=</span> <span class="number">0</span>, i2 = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (i1 &lt; n1 &amp;&amp; i2 &lt; n2) &#123;</span><br><span class="line">    <span class="keyword">while</span> (i1 &lt; n1 &amp;&amp; i2 &lt; n2 &amp;&amp; nums1[i1] &lt; nums2[i2]) ++i1;</span><br><span class="line">    <span class="keyword">while</span> (i1 &lt; n1 &amp;&amp; i2 &lt; n2 &amp;&amp; nums1[i1] &gt; nums2[i2]) ++i2;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// critical: consider nums1[i1] &lt; nums2[i2] --&gt; if it is, we should continue to the next loop</span></span><br><span class="line">    <span class="keyword">if</span> (i1 &lt; n1 &amp;&amp; i2 &lt; n2 &amp;&amp; nums1[i1] == nums2[i2]) &#123;</span><br><span class="line">      result.add(nums1[i1]); <span class="comment">// we use hash set --&gt; no need to handle duplicates</span></span><br><span class="line">      ++i1;</span><br><span class="line">      ++i2; <span class="comment">// update indices should be inside the if logic</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="type">int</span>[] output = <span class="keyword">new</span> <span class="title class_">int</span>[result.size()];</span><br><span class="line">  <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : result) &#123;</span><br><span class="line">    output[i] = val;</span><br><span class="line">    ++i;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> output;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(M)$ or $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+<p>As for the time complexity, consider:</p>
+<ul>
+<li>Case 1:<ul>
+<li><code>[1 2 3 4 5 6 7 8]</code> $O(M)$</li>
+<li><code>[9 10]</code></li>
+</ul>
+</li>
+<li>Case 2:<ul>
+<li><code>[1 2 3]</code> $O(M)$</li>
+<li><code>[4 5 6 7 8 9 10]</code></li>
+</ul>
+</li>
+</ul>
+<p>So we say the time complexity is $O(M)$ <code>OR</code> $O(N)$. In the worst case, it is $O(\text{max}(M, N))$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

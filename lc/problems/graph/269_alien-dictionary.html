@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Hard Problem There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you. You receive a list of non-empty words fr">
+<meta property="og:type" content="website">
+<meta property="og:title" content="269. Alien Dictionary">
+<meta property="og:url" content="https://junhaow.com/lc/problems/graph/269_alien-dictionary.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Hard Problem There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you. You receive a list of non-empty words fr">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.124Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.124Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>269. Alien Dictionary</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/alien-dictionary/">LeetCode</a><br>Difficulty: <span class="red">Hard</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you. You receive a list of <strong>non-empty</strong> words from the dictionary, where words are <strong>sorted lexicographically</strong> by the rules of this new language. Derive the order of letters in this language.</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>You may assume all letters are in lowercase.</li>
+<li>You may assume that if <code>a</code> is a prefix of <code>b</code>, then a must appear before <code>b</code> in the given dictionary.</li>
+<li>If the order is invalid, <strong>return an empty string</strong>.</li>
+<li>There may be multiple valid order of letters, return any one of them is fine.</li>
+</ul>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Input: [</span><br><span class="line">  <span class="string">&quot;z&quot;</span>,</span><br><span class="line">  <span class="string">&quot;x&quot;</span></span><br><span class="line">]</span><br><span class="line">Output: <span class="string">&quot;zx&quot;</span></span><br><span class="line"></span><br><span class="line">Input: [</span><br><span class="line">  <span class="string">&quot;z&quot;</span>,</span><br><span class="line">  <span class="string">&quot;x&quot;</span>,</span><br><span class="line">  <span class="string">&quot;z&quot;</span></span><br><span class="line">] </span><br><span class="line">Output: <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">Input: [<span class="string">&quot;abc&quot;</span>, <span class="string">&quot;abcd&quot;</span>]</span><br><span class="line">Output: <span class="string">&quot;abcd&quot;</span>, <span class="string">&quot;bacd&quot;</span> (any order is fine)</span><br><span class="line"></span><br><span class="line">Input: [<span class="string">&quot;zx&quot;</span>, <span class="string">&quot;zy&quot;</span>]</span><br><span class="line">Output: <span class="string">&quot;xyz&quot;</span> (z can be anywhere)</span><br><span class="line"></span><br><span class="line">Input: [<span class="string">&quot;za&quot;</span>,<span class="string">&quot;zb&quot;</span>,<span class="string">&quot;ca&quot;</span>,<span class="string">&quot;cb&quot;</span>]</span><br><span class="line">Output: <span class="string">&quot;abzc&quot;</span> or <span class="string">&quot;azbc&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="BFS-Topological-Sort"><a href="#BFS-Topological-Sort" class="headerlink" title="BFS (Topological Sort)"></a>BFS (Topological Sort)</h3><p><strong>Note:</strong> </p>
+<ul>
+<li><strong>Preprocess:</strong> Examine each pair in the <code>words</code>. Try some examples to see how we can gain useful information of a directed edge.</li>
+<li>Set up all the nodes first, then construct the graph.</li>
+<li>Do not add duplicate edges and do not calculate in-degrees for duplicate edges.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">alienOrder</span><span class="params">(String[] words)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (words == <span class="literal">null</span> || words.length == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  Map&lt;Character, List&lt;Character&gt;&gt; graph = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  Map&lt;Character, Integer&gt; indegree = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  </span><br><span class="line">  buildGraph(words, graph, indegree);</span><br><span class="line">  </span><br><span class="line">  Queue&lt;Character&gt; queue = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// push all 0-indegree nodes</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">char</span> v : graph.keySet()) &#123;</span><br><span class="line">    <span class="keyword">if</span> (indegree.get(v) == <span class="number">0</span>) &#123;</span><br><span class="line">      queue.offer(v);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> graph.size(); <span class="comment">// number of nodes in total</span></span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  <span class="keyword">while</span> (queue.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="type">char</span> <span class="variable">v</span> <span class="operator">=</span> queue.poll();</span><br><span class="line">    sb.append(v);</span><br><span class="line">    --count;</span><br><span class="line">    List&lt;Character&gt; neighborList = graph.get(v);</span><br><span class="line">    <span class="comment">// for each neighbor w</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">char</span> w : neighborList) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">degree</span> <span class="operator">=</span> indegree.get(w);</span><br><span class="line">      indegree.put(w, degree - <span class="number">1</span>);</span><br><span class="line">      <span class="keyword">if</span> (degree - <span class="number">1</span> == <span class="number">0</span>) &#123;</span><br><span class="line">        queue.offer(w);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (count == <span class="number">0</span>) <span class="keyword">return</span> sb.toString();</span><br><span class="line">  <span class="keyword">else</span>            <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">buildGraph</span><span class="params">(String[] words, Map&lt;Character, List&lt;Character&gt;&gt; graph, Map&lt;Character, Integer&gt; indegree)</span> &#123;</span><br><span class="line">  <span class="comment">// setup all possible nodes</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; words.length; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; words[i].length(); ++j) &#123;</span><br><span class="line">      <span class="type">char</span> <span class="variable">ch</span> <span class="operator">=</span> words[i].charAt(j);</span><br><span class="line">      graph.put(ch, graph.getOrDefault(ch, <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;()));</span><br><span class="line">      indegree.put(ch, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// add edges and calculate indegrees</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; words.length - <span class="number">1</span>; ++i) &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">s1</span> <span class="operator">=</span> words[i];</span><br><span class="line">    <span class="type">String</span> <span class="variable">s2</span> <span class="operator">=</span> words[i + <span class="number">1</span>];</span><br><span class="line">    <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (j &lt; s1.length() &amp;&amp; j &lt; s2.length() &amp;&amp; s1.charAt(j) == s2.charAt(j)) &#123;</span><br><span class="line">      ++j;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// consider: &quot;abc&quot; vs. &quot;abcd&quot;, &quot;abc&quot; vs. &quot;abc&quot;, &quot;abcd&quot; vs. &quot;abc&quot; -&gt; no info. gained</span></span><br><span class="line">    <span class="keyword">if</span> (j &lt; s1.length() &amp;&amp; j &lt; s2.length()) &#123;</span><br><span class="line">      <span class="type">char</span> <span class="variable">c1</span> <span class="operator">=</span> s1.charAt(j);</span><br><span class="line">      <span class="type">char</span> <span class="variable">c2</span> <span class="operator">=</span> s2.charAt(j);</span><br><span class="line">      <span class="keyword">if</span> (graph.get(c1).contains(c2) == <span class="literal">false</span>) &#123; <span class="comment">// do not add duplicate edges</span></span><br><span class="line">        graph.get(c1).add(c2);</span><br><span class="line">        indegree.put(c2, indegree.getOrDefault(c2, <span class="number">0</span>) + <span class="number">1</span>); <span class="comment">// indegree</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(NK + V + E)$ where $N$ is the size of <code>words</code> and $K$ is the average length of each word.<br><strong>Space:</strong> $O(V)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

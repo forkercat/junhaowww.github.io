@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium Problem Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or tr">
+<meta property="og:type" content="website">
+<meta property="og:title" content="449. Serialize and Deserialize BST">
+<meta property="og:url" content="https://junhaow.com/lc/problems/tree/recovery-and-construction/449_serialize-and-deserialize-bst.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium Problem Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or tr">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jbve7.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/064ps.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.149Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.149Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jbve7.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>449. Serialize and Deserialize BST</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/serialize-and-deserialize-bst/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.</p>
+</blockquote>
+<blockquote>
+<p>Design an algorithm to serialize and deserialize a <code>binary search tree</code>. There is no restriction on how your serialization&#x2F;deserialization algorithm should work. You just need to ensure that a binary search tree can be serialized to a string and this string can be deserialized to the original tree structure.</p>
+</blockquote>
+<blockquote>
+<p><strong>The encoded string should be as compact as possible.</strong></p>
+</blockquote>
+<p><strong>Note:</strong> Do not use class member&#x2F;global&#x2F;static variables to store states. Your serialize and deserialize algorithms should be stateless.</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/serialize-and-deserialize-bst/solution/">Solution</a></p>
+<p>To serialize a binary tree, we need to:</p>
+<ul>
+<li>Encode tree structure.</li>
+<li>Encode node values.</li>
+<li>Choose delimiters to separate the values in the encoded string.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jbve7.jpg"></p>
+<h3 id="Preorder-Postorder-Traversal"><a href="#Preorder-Postorder-Traversal" class="headerlink" title="Preorder &#x2F; Postorder Traversal"></a>Preorder &#x2F; Postorder Traversal</h3><p>We can actually use the fact that BST could be constructed from <code>preorder</code> or <code>postorder</code> traversal only. It bases on the two facts:</p>
+<ul>
+<li>Binary tree could be constructed from <code>preorder</code> &#x2F; <code>postorder</code> and <code>inorder</code> traversal.</li>
+<li>Inorder traversal of BST is an array sorted in the ascending order: <code>inorder = sorted(preorder)</code>.</li>
+</ul>
+<p>This means that BST structure (inorder) is already encoded in the preorder or postorder traversal.</p>
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</p>
+<h4 id="Postorder"><a href="#Postorder" class="headerlink" title="Postorder"></a>Postorder</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">     <span class="number">6</span></span><br><span class="line">   /   \</span><br><span class="line">  <span class="number">3</span>     <span class="number">9</span></span><br><span class="line"> / \     \</span><br><span class="line"><span class="number">1</span>   <span class="number">5</span>    <span class="number">10</span></span><br><span class="line">   /</span><br><span class="line">  <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p>Postorder: <code>[ 1 4 5 3 10 9 6 ]</code></p>
+<p>Read it from <code>right to left</code>, the rightmost value would be the root’s value of a subtree.</p>
+<p><strong>Serialize:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">serialize</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  postorder(root, sb);</span><br><span class="line">  sb.setLength(sb.length() - <span class="number">1</span>);</span><br><span class="line">  <span class="keyword">return</span> sb.toString();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">postorder</span><span class="params">(TreeNode root, StringBuilder sb)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  postorder(root.left, sb);</span><br><span class="line">  postorder(root.right, sb);</span><br><span class="line">  sb.append(root.val + <span class="string">&quot;,&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Deserialize:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">deserialize</span><span class="params">(String data)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (data == <span class="literal">null</span> || data.length() == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  String[] dataArray = data.split(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">  List&lt;Integer&gt; dataList = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (String s : dataArray) &#123;</span><br><span class="line">    dataList.add(Integer.valueOf(s));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> helper(dataList, Integer.MIN_VALUE, Integer.MAX_VALUE);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> TreeNode <span class="title function_">helper</span><span class="params">(LinkedList&lt;Integer&gt; L, Integer lower, Integer upper)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (L.size() == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">val</span> <span class="operator">=</span> L.getLast(); <span class="comment">// root</span></span><br><span class="line">  <span class="keyword">if</span> (val &lt; lower || val &gt; upper) &#123; <span class="comment">// check if this value is suitable in the place</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  L.removeLast();</span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">root</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(val);</span><br><span class="line">  root.right = helper(L, val, upper);</span><br><span class="line">  root.left = helper(L, lower, val);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="Preorder"><a href="#Preorder" class="headerlink" title="Preorder"></a>Preorder</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">     <span class="number">6</span></span><br><span class="line">   /   \</span><br><span class="line">  <span class="number">3</span>     <span class="number">9</span></span><br><span class="line"> / \     \</span><br><span class="line"><span class="number">1</span>   <span class="number">5</span>    <span class="number">10</span></span><br><span class="line">   /</span><br><span class="line">  <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p>Postorder: <code>[ 6 3 1 5 4 9 10 ]</code></p>
+<p>Read it from <code>left to right</code>, the leftmost value would be the root’s value of a subtree.</p>
+<p><strong>Tiny Modification:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">preorder</span><span class="params">(TreeNode root, StringBuilder sb)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  sb.append(root.val + <span class="string">&quot;,&quot;</span>);</span><br><span class="line">  preorder(root.left, sb);</span><br><span class="line">  preorder(root.right, sb);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> TreeNode <span class="title function_">helper</span><span class="params">(LinkedList&lt;Integer&gt; L, Integer lower, Integer upper)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (L.size() == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">val</span> <span class="operator">=</span> L.getFirst(); <span class="comment">// root</span></span><br><span class="line">  <span class="keyword">if</span> (val &lt; lower || val &gt; upper) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  L.removeFirst();                    <span class="comment">// remove first</span></span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">root</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(val);</span><br><span class="line">  root.left = helper(L, lower, val);  <span class="comment">// from left</span></span><br><span class="line">  root.right = helper(L, val, upper);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Other-Optimizations"><a href="#Other-Optimizations" class="headerlink" title="Other Optimizations"></a>Other Optimizations</h3><p><strong>Approach 1:</strong> Convert int to 4-byte string to optimize space for node values.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/064ps.jpg"></p>
+<p><strong>Approach 2:</strong> Get rid of delimiters.</p>
+<p>Since each integers could be represented as 4 bytes, we can treat the data as many chunks of 4 bytes.</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

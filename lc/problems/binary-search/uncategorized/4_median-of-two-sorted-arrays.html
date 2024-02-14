@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Hard Problem There are two sorted arrays nums1 and nums2 of size $m$ and $n$ respectively.   Find the median of the two sorted arrays. The overall run time complexity">
+<meta property="og:type" content="website">
+<meta property="og:title" content="4. Median of Two Sorted Arrays">
+<meta property="og:url" content="https://junhaow.com/lc/problems/binary-search/uncategorized/4_median-of-two-sorted-arrays.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Hard Problem There are two sorted arrays nums1 and nums2 of size $m$ and $n$ respectively.   Find the median of the two sorted arrays. The overall run time complexity">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.118Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.118Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>4. Median of Two Sorted Arrays</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/median-of-two-sorted-arrays/">LeetCode</a><br>Difficulty: <span class="red">Hard</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>There are two sorted arrays <code>nums1</code> and <code>nums2</code> of size $m$ and $n$ respectively.</p>
+</blockquote>
+<blockquote>
+<p>Find the median of the two sorted arrays. The overall run time complexity should be $O(\log{(m+n)})$.</p>
+</blockquote>
+<blockquote>
+<p>You may assume <code>nums1</code> and <code>nums2</code> cannot be both empty.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">nums1 = [<span class="number">1</span>, <span class="number">3</span>]</span><br><span class="line">nums2 = [<span class="number">2</span>]</span><br><span class="line">The median is <span class="number">2.0</span></span><br><span class="line"></span><br><span class="line">nums1 = [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line">nums2 = [<span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line">The median <span class="title function_">is</span> <span class="params">(<span class="number">2</span> + <span class="number">3</span>)</span>/<span class="number">2</span> = <span class="number">2.5</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Sorting"><a href="#Sorting" class="headerlink" title="Sorting"></a>Sorting</h3><p>Put <code>nums1</code> and <code>nums2</code> into a new array <code>nums</code>, and sort <code>nums</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">double</span> <span class="title function_">findMedianSortedArrays</span><span class="params">(<span class="type">int</span>[] nums1, <span class="type">int</span>[] nums2)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">m</span> <span class="operator">=</span> nums1.length, n = nums2.length;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// nums array</span></span><br><span class="line">  <span class="type">int</span>[] nums = <span class="keyword">new</span> <span class="title class_">int</span>[m + n];</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; m; ++i, ++count) &#123;</span><br><span class="line">    nums[count] = nums1[i];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i, ++count) &#123;</span><br><span class="line">    nums[count] = nums2[i];</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// sort</span></span><br><span class="line">  Arrays.sort(nums);   <span class="comment">// O((m + n)log(m + n))</span></span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> (m + n) / <span class="number">2</span>; <span class="comment">// right-leaning</span></span><br><span class="line">  <span class="keyword">if</span> ((m + n) % <span class="number">2</span> == <span class="number">0</span>) &#123; <span class="comment">// even</span></span><br><span class="line">    <span class="keyword">return</span> (nums[mid - <span class="number">1</span>] + nums[mid]) / <span class="number">2.0</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">// odd</span></span><br><span class="line">    <span class="keyword">return</span> nums[mid];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O((m + n)\log{(m + n)})$<br><strong>Space:</strong> $O(m + n)$</p>
+<h3 id="Two-Pointers"><a href="#Two-Pointers" class="headerlink" title="Two Pointers"></a>Two Pointers</h3><p>Use two pointers to locate the index of the median. Process the pointers carefully with some special cases.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// (4 + 2 - 1) / 2 = 2  left-leaning</span></span><br><span class="line"><span class="comment">// 0 1 2 3 4 5 // move 2 (even)</span></span><br><span class="line"><span class="comment">// (3 + 2) / 2 = 2</span></span><br><span class="line"><span class="comment">// 0 1 2 3 4   // move 2 (odd)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Two Pointers</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">double</span> <span class="title function_">findMedianSortedArrays</span><span class="params">(<span class="type">int</span>[] nums1, <span class="type">int</span>[] nums2)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">m</span> <span class="operator">=</span> nums1.length, n = nums2.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">numStep</span> <span class="operator">=</span> (m + n - <span class="number">1</span>) / <span class="number">2</span>; <span class="comment">// left-leaning (see the example above)</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">p1</span> <span class="operator">=</span> <span class="number">0</span>, p2 = <span class="number">0</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Move to the first median</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; numStep; ++i) &#123; <span class="comment">// number of steps to move before it reaches a median</span></span><br><span class="line">    <span class="keyword">if</span> (p1 &lt; m &amp;&amp; p2 &lt; n) &#123;</span><br><span class="line">      <span class="keyword">if</span> (nums1[p1] &lt; nums2[p2]) p1 += <span class="number">1</span>;</span><br><span class="line">      <span class="keyword">else</span> p2 += <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (p1 &lt; m) p1 += <span class="number">1</span>;</span><br><span class="line">      <span class="keyword">else</span> p2 += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Calculate the median</span></span><br><span class="line">  <span class="comment">// If nums1[p1] &lt; nums2[p2], we have nums1[p1] as the median / left part of median.</span></span><br><span class="line">  <span class="comment">// If nums1[p1] &gt;= nums2[p2], we have nums2[p2] as the median / ...</span></span><br><span class="line">  <span class="comment">// If p1 &gt;= m (out of bound), we have nums2[p2] as the median / ...</span></span><br><span class="line">  <span class="comment">// If p2 &gt;= n (out of bound), we have nums1[p1] as the median / ...</span></span><br><span class="line">  <span class="type">double</span> <span class="variable">median</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> (p1 &lt; m &amp;&amp; p2 &lt; n) &#123; <span class="comment">// in bound</span></span><br><span class="line">    <span class="keyword">if</span> (nums1[p1] &lt; nums2[p2]) median = nums1[p1++];</span><br><span class="line">    <span class="keyword">else</span> median = nums2[p2++];</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">// out of bound</span></span><br><span class="line">    <span class="keyword">if</span> (p1 &lt; m) median = nums1[p1++];</span><br><span class="line">    <span class="keyword">else</span> median = nums2[p2++];</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Process even case (right part of the median)</span></span><br><span class="line">  <span class="keyword">if</span> ((m + n) % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (p1 &lt; m &amp;&amp; p2 &lt; n) &#123;</span><br><span class="line">      median += (nums1[p1] &lt; nums2[p2]) ? nums1[p1] : nums2[p2];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (p1 &lt; m) median += nums1[p1];</span><br><span class="line">      <span class="keyword">else</span> median += nums2[p2];</span><br><span class="line">    &#125;</span><br><span class="line">    median /= <span class="number">2.0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> median;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(m + n)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Binary-Search"><a href="#Binary-Search" class="headerlink" title="Binary Search"></a>Binary Search</h3><p>Reference: <a target="_blank" rel="noopener" href="https://medium.com/@hazemu/finding-the-median-of-2-sorted-arrays-in-logarithmic-time-1d3f2ecbeb46">Finding the Median of 2 Sorted Arrays in Logarithmic Time</a> (Question 6)</p>
+<p>The idea is to avoid merging two arrays, since merging takes $O(m + n)$ time. We can use binary search to optimize the two-pointer approach.</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

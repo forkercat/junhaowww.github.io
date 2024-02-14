@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Writing &amp; Teaching are the best ways of learning and understanding.0 Warning(s), 0 Error(s). 👍  Bitwise | Number &amp; Math | String | Linked List | Array | Tree | BST | Binary Search | Priori">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LeetCode Book">
+<meta property="og:url" content="https://junhaow.com/lc/index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Writing &amp; Teaching are the best ways of learning and understanding.0 Warning(s), 0 Error(s). 👍  Bitwise | Number &amp; Math | String | Linked List | Array | Tree | BST | Binary Search | Priori">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-03-12T01:21:19.000Z">
+<meta property="article:modified_time" content="2024-02-14T00:22:28.589Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>LeetCode Book</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<blockquote>
+<p><strong>Writing</strong> &amp; <strong>Teaching</strong> are the best ways of learning and understanding.<br>0 Warning(s), 0 Error(s). 👍</p>
+</blockquote>
+<p><a href="#bitwise">Bitwise</a> | <a href="#number-math">Number &amp; Math</a> | <a href="#string">String</a> | <a href="#linked-list">Linked List</a> | <a href="#array">Array</a> | <a href="#tree">Tree</a> | <a href="#bst">BST</a> | <a href="#binary-search">Binary Search</a> | <a href="#pq">Priority Queue</a> | <a href="#backtracking">Backtracking</a> | <a href="#dp">Dynamic Programming</a> | <a href="#greedy">Greedy</a> | <a href="#graph">Graph</a> | <a href="#trie">Trie</a> | <a href="#design">Design</a></p>
+<p><strong>[Review Policy]</strong> By repeatedly reviewing I can get: 🍉(x1), 🍭(x2), 🐼(x3), 🚁(x4), 🚀(x5), …, TBD.</p>
+<hr>
+
+<h2 id="Notes-Summary"><a href="#Notes-Summary" class="headerlink" title="Notes (Summary)"></a>Notes (Summary)</h2><ul>
+<li><a href="notes/recursion-runtime-patterns.html">Recursion Runtime Patterns</a> 🍉</li>
+<li><a href="notes/divide-and-conquer-notes.html">Divide And Conquer Notes</a> <span class="blue">Recursion Tree</span><span class="blue">Master Theorem</span> 🍉</li>
+<li><a href="notes/dynamic-programming-notes.html">Dynamic Programming Notes 👀</a> <span class="blue">Top-Down</span><span class="blue">Bottom-Up</span></li>
+<li><a href="notes/backtracking-notes.html">Backtracking Notes 🥊</a> <span class="blue">Backtracking vs. DFS</span></li>
+<li><a href="notes/binary-search-template-notes.html">Binary Search Template Notes</a> <span class="blue">Lower&#x2F;Upper Bound</span> <code>[lo, hi)</code> &amp; <code>[lo, hi]</code> 🍉</li>
+<li><a href="notes/treeset-treemap-usage-and-binarySearch.html">TreeSet&#x2F;TreeMap Usage &amp; binarySearch()</a> <span class="blue">Tree Map</span><span class="blue">Arrays &amp; Collections</span></li>
+</ul>
+<hr>
+
+<h2 id="Solve-a-Problem-Write-a-Post"><a href="#Solve-a-Problem-Write-a-Post" class="headerlink" title="Solve a Problem, Write a Post"></a>Solve a Problem, Write a Post</h2><p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problemset/all/">LeetCode</a> &amp; <a target="_blank" rel="noopener" href="https://elementsofprogramminginterviews.com/">Elements of Programming Interviews in Java</a></p>
+<hr>
+
+<span id="bitwise">
+
+<h3 id="Bitwise"><a href="#Bitwise" class="headerlink" title="Bitwise"></a>Bitwise</h3><ul>
+<li><a href="problems/bitwise/136_single-number-i-ii-iii.html">136. Single Number I, II, III</a> <span class="orange">Medium</span><span class="gray">EPI 11.10</span></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/number-of-1-bits/">191. Number of 1 Bits</a> <span class="green">Easy</span><span class="purple">x &amp; (x - 1)</span><span class="purple">x &amp; ~(x - 1)</span><span class="gray">EPI 4.1</span></li>
+<li><a href="problems/bitwise/338_counting-bits.html">338. Counting Bits</a> <span class="orange">Medium</span><span class="blue">DP</span> 🍉</li>
+<li><a href="problems/bitwise/477_total-hamming-distance.html">477. Total Hamming Distance</a> <span class="orange">Medium</span><span class="gray">EPI 4.4</span></li>
+<li><a href="problems/bitwise/50_powx-n.html">50. Pow(x, n)</a> <span class="orange">Medium</span></li>
+<li><a href="problems/bitwise/371_sum-of-two-integers.html">371. Sum of Two Integers</a> <span class="green">Easy</span><span class="blue">Add Two Numbers</span><span class="purple">Not Easy</span></li>
+</ul>
+<hr>
+
+
+<span id="number-math">
+
+<h3 id="Number-Math"><a href="#Number-Math" class="headerlink" title="Number &amp; Math"></a>Number &amp; Math</h3><ul>
+<li><strong>Duplicate &amp; Missing</strong><ul>
+<li><a href="problems/number-and-math/duplicate-and-missing/268_missing-number.html">268. Missing Number</a> <span class="green">Easy</span> 🍉</li>
+<li><a href="problems/number-and-math/duplicate-and-missing/287_find-the-duplicate-number.html">287. Find the Duplicate Number</a> <span class="orange">Medium</span><span class="blue">Cycle Detection</span> 🍉</li>
+<li><a href="problems/number-and-math/duplicate-and-missing/645_set-mismatch.html">645. Set Mismatch</a> <span class="green">Easy</span><span class="blue">Bit Manipulation</span><span class="gray">EPI 11.10</span> 🍉</li>
+<li><a href="problems/number-and-math/duplicate-and-missing/41_first-missing-positive.html">41. First Missing Positive</a> <span class="red">Hard</span></li>
+</ul>
+</li>
+<li><strong>Primality</strong><ul>
+<li><a href="problems/number-and-math/primality/204_count-primes.html">204. Count Primes</a> <span class="green">Easy</span><span class="blue">Sieve of Eratosthenes</span></li>
+</ul>
+</li>
+<li><strong>Majority</strong><ul>
+<li><a href="problems/number-and-math/majority/169_majority-element.html">169. Majority Element</a> <span class="green">Easy</span><span class="blue">Boyer-Moore Majority Vote Algorithm</span></li>
+<li><a href="problems/number-and-math/majority/229_majority-element-ii.html">229. Majority Element II</a> <span class="orange">Medium</span></li>
+</ul>
+</li>
+<li><strong>Uncategorized</strong><ul>
+<li><a href="problems/number-and-math/uncategorized/9_palindrome-number.html">9. Palindrome Number</a> <span class="green">Easy</span><span class="gray">EPI 4.9</span></li>
+<li><a href="problems/number-and-math/uncategorized/66_plus-one_369_plus-one-linked-list.html">66. Plus One &#x2F; 369. Plus One Linked List</a> <span class="green">Easy</span><span class="purple">It is easy compared to 2. Add Two Numbers</span></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/power-of-two/">231. Power of Two</a> &#x2F; <a target="_blank" rel="noopener" href="https://leetcode.com/problems/power-of-three/">326. Power of Three</a> &#x2F; <a target="_blank" rel="noopener" href="https://leetcode.com/problems/power-of-four/">342. Power of Four</a> <span class="green">Easy</span></li>
+<li><a href="problems/number-and-math/uncategorized/13_roman-to-integer_12_integer-to-roman.html">13. Roman to Integer &#x2F; 12. Integer to Roman</a> <span class="green">Easy</span><span class="gray">EPI 6.8</span></li>
+<li><a href="problems/number-and-math/uncategorized/202_happy-number.html">202. Happy Number</a> <span class="green">Easy</span><span class="blue">Cycle Detection</span></li>
+<li><a href="problems/number-and-math/uncategorized/263_ugly-number.html">263. Ugly Number I &amp; II</a> <span class="orange">Medium</span><span class="blue">Prime</span><span class="blue">Priority Queue</span><span class="blue">DP</span></li>
+<li><a href="problems/number-and-math/uncategorized/780_reaching-points.html">780. Reaching Points</a> <span class="red">Hard</span></li>
+<li><a href="problems/number-and-math/uncategorized/273_integer-to-english-words.html">273. Integer to English Words</a> <span class="red">Hard</span></li>
+</ul>
+</li>
+</ul>
+<hr>
+
+
+<span id="string">
+
+<h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><ul>
+<li><strong>Basic</strong><ul>
+<li><a href="problems/string/basic/epi_6_1_interconvert-strings-and-integers.html">EPI 6.1 | Interconvert Strings and Integers</a> <span class="blue">String &lt;-&gt; Integer</span><span class="gray">EPI 6.1</span></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/string-to-integer-atoi/">8. String to Integer (atoi)</a> <span class="green">Easy</span><span class="purple">PhD in Corner Cases</span></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/reverse-string-ii/">541. Reverse String II</a> <span class="green">Easy</span><span class="purple">Group Index Practice</span></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/reverse-words-in-a-string/">151. Reverse Words in a String I</a> <span class="orange">Medium</span></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/reverse-words-in-a-string-ii/discuss/400086">186. Reverse Words in a String II</a> <span class="orange">Medium</span><span class="blue">In-Place</span><span class="gray">EPI 6.6</span></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/reverse-words-in-a-string-iii/discuss/400078/">557. Reverse Words in a String III</a> <span class="green">Easy</span><span class="purple">Simplified Version of II</span></li>
+<li><a href="problems/string/basic/819_most-common-word.html">819. Most Common Word</a> <span class="green">Easy</span><span class="blue">Regex</span></li>
+<li><a href="problems/string/basic/412_fizz-buzz.html">412. Fizz Buzz</a> <span class="green">Easy</span></li>
+</ul>
+</li>
+<li><strong>Palindrome</strong><ul>
+<li><a href="problems/string/palindrome/125_valid-palindrome.html">125. Valid Palindrome I &amp; II</a> <span class="green">Easy</span><span class="blue">Two Pointers</span><span class="gray">EPI 6.5</span></li>
+<li><a href="problems/string/palindrome/266_palindrome-permutation.html">266. Palindrome Permutation I</a> <span class="green">Easy</span><span class="blue">Hash Table</span></li>
+<li><a href="problems/string/palindrome/267_palindrome-permutation-ii.html">267. Palindrome Permutation II</a> <span class="orange">Medium</span><span class="blue">Backtracking</span></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/junhaowww/EPIJudge/blob/master/epi_judge_java/epi/EnumeratePalindromicDecompositions.java">EPI 15.8 | Generate Palindromic Decompositions</a> <span class="blue">Backtracking</span><span class="purple">Time Complexity</span><span class="gray">EPI 15.8</span></li>
+<li><a href="problems/string/palindrome/647_palindromic-substrings.html">647. Palindromic Substrings</a> <span class="orange">Medium</span><span class="blue">Expansion</span><span class="blue">DP</span> 🍉</li>
+<li><a href="problems/string/palindrome/5_longest-palindromic-substring.html">5. Longest Palindromic Substring</a> <span class="orange">Medium</span><span class="blue">Expansion</span><span class="blue">DP</span> 🍉</li>
+<li><a href="problems/string/palindrome/516_longest-palindromic-subsequence.html">516. Longest Palindromic Subsequence</a> <span class="orange">Medium</span><span class="blue">DFS</span><span class="blue">DP</span> 🍉</li>
+</ul>
+</li>
+<li><strong>Uncategorized</strong><ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/find-common-characters/">1002. Find Common Characters</a> <span class="green">Easy</span><span class="purple">A bit strange</span></li>
+<li><a href="problems/string/uncategorized/451_sort-characters-by-frequency.html">451. Sort Characters By Frequency</a> <span class="orange">Medium</span></li>
+<li><a href="problems/string/uncategorized/271_encode-and-decode-strings.html">271. Encode and Decode Strings</a> <span class="orange">Medium</span></li>
+<li><a target="_blank" rel="noopener" href="https://gist.github.com/junhaowww/3dfc5bda886acdd030848599b3b9faa8">937. Reorder Data in Log Files</a> <span class="green">Easy</span><span class="purple">Comparator</span><span class="purple">Sucks</span> 🍉🍭</li>
+<li><a href="problems/string/uncategorized/6_zigzag-conversion.html">6. ZigZag Conversion</a> <span class="orange">Medium</span><span class="purple">Index Practice</span></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/count-and-say/">38. Count and Say</a> <span class="green">Easy</span><span class="purple">Index Practice</span></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/validate-ip-address/">468. Validate IP Address</a> <span class="orange">Medium</span></li>
+<li><a href="problems/string/uncategorized/oa_substring-of-size-k-with-k-distinct-chars.html">OA | Substring of Size K with K Distinct Chars</a> <span class="orange">Medium</span><span class="blue">Sliding Window</span><span class="blue">Hash Set</span></li>
+<li><a href="problems/string/uncategorized/49_group-anagrams.html">49. Group Anagrams</a> <span class="orange">Medium</span><span class="blue">Hash Map</span><span class="blue">sorting</span></li>
+<li><a target="_blank" rel="noopener" href="https://gist.github.com/junhaowww/266896226c933460525cfdfc92c4bea8">953. Verifying an Alien Dictionary</a> <span class="green">Easy</span></li>
+</ul>
+</li>
+</ul>
+<hr>
+
+
+<span id="linked-list">
+
+<h3 id="Linked-List"><a href="#Linked-List" class="headerlink" title="Linked List"></a>Linked List</h3><ul>
+<li><strong>Add &#x2F; Merge Two Lists</strong><ul>
+<li><a href="problems/linked-list/add-and-merge-two-lists/2_add-two-numbers.html">2. Add Two Numbers</a> <span class="orange">Medium</span> 🍉🍭</li>
+<li><a href="problems/linked-list/add-and-merge-two-lists/445_add-two-numbers-ii.html">445. Add Two Numbers II</a> <span class="orange">Medium</span> 🍉🍭</li>
+<li><a href="problems/linked-list/add-and-merge-two-lists/21_merge-two-sorted-lists.html">21. Merge Two Sorted Lists</a> <span class="green">Easy</span><span class="gray">EPI 7.1</span> 🍉🍭</li>
+<li><a href="problems/linked-list/add-and-merge-two-lists/23_merge-k-sorted-lists.html">23. Merge k Sorted Lists</a> <span class="red">Hard</span><span class="gray">EPI 10.1</span> 🍉🍭</li>
+</ul>
+</li>
+<li><strong>Reverse &#x2F; Swap List</strong><ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/reverse-linked-list/">206. Reverse Linked List</a> <span class="green">Easy</span> (<a target="_blank" rel="noopener" href="https://gist.github.com/junhaowww/9d70781010b39a33b5b6cb23f2dc753b">gist</a>) 🍉🍭</li>
+<li><a href="problems/linked-list/reverse-and-swap-list/92_reverse-linked-list-ii.html">92. Reverse Linked List II</a> <span class="orange">Medium</span><span class="gray">EPI 7.2</span> 🍉🍭</li>
+<li><a href="problems/linked-list/reverse-and-swap-list/25_reverse-nodes-in-k-group.html">25. Reverse Nodes in k-Group</a> <span class="red">Hard</span><span class="gray">EPI 7.2</span> 🍉🍭</li>
+<li><a href="problems/linked-list/reverse-and-swap-list/24_swap-nodes-in-pairs.html">24. Swap Nodes in Pairs</a> <span class="orange">Medium</span> 🍉🍭</li>
+</ul>
+</li>
+<li><strong>Cycle Detection</strong><ul>
+<li><a href="problems/linked-list/cycle-detection/141_linked-list-cycle.html">141. Linked List Cycle I</a> <span class="green">Easy</span><span class="blue">Two Pointers</span> 🍉🍭</li>
+<li><a href="problems/linked-list/cycle-detection/142_linked-list-cycle-ii.html">142. Linked List Cycle II</a> <span class="orange">Medium</span><span class="blue">Two Pointers</span><span class="gray">EPI 7.3</span> 🍉🍭</li>
+</ul>
+</li>
+<li><strong>Sort List</strong><ul>
+<li><a href="problems/linked-list/sort-list/147_insertion-sort-list.html">147. Insertion Sort List</a> <span class="orange">Medium</span> 🍉🍭</li>
+<li><a href="problems/linked-list/sort-list/148_sort-list.html">148. Sort List</a> <span class="orange">Medium</span><span class="blue">Slow&#x2F;Fast Pointers</span> 🍉🍭</li>
+</ul>
+</li>
+<li><strong>Uncategorized</strong><ul>
+<li><a href="problems/linked-list/uncategorized/234_palindrome-linked-list.html">234. Palindrome Linked List</a> <span class="green">Easy</span><span class="blue">Two Pointers</span> 🍉</li>
+<li><a href="problems/linked-list/uncategorized/160_intersection-of-two-linked-lists.html">160. Intersection of Two Linked Lists</a> <span class="green">Easy</span><span class="blue">Two Pointers</span><span class="gray">EPI 7.4</span> 🍉🍭</li>
+<li><a href="problems/linked-list/uncategorized/61_rotate-list.html">61. Rotate List</a> <span class="orange">Medium</span> 🍉</li>
+<li><a href="problems/linked-list/uncategorized/817_linked-list-components.html">817. Linked List Components</a> <span class="orange">Medium</span> 🍉</li>
+<li><a href="problems/linked-list/uncategorized/328_odd-even-linked-list.html">328. Odd Even Linked List</a> <span class="orange">Medium</span></li>
+<li><a href="problems/linked-list/uncategorized/725_split-linked-list-in-parts.html">725. Split Linked List in Parts</a> <span class="orange">Medium</span></li>
+<li><a href="problems/linked-list/uncategorized/138_copy-list-with-random-pointer.html">138. Copy List with Random Pointer</a> <span class="orange">Medium</span><span class="blue">Deep Copy</span> 🍉</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/remove-linked-list-elements/">203. Remove Linked List Elements</a> <span class="green">Easy</span><span class="blue">Dummy</span></li>
+</ul>
+</li>
+</ul>
+<hr>
+
+
+
+<span id="array">
+
+<h3 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h3><ul>
+<li><strong>N-Sum</strong><ul>
+<li><a href="problems/array/n-sum/1_two-sum.html">1. Two Sum</a> <span class="green">Easy</span><span class="blue">Hash Table</span><span class="purple">Used Once</span><span class="purple">Elements are not necessarily unique</span> 🍉</li>
+<li><a href="problems/array/n-sum/167_two-sum-ii.html">167. Two Sum II (sorted)</a> <span class="green">Easy</span><span class="blue">Hash Table</span><span class="blue">Binary Search</span><span class="blue">Two Pointers</span><span class="purple">Used Once</span> 🍉</li>
+<li><a href="problems/array/n-sum/170_two-sum-iii.html">170. Two Sum III (data structure design)</a> <span class="green">Easy</span><span class="blue">Two Sets</span><span class="blue">Count Map</span> 🍉</li>
+<li><a href="problems/array/n-sum/653_two-sum-iv.html">653. Two Sum IV (BST)</a> <span class="green">Easy</span><span class="blue">BST</span><span class="purple">A Tree Problem</span> 🍉</li>
+<li><a href="problems/array/n-sum/1214_two-sum-bsts.html">1214. Two Sum BSTs</a> <span class="orange">Medium</span><span class="blue">Two Pointers</span> 🍉</li>
+<li><a href="problems/array/n-sum/1099_two-sum-less-than-k.html">1099. Two Sum Less Than K</a> <span class="green">Easy</span><span class="blue">Sorting &amp; Two Pointers</span> 🍉</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/junhaowww/EPIJudge/blob/master/epi_judge_java/epi/ThreeSum.java">EPI 17.4 | The 3-Sum Problem</a> <span class="blue">Hash Table</span><span class="blue">Binary Search</span><span class="blue">Two Pointers</span><span class="purple">Used &gt;1</span><span class="gray">EPI 17.4</span> 🍉</li>
+<li><a href="problems/array/n-sum/15_3-sum.html">15. 3Sum</a> <span class="orange">Medium</span><span class="blue">Two Pointers</span><span class="purple">Used Once</span><span class="purple">Difficult to handle duplicate triplets</span> 🍉</li>
+<li><a href="problems/array/n-sum/259_3-sum-smaller.html">259. 3Sum Smaller</a> <span class="orange">Medium</span><span class="blue">Two Pointers</span><span class="purple">Allow Duplicate Pairs</span> 🍉</li>
+<li><a href="problems/array/n-sum/18_4-sum.html">18. 4Sum</a> <span class="orange">Medium</span><span class="blue">Two Pointers</span> 🍉</li>
+</ul>
+</li>
+<li><strong>Subarray Sum</strong><ul>
+<li><a href="problems/array/subarray-sum/560_subarray-sum-equals-k.html">560. Subarray Sum Equals K</a> <span class="orange">Medium</span><span class="blue">Hash Map</span></li>
+<li><a href="problems/array/subarray-sum/325_maximum-size-subarray-sum-equals-k.html">325. Maximum Size Subarray Sum Equals K</a> <span class="orange">Medium</span><span class="blue">Hash Map</span><ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/contiguous-array/">525. Contiguous Array</a> <span class="orange">Medium</span><span class="purple">To Be Done</span></li>
+</ul>
+</li>
+<li><a href="problems/array/subarray-sum/209_minimum-size-subarray-sum.html">209. Minimum Size Subarray Sum</a> <span class="orange">Medium</span><span class="blue">Tree Map</span><span class="blue">Binary Search</span><span class="blue">Two Pointers</span><ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/">862. Shortest Subarray with Sum at Least K</a> <span class="red">Hard</span><span class="purple">To Be Done (Negative Allowed)</span></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/minimum-window-substring/">76. Minimum Window Substring</a> <span class="red">Hard</span><span class="purple">To Be Done (Same Idea on Two Pointers)</span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Sliding Window</strong><ul>
+<li><a href="problems/array/sliding-window/219_contains-duplicate-ii.html">219. Contains Duplicate II</a> <span class="green">Easy</span><span class="blue">Hash Map</span><span class="blue">k-size Set</span> 🍉</li>
+<li><a href="problems/array/sliding-window/220_contains-duplicate-iii.html">220. Contains Duplicate III</a> <span class="orange">Medium</span><span class="blue">Tree Set</span> 🍉</li>
+<li><a href="problems/array/sliding-window/239_sliding-window-maximum.html">239. Sliding Window Maximum</a> <span class="red">Hard</span><span class="blue">Priority Queue</span><span class="blue">Deque</span><span class="blue">DP</span> 🍉</li>
+<li><a href="problems/array/sliding-window/992_subarrays-with-k-different-integers.html">992. Subarrays with K Distinct Integers</a> <span class="red">Hard</span><span class="blue">Sliding Window</span></li>
+</ul>
+</li>
+<li><strong>Intersection</strong><ul>
+<li><a href="problems/array/intersection/349_intersection-of-two-arrays.html">349. Intersection of Two Arrays</a> <span class="green">Easy</span><span class="blue">Hash Table</span> 🍉</li>
+<li><a href="problems/array/intersection/350_intersection-of-two-arrays-ii.html">350. Intersection of Two Arrays II</a> <span class="green">Easy</span><span class="blue">Hash Table</span><span class="blue">Binary Search</span><span class="blue">Two Pointers</span> 🍉</li>
+</ul>
+</li>
+<li><strong>Duplicates</strong><ul>
+<li><a href="problems/array/duplicates/26_remove-duplicates-from-sorted-array.html">26. Remove Duplicates from Sorted Array</a> <span class="green">Easy</span><span class="gray">EPI 5.5</span> 🍉</li>
+<li><a href="problems/array/duplicates/217_contains-duplicate.html">217. Contains Duplicate I</a> <span class="green">Easy</span><span class="blue">Hash Set</span><span class="blue">Sorting</span> 🍉</li>
+</ul>
+</li>
+<li><strong>In-Place Removal &#x2F; Swapping</strong><ul>
+<li><a href="problems/array/in-place-removal-and-swapping/epi_5_1-the-dutch-national-flag-problem.html">EPI 5.1 | The Dutch National Flag Problem</a> <span class="blue">3-Way Partition</span><span class="blue">Sorting</span><span class="gray">EPI 5.1</span></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/array-partition-i">561. Array Partition I</a> <span class="green">Easy</span><span class="blue">Permutation</span></li>
+<li><a href="problems/array/in-place-removal-and-swapping/27_remove-element.html">27. Remove Element</a> <span class="green">Easy</span><span class="blue">Two Pointers</span><span class="blue">Rare vs. Many</span></li>
+<li><a href="problems/array/in-place-removal-and-swapping/283_move-zeroes.html">283. Move Zeroes</a> <span class="green">Easy</span><span class="blue">Two Pointers</span></li>
+</ul>
+</li>
+<li><strong>Buy and Sell Stocks &amp; Similar Problems</strong><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/junhaowww/EPIJudge/blob/master/epi_judge_java/epi/BuyAndSellStock.java">EPI 5.6 | Longest Subarray with Equal elements</a> <span class="blue">One-Pass</span><span class="gray">EPI 5.6 Variant</span></li>
+<li><a href="problems/array/buy-and-sell-stocks-and-similar-problems/53_maximum-subarray.html">53. Maximum Subarray</a> <span class="green">Easy</span><span class="blue">divide-and-conquer</span><span class="blue">DP</span></li>
+<li><a href="problems/array/buy-and-sell-stocks-and-similar-problems/121_best-time-to-buy-and-sell-stock.html">121. Best Time to Buy and Sell Stock</a> <span class="green">Easy</span><span class="blue">divide-and-conquer</span><span class="blue">One-Pass</span><span class="gray">EPI 5.6</span></li>
+</ul>
+</li>
+<li><strong>Uncategorized</strong><ul>
+<li><a href="problems/array/uncategorized/88_merge-sorted-array.html">88. Merge Sorted Array</a> <span class="green">Easy</span><span class="blue">Two Pointers</span><span class="gray">EPI 13.2</span></li>
+<li><a href="problems/array/uncategorized/epi_5_4_advancing-through-an-array.html">EPI 5.4 | Advancing Through an Array</a> <span class="blue">Greedy</span><span class="blue">DFS</span><span class="gray">EPI 5.4</span></li>
+<li><a href="problems/array/uncategorized/189_rotate-array.html">189. Rotate Array</a> <span class="green">Easy</span><span class="blue">In-Place</span></li>
+<li><a href="problems/array/uncategorized/11_container-with-most-water.html">11. Container With Most Water</a> <span class="orange">Medium</span><span class="blue">Two Pointers</span></li>
+<li><a href="problems/array/uncategorized/56_merge-intervals.html">56. Merge Intervals</a> <span class="orange">Medium</span></li>
+<li><a href="problems/array/uncategorized/945_minimum-increment-to-make-array-unique.html">945. Minimum Increment to Make Array Unique</a> <span class="orange">Medium</span><span class="blue">Sorting</span></li>
+<li><a href="problems/array/uncategorized/532_k-diff-paris-in-an-array.html">532. K-diff Pairs in an Array</a> <span class="green">Easy</span><span class="blue">Hash Map</span></li>
+<li><a href="problems/array/uncategorized/739_daily-temperatures.html">739. Daily Temperatures</a> <span class="orange">Medium</span><span class="blue">Stack</span></li>
+<li><a href="problems/array/uncategorized/695_max-area-of-island.html">695. Max Area of Island</a> <span class="orange">Medium</span><span class="blue">DFS</span></li>
+<li><a href="problems/array/uncategorized/200_number-of-islands.html">200. Number of Islands</a> <span class="orange">Medium</span><span class="blue">DFS</span><span class="blue">BFS</span></li>
+<li><a href="problems/array/uncategorized/694_number-of-distinct-islands.html">694. Number of Distinct Islands</a> <span class="orange">Medium</span><span class="blue">DFS</span><span class="blue">Hash Table</span></li>
+<li><a href="problems/array/uncategorized/289_game-of-life.html">289. Game of Life</a> <span class="orange">Medium</span></li>
+<li><a href="problems/array/uncategorized/73_set-matrix-zeroes.html">73. Set Matrix Zeroes</a> <span class="orange">Medium</span></li>
+<li><a href="problems/array/uncategorized/31_next-permutation.html">31. Next Permutation</a> <span class="orange">Medium</span></li>
+</ul>
+</li>
+</ul>
+<hr>
+
+
+
+
+
+<span id="tree">
+
+<h3 id="Tree"><a href="#Tree" class="headerlink" title="Tree"></a>Tree</h3><ul>
+<li><strong>Traversal</strong><ul>
+<li><a href="problems/tree/traversal/94_binary-tree-inorder-traversal.html">94. Binary Tree Inorder Traversal</a> <span class="orange">Medium</span><span class="blue">Morris Traversal</span> 🍉🍭</li>
+<li><a href="problems/tree/traversal/144_binary-tree-preorder-traversal.html">144. Binary Tree Preorder Traversal</a> <span class="orange">Medium</span><span class="blue">Morris Traversal</span> 🍉🍭</li>
+<li><a href="problems/tree/traversal/145_binary-tree-postorder-traversal.html">145. Binary Tree Postorder Traversal</a> <span class="red">Hard</span><span class="blue">Preorder-like</span><span class="blue">Inorder-like</span> 🍉🍭</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/junhaowww/EPIJudge/blob/master/epi_judge_java/epi/TreeWithParentInorder.java">EPI 9.10 | Binary Tree Traversals with Parent</a> <span class="gray">EPI 9.10</span><span class="purple">Not Common</span> 🍉</li>
+<li><a href="problems/tree/traversal/102_binary-tree-level-order-traversal.html">102. Binary Tree Level Order Traversal I &amp; II</a> <span class="orange">Medium</span><span class="blue">Preorder</span><span class="blue">BFS</span> 🍉🍭</li>
+<li><a href="problems/tree/traversal/429_n-ary-tree-level-order-traversal.html">429. N-ary Tree Level Order Traversal</a> <span class="green">Easy</span> 🍉🍭</li>
+<li><a href="problems/tree/traversal/589_n-ary-tree-preorder-traversal.html">589. N-ary Tree Preorder Traversal</a> <span class="green">Easy</span> 🍉🍭</li>
+<li><a href="problems/tree/traversal/987_vertical-order-traversal-of-a-binary-tree.html">987. Vertical Order Traversal of a Binary Tree</a> <span class="orange">Medium</span> 🍉🍭</li>
+<li><a href="problems/tree/traversal/114_flatten-binary-tree-to-linked-list.html">114. Flatten Binary Tree to Linked List</a> <span class="orange">Medium</span> 🍉🍭</li>
+</ul>
+</li>
+<li><strong>Equality &amp; Subtree</strong><ul>
+<li><a href="problems/tree/equality-and-subtree/100_same-tree.html">100. Same Tree</a> <span class="green">Easy</span> 🍉🍭</li>
+<li><a href="problems/tree/equality-and-subtree/101_symmetric-tree.html">101. Symmetric Tree</a> <span class="green">Easy</span><span class="blue">DFS</span><span class="blue">BFS</span><span class="gray">EPI 9.2</span> 🍉🍭</li>
+<li><a href="problems/tree/equality-and-subtree/572_subtree-of-another-tree.html">572. Subtree of Another Tree</a> <span class="green">Easy</span><span class="blue">Preorder Sequence Comparison</span> 🍉🍭</li>
+</ul>
+</li>
+<li><strong>Height &amp; Depth</strong><ul>
+<li><a href="problems/tree/height-and-depth/104_maximum-depth-of-binary-tree.html">104. Maximum Depth of Binary Tree</a> <span class="green">Easy</span> 🍉</li>
+<li><a href="problems/tree/height-and-depth/110_balanced-binary-tree.html">110. Balanced Binary Tree</a> <span class="green">Easy</span> 🍉</li>
+<li><a href="problems/tree/height-and-depth/111_minimum-depth-of-binary-tree.html">111. Minimum Depth of Binary Tree</a> <span class="green">Easy</span> 🍉</li>
+<li><a href="problems/tree/height-and-depth/236_lowest-common-ancestor-of-a-binary-tree.html">236. Lowest Common Ancestor of a Binary Tree</a> <span class="orange">Medium</span><span class="gray">EPI 9.3</span><span class="gray">EPI 9.4</span></li>
+<li><a href="problems/tree/height-and-depth/235_lowest-common-ancestor-of-a-binary-search-tree.html">235. Lowest Common Ancestor of a Binary Search Tree</a> <span class="green">Easy</span><span class="gray">EPI 14.4</span></li>
+</ul>
+</li>
+<li><strong>Sum &amp; Path</strong><ul>
+<li><a href="problems/tree/sum-and-path/9_5-sum-root-to-leaf-paths-of-binary-tree.html">EPI 9.5 | Sum Root-To-Leaf Paths of Binary Tree (Binary Data)</a> <span class="gray">EPI 9.5</span> 🍉</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/sum-root-to-leaf-numbers/discuss/321747/">129. Sum Root to Leaf Numbers (Decimal Data)</a> <span class="orange">Medium</span> <span class="gray">EPI 9.5</span> 🍉</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/path-sum/">112. Path Sum</a> <span class="green">Easy</span><span class="gray">EPI 9.6</span> 🍉</li>
+<li><a href="problems/tree/sum-and-path/113_path-sum-ii.html">113. Path Sum II</a> <span class="orange">Medium</span> 🍉</li>
+<li><a href="problems/tree/sum-and-path/437_path-sum-iii.html">437. Path Sum III</a> <span class="green">Easy</span><span class="purple">Not Easy, Prefix Sum is difficult to understand</span> 🍉</li>
+<li><a href="problems/tree/sum-and-path/257_binary-tree-paths.html">257. Binary Tree Paths</a> <span class="green">Easy</span> 🍉</li>
+<li><strong>Using Max &#x2F; Min Field</strong><ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/diameter-of-binary-tree/">543. Diameter of Binary Tree</a> <span class="green">Easy</span><span class="purple">Simple Version of 124</span></li>
+<li><a href="problems/tree/sum-and-path/124_binary-tree-maximum-path-sum.html">124. Binary Tree Maximum Path Sum</a> <span class="red">Hard</span> 🍉</li>
+<li><a href="problems/tree/sum-and-path/687_longest-univalue-path.html">687. Longest Univalue Path</a> <span class="green">Easy</span><span class="purple">Another Version of 124. Not Easy</span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Pruning &amp; Trimming</strong><ul>
+<li><a href="problems/tree/pruning-and-trimming/814_binary-tree-pruning.html">814. Binary Tree Pruning</a> <span class="orange">Medium</span><span class="purple">Great Problem</span> 🍉</li>
+<li><a href="problems/tree/pruning-and-trimming/669_trim-a-binary-search-tree.html">669. Trim a Binary Search Tree</a> <span class="green">Easy</span> 🍉</li>
+</ul>
+</li>
+<li><strong>Recovery &amp; Construction</strong><ul>
+<li><a href="problems/tree/recovery-and-construction/105_construct-binary-tree-from-preorder-and-inorder-traversal.html">105. Construct Binary Tree from Preorder &#x2F; Postorder and Inorder Traversal</a> <span class="orange">Medium</span> <span class="gray">EPI 9.11</span></li>
+<li><a href="problems/tree/recovery-and-construction/108_convert-sorted-array-to-binary-search-tree.html">108. Convert Sorted Array &#x2F; List to Binary Search Tree</a> <span class="green">Easy</span><span class="orange">Medium</span> <span class="gray">EPI 14.8</span> 🍉</li>
+<li><a href="problems/tree/recovery-and-construction/99_recover-binary-search-tree.html">99. Recover Binary Search Tree</a> <span class="red">Hard</span></li>
+<li><a href="problems/tree/recovery-and-construction/1028_recover-a-tree-from-preorder-traversal.html">1028. Recover a Tree From Preorder Traversal</a> <span class="red">Hard</span></li>
+<li><a href="problems/tree/recovery-and-construction/297_serialize-and-deserialize-binary-tree.html">297. Serialize and Deserialize Binary Tree</a> <span class="red">Hard</span></li>
+<li><a href="problems/tree/recovery-and-construction/428_serialize-and-deserialize-n-ary-tree.html">428. Serialize and Deserialize N-ary Tree</a> <span class="orange">Medium</span></li>
+<li><a href="problems/tree/recovery-and-construction/449_serialize-and-deserialize-bst.html">449. Serialize and Deserialize BST</a> <span class="orange">Medium</span></li>
+</ul>
+</li>
+<li><span id="bst"><strong>Binary Search Tree (BST)</strong><ul>
+<li><a href="problems/tree/bst/98_validate-binary-search-tree.html">98. Validate Binary Search Tree</a> <span class="orange">Medium</span><span class="gray">EPI 14.1</span> 🍉</li>
+<li><a href="problems/tree/bst/285_inorder-successor-in-bst.html">285. Inorder Successor in BST</a> <span class="orange">Medium</span> 🍉</li>
+<li><a href="problems/tree/bst/510_inorder-successor-in-bst-ii.html">510. Inorder Successor in BST II</a> <span class="orange">Medium</span><span class="gray">EPI 9.9</span> 🍉</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/insert-into-a-binary-search-tree/">701. Insert into a Binary Search Tree</a> <span class="orange">Medium</span> 🍉</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/delete-node-in-a-bst/discuss/321736/Learn-this-clean-code-from-CS-61B">450. Delete Node in a BST</a> <span class="orange">Medium</span> 🍉</li>
+<li><a href="problems/tree/bst/230_kth-smallest-element-in-a-bst.html">230. Kth Smallest Element in a BST</a> <span class="orange">Medium</span><span class="gray">EPI 14.3</span> 🍉</li>
+<li><a href="problems/tree/bst/530_minimum-absolute-difference-in-bst.html">530. Minimum Absolute Difference in BST</a> <span class="green">Easy</span> 🍉</li>
+<li><a href="problems/tree/bst/501_find-mode-in-binary-search-tree.html">501. Find Mode in Binary Search Tree</a> <span class="green">Easy</span></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/binary-search-tree-iterator/">173. Binary Search Tree Iterator</a> <span class="orange">Medium</span></li>
+</ul>
+</li>
+<li><strong>Uncategorized</strong><ul>
+<li><a href="problems/tree/uncategorized/617_merge-two-binary-trees.html">617. Merge Two Binary Trees</a> <span class="green">Easy</span></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/maximum-binary-tree/">654. Maximum Binary Tree</a> <span class="orange">Medium</span></li>
+</ul>
+</li>
+</ul>
+<hr>
+
+
+
+
+<span id="binary-search">
+
+<h3 id="Binary-Search"><a href="#Binary-Search" class="headerlink" title="Binary Search"></a>Binary Search</h3><ul>
+<li><strong>Basic Search</strong><ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/search-insert-position/">35. Search Insert Position</a> <span class="green">Easy</span></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/">34. Find First and Last Position of Element in Sorted Array</a> <span class="orange">Medium</span></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/first-bad-version/">278. First Bad Version</a> <span class="green">Easy</span></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/guess-number-higher-or-lower/">374. Guess Number Higher or Lower</a> <span class="green">Easy</span></li>
+<li><a href="problems/binary-search/basic/epi_11_2-search-a-sorted-array-for-entry-equal-to-its-index.html">EPI 11.2 | Search a Sorted Array for Entry Equal to Its Index</a> <span class="purple">Standard BS</span><span class="gray">EPI 11.2</span></li>
+</ul>
+</li>
+<li><strong>Rotated Sorted Array</strong><ul>
+<li><a href="problems/binary-search/rotated-sorted-array/153_find-minimum-in-rotated-sorted-array.html">153. Find Minimum in Rotated Sorted Array</a> <span class="orange">Medium</span><span class="purple">For Problem 33</span><span class="blue">divide-and-conquer</span></li>
+<li><a href="problems/binary-search/rotated-sorted-array/154_find-minimum-in-rotated-sorted-array-ii.html">154. Find Minimum in Rotated Sorted Array II</a> <span class="red">Hard</span><span class="purple">For Problem 81</span><span class="blue">divide-and-conquer</span></li>
+<li><a href="problems/binary-search/rotated-sorted-array/33_search-in-rotated-sorted-array.html">33 &#x2F; 81. Search in Rotated Sorted Array I &amp; II</a> <span class="orange">Medium</span></li>
+</ul>
+</li>
+<li><strong>Matrix</strong><ul>
+<li><a href="problems/binary-search/matrix/74_search-a-2d-matrix.html">74. Search a 2D Matrix</a> <span class="orange">Medium</span><span class="gray">EPI 11.6</span></li>
+<li><a href="problems/binary-search/matrix/240_search-a-2d-matrix-ii.html">240. Search a 2D Matrix II</a> <span class="orange">Medium</span><span class="gray">EPI 11.6</span></li>
+<li><a href="problems/binary-search/matrix/378_kth-smallest-element-in-a-sorted-matrix.html">378. Kth Smallest Element in a Sorted Matrix</a> <span class="orange">Medium</span><span class="gray">EPI 11.6</span></li>
+</ul>
+</li>
+<li><strong>Uncategorized</strong><ul>
+<li><a href="problems/binary-search/uncategorized/367_valid-perfect-square.html">367. Valid Perfect Square</a> <span class="green">Easy</span><span class="gray">EPI 11.4</span></li>
+<li><a href="problems/binary-search/uncategorized/633_sum-of-square-numbers.html">633. Sum of Square Numbers</a> <span class="green">Easy</span></li>
+<li><a href="problems/binary-search/uncategorized/29_divide-two-integers.html">29. Divide Two Integers</a> <span class="orange">Medium</span></li>
+<li><a href="problems/binary-search/uncategorized/4_median-of-two-sorted-arrays.html">4. Median of Two Sorted Arrays</a> <span class="red">Hard</span></li>
+<li><a href="problems/binary-search/uncategorized/162_find-peak-element.html">162. Find Peak Element</a> <span class="orange">Medium</span><span class="purple">Very Strange</span></li>
+</ul>
+</li>
+</ul>
+<hr>
+
+
+
+<span id="pq">
+
+<h3 id="Priority-Queue"><a href="#Priority-Queue" class="headerlink" title="Priority Queue"></a>Priority Queue</h3><ul>
+<li><a href="problems/heap/347_top-k-frequent-elements.html">347. Top K Frequent Elements &#x2F; 692. Top K Frequent Words</a> <span class="orange">Medium</span> 🍉🍭</li>
+<li><a href="problems/heap/215_kth-largest-element-in-an-array.html">215. Kth Largest Element in an Array</a> <span class="orange">Medium</span><span class="blue">Quick Select</span><span class="gray">EPI 11.8</span></li>
+<li><a href="problems/heap/973_k-closest-points-to-origin.html">973. K Closest Points to Origin</a> <span class="orange">Medium</span> <span class="purple">Very Similar to 215</span><span class="blue">Quick Select</span><span class="gray">EPI 10.4</span> 🍉🍭</li>
+<li><a href="problems/heap/295_find-median-from-data-stream.html">295. Find Median from Data Stream</a> <span class="red">Hard</span><span class="purple">Binary Search Templates</span> 🍉🍭</li>
+<li><a href="problems/heap/659_split-array-into-consecutive-subsequences.html">659. Split Array into Consecutive Subsequences</a> <span class="orange">Medium</span><span class="blue">Greedy</span></li>
+<li><a href="problems/heap/407_trapping-rain-water-ii.html">407. Trapping Rain Water II</a> <span class="red">Hard</span></li>
+<li><a href="problems/heap/1102_path-with-maximum-minimum-value.html">1102. Path With Maximum Minimum Value</a> <span class="orange">Medium</span><span class="blue">Backtracking</span><span class="blue">Heap</span><span class="purple">Variant -&gt; DP</span></li>
+</ul>
+<hr>
+
+
+<span id="backtracking">
+
+<h3 id="Backtracking"><a href="#Backtracking" class="headerlink" title="Backtracking"></a>Backtracking</h3><ul>
+<li><strong>Basic</strong><ul>
+<li><a href="problems/backtracking/basic/46_permutations.html">46. Permutations I &amp; II</a> <span class="orange">Medium</span><span class="gray">EPI 15.4</span></li>
+<li><a href="problems/backtracking/basic/77_combinations.html">77. Combinations</a><span class="orange">Medium</span><span class="gray">EPI 15.6</span></li>
+<li><a href="problems/backtracking/basic/78_subsets.html">78. Subsets I &amp; II</a> <span class="orange">Medium</span><span class="blue">StartIndex</span><span class="purple">Interesting!</span><span class="gray">EPI 15.5</span></li>
+<li><a href="problems/backtracking/basic/17_letter-combinations-of-a-phone-number.html">17. Letter Combinations of a Phone Number</a> <span class="orange">Medium</span><span class="blue">StartIndex</span><span class="purple">Similar to Subsets</span><span class="gray">EPI 15.2</span></li>
+<li><a href="problems/backtracking/basic/39_combination-sum.html">39. Combination Sum I &amp; II &amp; III</a> <span class="orange">Medium</span></li>
+</ul>
+</li>
+<li><strong>Parentheses</strong><ul>
+<li><a href="problems/backtracking/parentheses/20_valid-parentheses.html">20. Valid Parentheses</a> <span class="green">Easy</span><span class="blue">Stack</span><span class="purple">Not Backtracking</span></li>
+<li><a href="problems/backtracking/parentheses/22_generate-parentheses.html">22. Generate Parentheses</a> <span class="orange">Medium</span><span class="gray">EPI 15.7</span></li>
+<li><a href="problems/backtracking/parentheses/301_remove-invalid-parentheses.html">301. Remove Invalid Parentheses</a> <span class="red">Hard</span></li>
+</ul>
+</li>
+<li><strong>Uncategorized</strong><ul>
+<li><a href="problems/backtracking/uncategorized/89_gray-code.html">89. Gray Code</a> <span class="orange">Medium</span><span class="gray">EPI 15.11</span></li>
+<li><a href="problems/backtracking/uncategorized/93_restore-ip-addresses.html">93. Restore IP Addresses</a> <span class="orange">Medium</span><span class="gray">EPI 6.9</span></li>
+<li><a href="problems/backtracking/uncategorized/51_n-queens.html">51. N-Queens I &amp; II</a> <span class="red">Hard</span></li>
+<li><a href="problems/backtracking/uncategorized/36_valid-sudoku.html">36. Valid Sudoku</a> <span class="orange">Medium</span><span class="blue">Hash Table</span></li>
+<li><a href="problems/backtracking/uncategorized/37_sudoku-solver.html">37. Sudoku Solver</a> <span class="red">Hard</span></li>
+<li><a href="problems/backtracking/uncategorized/79_word-search-i-ii.html">79. Word Search I &amp; II</a> <span class="orange">Medium</span></li>
+<li><a href="problems/backtracking/uncategorized/139_word-break.html">139. Word Break I</a> <span class="orange">Medium</span><span class="blue">DP</span></li>
+<li><a href="problems/backtracking/uncategorized/140_word-break-ii.html">140. Word Break II</a> <span class="red">Hard</span><span class="blue">DP</span></li>
+</ul>
+</li>
+</ul>
+<hr>
+
+
+
+<span id="dp">
+
+<h3 id="Dynamic-Programming"><a href="#Dynamic-Programming" class="headerlink" title="Dynamic Programming"></a>Dynamic Programming</h3><ul>
+<li><a href="problems/dp/70_climbing-stairs.html">70. Climbing Stairs</a> <span class="green">Easy</span><span class="blue">Counting</span></li>
+<li><a href="problems/dp/746_min-cost-climbing-stairs.html">746. Min Cost Climbing Stairs</a> <span class="green">Easy</span><span class="blue">Optimization</span><span class="purple">Index!</span></li>
+<li>分界线</li>
+<li><a href="problems/dp/62_unique-paths.html">62. Unique Paths I &amp; II</a> <span class="orange">Medium</span><span class="blue">Counting</span><span class="purple">Problem II is very great!</span></li>
+<li>分界线</li>
+<li><a href="problems/dp/96_unique-binary-search-trees-i.html">96. Unique Binary Search Trees I</a> <span class="orange">Medium</span><span class="blue">Counting</span><span class="gray">EPI 15.9</span></li>
+<li><a href="problems/dp/95_unique-binary-search-trees-ii.html">95. Unique Binary Search Trees II</a> <span class="orange">Medium</span><span class="blue">Counting</span><span class="blue">Clone a Tree</span></li>
+<li>分界线</li>
+<li><a href="problems/dp/845_longest-mountain-in-array.html">845. Longest Mountain in Array</a> <span class="orange">Medium</span><span class="blue">One Pointer</span></li>
+<li><a href="problems/dp/42_trapping-rain-water.html">42. Trapping Rain Water</a> <span class="red">Hard</span><span class="blue">Two Pointers</span><span class="blue">divide-and-conquer</span><span class="blue">DP</span></li>
+<li><strong>1D w&#x2F; Multiple States &#x2F; dp[i][0], dp[i][1], dp[i][2]</strong><ul>
+<li><a href="problems/dp/256_paint-house.html">256. Paint House</a> <span class="green">Easy</span><span class="blue">Optimization</span></li>
+<li><a href="problems/dp/926_flip-string-to-monotone-increasing.html">926. Flip String to Monotone Increasing</a> <span class="orange">Medium</span><span class="blue">dp[i][0] &amp; dp[i][1]</span><span class="purple">Challenging</span></li>
+</ul>
+</li>
+</ul>
+<hr>
+
+
+
+
+<span id="greedy">
+
+<h3 id="Greedy"><a href="#Greedy" class="headerlink" title="Greedy"></a>Greedy</h3><ul>
+<li><a href="problems/greedy/134_gas-station.html">134. Gas Station</a> <span class="orange">Medium</span><span class="gray">EPI 17.6</span></li>
+</ul>
+<hr>
+
+
+
+<span id="graph">
+
+<h3 id="Graph"><a href="#Graph" class="headerlink" title="Graph"></a>Graph</h3><ul>
+<li><a href="problems/graph/133_clone-graph.html">133. Clone Graph</a> <span class="orange">Medium</span><span class="blue">Deep Copy</span> 🍉</li>
+<li><a href="problems/graph/785_is-graph-bipartite.html">785. Is Graph Bipartite?</a> <span class="orange">Medium</span><span class="blue">DFS</span></li>
+<li><a href="problems/graph/547_friend-circles.html">547. Friend Circles</a> <span class="orange">Medium</span><span class="blue">DFS</span></li>
+<li><a href="problems/graph/1192_critical-connections-in-a-network.html">1192. Critical Connections in a Network</a> <span class="red">Hard</span><span class="blue">DFS</span><span class="blue">Tarjan’s Algorithm</span></li>
+<li><a href="problems/graph/207_course-schedule.html">207. Course Schedule I &amp; II</a> <span class="orange">Medium</span><span class="blue">Cycle</span><span class="blue">DFS</span><span class="blue">BFS</span><span class="blue">Topological Sort</span></li>
+<li><a href="problems/graph/269_alien-dictionary.html">269. Alien Dictionary</a> <span class="red">Hard</span><span class="blue">BFS</span><span class="blue">Topological Sort</span><span class="purple">953. Verifying an Alien Dictionary</span></li>
+</ul>
+<hr>
+
+
+<span id="trie">
+
+<h3 id="Trie"><a href="#Trie" class="headerlink" title="Trie"></a>Trie</h3><ul>
+<li><a href="problems/trie/208_implement-trie.html">208. Implement Trie (Prefix Tree)</a> <span class="orange">Medium</span><span class="gray">CS 61B Tries</span> 🍉</li>
+<li><a href="problems/trie/421_maximum-xor-of-two-numbers-in-an-array.html">421. Maximum XOR of Two Numbers in an Array</a> <span class="orange">Medium</span><span class="blue">Trie Practice</span></li>
+</ul>
+<hr>
+
+
+
+<span id="design">
+
+<h3 id="Design"><a href="#Design" class="headerlink" title="Design"></a>Design</h3><ul>
+<li><a href="problems/design/707_design-linked-list.html">707. Design Linked List</a> <span class="green">Easy</span> 🍉🍭</li>
+<li><a href="problems/design/155_min-stack.html">155. Min Stack</a> <span class="green">Easy</span><span class="blue">One Stack</span> 🍉🍭</li>
+<li><a href="problems/design/716_max-stack.html">716. Max Stack</a> <span class="green">Easy</span><span class="blue">Two Stacks</span> 🍉🍭</li>
+<li><a href="problems/design/146_lru-cache.html">146. LRU Cache</a> <span class="orange">Medium</span><span class="blue">LinkedHashMap</span></li>
+<li><a href="problems/design/460_lfu-cache.html">460. LFU Cache</a> <span class="red">Hard</span><span class="blue">LinkedHashSet</span></li>
+<li><a href="problems/design/341_flatten-nested-list-iterator.html">341. Flatten Nested List Iterator</a> <span class="orange">Medium</span><span class="blue">Stack</span><span class="blue">Recursion</span></li>
+<li><a href="problems/design/794_valid-tic-tac-toe-state.html">794. Valid Tic-Tac-Toe State</a> <span class="orange">Medium</span></li>
+</ul>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

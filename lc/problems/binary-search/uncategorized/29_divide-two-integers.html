@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium My Post: Brute-Force &amp; Binary Search with Time Complexity Analysis Problem Given two integers dividend and divisor, divide two integers without using multip">
+<meta property="og:type" content="website">
+<meta property="og:title" content="29. Divide Two Integers">
+<meta property="og:url" content="https://junhaow.com/lc/problems/binary-search/uncategorized/29_divide-two-integers.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium My Post: Brute-Force &amp; Binary Search with Time Complexity Analysis Problem Given two integers dividend and divisor, divide two integers without using multip">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.117Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.117Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>29. Divide Two Integers</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/divide-two-integers/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/divide-two-integers/discuss/356776/Brute-Force-and-Binary-Search-with-Time-Complexity-Analysis">Brute-Force &amp; Binary Search with Time Complexity Analysis</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given two integers <code>dividend</code> and <code>divisor</code>, divide two integers without using multiplication, division and mod operator.<br>Return the quotient after dividing <code>dividend</code> by <code>divisor</code>.<br>The integer division should truncate toward zero.</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>Both <code>dividend</code> and <code>divisor</code> will be 32-bit signed integers.</li>
+<li>The <code>divisor</code> will never be $0$.</li>
+<li>Assume we are dealing with an environment which could only store integers within the 32-bit signed integer range: $[−2^{31},  2^{31} − 1]$. For the purpose of this problem, assume that your function returns $2^{31} − 1$ when the division result overflows.</li>
+</ul>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input: dividend = <span class="number">10</span>, divisor = <span class="number">3</span></span><br><span class="line">Output: <span class="number">3</span></span><br><span class="line"></span><br><span class="line">Input: dividend = <span class="number">7</span>, divisor = -<span class="number">3</span></span><br><span class="line">Output: -<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p><strong>Note:</strong></p>
+<ul>
+<li>Consider the test case: <code>-2147483648</code> and <code>-1</code>. Since the result could be <code>2147483648</code>, we should use <code>long</code> type to store the result.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">divide</span><span class="params">(<span class="type">int</span> dividend, <span class="type">int</span> divisor)</span> &#123;  </span><br><span class="line">  <span class="comment">// sign</span></span><br><span class="line">  <span class="type">int</span> sign;</span><br><span class="line">  <span class="keyword">if</span> ((dividend &gt; <span class="number">0</span> &amp;&amp; divisor &gt; <span class="number">0</span>) || (dividend &lt; <span class="number">0</span> &amp;&amp; divisor &lt; <span class="number">0</span>)) &#123;</span><br><span class="line">    sign = <span class="number">1</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    sign = -<span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// abs</span></span><br><span class="line">  <span class="type">long</span> <span class="variable">ldividend</span> <span class="operator">=</span> Math.abs((<span class="type">long</span>) dividend); <span class="comment">// (long) is very important</span></span><br><span class="line">  <span class="type">long</span> <span class="variable">ldivisor</span> <span class="operator">=</span> Math.abs((<span class="type">long</span>) divisor);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// for case: -2147493848  -1</span></span><br><span class="line">  <span class="type">long</span> <span class="variable">result</span> <span class="operator">=</span> sign * divideHelper(ldividend, ldivisor);</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">if</span> (result &gt; Integer.MAX_VALUE) &#123;</span><br><span class="line">    result = Integer.MAX_VALUE;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> (<span class="type">int</span>) result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong> </p>
+<ul>
+<li>The condition of <code>while</code> and the initial value of <code>sum</code> can be decided by some few simple cases.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// dividend  divisor  result</span></span><br><span class="line"><span class="comment">//      0   3   0</span></span><br><span class="line"><span class="comment">//      1   3   0</span></span><br><span class="line"><span class="comment">//      2   3   0</span></span><br><span class="line"><span class="comment">// </span></span><br><span class="line"><span class="comment">//      3   3   1</span></span><br><span class="line"><span class="comment">//      4   3   1</span></span><br><span class="line"><span class="comment">//      5   3   1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//      6   3   2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// brute-force</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">long</span> <span class="title function_">divideHelper</span><span class="params">(<span class="type">long</span> dividend, <span class="type">long</span> divisor)</span> &#123;</span><br><span class="line">  <span class="type">long</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> divisor;</span><br><span class="line">  <span class="keyword">while</span> (sum &lt;= dividend) &#123;</span><br><span class="line">    count += <span class="number">1</span>;</span><br><span class="line">    sum += divisor;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(Q)$ where $Q$ is the <code>quotient</code>.<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Binary-Search"><a href="#Binary-Search" class="headerlink" title="Binary Search"></a>Binary Search</h3><p>Same as the code above.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">divide</span><span class="params">(<span class="type">int</span> dividend, <span class="type">int</span> divisor)</span> &#123;  </span><br><span class="line">  <span class="comment">// sign</span></span><br><span class="line">  <span class="type">int</span> sign;</span><br><span class="line">  <span class="keyword">if</span> ((dividend &gt; <span class="number">0</span> &amp;&amp; divisor &gt; <span class="number">0</span>) || (dividend &lt; <span class="number">0</span> &amp;&amp; divisor &lt; <span class="number">0</span>)) &#123;</span><br><span class="line">    sign = <span class="number">1</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    sign = -<span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// abs</span></span><br><span class="line">  <span class="type">long</span> <span class="variable">ldividend</span> <span class="operator">=</span> Math.abs((<span class="type">long</span>) dividend); <span class="comment">// (long) is very important</span></span><br><span class="line">  <span class="type">long</span> <span class="variable">ldivisor</span> <span class="operator">=</span> Math.abs((<span class="type">long</span>) divisor);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// for case: -2147493848  -1</span></span><br><span class="line">  <span class="type">long</span> <span class="variable">result</span> <span class="operator">=</span> sign * divideHelper(ldividend, ldivisor);</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">if</span> (result &gt; Integer.MAX_VALUE) &#123;</span><br><span class="line">    result = Integer.MAX_VALUE;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> (<span class="type">int</span>) result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// binary search</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">long</span> <span class="title function_">divideHelper</span><span class="params">(<span class="type">long</span> dividend, <span class="type">long</span> divisor)</span> &#123;</span><br><span class="line">  <span class="type">long</span> <span class="variable">result</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// If the remaining dividend &gt;= divisor, multiple could be at least 1</span></span><br><span class="line">  <span class="keyword">while</span> (dividend &gt;= divisor) &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">multiple</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">    <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> divisor;</span><br><span class="line">    <span class="keyword">while</span> (sum + sum &lt;= dividend) &#123;</span><br><span class="line">      multiple += multiple;</span><br><span class="line">      sum += sum;</span><br><span class="line">    &#125;</span><br><span class="line">    result += multiple;</span><br><span class="line">    dividend -= sum;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $D$ is the dividend.</p>
+<ul>
+<li><code>Best Case</code>: $O(\log{D})$ when $D$ equals $(2^k \times \text{divisor})$<ul>
+<li>Example: $D &#x3D; 48$ and $\text{divisor} &#x3D; 3$, $D$ can be expressed as $2^4 \times \text{divisor}$. It means:<ul>
+<li>$3 + 3 &#x3D; 6$</li>
+<li>$6 + 6 &#x3D; 12$</li>
+<li>$12 + 12 &#x3D; 24$</li>
+<li>$24 + 24 &#x3D; 48$</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>Worst Case</code>: $O((\log{D})^2)$ when $D$ equals ($2^k \times \text{divisor} - 1)$<ul>
+<li>Example: $D &#x3D; 63$ and $\text{divisor} &#x3D; 2$.<ul>
+<li>After the first round, the remaining $D$ is $31$.</li>
+<li>And so on.</li>
+<li>The runtime is $O(\log{D} + \log{D&#x2F;2} + \log{D&#x2F;4} + \ldots + \log{1})$.</li>
+<li>The above runtime is upper bounded by $O(\log{D} \times \log{D})$ if we treat each term as $\log{D}$.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

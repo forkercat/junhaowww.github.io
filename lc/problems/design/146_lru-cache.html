@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium Problem Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: get and put.   get(key) - Get the">
+<meta property="og:type" content="website">
+<meta property="og:title" content="146. LRU Cache">
+<meta property="og:url" content="https://junhaow.com/lc/problems/design/146_lru-cache.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium Problem Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: get and put.   get(key) - Get the">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.120Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.120Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>146. LRU Cache</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/lru-cache/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Design and implement a data structure for <strong>Least Recently Used (LRU)</strong> cache. It should support the following operations: <code>get</code> and <code>put</code>.</p>
+</blockquote>
+<ul>
+<li><code>get(key)</code> - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return <code>-1</code>.</li>
+<li><code>put(key, value)</code> - Set or insert the value if the key is not already present. When the cache reached its capacity, it should <strong>invalidate the least recently used</strong> item before inserting a new item.</li>
+</ul>
+<blockquote>
+<p>The cache is initialized with a positive capacity.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LRUCache</span> <span class="variable">cache</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">LRUCache</span>(<span class="number">2</span>);</span><br><span class="line">cache.put(<span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">cache.put(<span class="number">2</span>, <span class="number">2</span>);</span><br><span class="line">cache.get(<span class="number">1</span>);       <span class="comment">// returns 1</span></span><br><span class="line">cache.put(<span class="number">3</span>, <span class="number">3</span>);    <span class="comment">// evicts key 2</span></span><br><span class="line">cache.get(<span class="number">2</span>);       <span class="comment">// returns -1 (not found)</span></span><br><span class="line">cache.put(<span class="number">4</span>, <span class="number">4</span>);    <span class="comment">// evicts key 1</span></span><br><span class="line">cache.get(<span class="number">1</span>);       <span class="comment">// returns -1 (not found)</span></span><br><span class="line">cache.get(<span class="number">3</span>);       <span class="comment">// returns 3</span></span><br><span class="line">cache.get(<span class="number">4</span>);       <span class="comment">// returns 4</span></span><br><span class="line"><span class="comment">// OR</span></span><br><span class="line"><span class="type">LRUCache</span> <span class="variable">cache</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">LRUCache</span>(<span class="number">2</span>);</span><br><span class="line">cache.put(<span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">cache.put(<span class="number">2</span>, <span class="number">2</span>);</span><br><span class="line">cache.put(<span class="number">3</span>, <span class="number">3</span>);  <span class="comment">// 1 should be removed</span></span><br><span class="line"><span class="comment">// OR</span></span><br><span class="line"><span class="type">LRUCache</span> <span class="variable">cache</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">LRUCache</span>(<span class="number">2</span>);</span><br><span class="line">cache.put(<span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">cache.put(<span class="number">2</span>, <span class="number">2</span>);</span><br><span class="line">cache.put(<span class="number">2</span>, <span class="number">2</span>);  <span class="comment">// or cache.get(2);</span></span><br><span class="line">cache.put(<span class="number">3</span>, <span class="number">3</span>);  <span class="comment">// 2 should be removed</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> Could you do both operations in <code>O(1)</code> time complexity?</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Use-LinkedHashMap"><a href="#Use-LinkedHashMap" class="headerlink" title="Use LinkedHashMap"></a>Use LinkedHashMap</h3><p>Reference: <a target="_blank" rel="noopener" href="https://yikun.github.io/2015/04/02/Java-LinkedHashMap%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%AE%9E%E7%8E%B0/">Java LinkedHashMap工作原理及实现</a></p>
+<p>From official documentation:</p>
+<blockquote>
+<p><code>Hash table</code> and <code>linked list</code> implementation of the Map interface, with predictable iteration order. This implementation differs from HashMap in that it maintains a <code>doubly-linked list</code> running through all of its entries. This linked list defines the iteration ordering, which is normally the order in which keys were inserted into the map (insertion-order).</p>
+</blockquote>
+<p><strong>Inside:</strong></p>
+<p>In <code>HashMap</code>, there are three callback methods that allow LinkedHashMap post-actions.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">afterNodeAccess</span><span class="params">(Node&lt;K,V&gt; p)</span> &#123; &#125;</span><br><span class="line"><span class="comment">// after put() is called</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">afterNodeInsertion</span><span class="params">(<span class="type">boolean</span> evict)</span> &#123; <span class="comment">// possibly remove eldest</span></span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; first;</span><br><span class="line">    <span class="comment">// if removeEldestEntry() is defined</span></span><br><span class="line">    <span class="keyword">if</span> (evict &amp;&amp; (first = head) != <span class="literal">null</span> &amp;&amp; removeEldestEntry(first)) &#123;</span><br><span class="line">        <span class="type">K</span> <span class="variable">key</span> <span class="operator">=</span> first.key;</span><br><span class="line">        removeNode(hash(key), key, <span class="literal">null</span>, <span class="literal">false</span>, <span class="literal">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> <span class="title function_">afterNodeRemoval</span><span class="params">(Node&lt;K,V&gt; p)</span> &#123; &#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>removeEldestEntry</code> is a method that we can override. It is usually invoked after <code>put</code> operation. If it returns <code>true</code>, the first entry would be deleted; otherwise, nothing happens.</p>
+<p>Then we can see how <code>put</code> and <code>get</code> work. In LinkedHashMap, <code>put</code> is not re-implemented, but all new features are implemented in <code>afterNodeAccess</code> and <code>afterNodeInsertion</code> callbacks.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// `get` is re-implemented</span></span><br><span class="line"><span class="keyword">public</span> V <span class="title function_">get</span><span class="params">(Object key)</span> &#123;</span><br><span class="line">  Node&lt;K, V&gt; e;</span><br><span class="line">  <span class="keyword">if</span> ((e = getNode(hash(key), key)) == <span class="literal">null</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">if</span> (accessOrder)</span><br><span class="line">    afterNodeAccess(e);</span><br><span class="line">  <span class="keyword">return</span> e.value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>accessOrder:</strong></p>
+<p><code>accessOrder</code> is a boolean that indicates two modes of <code>structural modification</code>, which are <code>access-ordered</code> and <code>insertion-ordered</code> modes.</p>
+<blockquote>
+<p>A structural modification is any operation that adds or deletes one or more mappings or, in the case of <code>access-ordered</code> linked hash maps, affects iteration order. In <code>insertion-ordered</code> linked hash maps, merely changing the value associated with a key that is already contained in the map is not a structural modification. In <code>access-ordered</code> linked hash maps, merely querying the map with get is a structural modification.</p>
+</blockquote>
+<p>In other words, when <code>accessOrder</code> is set as <code>true</code>, calls of <code>put</code>, <code>get</code>, and so on would trigger affection on iteration order. <strong>The accessed entry will be put at the end of the linked list.</strong></p>
+<p><strong>Basic Usage:</strong></p>
+<p><code>accessOrder</code> is <code>false</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Default mode is insertion-order mode</span></span><br><span class="line">LinkedHashMap&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">LinkedHashMap</span>&lt;&gt;();</span><br><span class="line">map.put(<span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">map.put(<span class="number">2</span>, <span class="number">2</span>);</span><br><span class="line">map.put(<span class="number">3</span>, <span class="number">3</span>);</span><br><span class="line">map.put(<span class="number">4</span>, <span class="number">4</span>);</span><br><span class="line">map.get(<span class="number">2</span>); <span class="comment">// no effect</span></span><br><span class="line"><span class="comment">// Output: [1, 2, 3, 4]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>accessOrder</code> is <code>true</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// access-ordered mode</span></span><br><span class="line">LinkedHashMap&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">LinkedHashMap</span>&lt;&gt;(<span class="number">2</span>, <span class="number">0.75f</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="comment">// 2 and 0.75f (predictive capacity and load factor)</span></span><br><span class="line">map.put(<span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">map.put(<span class="number">2</span>, <span class="number">2</span>);</span><br><span class="line">map.put(<span class="number">3</span>, <span class="number">3</span>);</span><br><span class="line">map.put(<span class="number">4</span>, <span class="number">4</span>);</span><br><span class="line"><span class="comment">// Output: [1, 2, 3, 4]</span></span><br><span class="line">map.get(<span class="number">1</span>);</span><br><span class="line"><span class="comment">// Output: [2, 3, 4, 1]</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Code for this problem:</strong></p>
+<p>We can make the class <code>LRUCache</code> extend from <code>LinkedHashMap</code>. <code>get</code> and <code>put</code> are overloaded, and <code>removeEldestEntry</code> is overridden. It means that we would delete the first entry when <code>this.size() &gt; capacity</code>.</p>
+<p><strong>Note:</strong> <code>capacity</code> member is a fixed value, while the capacity passed into <code>LinkedHashMap</code> is for speculative purpose (just guessing? optimization?).</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LRUCache</span> <span class="keyword">extends</span> <span class="title class_">LinkedHashMap</span>&lt;Integer, Integer&gt; &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="type">int</span> capacity;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// true for access-order; false for insertion-order</span></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">LRUCache</span><span class="params">(<span class="type">int</span> capacity)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>(capacity, <span class="number">0.75f</span>, <span class="literal">true</span>); <span class="comment">// access-order</span></span><br><span class="line">    <span class="built_in">this</span>.capacity = capacity;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">get</span><span class="params">(<span class="type">int</span> key)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">super</span>.getOrDefault(key, -<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">put</span><span class="params">(<span class="type">int</span> key, <span class="type">int</span> value)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>.put(key, value);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// removeEldestEntry is invoked every time we call put!</span></span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">protected</span> <span class="type">boolean</span> <span class="title function_">removeEldestEntry</span><span class="params">(Map.Entry&lt;Integer, Integer&gt; eldest)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.size() &gt; capacity;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The second approach is similar to the <code>object adapter</code> pattern. A <code>LinkedListMap</code> object is wrapped inside <code>LRUCache</code>.</p>
+<p><strong>Note:</strong> See comments below.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LRUCache</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> Map&lt;Integer, Integer&gt; map;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">LRUCache</span><span class="params">(<span class="type">int</span> capacity)</span> &#123;</span><br><span class="line">    map = <span class="keyword">new</span> <span class="title class_">LinkedHashMap</span>&lt;Integer, Integer&gt;(capacity, <span class="number">0.75f</span>, <span class="literal">true</span>) &#123; <span class="comment">// access-order mode</span></span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="keyword">protected</span> <span class="type">boolean</span> <span class="title function_">removeEldestEntry</span><span class="params">(Map.Entry&lt;Integer, Integer&gt; eldest)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> map.size() &gt; capacity; <span class="comment">// can&#x27;t use this.map since `this` is not the `this` of LRUCache</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">get</span><span class="params">(<span class="type">int</span> key)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> map.getOrDefault(key, -<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">put</span><span class="params">(<span class="type">int</span> key, <span class="type">int</span> value)</span> &#123;</span><br><span class="line">    map.put(key, value);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(1)$<br><strong>Space:</strong> $O(capacity)$</p>
+<h3 id="Do-It-By-Yourself"><a href="#Do-It-By-Yourself" class="headerlink" title="Do It By Yourself"></a>Do It By Yourself</h3><p>欣赏一下别人的代码。我稍微改了一下。自己写了好久还是有 bug，链表有毒。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LRUCache</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> DLinkedNode head, tail;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">class</span> <span class="title class_">DLinkedNode</span> &#123;</span><br><span class="line">    <span class="type">int</span> key;</span><br><span class="line">    <span class="type">int</span> value;</span><br><span class="line">    DLinkedNode prev;</span><br><span class="line">    DLinkedNode next;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">addFirst</span><span class="params">(DLinkedNode node)</span> &#123;</span><br><span class="line">    node.prev = head;</span><br><span class="line">    node.next = head.next;</span><br><span class="line"></span><br><span class="line">    head.next.prev = node;</span><br><span class="line">    head.next = node;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">removeNode</span><span class="params">(DLinkedNode node)</span>&#123;</span><br><span class="line">    <span class="type">DLinkedNode</span> <span class="variable">prev</span> <span class="operator">=</span> node.prev;</span><br><span class="line">    <span class="type">DLinkedNode</span> <span class="variable">next</span> <span class="operator">=</span> node.next;</span><br><span class="line"></span><br><span class="line">    prev.next = next;</span><br><span class="line">    next.prev = prev;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">moveToHead</span><span class="params">(DLinkedNode node)</span>&#123;</span><br><span class="line">    removeNode(node);</span><br><span class="line">    addFirst(node);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> DLinkedNode <span class="title function_">popTail</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">DLinkedNode</span> <span class="variable">res</span> <span class="operator">=</span> tail.prev;</span><br><span class="line">    removeNode(res);</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> Map&lt;Integer, DLinkedNode&gt; cache = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">private</span> <span class="type">int</span> size;</span><br><span class="line">  <span class="keyword">private</span> <span class="type">int</span> capacity;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">LRUCache</span><span class="params">(<span class="type">int</span> capacity)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.size = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">this</span>.capacity = capacity;</span><br><span class="line">    head = <span class="keyword">new</span> <span class="title class_">DLinkedNode</span>();</span><br><span class="line">    tail = <span class="keyword">new</span> <span class="title class_">DLinkedNode</span>();</span><br><span class="line">    head.next = tail;</span><br><span class="line">    tail.prev = head;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">get</span><span class="params">(<span class="type">int</span> key)</span> &#123;</span><br><span class="line">    <span class="type">DLinkedNode</span> <span class="variable">node</span> <span class="operator">=</span> cache.get(key);</span><br><span class="line">    <span class="keyword">if</span> (node == <span class="literal">null</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// move the accessed node to the head;</span></span><br><span class="line">    moveToHead(node);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> node.value;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">put</span><span class="params">(<span class="type">int</span> key, <span class="type">int</span> value)</span> &#123;</span><br><span class="line">    <span class="type">DLinkedNode</span> <span class="variable">node</span> <span class="operator">=</span> cache.get(key);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(node == <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="type">DLinkedNode</span> <span class="variable">newNode</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DLinkedNode</span>();</span><br><span class="line">      newNode.key = key;</span><br><span class="line">      newNode.value = value;</span><br><span class="line"></span><br><span class="line">      cache.put(key, newNode);</span><br><span class="line">      addFirst(newNode);</span><br><span class="line"></span><br><span class="line">      ++size;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>(size &gt; capacity) &#123;</span><br><span class="line">        <span class="comment">// pop the tail</span></span><br><span class="line">        <span class="type">DLinkedNode</span> <span class="variable">tail</span> <span class="operator">=</span> popTail();</span><br><span class="line">        cache.remove(tail.key);</span><br><span class="line">        --size;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// update the value.</span></span><br><span class="line">      node.value = value;</span><br><span class="line">      moveToHead(node);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(1)$<br><strong>Space:</strong> $O(capacity)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

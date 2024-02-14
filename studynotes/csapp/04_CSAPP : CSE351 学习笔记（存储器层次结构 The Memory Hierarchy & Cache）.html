@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="计算机中一个基本而持久的思想：如果你理解了系统是如何将数据再存储器层次结构中上上下下移动的，那么你就可以编写自己的应用程序，使得它们的数据项存储在层次结构中较高的地方，在那里 CPU 能更快地访问到它们。这个思想围绕着一个称为局部性（locality）的基本属性。 存储技术随机访问存储器随机访问存储器（Random-Access Memory，RAM）分为两类：静态的和动态的。 静态 RAM（">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CSAPP &#x2F; CSE 351 学习笔记（存储器层次结构 The Memory Hierarchy &amp; Cache）">
+<meta property="og:url" content="https://junhaow.com/studynotes/csapp/04_CSAPP%20:%20CSE351%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%20The%20Memory%20Hierarchy%20&%20Cache%EF%BC%89.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="计算机中一个基本而持久的思想：如果你理解了系统是如何将数据再存储器层次结构中上上下下移动的，那么你就可以编写自己的应用程序，使得它们的数据项存储在层次结构中较高的地方，在那里 CPU 能更快地访问到它们。这个思想围绕着一个称为局部性（locality）的基本属性。 存储技术随机访问存储器随机访问存储器（Random-Access Memory，RAM）分为两类：静态的和动态的。 静态 RAM（">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/iwqra.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9ufwa.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/v3osf.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/kpyp5.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ybqkl.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/78z93.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rjwp2.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ylxdw.jpg">
+<meta property="og:image" content="https://junhaow.com/">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fz3h9.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9fooj.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8ubjl.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/0u9ml.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/h30cu.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/hnx69.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bbzww.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qvsns.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/w2mv1.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/op7fx.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8l30o.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/841wn.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2vzxp.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/07j9i.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/eahxq.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/u8sjh.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6jw2o.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.200Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.200Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/iwqra.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CSAPP / CSE 351 学习笔记（存储器层次结构 The Memory Hierarchy &amp; Cache）</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>计算机中一个基本而持久的思想：如果你理解了系统是如何将数据再存储器层次结构中上上下下移动的，那么你就可以编写自己的应用程序，使得它们的数据项存储在层次结构中较高的地方，在那里 CPU 能更快地访问到它们。这个思想围绕着一个称为<code>局部性</code>（locality）的基本属性。</p>
+<h2 id="存储技术"><a href="#存储技术" class="headerlink" title="存储技术"></a>存储技术</h2><h3 id="随机访问存储器"><a href="#随机访问存储器" class="headerlink" title="随机访问存储器"></a>随机访问存储器</h3><p>随机访问存储器（Random-Access Memory，RAM）分为两类：<code>静态</code>的和<code>动态</code>的。</p>
+<h4 id="静态-RAM（SRAM）"><a href="#静态-RAM（SRAM）" class="headerlink" title="静态 RAM（SRAM）"></a>静态 RAM（SRAM）</h4><p>SRAM 将每个位存储在一个<code>双稳态</code>（bistable）的存储器单元里。每个单元是用一个六晶体管电路来实现的。这个电路可以无限期地保持在两个不同的电压配置（configuration）或状态（state）之一，其他任何状态都是不稳定的——从不稳定状态开始，电路会迅速地转移到两个稳定状态中的一个。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/iwqra.jpg" alt="倒转的钟摆（CSAPP 6-1）"></p>
+<p>当钟摆倾斜到最左边或最右边时，它是稳定的。原则上，钟摆也能在垂直的位置无限期地保持平衡，但是这个状态是<code>亚稳态</code>（metastable）的——最细微的扰动也能使它倒下，而且一旦倒下就永远不会再恢复到垂直的位置。</p>
+<p>因此，SRAM 存储器单元只有通电就会永远地保持它的值。即使有干扰（例如电子干扰）来扰乱电压，当干扰消除时，电路就会恢复到稳定值。</p>
+<h4 id="动态-RAM（DRAM）"><a href="#动态-RAM（DRAM）" class="headerlink" title="动态 RAM（DRAM）"></a>动态 RAM（DRAM）</h4><p>DRAM 将每个位存储为对一个<code>电容</code>的充电。因为电容很小，DRAM 存储器可以制造得非常密集——每个单元由一个电容和一个访问晶体管组成。但是，DRAM 存储器单元对干扰非常敏感，如在光线下会导致电容电压改变。</p>
+<p>尽管有很多原因导致漏电，使得 DRAM 在 10~100 毫秒时间内失去电荷。幸运的是，计算机运行的时钟周期是以纳秒来衡量的，所以相对而言这个保持时间是比较长的。内存系统必须周期性地通过读出，然后重写来刷新内存每一位。</p>
+<p><strong>增强的 DRAM：</strong></p>
+<ul>
+<li>快页模式 DRAM（Fast Page Mode DRAM，FPM DRAM）</li>
+<li>扩展数据输出 RAM（Extended Data Out DRAM，EDO DRAM）</li>
+<li>同步 DRAM（Synchronous DRAM，SDRAM）</li>
+<li>双倍数据速率同步 DRAM（Double Data-Rate Synchronous DRAM，DDR SDRAM）<ul>
+<li>使用两个时钟沿作为控制信号。根据预取缓冲区的大小来划分的：DDR（2 位）、DDR2（4 位）、DDR3（8位）。</li>
+</ul>
+</li>
+<li>视频 RAM（Video RAM，VRAM）</li>
+</ul>
+<h4 id="非易失性存储器"><a href="#非易失性存储器" class="headerlink" title="非易失性存储器"></a>非易失性存储器</h4><p>如果断电，DRAM 和 SRAM 会丢失它们的信息，从这个意义上说，它们是<code>易失性</code>（volatile）的。由于历史原因，虽然 ROM 中有的类型既可以读也可以写，但是它们整体上都被称为<code>只读存储器</code>（Read-Only Memory，ROM）。ROM 是以它们能够被重编程（写）的次数和对它们进行重编程所用的机制来区分的。</p>
+<ul>
+<li>PROM（Programmable ROM，可编程 ROM）只能被编程一次。PROM 的每个存储器单元有一种熔丝（fuse），只能用高电流熔断一次。</li>
+<li>EPROM（Erasable Programmable ROM，可擦写可编程 ROM）有一个透明的石英窗口，允许光到达存储单元。紫外线照射的时候，单元就被清除为 0。</li>
+<li>EEPROM（Electrically Erasable PROM，电子可擦除 PROM）类似于 EPROM，但是它不需要一个物理上独立的编程设备。</li>
+<li>闪存（flash memory）是一类非易失性存储器，基于 EEPROM，它已经成为了一种重要的存储技术。</li>
+</ul>
+<p>存储在 ROM 设备中的程序通常被称为<code>固件</code>（firmware），提供少量基本的输入和输出函数——例如 PC 的 BIOS（基本输入输出系统）例程。</p>
+<p><strong>访问主存：</strong></p>
+<p>参考：p405</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9ufwa.jpg" alt="连接 CPU 和主存的总线结构示例（CSAPP 6-6）"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/v3osf.jpg" alt="加载操作 moveq A, %rax 的内存读事务（CSAPP 6-7）"></p>
+<p>Intel 系统使用称为<code>北桥</code>（northbridge）和<code>南桥</code>（southbridge）的芯片组分别将 CPU 连接到内存和 I&#x2F;O 设备。</p>
+<h3 id="磁盘存储"><a href="#磁盘存储" class="headerlink" title="磁盘存储"></a>磁盘存储</h3><p>从磁盘上读信息的时间为毫秒级，比从 DRAM 读慢了 10 万倍，比从 SRAM 读慢了 100 万倍。</p>
+<h4 id="磁盘构造"><a href="#磁盘构造" class="headerlink" title="磁盘构造"></a>磁盘构造</h4><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/kpyp5.jpg" alt="磁盘构造（CSAPP 6-9）"></p>
+<p>磁盘是由<code>盘片</code>（platter）构成的，每个盘片有两面或者称为<code>表面</code>（surface），表面覆盖着磁性记录材料，每个表面上的<code>磁道编号</code>是一致的。每个表面是由一组称为<code>磁道</code>（track）的同心圆组成。</p>
+<p>每个磁道被划分为一组<code>扇区</code>（sector）。扇区之间<code>间隙</code>（gap）分隔开，这些间隙中不存储数据位。间隙存储用来标识扇区的格式化位。磁盘制造商通常用术语<code>柱面</code>（cylinder）来描述多个盘片驱动器的构造。</p>
+<h4 id="磁盘容量"><a href="#磁盘容量" class="headerlink" title="磁盘容量"></a>磁盘容量</h4><p>磁盘容量由以下技术因素决定：</p>
+<ul>
+<li>记录密度（recording density）</li>
+<li>磁道密度（track density）</li>
+<li>面密度（areal density）</li>
+</ul>
+<p>磁盘制造商不懈地努力以提高面密度，其每隔几年就会翻倍。随着面密度的提高，扇区之间的间隙（那里没有存储数据位）变得越来越大；因此，现代大容量磁盘使用一种称为<code>多区记录</code>（multiple zone recording）的技术。在这种技术中，柱面的集合被分割成不相交的子集合，称为<code>记录区</code>（recording zone）。</p>
+<p>磁盘容量的计算公式：</p>
+<p>$$<br>磁盘容量 &#x3D; \frac{字节数}{扇区} \times \frac{平均扇区数}{磁道} \times \frac{磁道数}{表面} \times \frac{表面数}{盘片} \times \frac{盘片数}{磁盘}<br>$$</p>
+<p><strong>注意：</strong></p>
+<ul>
+<li>对于与 DRAM 和 SRAM 容量相关的计量单位，通常：<ul>
+<li>$K &#x3D; 2^{10}$</li>
+<li>$M &#x3D; 2^{20}$</li>
+<li>$G &#x3D; 2^{30}$</li>
+<li>$T &#x3D; 2^{40}$</li>
+</ul>
+</li>
+<li>对于与像磁盘和网络这样的 I&#x2F;O 设备容量相关的计量单位（速率、吞吐量），通常：<ul>
+<li>$K &#x3D; 10^3$</li>
+<li>$M &#x3D; 10^6$</li>
+<li>$G &#x3D; 10^9$</li>
+<li>$T &#x3D; 10^{12}$</li>
+</ul>
+</li>
+</ul>
+<h4 id="磁盘操作"><a href="#磁盘操作" class="headerlink" title="磁盘操作"></a>磁盘操作</h4><p>一张图：</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ybqkl.jpg" alt="磁盘的动态特性（CSAPP 6-10）"></p>
+<p>磁盘以扇区大小的块来读写数据。对扇区的访问时间（access time）有三个主要的部分：</p>
+<ul>
+<li>寻道时间（seek time）</li>
+<li>旋转时间（rotational latency）</li>
+<li>传送时间（transfer time）</li>
+</ul>
+<p>通常，因为寻道时间和旋转延迟大致相等，所以将<code>寻道时间</code>乘以 2 是估计磁盘访问时间的简单而合理的方法（传送时间比较短）。</p>
+<h4 id="逻辑磁盘块（Logical-Disk-Blocks，抽象）"><a href="#逻辑磁盘块（Logical-Disk-Blocks，抽象）" class="headerlink" title="逻辑磁盘块（Logical Disk Blocks，抽象）"></a>逻辑磁盘块（Logical Disk Blocks，抽象）</h4><p>现代磁盘构造复杂，有多个盘面，这些盘面上有不同的记录区。为了对操作系统隐藏这样的复杂性，现代磁盘将它们的构造呈现为一个简单的视图，一个 B 个扇区大小的<code>逻辑块</code>的序列。磁盘封装中有一个小的硬件&#x2F;固件设备，称为<code>磁盘控制器</code>，维护着<code>逻辑块号</code>和<code>实际（物理）磁盘扇区</code>之间的映射关系。磁盘控制器上的固件执行一个快速表查找，将一个逻辑块号翻译成一个（盘面、磁道、扇区）的三元组，这个三元组唯一地标识了对应的物理扇区。</p>
+<p>格式化是用标识扇区的信息填写扇区之间的间隙。此外，每个区中都有一些预留的备用柱面，所以磁盘制造商所说的格式化容量比最大的容量要小。</p>
+<h4 id="访问磁盘"><a href="#访问磁盘" class="headerlink" title="访问磁盘"></a>访问磁盘</h4><p><code>直接内存访问</code>（Direct Memory Access，DMA）：设备可以自己执行读或者写总线事务而不需要 CPU 干涉的过程。</p>
+<h3 id="固态硬盘"><a href="#固态硬盘" class="headerlink" title="固态硬盘"></a>固态硬盘</h3><p>固态硬盘（Solid State Disk，SSD）是一种基于<code>闪存</code>的存储技术。一个 SSD 封装由一个或多个<code>闪存芯片</code>和<code>闪存翻译层</code>（flash translation layer）组成，<code>闪存芯片</code>代替传统磁盘中的机械驱动器，而<code>闪存翻译层</code>是一个硬件&#x2F;固件设备，扮演与磁盘控制器相同的角色，将对<code>逻辑块</code>的请求翻译成对底层物理设备的访问。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/78z93.jpg" alt="固态硬盘（CSAPP 6-13）"></p>
+<p>缺点：因为反复写之后，闪存块容易磨损，所以 SSD 也容易磨损。闪存翻译层中的<code>平均磨损</code>（wearing leveling）逻辑试图通过将擦除平均分布在所有的块上来最大化每个块的寿命。</p>
+<p>速度：SRAM &gt; DRAM &gt; SSD &gt; DISK</p>
+<h2 id="局部性"><a href="#局部性" class="headerlink" title="局部性"></a>局部性</h2><p>一个编写良好的计算机程序常常具有良好的<code>局部性</code>（locality）。也就是，它们倾向于引用邻近于其他最近引用过的数据项，或者最近引用过的数据项本身。这种倾向性称为<code>局部性原理</code>（principle of locality），是一个持久的概念，对硬件和软件系统的设计和性能有极大的影响。</p>
+<p>局部性通常有两种不同的形式：<code>时间局部性</code>（temporal locality）和<code>空间局部性</code>（spatial locality）。在一个具有良好的时间局部性的程序中，被引用过一次的内存位置很可能在不远的将来再被多次引用。在一个具有良好的空间局部性的程序中，如果一个内存位置被引用了一次，那么程序很可能在不远的将来引用附近的一个内存位置。</p>
+<p><strong>例子：</strong></p>
+<p>考虑以下简单的函数<code>sumvec</code>，它对一个向量的元素求和。变量<code>sum</code>在每次循环迭代中被引用一次，因为，对于<code>sum</code>来说，有好的时间局部性。另一方面，因为<code>sum</code>是标量，对于<code>sum</code>来说，没有空间局部性。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">sumvec</span><span class="params">(<span class="type">int</span> v[N])</span> </span>&#123;</span><br><span class="line">  <span class="type">int</span> i, sum = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; N; ++i)</span><br><span class="line">    sum += v[i];</span><br><span class="line">  <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>变量<code>v</code>的元素是被顺序读取的，一个接一个。因此，对于变量<code>v</code>，函数有很好的空间局部性，但是时间局部性很差，因为每个向量元素只被访问一次。因为对于循环体中的每个变量，这个函数要么有好的空间局部性，要么有好的时间局部性。所以，我们可以断定<code>sumvec</code>函数具有良好的局部性。</p>
+<p><code>sumvec</code>这样顺序访问一个向量每个元素的函数，具有步长为 1 的引用模式（stride-1 reference pattern）。有时我们也称步长为 1 的引用模式为<code>顺序引用模式</code>。一般而言，随着步长的增加，空间局部性下降。</p>
+<p><strong>例子：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">sumarrayrows</span><span class="params">(<span class="type">int</span> a[M][N])</span> </span>&#123;</span><br><span class="line">  <span class="type">int</span> i, j, sum = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; M; ++i)</span><br><span class="line">    <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; N; ++j) </span><br><span class="line">      sum += a[i][j];</span><br><span class="line">  <span class="keyword">return</span> sum;</span><br><span class="line">&#125; <span class="comment">// 具有良好的空间局部性，引用模式的步长为 1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">sumarraycols</span><span class="params">(<span class="type">int</span> a[M][N])</span> </span>&#123;</span><br><span class="line">  <span class="type">int</span> i, j, sum = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (j = <span class="number">0</span>; i &lt; N; ++j)</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; j &lt; M; ++i) </span><br><span class="line">      sum += a[i][j];</span><br><span class="line">  <span class="keyword">return</span> sum;</span><br><span class="line">&#125; <span class="comment">// 局部性很差，因为采用了步长为 N 的引用模式</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="存储器层次结构"><a href="#存储器层次结构" class="headerlink" title="存储器层次结构"></a>存储器层次结构</h2><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rjwp2.jpg" alt="存储器层级结构（The memory hierarchy，CSAPP 6-21）"></p>
+<p>分布式文件系统有<code>安德鲁文件系统</code>（Andrew File System，AFS）、<code>网络文件系统</code>（Network File System，NFS）。</p>
+<p>存储器层次结构的<code>中心思想</code>是，对于每个 k，位于 k 层的更快更小的存储设备作为位于 k + 1 层的更大更慢的存储设备的缓存。（k 上，k + 1 下）</p>
+<p>第 k + 1 层的存储器被划分成连续的数据对象组块（chunk），称为<code>块</code>（block）。数据总是以块大小为<code>传送单位</code>（transfer unit）在第 k 层和第 k + 1 层之间来回复制。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ylxdw.jpg" alt="存储器层次结构中基本的缓存原理（CSAPP 6-22）"></p>
+<ul>
+<li>缓存命中（cache hit）</li>
+<li>缓存不命中（cache miss）<ul>
+<li>冷缓存（cold cache），此类不命中称为<code>强制性不命中</code>（compulsory miss）或<code>冷不命中</code>（cold miss）</li>
+<li>冷不命中很重要，因为它们通常是短暂的事件，不会在反复访问存储器使得<code>缓存暖身</code>（warmed up）之后的稳定状态中出现。</li>
+</ul>
+</li>
+</ul>
+<p>只要发生了不命中，第 k 层的缓存必须执行某个<code>放置策略</code>（placement policy），确定把从第 k + 1 层中取出的块放在哪里，比如随机地放置。这种随机性的放置会导致一种叫做<code>冲突不命中</code>（conflict miss）的不命中。</p>
+<p><img src="/" alt="（CSE 351 - Caches, Video 5: Cache organization, part 2）"></p>
+<p>缓存管理：</p>
+<ul>
+<li><code>编译器</code>管理寄存器文件，它决定当发生不命中时何时发射加载，以及确定哪个寄存器来存放数据。</li>
+<li>L1、L2、L3 层的缓存完全由内置在缓存中的<code>硬件逻辑</code>来管理。</li>
+<li>DRAM 是由<code>操作系统软件</code>和 CPU 上的<code>地址翻译硬件</code>共同管理的。</li>
+<li>对于远程文件系统，自然由该系统的程序管理。</li>
+</ul>
+<h2 id="高速缓存存储器-Cache"><a href="#高速缓存存储器-Cache" class="headerlink" title="高速缓存存储器 Cache"></a>高速缓存存储器 Cache</h2><ul>
+<li><code>E = 1</code>：直接映射高速缓存（direct-mapped cache）</li>
+<li><code>E &gt; 1</code>：组相联高速缓存（set associative cache）</li>
+<li><code>E = C/B</code>：全相联高速缓存（fully associative cache）</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fz3h9.jpg" alt="Associativity（CSE 351 - Caches, Video 4: Cache organization）"></p>
+<p>Professor: Blocks and lines are the same things. They are interchangable.</p>
+<p><strong>组、行、块：</strong></p>
+<ul>
+<li><code>组</code>（set）：一个或多个行的集合。</li>
+<li><code>行</code>（line）：高速缓存中的一个容器，存储块以及其他信息（有效位和标记位）。</li>
+<li><code>块</code>（block）：一个固定大小的信息包，在高速缓存和主存（或下一级高速缓存）之间来回传送。</li>
+</ul>
+<p><strong>注意：</strong>因为一行总是存储一个块，术语<code>行</code>和<code>块</code>通常互换使用。比如，系统专家总是说高速缓存的<code>行大小</code>，实际上他们指的是<code>块大小</code>。</p>
+<h3 id="通用的高速缓存存储器组织结构"><a href="#通用的高速缓存存储器组织结构" class="headerlink" title="通用的高速缓存存储器组织结构"></a>通用的高速缓存存储器组织结构</h3><p>考虑一个计算机系统，其中每个存储器地址有 m 位，形成 $M&#x3D;2^m$ 个不同的地址。这样一个机器的高速缓存被组织成一个有 $S&#x3D;2^s$ 个高速缓存组（cache set）的数组。每个组包含 E 个<code>高速缓存行</code>（cache line）。每个行是由一个 $B &#x3D; 2^b$ 字节的<code>数据块</code>（block）组成的，一个<code>有效位</code>（valid bit）指明这个行是否包含有意义的信息（为了方便），还有 t &#x3D; m-(b+s) 个<code>标记位</code>（tag bit）（是当前块的内存地址的位的一个子集），它们唯一地标识存储在这个高速缓存行中的块。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9fooj.jpg" alt="高速缓存（S，E，B，m）的通用组织（CSAPP 6-25）"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8ubjl.jpg" alt="（CSE 351 - Caches, Video 5: Cache organization, part 2）"></p>
+<p>参数 S 和 B 将 m 个地址位分为了三个字段。</p>
+<ul>
+<li>地址 A 中有 s 个<code>组索引位</code>是一个到 S 个组的数组的索引，是一个无符号整数。</li>
+<li>地址 A 中的 t 个标记位告诉我们这个组中的哪一行包含这个字。当且仅当设置了<code>有效位</code>并且该行的标记位与地址 A 中的标记位相匹配时，组中的这一行才包含这个字。(Valid bits are also used in the context of <code>multiprocessors</code>)</li>
+<li>一旦我们在由组索引标识的组中定位了由标号所标识的行，那么 b 个块<code>偏移位</code>给出了 B 个字节的数据块中的<code>字偏移</code>。</li>
+</ul>
+<p>Cache Read:</p>
+<ul>
+<li>Locate set (set index)</li>
+<li>Check if any line in set has matching tag (match the block)</li>
+<li>Yes + line valid: hit</li>
+<li>Locate data starting at offset</li>
+</ul>
+<h3 id="直接映射高速缓存（single-block-line-per-set）"><a href="#直接映射高速缓存（single-block-line-per-set）" class="headerlink" title="直接映射高速缓存（single block&#x2F;line per set）"></a>直接映射高速缓存（single block&#x2F;line per set）</h3><p>虽然书上讲得挺好的，但我发现视频里面讲得更好，应该先看视频的：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=gD2pldZ3n-c&index=41&list=PL0oekSefhQVJdk0hSRu6sZ2teWM740NtL">链接</a>.</p>
+<p>每个组只有一行（E &#x3D; 1）的高速缓存称为<code>直接映射高速缓存</code>（direct-mapped cache）</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/0u9ml.jpg" alt="直接映射高速缓存（CSAPP 6-27）"></p>
+<p><strong>三步匹配过程：</strong></p>
+<ol>
+<li>组选择</li>
+</ol>
+<p>  <img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/h30cu.jpg" alt="组选择（CSAPP 6-28）"></p>
+<ol start="2">
+<li>行匹配</li>
+</ol>
+<p>  <img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/hnx69.jpg" alt="行匹配（CSAPP 6-29）"></p>
+<ol start="3">
+<li>字抽取（字选择）</li>
+</ol>
+<p>最后，如果不命中则进行<code>行替换</code>，需要驱逐出一个现存的行。</p>
+<p>参考：p429 有实例。</p>
+<p>x 与 y 块之间的<code>抖动</code>（thrash），即高速缓存反复地加载和驱逐相同的高速缓存块的组。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">8</span>; ++i)</span><br><span class="line">  sum += x[i] * y[i];  <span class="comment">/* 当 x[i] 和 y[i] 映射到相同的缓存组 */</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="组相联高速缓存（E-way-Set-Associative-Cache-or-E-blocks-lines-per-set）"><a href="#组相联高速缓存（E-way-Set-Associative-Cache-or-E-blocks-lines-per-set）" class="headerlink" title="组相联高速缓存（E-way Set-Associative Cache or E blocks&#x2F;lines per set）"></a>组相联高速缓存（E-way Set-Associative Cache or E blocks&#x2F;lines per set）</h3><p>直接映射高速缓存中冲突不命中造成的问题起源于每个组只有一行这个限制。组相联高速缓存（set associative cache）放宽了这条限制。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bbzww.jpg" alt="E 路组相联高速缓存（1 &lt; E &lt; C/B）（CSAPP 6-32）"></p>
+<ol>
+<li>组选择</li>
+</ol>
+<blockquote>
+<p>同理</p>
+</blockquote>
+<ol start="2">
+<li>行匹配和字选择</li>
+</ol>
+<p>  组相联高速缓存中的行匹配比直接映射高速缓存中的更复杂。它必须检查多个行的标记位和有效位，以确定所请求的字是否在集合中。<code>相联存储器</code>是一个（<code>key</code>，<code>value</code>）对的数组。我们可以把组相联高速缓存中的每个组都看成一个小的相联存储器，<code>key</code>是标记和有效位，而<code>value</code>是块的内容。</p>
+<p>  <img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qvsns.jpg" alt="组选择（CSAPP 6-33）"></p>
+<p>  这里一个重要思想是组中的任何一行可以包含任何映射到这个组的内存块，所以高速缓存必须搜索组中的每一行，寻找一个有效的行，其标记与地址中的标记相匹配。</p>
+<p>  <img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/w2mv1.jpg" alt="行匹配和字选择（CSAPP 6-34）"></p>
+<ol start="3">
+<li>不命中时的行替换</li>
+</ol>
+<p>  替换组中的哪一行（没有空行）？替换策略：</p>
+<ul>
+<li>最不常使用（Least-Frequently-Used，LFU）</li>
+<li>最近最少使用（Least-Recently-Used，LRU）</li>
+</ul>
+<p>  所有这些策略都需要额外的时间和硬件。</p>
+<h3 id="全相联高速缓存"><a href="#全相联高速缓存" class="headerlink" title="全相联高速缓存"></a>全相联高速缓存</h3><p>全相联高速缓存（fully associative cache）是由一个包含所有高速缓存行z组（即 E&#x3D;C&#x2F;B）组成的。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/op7fx.jpg" alt="全相联高速缓存（E=C/B）（CSAPP 6-35）"></p>
+<ol>
+<li>组选择</li>
+</ol>
+<p>  注意地址中没有组索引位，地址只被划分成了一个标记和一个块偏移。</p>
+<p>  <img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8l30o.jpg" alt="组选择（CSAPP 6-36）"></p>
+<ol start="2">
+<li>行匹配和字选择</li>
+</ol>
+<p>  <img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/841wn.jpg" alt="行匹配和字选择，与组相联一致（CSAPP 6-37）"></p>
+<p><strong>有关写的问题 - What about writes?</strong></p>
+<ul>
+<li><code>Multiple copies</code> of data exist:<ul>
+<li>L1, L2, possibly L3, main memory</li>
+</ul>
+</li>
+<li>What is the main problem with that?<ul>
+<li>Disagreement in between copies</li>
+</ul>
+</li>
+<li>What to do on a <code>write-hit</code>?<ul>
+<li><code>Write-through</code> (write immediately to memory)</li>
+<li><code>Write-back</code> (defer write to memory until line is evicted)<ul>
+<li>Need a <code>dirty bit</code> to indicate if line is different from memory or not</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>What to do on a <code>write-miss</code>?<ul>
+<li><code>Write-allocate</code> (load into cache, update line in cache)<ul>
+<li>Load first then do the write</li>
+<li>Good if more writes to the location follow because you have allocated the data</li>
+<li>Good if later do read</li>
+</ul>
+</li>
+<li><code>No-write-allocate</code> (just write immediately to memory)</li>
+</ul>
+</li>
+<li>Typically<ul>
+<li>Write-back + Write-allocate, usually</li>
+<li>Write-through + No-write-allocate, occasionally</li>
+</ul>
+</li>
+</ul>
+<p>写的情况要复杂一些。假设我们要写一个已经缓存了的字 w（<code>写命中</code> ，write hit）。在高速缓存更新了它的 w 的副本之后，怎么更新 w 在层次结构中紧接着低一层中的副本呢？</p>
+<p>最简单的方法，称为<code>直写</code>（write-through），就是立即将 w 的高速缓存块写回到紧接着的低一层中。虽然简单，但是直写的缺点是每次都会引起总线流量。</p>
+<p>另一种方法，称为<code>写回</code>（write-back），尽可能地推迟更新，只有当替换算法要驱逐这个更新过的块的时候，才把它写到紧接着的低一层中。由于局部性，写回能显著地减少总线流量，但是它的缺点是增加了复杂性。高速缓存必须为每个高速缓存行维护一个额外的<code>修改位</code>（dirty bit），表明这个高速缓存块是否被修改过。</p>
+<p>另一个问题是如何处理<code>写不命中</code>。一种方法，称为<code>写分配</code>（write-allocate），加载相应的低一层中的块到高速缓存中，然后更新这个高速缓存块。写分配试图利用写的空间局部性，但是缺点是每次不命中都会导致一个块从低一层传送到高速缓存。另一种方法，称为<code>非写分配</code>（not-write-allocate），避开高速缓存，直接把这个字写到低一层（主存）中。<code>直写</code>是<code>非写分配</code>的，<code>写回</code>是<code>写分配</code>的。</p>
+<p>存储器层次解耦股中较低层的缓存更可能使用写回，而不是直写。</p>
+<p><strong>一个真实的高速缓存层次结构的剖析</strong></p>
+<p>高速缓存既保存<code>数据</code>，也保存<code>指令</code>。只保存指令的高速缓存称为<code>i-cache</code>；只保存程序数据的高速缓存称为<code>d-cache</code>；既保存指令又保存数据的高速缓存称为<code>统一的高速缓存</code>（unified cache）。现在处理器包括独立的 i-cache 和 d-cache，这样做的好处是处理器能够<code>同时</code>读一个指令字和一个数据字。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2vzxp.jpg" alt="Intel Core i7 的高速缓存层次结构（CSE 351 - Caches, Video 5: Cache organization, part 2）"></p>
+<p>L3 unified cache: why 16-way? Because it’s very important to get hit, otherwise we’ll fetch from the memory. Very slow!</p>
+<p><strong>高速缓存参数的性能影响</strong></p>
+<ul>
+<li>不命中率（miss rate）</li>
+<li>命中率（hit rate）</li>
+<li>命中时间（hit time）<ul>
+<li>Time to deliver a line in the cache to the processor<ul>
+<li>Includes time to determine whether the line is in the cache</li>
+</ul>
+</li>
+<li>Typical hit times: <code>1 - 2 clock cycles</code> for L1</li>
+</ul>
+</li>
+<li>不命中处罚（miss penalty）<ul>
+<li>Additional time required because of a miss</li>
+<li>Typically <code>50 - 200 clock cycles</code></li>
+</ul>
+</li>
+</ul>
+<p><strong>Cost of Cache Misses</strong></p>
+<ul>
+<li><p>Huge difference between a hit and amiss</p>
+<ul>
+<li>could be 100x, if just L1 and main memory</li>
+</ul>
+</li>
+<li><p>Would you believe 99% hits is twice as good as 97%?</p>
+<ul>
+<li>Consider:<ul>
+<li>Cache hit time of 1 cycle</li>
+<li>Miss penalty of 100 cycles</li>
+</ul>
+</li>
+<li>Average access time:<ul>
+<li>97% hits: 1 cycle + 0.03 * 100 cycles &#x3D; 4 cycles</li>
+<li>99% hits: 1 cycle + 0.01 * 100 cycles &#x3D; 2 cycles</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>This is also why “miss rate” is used instead of “hit rate”</p>
+</li>
+</ul>
+<p>优化高速缓存的成本和性能的折中是一项很精细的工作，它需要在现实的基准程序代码上进行大量的模拟。考虑：</p>
+<ul>
+<li>高速缓存大小的影响</li>
+<li>块大小的影响</li>
+<li>相联度的影响（抖动的可能性）</li>
+<li>写策略的影响</li>
+</ul>
+<p><strong>编写高速缓存友好的代码</strong></p>
+<p>好的程序员总是应该试着去编写<code>高速缓存友好的代码</code>（cache friendly code）。</p>
+<ol>
+<li>让最常见的情况运行得更快</li>
+<li>尽量减小每个循环内部的缓存不命中数量</li>
+</ol>
+<p><strong>Cache Miss Analysis</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/07j9i.jpg" alt="Matrix Multiplication - 1st Iteration（CSE 351 - Caches, Video 6: Code optimization for caches）"><br><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/eahxq.jpg" alt="Matrix Multiplication - 2nd Iteration（CSE 351 - Caches, Video 6: Code optimization for caches）"></p>
+<p>One way to improve this is to do <code>blocked</code> matrix multiplication.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/u8sjh.jpg" alt="Blocked Matrix Multiplication (CSE 351 - Caches, Video 6: Code optimization for caches)"></p>
+<p>Summary:</p>
+<ul>
+<li>No blocking:  (9&#x2F;8) * n^3</li>
+<li>Blocking:     1&#x2F;(4B) * n^3</li>
+<li>If B &#x3D; 8  difference is 4 * 8 * 9 &#x2F; 8 &#x3D; 36x</li>
+<li>If B &#x3D; 16 difference is 4 * 16 * 9 &#x2F; 8 &#x3D; 72x</li>
+</ul>
+<p>Reason for dramatic difference:</p>
+<ul>
+<li>Matrix multiplication has inherent temporal locality.</li>
+</ul>
+<p>Programmer can optimize for cache performance:</p>
+<ul>
+<li>How data structures are organized</li>
+<li>How data are accessed<ul>
+<li>Nested loop structure</li>
+<li>Blocking is a <code>general</code> technique</li>
+</ul>
+</li>
+</ul>
+<p><strong>存储器山 The Memory Mountain</strong></p>
+<p>一个程序从存储系统中读数据的速率称为<code>读吞吐量</code>（read throughput），或者有时称为<code>读带宽</code>（read bandwidth）。</p>
+<p>如果我们反复以不同的<code>size</code>和<code>stride</code>值调用 run 函数（参考 p445），那么我们就能得到一个读带宽的时间和空间局部性的二维函数，称为<code>存储器山</code>（memory mountain）。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6jw2o.jpg" alt="存储器山，展示了读吞吐量，它是时间和空间局部性的函数（CSAPP 6-41）"></p>
+<p>注意到即使是当程序的<code>时间局部性</code>很差时，<code>空间局部性</code>仍然能补救，并且是非常重要的。</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

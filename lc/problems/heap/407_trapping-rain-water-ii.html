@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Hard Problem Given an m x n matrix of positive integers representing the height of each unit cell in a 2D elevation map, compute the volume of water it is able to trap">
+<meta property="og:type" content="website">
+<meta property="og:title" content="407. Trapping Rain Water II">
+<meta property="og:url" content="https://junhaow.com/lc/problems/heap/407_trapping-rain-water-ii.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Hard Problem Given an m x n matrix of positive integers representing the height of each unit cell in a 2D elevation map, compute the volume of water it is able to trap">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tpuv6.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xgtco.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.126Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.126Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tpuv6.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>407. Trapping Rain Water II</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/trapping-rain-water-ii/">LeetCode</a><br>Difficulty: <span class="red">Hard</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given an <code>m x n</code> matrix of positive integers representing the height of each unit cell in a 2D elevation map, compute the volume of water it is able to trap after raining.</p>
+</blockquote>
+<p><strong>Note:</strong> Both m and n are less than 110. The height of each unit cell is greater than 0 and is less than 20,000.</p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Given the following 3x6 height map: [</span><br><span class="line">  [<span class="number">1</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">2</span>],</span><br><span class="line">  [<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">4</span>],</span><br><span class="line">  [<span class="number">2</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>]</span><br><span class="line">]</span><br><span class="line">Return <span class="number">4.</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tpuv6.jpg"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xgtco.jpg"></p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Priority-Queue"><a href="#Priority-Queue" class="headerlink" title="Priority Queue"></a>Priority Queue</h3><p>Explanation: <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=cJayBq38VYw">Animation</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Cell</span> &#123;</span><br><span class="line">  <span class="type">int</span> i; <span class="type">int</span> j; <span class="type">int</span> height;</span><br><span class="line">  Cell(<span class="type">int</span> _i, <span class="type">int</span> _j, <span class="type">int</span> _height) &#123; i = _i; j = _j; height = _height; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//       n</span></span><br><span class="line"><span class="comment">// [1,4,3,1,3,2],</span></span><br><span class="line"><span class="comment">// [3,2,1,3,2,4],   m</span></span><br><span class="line"><span class="comment">// [2,3,3,2,3,1]</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">trapRainWater</span><span class="params">(<span class="type">int</span>[][] heightMap)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (heightMap == <span class="literal">null</span> || heightMap.length == <span class="number">0</span> || heightMap[<span class="number">0</span>].length == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">m</span> <span class="operator">=</span> heightMap.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> heightMap[<span class="number">0</span>].length;</span><br><span class="line">  <span class="type">boolean</span>[][] visited = <span class="keyword">new</span> <span class="title class_">boolean</span>[m][n]; <span class="comment">// false. If added to pq, become true</span></span><br><span class="line">  PriorityQueue&lt;Cell&gt; pq = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;((c1 , c2) -&gt; (c1.height - c2.height)); <span class="comment">// min pq</span></span><br><span class="line">  <span class="comment">// init pq with border elements</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">col</span> <span class="operator">=</span> <span class="number">0</span>; col &lt; n; ++col) &#123;</span><br><span class="line">    visit(<span class="number">0</span>, col, pq, visited, heightMap); <span class="comment">// first row</span></span><br><span class="line">    visit(m - <span class="number">1</span>, col, pq, visited, heightMap); <span class="comment">// last row</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">row</span> <span class="operator">=</span> <span class="number">1</span>; row &lt; m - <span class="number">1</span>; ++row) &#123; <span class="comment">// skip the first and the last row</span></span><br><span class="line">    visit(row, <span class="number">0</span>, pq, visited, heightMap);</span><br><span class="line">    visit(row, n - <span class="number">1</span>, pq, visited, heightMap);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// remove and add</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">max</span> <span class="operator">=</span> Integer.MIN_VALUE;</span><br><span class="line">  <span class="type">int</span> <span class="variable">water</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (pq.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="type">Cell</span> <span class="variable">c</span> <span class="operator">=</span> pq.remove();</span><br><span class="line">    <span class="type">int</span> <span class="variable">ht</span> <span class="operator">=</span> c.height;</span><br><span class="line">    <span class="keyword">if</span> (ht &lt;= max) water += max - ht;</span><br><span class="line">    <span class="keyword">else</span>          max = ht; <span class="comment">// update max</span></span><br><span class="line">    <span class="comment">// visit its unvisited neighbors</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">row</span> <span class="operator">=</span> c.i, col = c.j;</span><br><span class="line">    <span class="keyword">if</span> (row - <span class="number">1</span> &gt;= <span class="number">0</span> &amp;&amp; !visited[row - <span class="number">1</span>][col]) &#123; <span class="comment">// up</span></span><br><span class="line">      visit(row - <span class="number">1</span>, col, pq, visited, heightMap);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (row + <span class="number">1</span> &lt;= m - <span class="number">1</span> &amp;&amp; !visited[row + <span class="number">1</span>][col]) &#123; <span class="comment">// down</span></span><br><span class="line">      visit(row + <span class="number">1</span>, col, pq, visited, heightMap);</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">if</span> (col - <span class="number">1</span> &gt;= <span class="number">0</span> &amp;&amp; !visited[row][col - <span class="number">1</span>]) &#123; <span class="comment">// left</span></span><br><span class="line">      visit(row, col - <span class="number">1</span>, pq, visited, heightMap);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (col + <span class="number">1</span> &lt;= n - <span class="number">1</span> &amp;&amp; !visited[row][col + <span class="number">1</span>]) &#123; <span class="comment">// right</span></span><br><span class="line">      visit(row, col + <span class="number">1</span>, pq, visited, heightMap);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> water;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// add to pq, and set visited true</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">visit</span><span class="params">(<span class="type">int</span> row, <span class="type">int</span> col, PriorityQueue&lt;Cell&gt; pq, <span class="type">boolean</span>[][] visited, <span class="type">int</span>[][] heightMap)</span> &#123;</span><br><span class="line">  pq.add(<span class="keyword">new</span> <span class="title class_">Cell</span>(row, col, heightMap[row][col]));</span><br><span class="line">  visited[row][col] = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(MN\log{(MN)})$<br><strong>Space:</strong> $O(MN)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

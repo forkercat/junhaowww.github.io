@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Hard Problem Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or tran">
+<meta property="og:type" content="website">
+<meta property="og:title" content="297. Serialize and Deserialize Binary Tree">
+<meta property="og:url" content="https://junhaow.com/lc/problems/tree/recovery-and-construction/297_serialize-and-deserialize-binary-tree.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Hard Problem Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or tran">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.148Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.148Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>297. Serialize and Deserialize Binary Tree</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/serialize-and-deserialize-binary-tree/">LeetCode</a><br>Difficulty: <span class="red">Hard</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.</p>
+</blockquote>
+<blockquote>
+<p>Design an algorithm to serialize and deserialize a binary tree. There is no restriction on how your serialization&#x2F;deserialization algorithm should work. You just need to ensure that a binary tree can be serialized to a string and this string can be deserialized to the original tree structure.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">You may serialize the following tree:</span><br><span class="line">    <span class="number">1</span></span><br><span class="line">   / \</span><br><span class="line">  <span class="number">2</span>   <span class="number">3</span></span><br><span class="line">     / \</span><br><span class="line">    <span class="number">4</span>   <span class="number">5</span></span><br><span class="line">as <span class="string">&quot;[1,2,3,null,null,4,5]&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Clarification:</strong> The above format is the same as how LeetCode serializes a binary tree. You do not necessarily need to follow this format, so please be creative and come up with different approaches yourself.</p>
+<p><strong>Note:</strong> Do not use class member&#x2F;global&#x2F;static variables to store states. Your serialize and deserialize algorithms should be stateless.</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="BFS"><a href="#BFS" class="headerlink" title="BFS"></a>BFS</h3><p><strong>Note:</strong></p>
+<ul>
+<li>Check the <code>null</code> case.</li>
+<li>Handle <code>,</code> in the string. Remove it in the end.</li>
+<li>Use <code>StringBuffer</code>.</li>
+<li>Compatible with <code>null</code> nodes.</li>
+</ul>
+<p><strong>Time:</strong> $O(N)$ if using <code>StringBuffer</code> for string concatenation.<br><strong>Space:</strong> $O(N)$ since we need to keep the entire tree.</p>
+<p><strong>Serialize:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">    <span class="number">1</span></span><br><span class="line">   / \</span><br><span class="line">  <span class="number">2</span>   <span class="number">3</span></span><br><span class="line">     / \</span><br><span class="line">    <span class="number">4</span>   <span class="number">5</span></span><br><span class="line">Result: <span class="string">&quot;1,2,3,null,null,4,5,null,null,null,null&quot;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Encodes a tree to a single string.</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">serialize</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">StringBuffer</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuffer</span>();</span><br><span class="line">  serializeHelper(root, sb);</span><br><span class="line">  sb.setLength(sb.length() - <span class="number">1</span>); <span class="comment">// &quot;remove the last &#x27;,&#x27;&quot;</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> sb.toString();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">serializeHelper</span><span class="params">(TreeNode root, StringBuffer sb)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  Queue&lt;TreeNode&gt; queue = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">  queue.offer(root);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">while</span> (queue.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">childSize</span> <span class="operator">=</span> queue.size();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; childSize; ++i) &#123;</span><br><span class="line">      <span class="type">TreeNode</span> <span class="variable">p</span> <span class="operator">=</span> queue.poll();</span><br><span class="line">      <span class="keyword">if</span> (p == <span class="literal">null</span>) &#123;</span><br><span class="line">        sb.append(<span class="string">&quot;null,&quot;</span>);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        sb.append(p.val + <span class="string">&quot;,&quot;</span>);</span><br><span class="line">        queue.offer(p.left);</span><br><span class="line">        queue.offer(p.right);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Deserialize:</strong></p>
+<ul>
+<li>Handle the base cases.</li>
+<li>Before the <code>while</code> loop, handle the root node first. So you don’t need an extra dummy node.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Decodes your encoded data to tree.</span></span><br><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">deserialize</span><span class="params">(String data)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (data == <span class="literal">null</span> || data.length() == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  List&lt;Integer&gt; list = parseString(data);</span><br><span class="line">  Queue&lt;TreeNode&gt; queue = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">  <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">root</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(list.get(index));</span><br><span class="line">  queue.offer(root);</span><br><span class="line">  index = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (queue.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">childSize</span> <span class="operator">=</span> queue.size();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; childSize; ++i) &#123;</span><br><span class="line">      <span class="type">TreeNode</span> <span class="variable">curr</span> <span class="operator">=</span> queue.poll();</span><br><span class="line">      <span class="keyword">if</span> (curr == <span class="literal">null</span>) <span class="keyword">continue</span>;</span><br><span class="line">      <span class="comment">// left</span></span><br><span class="line">      <span class="type">Integer</span> <span class="variable">val</span> <span class="operator">=</span> list.get(index);</span><br><span class="line">      curr.left = (val != <span class="literal">null</span>) ? <span class="keyword">new</span> <span class="title class_">TreeNode</span>(val) : <span class="literal">null</span>; <span class="comment">// can omit index checking</span></span><br><span class="line">      index += <span class="number">1</span>;</span><br><span class="line">      <span class="comment">// right</span></span><br><span class="line">      val = list.get(index);</span><br><span class="line">      curr.right = (val != <span class="literal">null</span>) ? <span class="keyword">new</span> <span class="title class_">TreeNode</span>(val) : <span class="literal">null</span>;</span><br><span class="line">      index += <span class="number">1</span>;</span><br><span class="line">      queue.offer(curr.left); <span class="comment">// may be null</span></span><br><span class="line">      queue.offer(curr.right);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> List&lt;Integer&gt; <span class="title function_">parseString</span><span class="params">(String data)</span> &#123;</span><br><span class="line">  String[] parsedStrings = data.split(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">  List&lt;Integer&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (String s : parsedStrings) &#123;</span><br><span class="line">    result.add((s.equals(<span class="string">&quot;null&quot;</span>)) ? <span class="literal">null</span> : Integer.parseInt(s));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="DFS-Solution"><a href="#DFS-Solution" class="headerlink" title="DFS (Solution)"></a>DFS (Solution)</h3><ul>
+<li>We don’t need to remove the last <code>,</code>. The return list after <code>split</code> does not include <code>&quot;&quot;</code>.</li>
+<li>If root is <code>null</code>, the string is <code>null</code>.</li>
+</ul>
+<p><strong>Time:</strong> $O(N)$ if using <code>StringBuffer</code> for string concatenation.<br><strong>Space:</strong> $O(N)$ since we need to keep the entire tree.</p>
+<p><strong>Serialize:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">serialize</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="type">StringBuffer</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuffer</span>();</span><br><span class="line">  rserialize(root, sb);</span><br><span class="line">  <span class="keyword">return</span> sb.toString();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">rserialize</span><span class="params">(TreeNode root, StringBuffer sb)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    sb.append(<span class="string">&quot;null,&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span>;               <span class="comment">// very important</span></span><br><span class="line">  &#125;</span><br><span class="line">  sb.append(root.val + <span class="string">&quot;,&quot;</span>);</span><br><span class="line">  rserialize(root.left, sb);</span><br><span class="line">  rserialize(root.right, sb);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Deserialize:</strong></p>
+<ul>
+<li>In <code>rdeserialize</code>, <code>null check</code> for <code>L</code> is not necessary. We assume the input is a valid <code>preorder</code> input.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">deserialize</span><span class="params">(String data)</span> &#123;</span><br><span class="line">  String[] dataArray = data.split(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">  List&lt;String&gt; dataList = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;(Arrays.asList(dataArray));</span><br><span class="line">  <span class="keyword">return</span> rdeserialize(dataList);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> TreeNode <span class="title function_">rdeserialize</span><span class="params">(List&lt;String&gt; L)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (L.get(<span class="number">0</span>).equals(<span class="string">&quot;null&quot;</span>)) &#123;</span><br><span class="line">    L.remove(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">root</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(Integer.valueOf(L.get(<span class="number">0</span>)));</span><br><span class="line">  L.remove(<span class="number">0</span>);</span><br><span class="line">  root.left = rdeserialize(L);</span><br><span class="line">  root.right = rdeserialize(L);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

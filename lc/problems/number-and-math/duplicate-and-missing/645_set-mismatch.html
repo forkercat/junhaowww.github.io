@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode EPI 11.10Difficulty: Easy My Post: [Super Java Collection] Brute-Force, HashMap+Count, HashSet+Math, Bitwise (clever), Sorting Problem The set S originally contains numbers from">
+<meta property="og:type" content="website">
+<meta property="og:title" content="645. Set Mismatch">
+<meta property="og:url" content="https://junhaow.com/lc/problems/number-and-math/duplicate-and-missing/645_set-mismatch.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode EPI 11.10Difficulty: Easy My Post: [Super Java Collection] Brute-Force, HashMap+Count, HashSet+Math, Bitwise (clever), Sorting Problem The set S originally contains numbers from">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.133Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.133Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>645. Set Mismatch</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/set-mismatch/">LeetCode</a> <span class="gray">EPI 11.10</span><br>Difficulty: <span class="green">Easy</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/set-mismatch/discuss/434298">[Super Java Collection] Brute-Force, HashMap+Count, HashSet+Math, Bitwise (clever), Sorting</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>The set <code>S</code> originally contains numbers from <code>1</code> to <code>n</code>. But unfortunately, due to the data error, one of the numbers in the set got duplicated to another number in the set, which results in repetition of one number and loss of another number.</p>
+</blockquote>
+<blockquote>
+<p>Given an array <code>nums</code> representing the data status of this set after the error. Your task is to firstly find the number occurs twice and then find the number that is missing. Return them in the form of an array.</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>The given array size will in the range <code>[2, 10000]</code>.</li>
+<li>The given array’s numbers <strong>won’t have any order</strong>.</li>
+</ul>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: nums = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">4</span>]</span><br><span class="line">Output: [<span class="number">2</span>,<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p>For each value from <code>1</code> to <code>n</code>, count its occurrence in <code>nums</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] findErrorNums(<span class="type">int</span>[] nums) &#123;</span><br><span class="line">  <span class="comment">// assume nums is non-empty</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">dup</span> <span class="operator">=</span> -<span class="number">1</span>, miss = -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt;= n; ++i) &#123; <span class="comment">// for 1...n</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">      <span class="keyword">if</span> (val == i) &#123;</span><br><span class="line">        count += <span class="number">1</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (count == <span class="number">2</span>) dup = i;</span><br><span class="line">    <span class="keyword">if</span> (count == <span class="number">0</span>) miss = i;</span><br><span class="line">    <span class="comment">// if both are set, then break</span></span><br><span class="line">    <span class="keyword">if</span> (dup &gt; <span class="number">0</span> &amp;&amp; miss &gt; <span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[] &#123; dup, miss &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^2)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Map-Count"><a href="#Map-Count" class="headerlink" title="Map + Count"></a>Map + Count</h3><p><strong>Note:</strong> Break the loop when <code>dup</code> and <code>miss</code> are all set.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] findErrorNums(<span class="type">int</span>[] nums) &#123;</span><br><span class="line">  <span class="comment">// assume nums is non-empty</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  <span class="comment">// first pass - count</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">    map.put(val, map.getOrDefault(val, <span class="number">0</span>) + <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// second pass</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">dup</span> <span class="operator">=</span> -<span class="number">1</span>, miss = -<span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (map.containsKey(i) == <span class="literal">false</span>) miss = i;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (map.get(i) == <span class="number">2</span>) dup = i;</span><br><span class="line">    <span class="comment">// if both are set, then break</span></span><br><span class="line">    <span class="keyword">if</span> (dup &gt; <span class="number">0</span>  &amp;&amp; miss &gt; <span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[] &#123; dup, miss &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="Set-Math"><a href="#Set-Math" class="headerlink" title="Set + Math"></a>Set + Math</h3><p>See the example for how this method works.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// actual:   1 + 2 + 4 = 7 (use a hash set to remove extra duplicates)</span></span><br><span class="line"><span class="comment">// expected: 1 + 2 + 3 + 4 = 10</span></span><br></pre></td></tr></table></figure>
+
+<p>So <code>expected</code> - <code>actual</code> &#x3D; <code>miss</code>. And <code>dup</code> can be detected in the array iteration.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] findErrorNums(<span class="type">int</span>[] nums) &#123;</span><br><span class="line">  <span class="comment">// assume nums is non-empty</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  Set&lt;Integer&gt; set = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="type">int</span> <span class="variable">actualSum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">dup</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!set.contains(val)) &#123;</span><br><span class="line">      actualSum += val;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      dup = val;</span><br><span class="line">    &#125;</span><br><span class="line">    set.add(val);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// math</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">expectedSum</span> <span class="operator">=</span> (<span class="number">1</span> + n) * n / <span class="number">2</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">miss</span> <span class="operator">=</span> expectedSum - actualSum;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[] &#123; dup, miss &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="Bit-Manipulation-XOR"><a href="#Bit-Manipulation-XOR" class="headerlink" title="Bit Manipulation (XOR)"></a>Bit Manipulation (XOR)</h3><p><strong>No Extra Space!</strong></p>
+<p>The idea is very clear. I should use an example to explain it.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1  2  3  4  5 (expected)</span></span><br><span class="line"><span class="comment">// 1  2  2  4  5 (actual)</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong> XOR: <code>x ^ x = 0</code>, <code>x ^ y ^ x = y</code>, <code>x ^ y ^ x ^ x ^ y = x</code> (remember this usage!)</p>
+<p><strong>First Pass:</strong> By doing XOR for each number above, <code>xor</code> would finally equals <code>2^3</code>, which is <code>miss^dup</code>; however, we don’t know which is which!</p>
+<p><strong>Second Pass:</strong></p>
+<ul>
+<li>Then we use <code>xor &amp; ~(xor - 1)</code> to get the rightmost one-bit of <code>xor</code>. For example, if <code>xor</code> in binary is <code>00011010</code>, the result is <code>00000010</code>. We call it <code>oneBit</code>.</li>
+<li>Again, for each number above, if a number has that bit on, we put it to a <code>set</code> group; otherwise, throw it to <code>unset</code> group.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1  2  3  4  5</span></span><br><span class="line"><span class="comment">// 1  2  2  4  5</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//    set: 1  1  2  2  2</span></span><br><span class="line"><span class="comment">//  unset: 3  4  4  5  5</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// notice that I don&#x27;t actually examine their binary form, just for demonstration</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>By doing XOR for <code>set</code> and <code>unset</code> groups, we would have <code>setXor = 2</code> and <code>unsetXor = 3</code>; however, we don’t know which is which! T_T</li>
+</ul>
+<p><strong>Third Pass:</strong> Decide which is which :)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] findErrorNums(<span class="type">int</span>[] nums) &#123;</span><br><span class="line">  <span class="comment">// assume nums is non-empty</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// first pass</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">xor</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">    xor ^= (i ^ nums[i - <span class="number">1</span>]);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// second pass</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">oneBit</span> <span class="operator">=</span> xor &amp; ~(xor - <span class="number">1</span>);</span><br><span class="line">  <span class="type">int</span> <span class="variable">setXor</span> <span class="operator">=</span> <span class="number">0</span>, unsetXor = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">    <span class="comment">// for i</span></span><br><span class="line">    <span class="keyword">if</span> ((i &amp; oneBit) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      setXor ^= i;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      unsetXor ^= i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// for nums[i - 1]</span></span><br><span class="line">    <span class="keyword">if</span> ((nums[i - <span class="number">1</span>] &amp; oneBit) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      setXor ^= nums[i - <span class="number">1</span>];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      unsetXor ^= nums[i - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// third pass</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">dup</span> <span class="operator">=</span> setXor;</span><br><span class="line">  <span class="type">int</span> <span class="variable">miss</span> <span class="operator">=</span> unsetXor;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">    <span class="keyword">if</span> (miss == val) &#123; <span class="comment">// miss should be the duplicate</span></span><br><span class="line">      dup = unsetXor;</span><br><span class="line">      miss = setXor; <span class="comment">// exchange</span></span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[] &#123; dup, miss &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Sorting"><a href="#Sorting" class="headerlink" title="Sorting"></a>Sorting</h3><p><strong>Not Recommended!</strong></p>
+<p>Check for corner cases: <code>[1, 1]</code>, <code>[2, 2]</code>, <code>[1, 2, 2]</code>, <code>[2, 2, 3]</code>. We can reduce the corner case logic of <code>miss</code> to checking the first element and last element in the array.</p>
+<ul>
+<li>If the first element after sorting is not <code>1</code>, then <code>1</code> is the missing element.</li>
+<li>If the last element after sorting is not <code>n</code>, then <code>n</code> is the missing element.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] findErrorNums(<span class="type">int</span>[] nums) &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  Arrays.sort(nums);</span><br><span class="line">  <span class="type">int</span> <span class="variable">dup</span> <span class="operator">=</span> -<span class="number">1</span>, missing = -<span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span> (n == <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> (nums[<span class="number">0</span>] == <span class="number">1</span>) ? <span class="keyword">new</span> <span class="title class_">int</span>[] &#123; <span class="number">1</span>, <span class="number">2</span> &#125; : <span class="keyword">new</span> <span class="title class_">int</span>[] &#123; <span class="number">2</span>, <span class="number">1</span> &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n - <span class="number">1</span>; ++i) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">curr</span> <span class="operator">=</span> nums[i], next = nums[i + <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">if</span> (curr == next) dup = curr;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (curr + <span class="number">1</span> &lt; next) missing = curr + <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// checking corner cases</span></span><br><span class="line">  <span class="keyword">if</span> (nums[<span class="number">0</span>] != <span class="number">1</span>) missing = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span> (nums[n - <span class="number">1</span>] != n) missing = n;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[] &#123; dup, missing &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N\log{N})$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

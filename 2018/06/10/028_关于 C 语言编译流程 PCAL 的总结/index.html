@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="GCC 编译器参考：GCC 编译器介绍（转） GCC 是 GNU 项目的编译器组件之一，也是 GNU 最具有代表性的作品。在 GCC 设计之初仅仅作为一个 C 语言的编译器，可是经过十多年的发展，GCC 已经不仅仅能支持 C 语言；它现在还支持 Ada、C++、Java、Objective-C、Pascal、COBOL，以及支持函数式编程和逻辑编程的 Mercury，等等。而 GCC 也不再单是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于 C 语言编译流程 PCAL 的总结">
+<meta property="og:url" content="https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="GCC 编译器参考：GCC 编译器介绍（转） GCC 是 GNU 项目的编译器组件之一，也是 GNU 最具有代表性的作品。在 GCC 设计之初仅仅作为一个 C 语言的编译器，可是经过十多年的发展，GCC 已经不仅仅能支持 C 语言；它现在还支持 Ada、C++、Java、Objective-C、Pascal、COBOL，以及支持函数式编程和逻辑编程的 Mercury，等等。而 GCC 也不再单是">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8k8vg.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bw9rt.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3l3eu.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9k027.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/r7gyb.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/a4cem.jpg">
+<meta property="article:published_time" content="2018-06-10T19:04:03.000Z">
+<meta property="article:modified_time" content="2024-02-13T16:23:30.724Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="gcc">
+<meta property="article:tag" content="编译">
+<meta property="article:tag" content="链接">
+<meta property="article:tag" content="汇编">
+<meta property="article:tag" content="目标文件">
+<meta property="article:tag" content="预处理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8k8vg.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>关于 C 语言编译流程 PCAL 的总结</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Posts</a></li><!--
+     --><!--
+       --><li><a href="/studynotes/">Notes</a></li><!--
+     --><!--
+       --><li><a href="/lc/">Leetcode</a></li><!--
+     --><!--
+       --><li><a href="/games/">Games</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">Me</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/06/17/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/05/30/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/&text=关于 C 语言编译流程 PCAL 的总结"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于 C 语言编译流程 PCAL 的总结"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/&is_video=false&description=关于 C 语言编译流程 PCAL 的总结"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=关于 C 语言编译流程 PCAL 的总结&body=Check out this article: https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于 C 语言编译流程 PCAL 的总结"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于 C 语言编译流程 PCAL 的总结"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于 C 语言编译流程 PCAL 的总结"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于 C 语言编译流程 PCAL 的总结"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/&name=关于 C 语言编译流程 PCAL 的总结&description=&lt;h2 id=&#34;GCC-编译器&#34;&gt;&lt;a href=&#34;#GCC-编译器&#34; class=&#34;headerlink&#34; title=&#34;GCC 编译器&#34;&gt;&lt;/a&gt;GCC 编译器&lt;/h2&gt;&lt;p&gt;参考：&lt;a href=&#34;https://blog.csdn.net/liqinghua1653/article/details/3901661&#34;&gt;GCC 编译器介绍（转）&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;GCC 是 GNU 项目的编译器组件之一，也是 GNU 最具有代表性的作品。在 GCC 设计之初仅仅作为一个 C 语言的编译器，可是经过十多年的发展，GCC 已经不仅仅能支持 C 语言；它现在还支持 Ada、C++、Java、Objective-C、Pascal、COBOL，以及支持函数式编程和逻辑编程的 Mercury，等等。而 GCC 也不再单是 GNU C Compiler 的意思，而是 GNU  Compiler Collection 也即是 GNU 编译器家族的意思了，目前已经成为 Linux 下最重要的编译工具之一。&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/&t=关于 C 语言编译流程 PCAL 的总结"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#GCC-%E7%BC%96%E8%AF%91%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">GCC 编译器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BC%96%E8%AF%91%E9%80%89%E9%A1%B9"><span class="toc-number">1.1.</span> <span class="toc-text">常用的编译选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%96%87%E4%BB%B6%E5%90%8E%E7%BC%80"><span class="toc-number">1.2.</span> <span class="toc-text">常见的文件后缀</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%A6%E8%A7%A3-PCAL"><span class="toc-number">2.</span> <span class="toc-text">详解 PCAL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%84%E5%A4%84%E7%90%86-Pre-Processing"><span class="toc-number">2.1.</span> <span class="toc-text">预处理 Pre-Processing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91-Compiling"><span class="toc-number">2.2.</span> <span class="toc-text">编译 Compiling</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B1%87%E7%BC%96-Assembling"><span class="toc-number">2.3.</span> <span class="toc-text">汇编 Assembling</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">2.3.1.</span> <span class="toc-text">寄存器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A0%86%E3%80%81%E6%A0%88%E5%8F%8A%E6%A0%88%E5%B8%A7%E7%9A%84%E7%BB%84%E6%88%90"><span class="toc-number">2.3.2.</span> <span class="toc-text">堆、栈及栈帧的组成</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E6%8E%A5-Linking"><span class="toc-number">2.4.</span> <span class="toc-text">链接 Linking</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%A6%E5%8F%B7%E8%A1%A8"><span class="toc-number">2.4.1.</span> <span class="toc-text">符号表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-number">2.4.2.</span> <span class="toc-text">静态链接</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E7%9A%84%E4%B8%A4%E4%B8%AA%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.4.2.1.</span> <span class="toc-text">静态链接的两个步骤</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E8%A3%85%E8%BD%BD"><span class="toc-number">2.4.3.</span> <span class="toc-text">进程装载</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E4%B8%8E%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">2.4.3.1.</span> <span class="toc-text">程序与进程的区别</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="toc-number">2.4.3.2.</span> <span class="toc-text">虚拟地址空间</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%BB%BA%E7%AB%8B"><span class="toc-number">2.4.3.3.</span> <span class="toc-text">进程的建立</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-number">2.4.4.</span> <span class="toc-text">动态链接</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E7%9A%84%E4%BC%98%E7%82%B9"><span class="toc-number">2.4.4.1.</span> <span class="toc-text">动态链接的优点</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="toc-number">2.4.4.2.</span> <span class="toc-text">动态链接的缺点</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E4%B8%8E%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-number">2.4.4.3.</span> <span class="toc-text">动态链接与静态链接</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        关于 C 语言编译流程 PCAL 的总结
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Junhao Wang</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-06-10T19:04:03.000Z" class="dt-published" itemprop="datePublished">2018-06-10</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/C/">C</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/gcc/" rel="tag">gcc</a>, <a class="p-category" href="/tags/%E6%B1%87%E7%BC%96/" rel="tag">汇编</a>, <a class="p-category" href="/tags/%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/" rel="tag">目标文件</a>, <a class="p-category" href="/tags/%E7%BC%96%E8%AF%91/" rel="tag">编译</a>, <a class="p-category" href="/tags/%E9%93%BE%E6%8E%A5/" rel="tag">链接</a>, <a class="p-category" href="/tags/%E9%A2%84%E5%A4%84%E7%90%86/" rel="tag">预处理</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="GCC-编译器"><a href="#GCC-编译器" class="headerlink" title="GCC 编译器"></a>GCC 编译器</h2><p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/liqinghua1653/article/details/3901661">GCC 编译器介绍（转）</a></p>
+<p>GCC 是 GNU 项目的编译器组件之一，也是 GNU 最具有代表性的作品。在 GCC 设计之初仅仅作为一个 C 语言的编译器，可是经过十多年的发展，GCC 已经不仅仅能支持 C 语言；它现在还支持 Ada、C++、Java、Objective-C、Pascal、COBOL，以及支持函数式编程和逻辑编程的 Mercury，等等。而 GCC 也不再单是 GNU C Compiler 的意思，而是 GNU  Compiler Collection 也即是 GNU 编译器家族的意思了，目前已经成为 Linux 下最重要的编译工具之一。</p>
+<span id="more"></span>
+
+<p>用 GCC 编译程序生成可执行文件看起来似乎只通过编译一步就完成了，但事实上，使用 GCC 编译工具由 C 语言源程序生成可执行文件的过程并不单单是一个编译的过程，而要经过下面的四个过程，可总结为 <strong>PCAL</strong>：</p>
+<ul>
+<li>预处理（Pre-Processing）<code>cpp</code>：<code>.c/.cpp</code> → <code>.i</code> 预处理后</li>
+<li>编译（Compiling）<code>cc</code>：→ <code>.s</code> 汇编代码</li>
+<li>汇编（Assembling）<code>as</code>：→ <code>.o</code> 机器代码</li>
+<li>链接（Linking）<code>ld</code>：→ <code>a.out</code> 可执行文件</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 例子</span></span><br><span class="line">gcc -E hello.c -o hello.i</span><br><span class="line">gcc -S hello.i -o hello.s</span><br><span class="line">as hello.s -o hello.o 或 gcc -c hello.s -o hello.o</span><br><span class="line">ld hello.o world.o -e main -o helloworld</span><br></pre></td></tr></table></figure>
+
+<p>在实际编译的时候，GCC 首先调用 <code>cpp</code> 命令进行预处理，主要实现对源代码编译前的预处理，比如将源代码中指定的头文件包含进来。接着调用 <code>cc</code> 命令进行编译，作为整个编译过程的一个中间步骤，该过程会将源代码翻译生成汇编代码。汇编过程是针对汇编语言的步骤，调用 <code>as</code> 命令进行工作，生成扩展名为 <code>.o</code> 的目标文件。当所有的目标文件都生成之后，GCC 就调用连接器 <code>ld</code> 来完成最后的关键性工作 —— 链接。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8k8vg.jpg" alt="GCC 编译流程图"></p>
+<h3 id="常用的编译选项"><a href="#常用的编译选项" class="headerlink" title="常用的编译选项"></a>常用的编译选项</h3><ul>
+<li><code>-c</code>：这是 gcc 命令的常用选项。<code>-c</code> 选项告诉 GCC 仅把源程序编译为目标代码而不做链接工作，所以采用该选项的编译指令不会生成最终的可执行程序，而是生成一个与源程序文件名相同的以 <code>.o</code> 为后缀的目标文件。例如一个 <code>Test.c</code> 的源程序经过下面的编译之后会生成一个 <code>Test.o</code> 文件。</li>
+<li><code>-S</code>：使用该选项会生成一个后缀名为 <code>.s</code> 的汇编语言文件，但是同样不会生成可执行程序。</li>
+<li><code>-e</code>：该选项只对文件进行预处理，预处理的输出结果被送到标准输出（比如显示器）。</li>
+<li><code>-v</code>：在 Shell 的提示符号下键入 <code>gcc -v</code>，屏幕上就会显示出目前正在使用的 gcc 版本的信息。</li>
+<li><code>-x language</code>：强制编译器指定的语言编译器来编译某个源程序。</li>
+<li><code>-O</code>和<code>-O2</code>：编译优化。</li>
+<li><code>-o</code>：生成的名字。</li>
+<li><code>-l&lt;DIR&gt;</code>：库依赖选项，指定库及头文件路径。在 Linux 下开发程序的时候，通常来讲都需要借助一个或多个函数库的支持才能够完成相应的功能。一般情况下，Linux 下的大多数函数都将头文件放到系统 &#x2F;usr&#x2F;include 目录下，而库文件则放到 &#x2F;usr&#x2F;lib 目录下。</li>
+</ul>
+<h3 id="常见的文件后缀"><a href="#常见的文件后缀" class="headerlink" title="常见的文件后缀"></a>常见的文件后缀</h3><ul>
+<li><code>.cc</code>：C++ 源程序</li>
+<li><code>.cxx</code>：C++ 源程序</li>
+<li><code>.m</code>：Objective-C 源程序</li>
+<li><code>.i</code>：预处理后的 C 文件</li>
+<li><code>.ii</code>：预处理后的 C++ 文件</li>
+<li><code>.s</code>：汇编语言源程序</li>
+<li><code>.S</code>：汇编语言源程序</li>
+<li><code>.h</code>：头文件，通常不出现在命令行上</li>
+</ul>
+<h2 id="详解-PCAL"><a href="#详解-PCAL" class="headerlink" title="详解 PCAL"></a>详解 PCAL</h2><p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u013230511/article/details/77171165">编译学习笔记系列</a></p>
+<h3 id="预处理-Pre-Processing"><a href="#预处理-Pre-Processing" class="headerlink" title="预处理 Pre-Processing"></a>预处理 Pre-Processing</h3><p>略</p>
+<h3 id="编译-Compiling"><a href="#编译-Compiling" class="headerlink" title="编译 Compiling"></a>编译 Compiling</h3><p>整个编译过程分成 <code>编译前端</code> 与 <code>编译后端</code>，前端负责生产<strong>与机器无关的中间代码</strong>，后端负责生成<strong>与机器有关的目标代码</strong>。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bw9rt.jpg" alt="编译前端和编译后端"></p>
+<ul>
+<li><p>词法分析（Lexical）</p>
+<p>  源代码是由一个一个的字符组成，编译的第一步是将其中的字符序列使用扫描器（Scanner）分割成一系列单词或符号，在编译器中称为记号（Token）。 </p>
+<p>  词法分析产生的记号一般可以分成「关键字」，「标识符」，「字面量（数字，字符串等）」，「特殊符号（+，-，&#x3D;）」。 </p>
+<p>  在计算机语言中，我们说的语法的不同，在编译系统中最直接的便是词法分析的方法不同导致的。</p>
+</li>
+<li><p>语法分析（Grammar，如 LR、LL 分析）</p>
+<p>  从词法分析过程中得到的 Token 序列，仅仅是简单的单词序列，并不能表达意义。语法分析这一过程，通过语法分析器（Grammar Parser）采用上下文无关语法分析手段，产生语法树。这个树是以表达式为节点的树。</p>
+</li>
+<li><p>语义分析（Semantic）</p>
+<p>  从语法分析过程中得到的语法树，仅仅是完成了语法层面的分析，无法了解这个语句是否真正有意义，是否合法。语义分析过程便是<strong>对表达式中的变量与类型进行判断，分析其是否语义不匹配（编译完成后变量名不存在，只有相应的地址信息）。</strong></p>
+</li>
+<li><p>中间代码（语言）生成（Intermediate Representation）</p>
+<blockquote>
+<p>中间语言介于源语言和目标语言之间。常用的中间语言有逆波兰表示、三元式、四元式和树表示等。</p>
+</blockquote>
+<p>  将语义分析的步骤中得到的标识后的语法树（Commended Syntax Tree）通过源码级优化器（Source Code Optimizer）做优化，生成中间代码。</p>
+</li>
+<li><p>目标代码生成与优化</p>
+<p>  从上步骤中拿到的中间代码是与机器无关的，通过此步骤中代码生成器（Code Generator）生成与机器相关的目标代码（即汇编代码）。</p>
+</li>
+</ul>
+<p><strong>注意：</strong>这里所涉及的是上面 <code>PCAL</code> 中的 <code>Compiling</code> 一步而已，后面还需要对目标代码（汇编代码）进行汇编（机器代码）并链接（可执行文件）。</p>
+<h3 id="汇编-Assembling"><a href="#汇编-Assembling" class="headerlink" title="汇编 Assembling"></a>汇编 Assembling</h3><p><strong>待整理！</strong></p>
+<p>汇编由下面 3 类指令组成：</p>
+<ol>
+<li>汇编指令：如 mov、add 等，有着对应的机器码。</li>
+<li>伪指令：没有对应的机器码，由编译器执行，计算机不执行。</li>
+<li>其他符号：如 +、-、*、&#x2F; 等由编译器识别，没有对应的机器码。</li>
+</ol>
+<p>机器码中，指令和数据，存在存储器中没有区别。CPU 可以把它看作指令 <code>mov AX, BX</code>，也可以看作数据 <code>89D8H</code>。</p>
+<h4 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h4><ul>
+<li>运算器：进行信息的处理</li>
+<li>存储器（寄存器）：进行信息存储</li>
+<li>控制器：控制各个器件进行各种操作</li>
+</ul>
+<p>对于汇编程序来说，CPU 中主要的部件是寄存器。如 8086 CPU 有 14 个寄存器：</p>
+<p>AX、BX、CX、DX、SI、DI、SP、BP、IP、CS、SS、DS、ES、PSW</p>
+<p>其中：</p>
+<ul>
+<li><p>AX、BX、CX、DX：用来存放一般数据，大小是 16 位即 2 个字节</p>
+<p>  <img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3l3eu.jpg" alt="寄存器大小示意图"></p>
+<p>  8086 CPU 为了兼容上一代的 8 位 CPU，AX、BX、CX、DX 都可以分成两个独立的寄存器。如，AX 可分为 AH （AX 的高 8 位）和 AL（AX 的低 8 位）。</p>
+</li>
+<li><p>CS：代码段地址寄存器</p>
+</li>
+<li><p>DS：数据段寄存器（除了 CS、DS，还有 2 个段寄存器 SS、ES）</p>
+</li>
+<li><p>IP：指令指针寄存器，存放偏移地址</p>
+</li>
+</ul>
+<p>80386 的指针寄存器有基址寄存器 EBP，堆栈指针寄存器 ESP 和指令指针寄存器 EIP。只需要了解基址寄存器 EBP 和堆栈指针寄存器 ESP 即可。指令指针寄存器 EIP 总是指向下一条要执行的指令的地址，一般情况下无需修改 EIP。</p>
+<p>EBP 称为基址寄存器，可作为通用寄存器用于存放操作数，常用来代替堆栈指针访问堆栈中的数据。</p>
+<p>ESP 称为堆栈指针寄存器，不可作为通用寄存器使用，ESP 存放当前堆栈栈顶的地址，一般情况下，ESP 和 EBP 联合使用来访问函数中的参数和局部变量。</p>
+<h4 id="堆、栈及栈帧的组成"><a href="#堆、栈及栈帧的组成" class="headerlink" title="堆、栈及栈帧的组成"></a>堆、栈及栈帧的组成</h4><p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/an_tang/article/details/70224374">程序的堆和栈及栈帧的组成</a></p>
+<p><code>栈帧</code> 表示程序的函数调用记录，而栈帧又是记录在栈上面，很明显栈上保持了 N 个栈帧的实体，那就可以说栈帧将栈分割成了 N 个记录块，但是这些记录块<strong>大小不固定</strong>，因为栈帧不仅保存诸如：<strong>函数入参、出参、返回地址和上一个栈帧的栈底指针等信息，还保存了函数内部的自动变量（甚至可以是动态分配内存）</strong>。因此，不是所有的栈帧的大小都相同。</p>
+<blockquote>
+<p>栈帧相对于某个函数而言，就是该函数在栈中所占去的空间。</p>
+</blockquote>
+<p>要深入理解函数及其和指针的结合应用，需要理解 <code>程序栈</code>。大部分的现代的块结构语言，比如 C 语言都用到了程序栈来支持函数执行。调用函数时，会创建函数的栈帧并将其推到程序栈上。函数返回时，其栈帧从程序栈上弹出。</p>
+<p>程序栈存放栈帧（stack frame）。栈帧有时候也称为 <code>活跃记录</code>（activation record）或 <code>活跃帧</code>（activation frame）。</p>
+<h3 id="链接-Linking"><a href="#链接-Linking" class="headerlink" title="链接 Linking"></a>链接 Linking</h3><h4 id="符号表"><a href="#符号表" class="headerlink" title="符号表"></a>符号表</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//hello.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> global_uninit_val;</span><br><span class="line"><span class="type">int</span> global_init_val = <span class="number">123</span>;</span><br><span class="line"><span class="type">static</span> <span class="type">int</span> static_val <span class="number">456</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="type">int</span> a = <span class="number">1</span>;;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;hello world\n&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译器最后一步是将不同的目标文件结合到一起。<strong>在链接中，目标文件之间的相互拼合实际上是目标文件对地址的引用</strong>，具体到 C 语言，是 <code>函数和变量</code> 的引用。比如上面 hello.c 例子中，hello.c 中的 main 函数引用到了 stdio.h 中的 printf 函数。在 hello.c 生成目标文件时，调用 printf 的跳转<strong>暂时是无法知道具体的地址</strong>。在编译器将所有目标文件链接成执行文件时，<strong>将跳转 printf 的地址替换成真正 printf 实际地址。</strong></p>
+<p>在链接中，我们将函数和变量统一称为 <code>符号</code>（Symbol），函数名或者变量名就是符号。</p>
+<p>正因为链接时符号作为各个目标文件的的链接的主要的依据，因此管理好目标文件的符号非常重要。在可执行文件中将符号统一交由 <code>符号表</code>（Symbol Table）进行管理。</p>
+<p>在编译后，C 会将符号保存至符号表中，且符号是用于链接同一个函数或变量的唯一标志，也就是说相同的一个程序中不可以拥有两个相同函数的实现。 </p>
+<p>但这种方式导致了另外一个问题，一旦 C 程序变得庞大，函数或者全局变量的命名重名变得难以避免。当引用到其他的库时，需要时刻小心函数命名以防出现函数重名便需要非常的小心。这是C函数的一个历史包袱，为避免这种情况，一般的 C 函数库都加上特定的前缀进行区分。</p>
+<p>但这种原始简单的区分方式只能暂时避免符号重名的情况，并不能根本的解决这问题。为解决这个问题，目前大部分新出的语言都提出了称为 <code>命名空间</code> 的方式用以解决这个问题，同样作为 C 语言的升级版 C++ 也通过支持命名空间（namespace）的方式解决符号冲突的问题。</p>
+<p>我们知道 C++ 语言支持函数重载，也支持两个不同类中可以声明相同函数名的函数。这其实是通过符号修饰（name decoration）或称符号改编（name mangling）来实现的。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9k027.jpg" alt="符号修饰"></p>
+<p>这种通过添加符号将函数、变量的符号进行修饰的过程称为 <code>函数签名</code>。函数签名包含：函数名、函数命名空间、类名、参数类型。</p>
+<p><strong>符号重名请看：</strong><a href="https://junhaow.com/2018/06/17/C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/">C 语言全局变量初始化和符号重名的问题</a></p>
+<blockquote>
+<p>函数的签名是指函数原型中<strong>除去返回值的部分</strong>，包括函数名、形参表和关键字 const（如果使用了的话）的信息。</p>
+</blockquote>
+<h4 id="静态链接"><a href="#静态链接" class="headerlink" title="静态链接"></a>静态链接</h4><p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u013230511/article/details/77512799">编译、链接学习笔记（三）静态链接</a></p>
+<p><strong>将多个目标文件链接成一个可执行文件</strong>的过程称为 <code>静态链接</code>。</p>
+<h5 id="静态链接的两个步骤"><a href="#静态链接的两个步骤" class="headerlink" title="静态链接的两个步骤"></a>静态链接的两个步骤</h5><ol>
+<li><p>文件混合<br> 合并各个目标文件中相同的段，并且将所有目标文件的符号表中的符号统一放置到 <code>全局的符号表</code> 中。<br> <img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/r7gyb.jpg" alt="符号表合并"></p>
+</li>
+<li><p>符号解析与重定位<br> 读取段中的数据，重定位信息，调整代码中变量和函数的地址，将外部符号的引用地址使用伪地址进行填充。</p>
+</li>
+</ol>
+<h4 id="进程装载"><a href="#进程装载" class="headerlink" title="进程装载"></a>进程装载</h4><p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u013230511/article/details/78010034">编译、链接学习笔记（四）进程装载</a></p>
+<h5 id="程序与进程的区别"><a href="#程序与进程的区别" class="headerlink" title="程序与进程的区别"></a>程序与进程的区别</h5><p>程序是指计算机可执行文件在磁盘中的保存方式，他是一对预编译好的指令和数据的集合文件。而进程是计算机将程序按照一定规则运行的过程。两者相比<strong>程序是一个静态的概念，进程是一个动态的概念</strong>。</p>
+<h5 id="虚拟地址空间"><a href="#虚拟地址空间" class="headerlink" title="虚拟地址空间"></a>虚拟地址空间</h5><p>每个进程运行起来后，操作系统为其分配了进程独立拥有的 <code>虚拟地址空间</code>（Virtual Address Space）。这空间的大小是由计算机操作系统以及 CPU 的位数共同决定。CPU 的物理属性决定了空间的最大值，除此之外，操作系统也会决定其访问空间的权限等。</p>
+<p>在操作系统来看，我们知道一个计算机的物理内存其实是有限的，而且操作系统层面上看还要支持多个进程的并发运行。操作系统并不会真的分配实际大小的内存空间，只是给进程一个<strong>假象</strong>，让进程看起来拥有非常大空间，实际情况是操作系统通过分配时间片运行进程并不断切换，让进程「看起来」拥有一段连续且非常大的内存空间。</p>
+<p>如果从 C 程序的角度而言，最简单的可从指针的位数来看地址的空间大小。在 32 位机器下，指针的长度也为 4 个字节；在 64 位机器下，指针长度为 8 个字节。</p>
+<p>进程虚拟地址空间都是在操作系统的操作之下，<strong>并非所有的地址空间都可以访问</strong>，只能使用由操作系统分配的地址。如访问非操作系统分配的内存空间，操作系统将会强制结束进程。Windows 下会遇到「进行因非法操作需要关闭」，Linux 下出现「Segmentation Fault」，Mac OS 下会发生「EXE_BAD_ACCESS」。</p>
+<h5 id="进程的建立"><a href="#进程的建立" class="headerlink" title="进程的建立"></a>进程的建立</h5><p>一个程序的执行一般伴随这个进程的建立。进程的建立包含如下三步：</p>
+<ol>
+<li><p>创建独立的虚拟内存空间。</p>
+<p> 操作系统为进程创建独立的虚拟内存空间，实际的操作是为进程分配一个页目录（Page Directory），以及为创建映射函数所需要的数据结构。</p>
+</li>
+<li><p>读取可执行文件头，建立虚拟空间与可执行文件的映射关系。</p>
+<p> 当程序运行时，一旦发生缺页，则需要依赖一套映射规则，将可执行文件的页映射到虚拟内存。此步骤则是建立虚拟内存和可执行文件的映射规则。<br> <img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/a4cem.jpg" alt="发生缺页"></p>
+</li>
+<li><p>指令寄存器指向可执行文件的入口，进程开始执行。</p>
+<p> 操作系统通过将指令寄存器指向可执行文件的入口，将控制器交由进程。</p>
+</li>
+</ol>
+<h4 id="动态链接"><a href="#动态链接" class="headerlink" title="动态链接"></a>动态链接</h4><p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u013230511/article/details/78046286">编译、链接学习笔记（五）动态链接</a>、<a target="_blank" rel="noopener" href="http://wiki.mbalib.com/wiki/%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5">动态链接</a></p>
+<p>动态链接是指编译系统在链接阶段并不把目标文件和函数库文件链接在一起，而是等到程序在运行过程中需要使用时才链接函数库。</p>
+<h5 id="动态链接的优点"><a href="#动态链接的优点" class="headerlink" title="动态链接的优点"></a>动态链接的优点</h5><ul>
+<li><p>共享：多个进程可以共用一个 DLL（动态链接库，Dynamic Linking Library），比较节省内存，从而可以减少文件的交换。</p>
+</li>
+<li><p>部分装入：一个进程可以将多种操作分散在不同的 DLL 中实现，而只将当前操作的 DLL 装入内存。</p>
+</li>
+<li><p>便于局部代码修改：即便于代码升级和代码重用；只要函数的接口参数（输入和输出）不变，则修改函数及其 DLL 时，无需对可执行文件重新编译或链接。</p>
+</li>
+<li><p>便于适应运行环境：调用不同的 DLL，就可以适应多种使用环境并提供不同的功能。例如：不同的显示卡只需厂商为其提供特定的DLL，而操作系统和应用程序则不必修改。</p>
+</li>
+</ul>
+<h5 id="动态链接的缺点"><a href="#动态链接的缺点" class="headerlink" title="动态链接的缺点"></a>动态链接的缺点</h5><ul>
+<li><p>增加了程序执行时的链接开销。</p>
+</li>
+<li><p>程序由多个文件组成，因此增加了管理复杂度。</p>
+</li>
+</ul>
+<h5 id="动态链接与静态链接"><a href="#动态链接与静态链接" class="headerlink" title="动态链接与静态链接"></a>动态链接与静态链接</h5><p>链接分为两种，一种是静态链接，另一种是动态链接。动态链接发生在程序运行时，其函数代码不出现在程序的可执行文件中；而静态链接发生在编译时，静态链接的函数代码实际被插入到程序的可执行文件中。</p>
+<p>用于静态链接的函数通常保存在 OBJ 和 IJB 文件中。例如，编写一个由一些独立的编译单元（文件）组成的大型程序时，链接器在创建可执行文件时将每个模块 OBJ 文件结合起来，此时可执行文件将包含OBJ文件中的所有代码。</p>
+<p>使用动态链接时，用于动态链接的函数代码保存在与程序的其他部分相独立的 DEF 文件中。用户的程序要包含链接 DLL 函数加载指令的少量代码，但并不将函数本身包括进来。<br>　　<br>函数的可执行代码位于一个 DLL 中，该 DLL 包含一个或多个<strong>已被编译、链接</strong>并与使用它们的进程分开存储的函数。<br>　　<br>目前主流的操作系统中，对于动态链接文件有不同的命名与扩展名：</p>
+<ol>
+<li>Linux：动态链接文件称为 <code>动态共享对象</code>（DSO，Dynamic Shared Object），以 <code>.so</code> 为扩展名。</li>
+<li>Windows：动态链接文件称为 <code>动态链接库</code>（DLL，Dynamic Linking Library），以 <code>.dll</code> 为扩展名。 </li>
+<li>Mac OS：动态链接文件也称为 <code>动态链接库</code>（DLL，Dynamic Linking Library），以 <code>.dylib</code> 为扩展名。</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>已在文中各标题下。</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Posts</a></li>
+        
+          <li><a href="/studynotes/">Notes</a></li>
+        
+          <li><a href="/lc/">Leetcode</a></li>
+        
+          <li><a href="/games/">Games</a></li>
+        
+          <li><a href="/links/">Links</a></li>
+        
+          <li><a href="/about/">Me</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#GCC-%E7%BC%96%E8%AF%91%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">GCC 编译器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BC%96%E8%AF%91%E9%80%89%E9%A1%B9"><span class="toc-number">1.1.</span> <span class="toc-text">常用的编译选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%96%87%E4%BB%B6%E5%90%8E%E7%BC%80"><span class="toc-number">1.2.</span> <span class="toc-text">常见的文件后缀</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%A6%E8%A7%A3-PCAL"><span class="toc-number">2.</span> <span class="toc-text">详解 PCAL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%84%E5%A4%84%E7%90%86-Pre-Processing"><span class="toc-number">2.1.</span> <span class="toc-text">预处理 Pre-Processing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91-Compiling"><span class="toc-number">2.2.</span> <span class="toc-text">编译 Compiling</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B1%87%E7%BC%96-Assembling"><span class="toc-number">2.3.</span> <span class="toc-text">汇编 Assembling</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">2.3.1.</span> <span class="toc-text">寄存器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A0%86%E3%80%81%E6%A0%88%E5%8F%8A%E6%A0%88%E5%B8%A7%E7%9A%84%E7%BB%84%E6%88%90"><span class="toc-number">2.3.2.</span> <span class="toc-text">堆、栈及栈帧的组成</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E6%8E%A5-Linking"><span class="toc-number">2.4.</span> <span class="toc-text">链接 Linking</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%A6%E5%8F%B7%E8%A1%A8"><span class="toc-number">2.4.1.</span> <span class="toc-text">符号表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-number">2.4.2.</span> <span class="toc-text">静态链接</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E7%9A%84%E4%B8%A4%E4%B8%AA%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.4.2.1.</span> <span class="toc-text">静态链接的两个步骤</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E8%A3%85%E8%BD%BD"><span class="toc-number">2.4.3.</span> <span class="toc-text">进程装载</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E4%B8%8E%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">2.4.3.1.</span> <span class="toc-text">程序与进程的区别</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="toc-number">2.4.3.2.</span> <span class="toc-text">虚拟地址空间</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%BB%BA%E7%AB%8B"><span class="toc-number">2.4.3.3.</span> <span class="toc-text">进程的建立</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-number">2.4.4.</span> <span class="toc-text">动态链接</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E7%9A%84%E4%BC%98%E7%82%B9"><span class="toc-number">2.4.4.1.</span> <span class="toc-text">动态链接的优点</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="toc-number">2.4.4.2.</span> <span class="toc-text">动态链接的缺点</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E4%B8%8E%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-number">2.4.4.3.</span> <span class="toc-text">动态链接与静态链接</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/&text=关于 C 语言编译流程 PCAL 的总结"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于 C 语言编译流程 PCAL 的总结"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/&is_video=false&description=关于 C 语言编译流程 PCAL 的总结"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=关于 C 语言编译流程 PCAL 的总结&body=Check out this article: https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于 C 语言编译流程 PCAL 的总结"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于 C 语言编译流程 PCAL 的总结"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于 C 语言编译流程 PCAL 的总结"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于 C 语言编译流程 PCAL 的总结"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/&name=关于 C 语言编译流程 PCAL 的总结&description=&lt;h2 id=&#34;GCC-编译器&#34;&gt;&lt;a href=&#34;#GCC-编译器&#34; class=&#34;headerlink&#34; title=&#34;GCC 编译器&#34;&gt;&lt;/a&gt;GCC 编译器&lt;/h2&gt;&lt;p&gt;参考：&lt;a href=&#34;https://blog.csdn.net/liqinghua1653/article/details/3901661&#34;&gt;GCC 编译器介绍（转）&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;GCC 是 GNU 项目的编译器组件之一，也是 GNU 最具有代表性的作品。在 GCC 设计之初仅仅作为一个 C 语言的编译器，可是经过十多年的发展，GCC 已经不仅仅能支持 C 语言；它现在还支持 Ada、C++、Java、Objective-C、Pascal、COBOL，以及支持函数式编程和逻辑编程的 Mercury，等等。而 GCC 也不再单是 GNU C Compiler 的意思，而是 GNU  Compiler Collection 也即是 GNU 编译器家族的意思了，目前已经成为 Linux 下最重要的编译工具之一。&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/06/10/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/&t=关于 C 语言编译流程 PCAL 的总结"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

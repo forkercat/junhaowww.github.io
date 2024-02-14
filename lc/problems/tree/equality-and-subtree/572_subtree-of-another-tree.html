@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Easy My Post: [Java] Recursion (Node Comparison) &amp; Preorder Sequence Comparison (StringBuilder) Problem Given two non-empty binary trees s and t, check whether tre">
+<meta property="og:type" content="website">
+<meta property="og:title" content="572. Subtree of Another Tree">
+<meta property="og:url" content="https://junhaow.com/lc/problems/tree/equality-and-subtree/572_subtree-of-another-tree.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Easy My Post: [Java] Recursion (Node Comparison) &amp; Preorder Sequence Comparison (StringBuilder) Problem Given two non-empty binary trees s and t, check whether tre">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.145Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.145Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>572. Subtree of Another Tree</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/subtree-of-another-tree/">LeetCode</a><br>Difficulty: <span class="green">Easy</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/subtree-of-another-tree/discuss/433199">[Java] Recursion (Node Comparison) &amp; Preorder Sequence Comparison (StringBuilder)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given two non-empty binary trees <code>s</code> and <code>t</code>, check whether tree <code>t</code> has exactly the same structure and node values with a subtree of <code>s</code>. A subtree of <code>s</code> is a tree consists of a node in <code>s</code> and all of this node’s descendants. The tree <code>s</code> could also be considered as a subtree of itself.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//   s            t</span></span><br><span class="line">     <span class="number">3</span>            <span class="number">4</span></span><br><span class="line">    / \          / \</span><br><span class="line">   <span class="number">4</span>   <span class="number">5</span>        <span class="number">1</span>   <span class="number">2</span></span><br><span class="line">  / \</span><br><span class="line"> <span class="number">1</span>   <span class="number">2</span></span><br><span class="line"><span class="comment">// True</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//   s            t</span></span><br><span class="line">     <span class="number">3</span>            <span class="number">4</span></span><br><span class="line">    / \          / \</span><br><span class="line">   <span class="number">4</span>   <span class="number">5</span>        <span class="number">1</span>   <span class="number">2</span></span><br><span class="line">  / \</span><br><span class="line"> <span class="number">1</span>   <span class="number">2</span></span><br><span class="line">    /</span><br><span class="line">   <span class="number">0</span></span><br><span class="line"><span class="comment">// False</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Recursion-Node-Comparison"><a href="#Recursion-Node-Comparison" class="headerlink" title="Recursion (Node Comparison)"></a>Recursion (Node Comparison)</h3><p>We can extract the recursive structure as follows:</p>
+<p><code>isSubtree(s, t)</code>:</p>
+<ul>
+<li>The base case is:<ul>
+<li>If <code>s == null &amp;&amp; t == null</code>, then return <code>true</code>.</li>
+<li>If <code>s == null || t == null</code>, then return <code>false</code>.</li>
+</ul>
+</li>
+<li>If <code>isSame(s, t)</code> is <code>true</code>, then return <code>true</code>.</li>
+<li>If <code>isSubtree(s.left, t)</code> or <code>isSubtree(s.right, t)</code> is <code>true</code>, then return <code>true</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isSubtree</span><span class="params">(TreeNode s, TreeNode t)</span> &#123; <span class="comment">// takes O(m x n)</span></span><br><span class="line">  <span class="keyword">if</span> (s == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> t == <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> isSame(s, t) || isSubtree(s.left, t) || isSubtree(s.right, t);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isSame</span><span class="params">(TreeNode t1, TreeNode t2)</span> &#123; <span class="comment">// takes O(n)</span></span><br><span class="line">  <span class="keyword">if</span> (t1 == <span class="literal">null</span> &amp;&amp; t2 == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">if</span> (t1 == <span class="literal">null</span> || t2 == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (t1.val != t2.val) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">return</span> isSame(t1.left, t2.left) &amp;&amp; isSame(t1.right, t2.right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>Time:</strong> $O(m \times n)$</p>
+<ul>
+<li>$O(m)$: Every node in <code>s</code> is traversed once.</li>
+<li>$O(n)$: Do <code>isSame(s, t)</code> for each node in <code>t</code>, which traverses at most $n$ nodes in <code>t</code>.</li>
+</ul>
+<p><strong>Space:</strong> $O(h_s)$ where $h_s$ is the height of <code>s</code>.</p>
+<h3 id="Preorder-Sequence"><a href="#Preorder-Sequence" class="headerlink" title="Preorder Sequence"></a>Preorder Sequence</h3><p>We can find the preorder traversal of the tree <code>s</code> and <code>t</code>, and compare the preorder sequence. If the sequence $S_t$ is a substring of $S_s$, <code>t</code> is a subtree of <code>s</code>.</p>
+<p>Also, in order to use this method, we need to treat children of leaf nodes as <code>null</code> value, and other values should have a prior <code>#</code> character to distinguish numbers such as <code>3</code> and <code>23</code>.</p>
+<p>Without <code>StringBuilder</code> (<code>13 ms</code>):</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isSubtree</span><span class="params">(TreeNode s, TreeNode t)</span> &#123;</span><br><span class="line">  <span class="type">String</span> <span class="variable">seqS</span> <span class="operator">=</span> preorder(s);</span><br><span class="line">  <span class="type">String</span> <span class="variable">seqT</span> <span class="operator">=</span> preorder(t);</span><br><span class="line">  <span class="keyword">return</span> seqS.indexOf(seqT) &gt;= <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> String <span class="title function_">preorder</span><span class="params">(TreeNode t)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (t == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;null&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&quot;#&quot;</span> + t.val + preorder(t.left) + preorder(t.right); <span class="comment">// inefficient</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Use <code>StringBuilder</code> (<code>5 ms</code>):</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isSubtree</span><span class="params">(TreeNode s, TreeNode t)</span> &#123;</span><br><span class="line">  <span class="comment">// s</span></span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  preorder(s, sb);</span><br><span class="line">  <span class="type">String</span> <span class="variable">seqS</span> <span class="operator">=</span> sb.toString();</span><br><span class="line">  <span class="comment">// t</span></span><br><span class="line">  sb = <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  preorder(t, sb);</span><br><span class="line">  <span class="type">String</span> <span class="variable">seqT</span> <span class="operator">=</span> sb.toString();</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> seqS.indexOf(seqT) &gt;= <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">preorder</span><span class="params">(TreeNode t, StringBuilder sb)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (t == <span class="literal">null</span>) &#123;</span><br><span class="line">    sb.append(<span class="string">&quot;null&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  sb.append(<span class="string">&quot;#&quot;</span> + t.val);</span><br><span class="line">  preorder(t.left, sb);</span><br><span class="line">  preorder(t.right, sb);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong></p>
+<ul>
+<li>$m$ is the number of nodes in tree <code>s</code>; $n$ is the number of nodes in tree <code>t</code>.</li>
+<li><code>String concatenation</code> takes $O(k)$ for a k-length string. Using <code>StringBuilder</code> reduces the time complexity to $O(1)$.</li>
+</ul>
+<p><strong>Time:</strong> <code>Original</code>: $O(m^2 + n^2 + m \times n)$; <code>Use StringBuilder</code>: $O(m + n)$</p>
+<ul>
+<li><code>indexOf</code> takes $O(m \times n)$, or $O(m + n)$ with KMP algorithm.</li>
+</ul>
+<p><strong>Space:</strong> $O(\max{(m, n)})$ because of strings.</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

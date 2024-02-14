@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Source: LearnCpp.com by Alex Object RelationshipsThere are many different kinds of relationships two objects may have in real-life, and we use specific “relation type” words to describe these relati">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Study Notes on LearnCpp (Part 4 - Object Relationships, Inheritance)">
+<meta property="og:url" content="https://junhaow.com/studynotes/cpp/learncpp/Study%20Notes%20on%20LearnCpp%20Part%204.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Source: LearnCpp.com by Alex Object RelationshipsThere are many different kinds of relationships two objects may have in real-life, and we use specific “relation type” words to describe these relati">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/cszoi.jpg">
+<meta property="article:published_time" content="2019-02-20T06:03:11.000Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.184Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/cszoi.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Study Notes on LearnCpp (Part 4 - Object Relationships, Inheritance)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Source: <a target="_blank" rel="noopener" href="https://www.learncpp.com/">LearnCpp.com</a> by Alex</p>
+<h2 id="Object-Relationships"><a href="#Object-Relationships" class="headerlink" title="Object Relationships"></a>Object Relationships</h2><p>There are many different kinds of relationships two objects may have in real-life, and we use specific “relation type” words to describe these relationships. For example: </p>
+<ul>
+<li>a square “is-a” shape. </li>
+<li>A car “has-a” steering wheel. </li>
+<li>A computer programmer “uses-a” keyboard. </li>
+<li>A flower “depends-on” a bee for pollination. </li>
+<li>A student is a “member-of” a class. </li>
+<li>Your brain exists as “part-of” you (at least, we can reasonably assume so if you’ve gotten this far).</li>
+</ul>
+<h3 id="Composition-part-of"><a href="#Composition-part-of" class="headerlink" title="Composition (part-of)"></a>Composition (part-of)</h3><p>This process of building complex objects from simpler ones is called <code>object composition</code>.</p>
+<p>In C++, you’ve already seen that structs and classes can have data members of various types (such as fundamental types or other classes). When we build classes with data members, we’re essentially constructing a complex object from simpler parts, which is object composition. For this reason, structs and classes are sometimes referred to as composite types.</p>
+<p><strong>Types of object composition</strong></p>
+<p>There are two basic subtypes of object composition: <code>composition</code> and <code>aggregation</code>. We’ll examine composition in this lesson, and aggregation in the next.</p>
+<p>A note on terminology: the term “composition” is often used to refer to both composition and aggregation, not just to the composition subtype. In this tutorial, we’ll use the term <code>&quot;object composition&quot;</code> when we’re referring to both, and “composition” when we’re referring specifically to the composition subtype.</p>
+<p>To qualify as a composition, an object and a part must have the following relationship:</p>
+<ul>
+<li>The part (member) is part of the object (class)</li>
+<li>The part (member) can only belong to one object (class) at a time</li>
+<li>The part (member) has its existence managed by the object (class)</li>
+<li>The part (member) does not know about the existence of the object (class)</li>
+</ul>
+<p>As for the fourth point, the part doesn’t know about the existence of the whole. Your heart operates blissfully unaware that it is part of a larger structure. We call this a <code>unidirectional</code> relationship, because the body knows about the heart, but not the other way around.</p>
+<p>While object composition models <code>has-a</code> type relationships (a body has-a heart, a fraction has-a denominator), we can be more precise and say that composition models <code>part-of</code> relationships (a heart is part-of a body, a numerator is part of a fraction). Composition is often used to model physical relationships, where one object is physically contained inside another.</p>
+<p>In general, if you can design a class using composition, you should design a class using composition. Classes designed using composition are straightforward, flexible, and robust (in that they clean up after themselves nicely).</p>
+<p><strong>Variants on the composition theme</strong></p>
+<p>Although most compositions directly create their parts when the composition is created and directly destroy their parts when the composition is destroyed, there are some variations of composition that bend these rules a bit.</p>
+<p>For example:</p>
+<ul>
+<li>A composition may defer creation of some parts until they are needed. For example, a string class may not create a dynamic array of characters until the user assigns the string some data to hold.</li>
+<li>A composition may opt to use a part that has been given to it as input rather than create the part itself.</li>
+<li>A composition may delegate destruction of its parts to some other object (e.g. to a garbage collection routine).</li>
+</ul>
+<p><strong>Composition and subclasses</strong></p>
+<p>One question that new programmers often ask when it comes to object composition is, “When should I use a subclass instead of direct implementation of a feature?”. For example, instead of using the Point2D class to implement the Creature’s location, we could have instead just added 2 integers to the Creature class and written code in the Creature class to handle the positioning. </p>
+<p><code>A good rule of thumb is that each class should be built to accomplish a single task</code>. That task should either be the storage and manipulation of some kind of data (e.g. Point2D, std::string), OR the coordination of subclasses (e.g. Creature). Ideally not both.</p>
+<p>In this case of our example, it makes sense that <code>Creature shouldn&#39;t have to worry about how Points are implemented</code>, or how the name is being stored. Creature’s job isn’t to know those intimate details. Creature’s job is to worry about how to coordinate the data flow and ensure that each of the subclasses knows what it is supposed to do. It’s up to the individual subclasses to worry about how they will do it.</p>
+<h3 id="Aggregation-has-a"><a href="#Aggregation-has-a" class="headerlink" title="Aggregation (has-a)"></a>Aggregation (has-a)</h3><p>To qualify as an aggregation, a whole object and its parts must have the following relationship:</p>
+<ul>
+<li>The part (member) is part of the object (class)</li>
+<li>The part (member) <code>can belong to more than one object</code> (class) at a time</li>
+<li>The part (member) <code>does not have its existence managed by the object</code> (class)</li>
+<li>The part (member) does not know about the existence of the object (class)</li>
+</ul>
+<p>Like a composition, an aggregation is still a part-whole relationship, where the parts are contained within the whole, and it is a unidirectional relationship. However, unlike a composition, parts can belong to more than one object at a time, and the whole object is not responsible for the existence and lifespan of the parts. When an aggregation is created, the aggregation is not responsible for creating the parts. When an aggregation is destroyed, the aggregation is not responsible for destroying the parts.</p>
+<p>For example, consider the relationship between a person and their home address. In this example, for simplicity, we’ll say every person has an address. However, that address can belong to more than one person at a time: for example, to both you and your roommate or significant other. However, that address isn’t managed by the person – the address probably existed before the person got there, and will exist after the person is gone. Additionally, a person knows what address they live at, but the addresses don’t know what people live there. Therefore, this is an aggregate relationship.</p>
+<p>We can say that aggregation models “has-a” relationships (a department has teachers, the car has an engine).</p>
+<p>Similar to a composition, the parts of an aggregation can be singular or multiplicative.</p>
+<p><strong>Implementing aggregations</strong></p>
+<p>Because aggregations are similar to compositions in that <code>they are both part-whole relationships</code>, they are implemented almost identically, and the difference between them is mostly <code>semantic</code>. In a composition, we typically add our parts to the composition using <code>normal member variables</code> (or pointers where the allocation and deallocation process is handled by the composition class).</p>
+<p>In an aggregation, we also add parts as member variables. However, these member variables are <code>typically either references or pointers that are used to point at objects that have been created outside the scope of the class.</code> Consequently, an aggregation usually either takes the objects it is going to point to as constructor parameters, or it begins empty and the subobjects are added later via access functions or operators.</p>
+<p><strong>Pick the right relationship for what you’re modeling</strong></p>
+<p>For example, if you’re writing a body shop simulator, you may want to implement a car and engine as an aggregation, so the engine can be removed and put on a shelf somewhere for later. However, if you’re writing a racing simulation, you may want to implement a car and an engine as a composition, since the engine will never exist outside of the car in that context.</p>
+<p><strong>Rule:</strong> Implement the simplest relationship type that meets the needs of your program, not what seems right in real-life.</p>
+<p><strong>Summarizing composition and aggregation</strong></p>
+<p>Compositions:</p>
+<ul>
+<li>Typically use normal member variables</li>
+<li>Can use pointer members if the class handles object allocation&#x2F;deallocation itself</li>
+<li>Responsible for creation&#x2F;destruction of parts</li>
+</ul>
+<p>Aggregations:</p>
+<ul>
+<li>Typically use pointer or reference members that point to or reference objects that <code>live outside the scope</code> of the aggregate class</li>
+<li>Not responsible for creating&#x2F;destroying parts</li>
+</ul>
+<p>While aggregations can be extremely useful, they are also potentially more dangerous. Because aggregations do not handle deallocation of their parts, that is left up to an external party to do so. If the external party no longer has a pointer or reference to the abandoned parts, or if it simply forgets to do the cleanup (assuming the class will handle that), then memory will be leaked.</p>
+<p>For this reason, compositions should be favored over aggregations.</p>
+<p><strong>A few warnings&#x2F;errata</strong></p>
+<p>For a variety of historical and contextual reasons, unlike a composition, <code>the definition of an aggregation is not precise</code> – so you may see other reference material defines it differently from the way we do. That’s fine, just be aware.</p>
+<p><strong>One final note:</strong> In the lesson Structs, we defined aggregate data types (such as structs and classes) as data types that groups multiple variables together. You may also run across the term <code>aggregate class</code> in your C++ journeys, which is defined as a struct or class that has no provided constructors, destructors, or overloaded assignment, has all public members, and does not use inheritance – essentially a plain-old-data struct. <code>Despite the similarities in naming, aggregates and aggregation are different and should not be confused</code>.</p>
+<h3 id="Association-uses-a"><a href="#Association-uses-a" class="headerlink" title="Association (uses-a)"></a>Association (uses-a)</h3><p>In this lesson, we’ll take a look at a weaker type of relationship between two otherwise unrelated objects, called an association. Unlike object composition relationships, in an association, there is no implied whole&#x2F;part relationship.</p>
+<p>To qualify as an association, an object and another object must have the following relationship:</p>
+<ul>
+<li>The associated object (member) is otherwise unrelated to the object (class)</li>
+<li>The associated object (member) can belong to more than one object (class) at a time</li>
+<li>The associated object (member) does not have its existence managed by the object (class)</li>
+<li>The associated object (member) may or may not know about the existence of the object (class)</li>
+</ul>
+<p>Just like an aggregation, the associated object can belong to multiple objects simultaneously, and isn’t managed by those objects. However, unlike an aggregation, where the relationship is always unidirectional, in an association, the relationship may be <code>unidirectional or bidirectional</code> (where the two objects are aware of each other).</p>
+<blockquote>
+<p>many-to-many</p>
+</blockquote>
+<p>The relationship between doctors and patients is a great example of an association. The doctor clearly has a relationship with his patients, but conceptually it’s not a part&#x2F;whole (object composition) relationship. A doctor can see many patients in a day, and a patient can see many doctors (perhaps they want a second opinion, or they are visiting different types of doctors). Neither of the object’s lifespans are tied to the other.</p>
+<p>We can say that association models as <code>uses-a</code> relationship. The doctor “uses” the patient (to earn income). The patient uses the doctor (for whatever health purposes they need).</p>
+<p><strong>Implementing associations</strong></p>
+<p>Because associations are a broad type of relationship, they can be implemented in many different ways. However, most often, associations are implemented <code>using pointers</code>, where the object points at the associated object.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Doctor</span>;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Patient</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  std::string m_name;</span><br><span class="line">  std::vector&lt;Doctor *&gt; m_doctor; <span class="comment">// so that we can use it here</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">addDoctor</span><span class="params">(Doctor *doc)</span> </span>&#123;</span><br><span class="line">    m_doctor.<span class="built_in">push_back</span>(doc);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Doctor</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  std::string m_name;</span><br><span class="line">  std::vector&lt;Patient *&gt; m_patient;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">addPatient</span><span class="params">(Patient *pat)</span> </span>&#123;</span><br><span class="line">    m_patient.<span class="built_in">push_back</span>(pat);</span><br><span class="line">    pat-&gt;<span class="built_in">addDoctor</span>(<span class="keyword">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Create a Patient outside the scope of the Doctor</span></span><br><span class="line">  Patient *p1 = <span class="keyword">new</span> <span class="built_in">Patient</span>(<span class="string">&quot;Dave&quot;</span>);</span><br><span class="line">  Patient *p2 = <span class="keyword">new</span> <span class="built_in">Patient</span>(<span class="string">&quot;Frank&quot;</span>);</span><br><span class="line">  Patient *p3 = <span class="keyword">new</span> <span class="built_in">Patient</span>(<span class="string">&quot;Betsy&quot;</span>);</span><br><span class="line"></span><br><span class="line">  Doctor *d1 = <span class="keyword">new</span> <span class="built_in">Doctor</span>(<span class="string">&quot;James&quot;</span>);</span><br><span class="line">  Doctor *d2 = <span class="keyword">new</span> <span class="built_in">Doctor</span>(<span class="string">&quot;Scott&quot;</span>);</span><br><span class="line"></span><br><span class="line">  d1-&gt;<span class="built_in">addPatient</span>(p1);</span><br><span class="line">  d2-&gt;<span class="built_in">addPatient</span>(p1);</span><br><span class="line">  d2-&gt;<span class="built_in">addPatient</span>(p3);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">delete</span> p1;</span><br><span class="line">  <span class="keyword">delete</span> p2;</span><br><span class="line">  <span class="keyword">delete</span> p3;</span><br><span class="line">  <span class="keyword">delete</span> d1;</span><br><span class="line">  <span class="keyword">delete</span> d2;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In general, you should <code>avoid bidirectional associations</code> if a unidirectional one will do, as they add complexity and tend to be harder to write without making errors.</p>
+<p><strong>Reflexive association</strong></p>
+<p>Sometimes objects may have a relationship with other objects of the same type. This is called a reflexive association. A good example of a reflexive association is the relationship between a university course and its prerequisites (which are also university courses).</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Course</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  std::string m_name;</span><br><span class="line">  Course *m_prerequisite;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="built_in">Course</span>(std::string &amp;name, Course *prerequisite=<span class="literal">nullptr</span>):</span><br><span class="line">      <span class="built_in">m_name</span>(name), <span class="built_in">m_prerequisite</span>(prerequisite) &#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Associations can be indirect</strong></p>
+<p>In all of the above cases, we’ve used a pointer to directly link objects together. However, in an association, this is not strictly required. <code>Any kind of data that allows you to link two objects together suffices</code>. In the following example, we show how a Driver class can have a unidirectional association with a Car without actually including a Car pointer member:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  std::string m_name;</span><br><span class="line">  <span class="type">int</span> m_id;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="built_in">Car</span>(std::string name, <span class="type">int</span> id)</span><br><span class="line">    : <span class="built_in">m_name</span>(name), <span class="built_in">m_id</span>(id) &#123;</span><br><span class="line">    <span class="comment">// foo</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// Our CarLot is essentially just a static array of Cars and a lookup function to retrieve them.</span></span><br><span class="line"><span class="comment">// Because it&#x27;s static, we don&#x27;t need to allocate an object of type CarLot to use it</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CarLot</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="type">static</span> Car s_carLot[<span class="number">4</span>];</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="built_in">CarLot</span>() = <span class="keyword">delete</span>;  <span class="comment">// Ensure we don&#x27;t try to allocate a CarLot</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Driver</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  std::string m_name;</span><br><span class="line">  <span class="type">int</span> m_carId; <span class="comment">// we&#x27;re associated with the Car by ID rather than pointer</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="function">std::string <span class="title">getName</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> m_name; &#125;</span><br><span class="line">  <span class="function"><span class="type">int</span> <span class="title">getCarId</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> m_carId; &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Composition</th>
+<th>Aggregation</th>
+<th>Association</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Relationship type</td>
+<td>Whole&#x2F;part</td>
+<td>Whole&#x2F;part</td>
+<td>Otherwise unrelated</td>
+</tr>
+<tr>
+<td>Members can belong to multiple classes</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Members existence managed by class</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Directionality</td>
+<td>Unidirectional</td>
+<td>Unidirectional</td>
+<td>Unidirectional or Bidirectional</td>
+</tr>
+<tr>
+<td>Relationship verb</td>
+<td>Part-of</td>
+<td>Has-a</td>
+<td>Uses-a</td>
+</tr>
+<tr>
+<td>Implementation</td>
+<td>Normal members</td>
+<td>Ref or Pointers</td>
+<td>Pointers</td>
+</tr>
+<tr>
+<td>Example</td>
+<td>Person-Heart</td>
+<td>Person-Address</td>
+<td>Doctor-Patient</td>
+</tr>
+</tbody></table>
+<h3 id="Dependencies"><a href="#Dependencies" class="headerlink" title="Dependencies"></a>Dependencies</h3><p>In casual conversation, we use the term dependency to indicate that an object is reliant upon another object for a given task. For example, if you break your foot, you are dependent on crutches to get around (but not otherwise). Flowers are dependent upon bees to pollinate them, in order to grow fruit or propagate (but not otherwise).</p>
+<p>A dependency occurs when one object <code>invokes another object&#39;s functionality</code> in order to accomplish some specific task. This is a <code>weaker</code> relationship than an association, but still, any change to object being depended upon may break functionality in the (dependent) caller. A dependency is always a unidirectional relationship.</p>
+<p>A good example of a dependency that you’ve already seen many times is std::cout (of type std::ostream). Our classes that use std::cout use it in order to accomplish the task of printing something to the console, but not otherwise.</p>
+<p><strong>Dependencies vs Association in C++</strong></p>
+<p>In C++, associations are a relationship between two classes at the class level. That is, one class keeps a direct or indirect “link” to the associated class as a member. For example, a Doctor class has an array of pointers to its Patients as a member. You can always ask the Doctor who its patients are. The Driver class holds the id of the Car the driver object owns as an integer member. The Driver always knows what Car is associated with it.</p>
+<p>Dependencies typically are not represented at the class level – that is, the object being depended on is not linked as a member. Rather, the object being depended on is typically instantiated as needed (like opening a file to write data to), or passed into a function as a parameter (like std::ostream in the overloaded operator&lt;&lt; above).</p>
+<h3 id="Container-classes"><a href="#Container-classes" class="headerlink" title="Container classes"></a>Container classes</h3><p>Container classes implement a <code>member-of</code> relationship. For example, elements of an array are members-of (belong to) the array. Note that we’re using “member-of” in the conventional sense, not the C++ class member sense.</p>
+<p><strong>Types of containers</strong></p>
+<p>Container classes generally come in two different varieties. <code>Value containers</code> are <code>compositions</code> that store copies of the objects that they are holding (and thus are responsible for creating and destroying those copies). <code>Reference containers</code> are <code>aggregations</code> that store pointers or references to other objects (and thus are not responsible for creation or destruction of those objects).</p>
+<ul>
+<li>Value containers (compositions, part-of)</li>
+<li>Reference containers (aggregations, has-a)</li>
+</ul>
+<p><strong>Write an array container class</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> INTARRAY_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INTARRAY_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cassert&gt;</span> <span class="comment">// for assert()</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">IntArray</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="type">int</span> m_length;</span><br><span class="line">  <span class="type">int</span> *m_data;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="built_in">IntArray</span>() : <span class="built_in">m_length</span>(<span class="number">0</span>), <span class="built_in">m_data</span>(<span class="literal">nullptr</span>) &#123;</span><br><span class="line">    <span class="comment">// foo</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">IntArray</span>(<span class="type">int</span> length) : <span class="built_in">m_length</span>(length) &#123;</span><br><span class="line">    <span class="built_in">assert</span>(length &gt;= <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (length &gt; <span class="number">0</span>)</span><br><span class="line">      m_data = <span class="keyword">new</span> <span class="type">int</span>[length];</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      m_data = <span class="literal">nullptr</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  ~<span class="built_in">IntArray</span>() &#123;</span><br><span class="line">    <span class="keyword">delete</span>[] m_data;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">erase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">delete</span>[] m_data;  <span class="comment">// be left pointing at deallocated memory!</span></span><br><span class="line">    m_data = <span class="literal">nullptr</span>;</span><br><span class="line">    m_length = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// overload [] - return ref. support assignment!</span></span><br><span class="line">  <span class="type">int</span>&amp; <span class="keyword">operator</span>[] (<span class="type">int</span> index) &#123;</span><br><span class="line">    <span class="built_in">assert</span>(index &gt;= <span class="number">0</span> &amp;&amp; index &lt; m_length);</span><br><span class="line">    <span class="keyword">return</span> m_data[index];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="type">int</span> <span class="title">getLength</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> m_length; &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">reallocate</span><span class="params">(<span class="type">int</span> newLength)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">erase</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (newLength &lt;= <span class="number">0</span>)</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    m_data = <span class="keyword">new</span> <span class="type">int</span>[newLength];</span><br><span class="line">    m_length = newLength;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">resize</span><span class="params">(<span class="type">int</span> newLength)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (newLength == m_length)</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (newLength &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="built_in">erase</span>();</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> *data = <span class="keyword">new</span> <span class="type">int</span>[newLength];</span><br><span class="line">    <span class="keyword">if</span> (m_length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="type">int</span> elementsToCopy = (newLength &gt; m_length) ? m_length : newLength;</span><br><span class="line">      <span class="comment">// now copy</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> index=<span class="number">0</span>; index &lt; elementsToCopy; ++index)</span><br><span class="line">        data[index] = m_data[index];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">delete</span>[] m_data;</span><br><span class="line">    m_data = data;</span><br><span class="line">    m_length = newLength;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">insertBefore</span><span class="params">(<span class="type">int</span> value, <span class="type">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">assert</span>(index &gt;= <span class="number">0</span> &amp;&amp; index &lt;= m_length);</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> *data = <span class="keyword">new</span> <span class="type">int</span>[m_length + <span class="number">1</span>];</span><br><span class="line">    <span class="comment">// copy all of the elements up to the index</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> before=<span class="number">0</span>; before &lt; index; ++before)</span><br><span class="line">      data[before] = m_data[before];</span><br><span class="line">    <span class="comment">// insert new value</span></span><br><span class="line">    data[index] = value;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> after=index; after &lt; m_length; ++after)</span><br><span class="line">      data[after+<span class="number">1</span>] = m_data[after];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">delete</span>[] m_data;</span><br><span class="line">    m_data = data;</span><br><span class="line">    ++m_length;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">remove</span><span class="params">(<span class="type">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">assert</span>(index &gt;= <span class="number">0</span> &amp;&amp; index &lt; m_length);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (m_length == <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="built_in">erase</span>();</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> *data = <span class="keyword">new</span> <span class="type">int</span>[m_length - <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> before=<span class="number">0</span>; before &lt; index; ++before)</span><br><span class="line">      data[before] = m_data[before];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> after=index+<span class="number">1</span>; after &lt; m_length; ++after)</span><br><span class="line">      data[after<span class="number">-1</span>] = m_data[after];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">delete</span>[] m_data;</span><br><span class="line">    m_data = data;</span><br><span class="line">    --m_length;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">insertAtBeginning</span><span class="params">(<span class="type">int</span> value)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">insertBefore</span>(value, <span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">insertAtEnd</span><span class="params">(<span class="type">int</span> value)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">insertBefore</span>(value, m_length);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="std-initializer-list"><a href="#std-initializer-list" class="headerlink" title="std::initializer_list"></a>std::initializer_list</h3><p>What happens if we try to use an initializer list with the container class above?</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IntArray array &#123; <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span> &#125;; <span class="comment">// this line won&#x27;t compile</span></span><br></pre></td></tr></table></figure>
+
+<p>This code won’t compile, because the IntArray class doesn’t have a constructor that knows what to do with an initializer list.</p>
+<p>Prior to C++11, list initialization could only be used with static or dynamic arrays. However, as of C++11, we now have a solution to this problem.</p>
+<p>When a C++11 compiler sees an initializer list, it automatically converts it into an object of type <code>std::initializer_list</code>. Therefore, if we create a constructor that takes a <code>std::initializer_list</code> parameter, we can create objects using the initializer list as an input.</p>
+<p><code>std::initializer_list</code> has a (misnamed) size() function which returns the number of elements in the list. This is useful when we need to know the length of the list passed in.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;initializer_list&gt;</span></span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">IntArray</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="built_in">IntArray</span>(<span class="type">const</span> std::initializer_list&lt;<span class="type">int</span>&gt; &amp;list)</span><br><span class="line">    : <span class="built_in">IntArray</span>(list.<span class="built_in">size</span>()) &#123; <span class="comment">// use delegating constructor to set up initial array</span></span><br><span class="line">    <span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;element : list) &#123;</span><br><span class="line">      m_data[count] = element;</span><br><span class="line">      ++count;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  IntArray array &#123; <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span> &#125;; <span class="comment">// initializer list</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>One caveat:</strong> Initializer lists will always favor a matching initializer_list constructor over other potentially matching constructors. Thus, this variable definition:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IntArray array &#123;<span class="number">5</span>&#125;;  <span class="comment">// would match to IntArray(initializer_list)</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Class assignment using std::initializer_list</strong></p>
+<p>You can also use std::initializer_list to assign new values to a class by overloading the assignment operator to take a std::initializer_list parameter. This works analogously to the above. We’ll show an example of how to do this in the quiz solution below.</p>
+<p>Note that if you implement a constructor that takes a std::initializer_list, you should ensure you do at least one of the following:</p>
+<ol>
+<li>Provide an <code>overloaded</code> list assignment operator</li>
+<li>Provide a proper <code>deep-copying</code> copy assignment operator</li>
+<li>Make the constructor <code>explicit</code>, so it can’t be used for implicit conversions</li>
+</ol>
+<p>Here’s why: consider the above class (which doesn’t have an overloaded list assignment or a copy assignment), along with following statement:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array = &#123; <span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">11</span> &#125;;  <span class="comment">// overwrite the elements of array with the elements from the list</span></span><br></pre></td></tr></table></figure>
+
+<p>First, the compiler will note that an assignment function taking a std::initializer_list doesn’t exist. <code>Next it will look for other assignment functions it could use, and discover the implicitly provided copy assignment operator.</code> However, this function can only be used if it can convert the initializer list into an IntArray. Because the constructor that takes a std::initializer_list isn’t marked as explicit, the compiler will use the list constructor to convert the initializer list into a temporary IntArray. Then it will call the implicit assignment operator, which will shallow copy the temporary IntArray into our array object.</p>
+<p>At this point, both the temporary IntArray’s m_data and array-&gt;m_data point to the same address (due to the shallow copy). You can already see where this is going.</p>
+<p><strong>Rule:</strong> If you provide list construction, it’s a good idea to provide list assignment as well.</p>
+<h2 id="Inheritance"><a href="#Inheritance" class="headerlink" title="Inheritance"></a>Inheritance</h2><p><strong>Making BaseballPlayer a derived class</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">BaseballPlayer</span> : <span class="keyword">public</span> Person &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="type">double</span> m_battingAverage;</span><br><span class="line">  <span class="type">int</span> m_homeRuns;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">BaseballPlayer</span>(<span class="type">double</span> battingAverage=<span class="number">0.0</span>, inthomeRuns=<span class="number">0</span>)</span><br><span class="line">      : <span class="built_in">m_battingAverage</span>(battingAverage), <span class="built_in">m_homeRuns</span>(homeRuns) &#123;</span><br><span class="line">    <span class="comment">// foo</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Order-of-construction-of-derived-classes"><a href="#Order-of-construction-of-derived-classes" class="headerlink" title="Order of construction of derived classes"></a>Order of construction of derived classes</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="type">int</span> m_id;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">Base</span>(<span class="type">int</span> id=<span class="number">0</span>)</span><br><span class="line">      : <span class="built_in">m_id</span>(id) &#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Base&quot;</span> &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  <span class="function"><span class="type">int</span> <span class="title">getId</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> m_id; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span> : <span class="keyword">public</span> Base &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="type">double</span> m_cost;</span><br><span class="line"> </span><br><span class="line">  <span class="built_in">Derived</span>(<span class="type">double</span> cost=<span class="number">0.0</span>)</span><br><span class="line">      : <span class="built_in">m_cost</span>(cost) &#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Derived&quot;</span> &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="type">double</span> <span class="title">getCost</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> m_cost; &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>Now let’s take a look at what happens when we instantiate a derived class:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;Instantiating Base&quot;</span> &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">  Base base;</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;Instantiating Derived&quot;</span> &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">  Derived derived;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Behind the scenes (in terms of Derived class), things happen slightly different. As mentioned above, Derived is really two parts: a <code>Base part</code>, and a <code>Derived part</code>. When C++ constructs derived objects, it does so in phases. </p>
+<ul>
+<li>First, the most-base class (at the top of the inheritance tree) is constructed first. </li>
+<li>Then each child class is constructed in order, until the most-child class (at the bottom of the inheritance tree) is constructed last.</li>
+</ul>
+<p>So when we instantiate an instance of <code>Derived</code>, first the <code>Base</code> portion of Derived is constructed (using the Base default constructor). Once the Base portion is finished, the Derived portion is constructed (using the Derived default constructor). At this point, there are no more derived classes, so we are done.</p>
+<p>Output:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Instantiating Base</span><br><span class="line">Base</span><br><span class="line">Instantiating Derived</span><br><span class="line">Base</span><br><span class="line">Derived</span><br></pre></td></tr></table></figure>
+
+<p>Remember that C++ always constructs the “first” or “most base” class first. It then walks through the inheritance tree in order and constructs each successive derived class.</p>
+<h3 id="Constructors-and-initialization-of-derived-classes"><a href="#Constructors-and-initialization-of-derived-classes" class="headerlink" title="Constructors and initialization of derived classes"></a>Constructors and initialization of derived classes</h3><p>Previous Example:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="type">int</span> m_id;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">Base</span>(<span class="type">int</span> id=<span class="number">0</span>)</span><br><span class="line">    : <span class="built_in">m_id</span>(id) &#123;</span><br><span class="line">      std::cout &lt;&lt; <span class="string">&quot;Base&quot;</span> &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  <span class="function"><span class="type">int</span> <span class="title">getId</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> m_id; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span>: <span class="keyword">public</span> Base &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="type">double</span> m_cost;</span><br><span class="line"> </span><br><span class="line">  <span class="built_in">Derived</span>(<span class="type">double</span> cost=<span class="number">0.0</span>)</span><br><span class="line">    : <span class="built_in">m_cost</span>(cost) &#123;</span><br><span class="line">      std::cout &lt;&lt; <span class="string">&quot;Derived&quot;</span> &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="type">double</span> <span class="title">getCost</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> m_cost; &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>Consider:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="function">Base <span class="title">base</span><span class="params">(<span class="number">5</span>)</span></span>;  <span class="comment">// use Base(int) constructor</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Here’s what actually happens when base is instantiated:</p>
+<ol>
+<li>Memory for base is set aside</li>
+<li>The appropriate Base constructor is called</li>
+<li>The initialization list initializes variables (go first)</li>
+<li>The body of the constructor executes</li>
+<li>Control is returned to the caller</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="function">Derived <span class="title">derived</span><span class="params">(<span class="number">1.3</span>)</span></span>;  <span class="comment">// use Derived(double) constructor</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Here’s what actually happens when derived is instantiated:</p>
+<ol>
+<li>Memory for derived is set aside (enough for both the Base and Derived portions)</li>
+<li>The appropriate Derived constructor is called</li>
+<li><strong>The Base object is constructed first using the appropriate Base constructor.</strong> If no base constructor is specified, the default constructor will be used.</li>
+<li>The initialization list initializes variables (Derived)</li>
+<li>The body of the constructor executes</li>
+<li>Control is returned to the caller</li>
+</ol>
+<p>One of the current shortcomings of our Derived class as written is that there is no way to initialize <code>m_id</code> when we create a Derived object. What if we want to set both <code>m_cost</code> (from the Derived portion of the object) and <code>m_id</code> (from the Base portion of the object) when we create a Derived object?</p>
+<p>New programmers often attempt to solve this problem as follows:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span>: <span class="keyword">public</span> Base &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="type">double</span> m_cost;</span><br><span class="line">  <span class="built_in">Derived</span>(<span class="type">double</span> cost=<span class="number">0.0</span>, <span class="type">int</span> id=<span class="number">0</span>) <span class="comment">// does not work</span></span><br><span class="line">      : <span class="built_in">m_cost</span>(cost), <span class="built_in">m_id</span>(id) &#123;</span><br><span class="line">    <span class="comment">// foo</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="type">double</span> <span class="title">getCost</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> m_cost; &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>This is a good attempt, and is almost the right idea. We definitely need to add another parameter to our constructor, otherwise C++ will have no way of knowing what value we want to initialize <code>m_id</code> to.</p>
+<p>However, <strong>C++ prevents classes from initializing inherited member variables in the initialization list of a constructor. In other words, the value of a variable can only be set in an initialization list of a constructor belonging to the same class as the variable.</strong></p>
+<p>Why does C++ do this? The answer has to do with <code>const</code> and <code>reference</code> variables. Consider what would happen if <code>m_id</code> were const. Because const variables must be initialized with a value at the time of creation, the base class constructor must set its value when the variable is created. However, when the base class constructor finishes, the derived class constructors initialization lists are then executed. Each derived class would then have the opportunity to initialize that variable, potentially changing its value! <strong>By restricting the initialization of variables to the constructor of the class those variables belong to, C++ ensures that all variables are initialized only once.</strong></p>
+<p>The end result is that the above example does not work because <code>m_id</code> was inherited from Base, and only non-inherited variables can be changed in the initialization list.</p>
+<p>However, inherited variables can still have their values changed in the body of the constructor using an assignment. Consequently, new programmers often also try this:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Dervied</span> : <span class="keyword">public</span> Base &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="type">double</span> m_cost;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">Derived</span>(<span class="type">double</span> cost=<span class="number">0.0</span>, <span class="type">int</span> id=<span class="number">0</span>)</span><br><span class="line">      : <span class="built_in">m_cost</span>(cost) &#123;</span><br><span class="line">     m_id = id; <span class="comment">// you just cannot do it in the initialization list</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>While this actually works in this case, <strong>it wouldn’t work if <code>m_id</code> were a const or a reference (because const values and references have to be initialized in the initialization list of the constructor).</strong> It’s also inefficient because <code>m_id</code> gets assigned a value twice: once in the initialization list of the Base class constructor, and then again in the body of the Derived class constructor. And finally, what if the Base class needed access to this value during construction? It has no way to access it, since it’s not set until the Derived constructor is executed (which pretty much happens last).</p>
+<p>In all of the examples so far, when we instantiate a Derived class object, the Base class portion has been created using the default Base constructor. Why does it always use the default Base constructor? Because we never told it to do otherwise!</p>
+<p>Fortunately, <strong>C++ gives us the ability to explicitly choose which Base class constructor will be called!</strong> To do this, simply add a call to the base class constructor in the initialization list of the derived class:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span> : <span class="keyword">public</span> Base &#123;</span><br><span class="line"><span class="keyword">public</span>: <span class="comment">// with the feature below, we can set private</span></span><br><span class="line">  <span class="type">double</span> m_cost;</span><br><span class="line">  <span class="built_in">Derived</span>(<span class="type">double</span> cost=<span class="number">0.0</span>, <span class="type">int</span> id=<span class="number">0</span>)</span><br><span class="line">      : <span class="built_in">Base</span>(id), <span class="built_in">m_cost</span>(cost) &#123; <span class="comment">// call Base(int) constructor with value id!</span></span><br><span class="line">    <span class="comment">// foo</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong> it doesn’t matter where in the Derived constructor initialization list the Base constructor is called – it will always execute first.</p>
+<p><strong>It is worth mentioning that</strong> constructors can only call constructors from their <code>immediate parent/base class</code>. Consequently, the C constructor could not call or pass parameters to the A constructor directly. The C constructor can only call the B constructor (which has the responsibility of calling the A constructor).</p>
+<p><strong>Destructors</strong></p>
+<p>When a derived class is destroyed, each destructor is called in the reverse order of construction. In the above example, when C is destroyed, the C destructor is called first, then the B destructor, then the A destructor.</p>
+<h3 id="Inheritance-and-access-specifiers"><a href="#Inheritance-and-access-specifiers" class="headerlink" title="Inheritance and access specifiers"></a>Inheritance and access specifiers</h3><p><strong>The protected access specifier</strong></p>
+<p>When dealing with inherited classes, things get a bit more complex.</p>
+<p>C++ has a third access specifier that we have yet to talk about because it’s only useful in an inheritance context. <strong>The protected access specifier allows <code>members</code>, <code>friends</code>, and <code>derived classes</code> to access the member. However, protected members are not accessible from outside the class.</strong></p>
+<p><strong>Different kinds of inheritance, and their impact on access</strong></p>
+<p>First, there are three different ways for classes to inherit from other classes: <code>public</code>, <code>private</code>, and <code>protected</code>.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Inherit from Base publicly</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Pub</span>: <span class="keyword">public</span> Base &#123;&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// Inherit from Base privately</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Pri</span>: <span class="keyword">private</span> Base &#123;&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// Inherit from Base protectedly</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Pro</span>: <span class="keyword">protected</span> Base &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Defaults to private inheritance</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Def</span>: Base &#123;&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>That gives us 9 combinations: 3 <code>member access specifiers</code> (public, private, and protected), and 3 <code>inheritance types</code> (public, private, and protected).</p>
+<p>So what’s the difference between these? In a nutshell, when members are inherited, <strong>the access specifier for an inherited member may be changed (in the derived class only) depending on the type of inheritance used.</strong> Put another way, members that were public or protected in the base class may change access specifiers in the derived class.</p>
+<p>Keep in mind the following rules as we step through the examples:</p>
+<ul>
+<li>A class can always access its own (non-inherited) members.</li>
+<li>The public (out of class) accesses the members of a class based on the access specifiers of the class it is accessing.</li>
+<li>A class accesses inherited members based on the access specifier inherited from the parent class. This varies depending on the access specifier and type of inheritance used.</li>
+</ul>
+<blockquote>
+<p>inheritance type –&gt; member access specifiers –&gt; whether it can be accessed</p>
+</blockquote>
+<p><strong>1. Public inheritance</strong></p>
+<p>Public inheritance is by far the most commonly used type of inheritance. In fact, <strong>very rarely will you see or use the other types of inheritance</strong>, so your primary focus should be on understanding this section. Fortunately, public inheritance is also the easiest to understand.</p>
+<p>When you inherit a base class publicly, inherited <code>public</code> members stay <code>public</code>, and inherited <code>protected</code> members stay <code>protected</code>. Inherited <code>private</code> members, which were inaccessible because they were private in the base class, stay <code>inaccessible</code>. <strong>Stay the same!</strong></p>
+<p><strong>Rule:</strong> Use public inheritance unless you have a specific reason to do otherwise.</p>
+<p><strong>2. Private inheritance</strong></p>
+<p>With private inheritance, <strong>all members from the base class are inherited as private.</strong> This means inherited <code>private</code> members stay <code>private</code>, and <code>protected</code> and <code>public</code> members become <code>private</code>.</p>
+<p><strong>Note:</strong> this does not affect the way that the derived class accesses members inherited from its parent! It only affects the code trying to access those members through the derived class. (???)</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="type">int</span> m_public;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="type">int</span> m_private;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">  <span class="type">int</span> m_protected;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Pri</span> : <span class="keyword">private</span> Base &#123;</span><br><span class="line">  <span class="comment">// Public inherited members become private (so m_public is treated as private)</span></span><br><span class="line">  <span class="comment">// Private inherited members stay inaccessible (so m_private is inaccessible)</span></span><br><span class="line">  <span class="comment">// Protected inherited members become private (so m_protected is treated as private)</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="built_in">Pri</span>() &#123;</span><br><span class="line">    m_public = <span class="number">1</span>; <span class="comment">// okay: m_public is private in Pri</span></span><br><span class="line">    m_private = <span class="number">2</span>; <span class="comment">// not okay: stay private</span></span><br><span class="line">    m_protected = <span class="number">3</span>; <span class="comment">// okay: m_protected is private in Pri</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  Base base;</span><br><span class="line">  base.m_public = <span class="number">1</span>; <span class="comment">// okay</span></span><br><span class="line">  base.m_private = <span class="number">2</span>; <span class="comment">// not okay</span></span><br><span class="line">  base.m_protected = <span class="number">3</span>; <span class="comment">// not okay</span></span><br><span class="line"></span><br><span class="line">  Pri pri; <span class="comment">// all becomes private</span></span><br><span class="line">  pri.m_public = <span class="number">1</span>; <span class="comment">// not okay</span></span><br><span class="line">  pri.m_private = <span class="number">2</span>; <span class="comment">// not okay</span></span><br><span class="line">  pri.m_protected = <span class="number">3</span>; <span class="comment">// not okay</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Private inheritance can be useful when the derived class has no obvious relationship to the base class, but uses the base class for implementation internally.</strong> In such a case, we probably don’t want the public interface of the base class to be exposed through objects of the derived class (as it would be if we inherited publicly).</p>
+<p><strong>Note that</strong> in practice, private inheritance is rarely used.</p>
+<p><strong>3. Protected inheritance</strong></p>
+<p>Protected inheritance is the last method of inheritance. <strong>It is almost never used</strong>, except in very particular cases. With protected inheritance, the <code>public</code> and <code>protected</code> members become <code>protected</code>, and <code>private</code> members stay inaccessible.</p>
+<ul>
+<li>Public -&gt; Protected</li>
+<li>Private -&gt; Inaccessible (Public &gt; Protected &gt; Private)</li>
+<li>Protected -&gt; Protected</li>
+</ul>
+<p><strong>Summary</strong></p>
+<ul>
+<li><p>First, a class (and friends) can always access its own non-inherited members. The access specifiers <strong>only affect</strong> whether outsiders and derived classes can access those members.</p>
+</li>
+<li><p>Second, when derived classes inherit members, those members may change access specifiers in the derived class. This does not affect the derived classes’ own (non-inherited) members (which have their own access specifiers). It only affects whether outsiders and classes derived from the derived class can access those <code>inherited members</code>.</p>
+</li>
+</ul>
+<p><strong>As a final note</strong>, although in the examples above, we’ve only shown examples using member variables, these access rules hold true for all members (e.g. <code>member functions</code> and <code>types declared</code> inside the class).</p>
+<h3 id="Adding-new-functionality-to-a-derived-class"><a href="#Adding-new-functionality-to-a-derived-class" class="headerlink" title="Adding new functionality to a derived class"></a>Adding new functionality to a derived class</h3><p>You can inherit the base class functionality and then <code>add new</code> functionality, <code>modify</code> existing functionality, or <code>hide functionality</code> you don’t want.</p>
+<p>There may be times when we have access to a base class but do not want to modify it. Consider the case where you have just purchased a library of code from a 3rd party vendor, but need some extra functionality. You could add to the original code, but this isn’t the best solution. What if the vendor sends you an update? Either your additions will be overwritten, or you’ll have to manually migrate them into the update, which is time-consuming and risky.</p>
+<p>There may be times when it’s not even possible to modify the base class. Consider the code in the standard library. We aren’t able to modify the code that’s part of the standard library. But we are able to inherit from those classes, and then add our own functionality into our derived classes. The same goes for 3rd party libraries where you are provided with headers but the code comes precompiled.</p>
+<p>In either case, the best answer is to derive your own class, and add the functionality you want to the derived class.</p>
+<h3 id="Calling-inherited-functions-and-overriding-behavior"><a href="#Calling-inherited-functions-and-overriding-behavior" class="headerlink" title="Calling inherited functions and overriding behavior"></a>Calling inherited functions and overriding behavior</h3><p><strong>Note that when you redefine a function in the derived class, the derived function does not inherit the access specifier of the function with the same name in the base class.</strong> It uses whatever access specifier it is defined under in the derived class. Therefore, a function that is defined as <code>private</code> in the base class can be redefined as <code>public</code> in the derived class, or vice-versa!</p>
+<p>To have a derived function call a base function of the same name, simply do a normal function call, but <strong>prefix the function with the scope qualifier</strong>. The following example redefines <code>Derived::identify()</code> so it first calls <code>Base::identify()</code> and then does its own additional stuff.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">identify</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  Base::<span class="built_in">identify</span>(); <span class="comment">// call Base::identify() first</span></span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;I am a Derived\n&quot;</span>; <span class="comment">// then identify ourselves</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Because a Derived is-a Base, we can <code>static_cast</code> our Derived object into a Base, so that the appropriate version of operator&lt;&lt; that uses a Base is called.</p>
+<h3 id="Hiding-inherited-functionality"><a href="#Hiding-inherited-functionality" class="headerlink" title="Hiding inherited functionality"></a>Hiding inherited functionality</h3><p>C++ gives us the ability to change an inherited member’s access specifier in the derived class. This is done by using a <code>using declaration</code> to identify the (scoped) base class member that is having its access changed in the derived class, under the new access specifier.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Base</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">printValue</span><span class="params">()</span> </span>&#123; std::cout &lt;&lt; m_value; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Derived</span></span><br><span class="line"><span class="keyword">public</span>:  <span class="comment">// changing it to public </span></span><br><span class="line">  <span class="keyword">using</span> Base::printValue;  <span class="comment">// note: no parenthesis here</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="function">Derived <span class="title">derived</span><span class="params">(<span class="number">7</span>)</span></span>;</span><br><span class="line">  derived.<span class="built_in">printValue</span>();  <span class="comment">// prints 7</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Two notes:</p>
+<ul>
+<li><p>First, you can only change the access specifiers of base members the derived class would normally be able to access. Therefore, you can never change the access specifier of a base member from private to protected or public, because derived classes do not have access to private members of the base class.</p>
+</li>
+<li><p>Second, as of C++11, <strong>using declarations are the preferred way of changing access levels</strong>. However, you can also change access levels by using an <code>access declaration</code>. This works identically to the using declaration method, but omits the “using” keyword. <strong>This access declaration way of redefining access is now considered deprecated</strong>, but you will likely see older code using this pattern, so it’s worth knowing about.</p>
+</li>
+</ul>
+<p><strong>Hiding functionality</strong></p>
+<p>For example, we can also make a <code>public</code> member variable <code>private</code>.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="type">int</span> m_value;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span> : <span class="keyword">public</span> Base &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">using</span> Base::m_value;  <span class="comment">// making it private</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="built_in">Derived</span>(<span class="type">int</span> value) &#123;</span><br><span class="line">    m_value = value;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="function">Derived <span class="title">derived</span><span class="params">(<span class="number">7</span>)</span></span>;</span><br><span class="line">  <span class="comment">// The following won&#x27;t work because m_value has been redefined as private</span></span><br><span class="line">  std::cout &lt;&lt; derived.m_value;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Alternatively, instead of inheriting Base’s members publicly and making <code>m_value</code> private by overriding its access specifier, we could have inherited Base privately, however, which would have caused <strong>all</strong> of Base’s member to be inherited privately in the first place.</p>
+<p>You can also mark member functions as deleted in the derived class, which ensures they can’t be called at all through a derived object:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">getValue</span><span class="params">()</span> </span>= <span class="keyword">delete</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+<h3 id="Multiple-inheritance"><a href="#Multiple-inheritance" class="headerlink" title="Multiple inheritance"></a>Multiple inheritance</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Teacher</span> : <span class="keyword">public</span> Person, <span class="keyword">public</span> Employee &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="type">int</span> m_teachesGrade;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="built_in">Teacher</span>(std::string name, <span class="type">int</span> age, std::string employer, <span class="type">double</span> wage, <span class="type">int</span> teachesGrade)</span><br><span class="line">    : <span class="built_in">Person</span>(name, age), <span class="built_in">Employee</span>(employer, wage), <span class="built_in">m_teachesGrade</span>(teachsGrade) &#123;</span><br><span class="line">    <span class="comment">// foo</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Problems with multiple inheritance</strong></p>
+<p>While multiple inheritance seems like a simple extension of single inheritance, multiple inheritance introduces a lot of issues that can markedly increase the complexity of programs and make them a <code>maintenance nightmare</code>. Let’s take a look at some of these situations.</p>
+<ul>
+<li><p>First, ambiguity can result when multiple base classes contain a function with the same name, and the complier will complain.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// class USBDevice</span></span><br><span class="line"><span class="comment">// member getID()</span></span><br><span class="line"><span class="comment">// class NetworkDevice</span></span><br><span class="line"><span class="comment">// member getID()</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">WirelessAdapter</span> : <span class="keyword">public</span> USBDevice, <span class="keyword">public</span> NetworkDevice &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="built_in">WirelessAdapter</span>(<span class="type">long</span> usbId, <span class="type">long</span> networkId)</span><br><span class="line">    : <span class="built_in">USBDevice</span>(usbId), <span class="built_in">NetworkDevice</span>(networkId) &#123;</span><br><span class="line">    <span class="comment">// goo</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="function">WirelessAdapter <span class="title">c54G</span><span class="params">(<span class="number">5442</span>, <span class="number">181742</span>)</span></span>;</span><br><span class="line">  std::cout &lt;&lt; c54G.<span class="built_in">getID</span>() &lt;&lt; <span class="string">&quot;\n&quot;</span>; <span class="comment">// error</span></span><br><span class="line">  std::cout &lt;&lt; c54G.USBDevice::<span class="built_in">getID</span>() &lt;&lt; <span class="string">&quot;\n&quot;</span>; <span class="comment">// okay</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>While this workaround is pretty simple, you can see how things can get complex when your class inherits from four or six base classes, which inherit from other classes themselves. The potential for naming conflicts increases exponentially as you inherit more classes, and each of these naming conflicts needs to be resolved explicitly.</p>
+</li>
+<li><p>Second, and more serious is the <code>diamond problem</code>, which your author likes to call the “diamond of doom”. This occurs when a class multiply inherits from two classes which each inherit from a single base class. This leads to a diamond shaped inheritance pattern.</p>
+</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/cszoi.jpg" title="Diamond Inheritance Form"></p>
+<p>There are many issues that arise in this context, including whether Copier should have one or two copies of PoweredDevice, and how to resolve certain types of ambiguous references. While most of these issues can be addressed through explicit scoping, the maintenance overhead added to your classes in order to deal with the added complexity can cause development time to skyrocket. We’ll talk more about ways to resolve the diamond problem in the next lesson.</p>
+<p><strong>Is multiple inheritance more trouble than it’s worth?</strong></p>
+<p>As it turns out, most of the problems that can be solved using multiple inheritance can be solved using single inheritance as well. Many object-oriented languages (eg. Smalltalk, PHP) do not even support multiple inheritance. Many relatively modern languages such as Java and C# restrict classes to single inheritance of normal classes, but allow multiple inheritance of interface classes (which we will talk about later). The driving idea behind disallowing multiple inheritance in these languages is that it simply makes the language too complex, and ultimately causes more problems than it fixes.</p>
+<p>Many authors and experienced programmers believe multiple inheritance in C++ should be avoided at all costs due to the many potential problems it brings. <strong>Your author does not agree with this approach, because there are times and situations when multiple inheritance is the best way to proceed. However, multiple inheritance should be used extremely judiciously.</strong></p>
+<p>As an interesting aside, you have already been using classes written using multiple inheritance without knowing it. For example, the <code>iostream</code> library objects <code>std::cin</code> and <code>std::cout</code> are both implemented using multiple inheritance!</p>
+<p><strong>Rule:</strong> Avoid multiple inheritance <strong>unless alternatives lead to more complexity</strong>.</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

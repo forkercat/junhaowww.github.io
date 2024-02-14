@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Easy Problem Given a sorted array nums, remove the duplicates in-place such that each element appear only once and return the new length.   Do not allocate extra space">
+<meta property="og:type" content="website">
+<meta property="og:title" content="26. Remove Duplicates from Sorted Array">
+<meta property="og:url" content="https://junhaow.com/lc/problems/array/duplicates/26_remove-duplicates-from-sorted-array.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Easy Problem Given a sorted array nums, remove the duplicates in-place such that each element appear only once and return the new length.   Do not allocate extra space">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.094Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.094Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>26. Remove Duplicates from Sorted Array</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/remove-duplicates-from-sorted-array/">LeetCode</a><br>Difficulty: <span class="green">Easy</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a sorted array <code>nums</code>, remove the duplicates in-place such that each element appear only once and return the new length.</p>
+</blockquote>
+<blockquote>
+<p>Do not allocate extra space for another array, you must do this by <strong>modifying the input array in-place</strong> with $O(1)$ extra memory.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Given</span> <span class="variable">nums</span> <span class="operator">=</span> [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">Your function should <span class="type">return</span> <span class="variable">length</span> <span class="operator">=</span> <span class="number">2</span>, with the first two elements of nums being <span class="number">1</span> and <span class="number">2</span> respectively.</span><br><span class="line"></span><br><span class="line"><span class="type">Given</span> <span class="variable">nums</span> <span class="operator">=</span> [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>],</span><br><span class="line">Your function should <span class="type">return</span> <span class="variable">length</span> <span class="operator">=</span> <span class="number">5</span>, with the first five elements of nums being modified to <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, and <span class="number">4</span> respectively.</span><br><span class="line"></span><br><span class="line">It doesn<span class="string">&#x27;t matter what you leave beyond the returned length.</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p>The code is adapted from EPI 5.5 using <code>List</code> class. Basically, we just remove duplicates, but if we use array we need to implement the remove() code by ourselves.</p>
+<p><strong>Note:</strong> </p>
+<ul>
+<li><code>remove()</code> takes $O(N)$ time.</li>
+<li>Use <code>equals</code> rather than <code>==</code>.</li>
+<li><code>A.size()</code> is dynamic, which means it is always changing.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">deleteDuplicates</span><span class="params">(List&lt;Integer&gt; A)</span> &#123;</span><br><span class="line">  <span class="comment">//  0  1  2  3  4  5</span></span><br><span class="line">  <span class="comment">//  1  2  2  3  3  4</span></span><br><span class="line">  <span class="comment">//  i  i+1</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (i &lt; A.size() - <span class="number">1</span>) &#123; <span class="comment">// dynamic size, skip the last</span></span><br><span class="line">    <span class="keyword">if</span> (A.get(i).equals(A.get(i + <span class="number">1</span>))) &#123; <span class="comment">// equal</span></span><br><span class="line">      A.remove(i + <span class="number">1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// not equal</span></span><br><span class="line">      ++i; <span class="comment">// move forward</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> A.size();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^2)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Moving-to-Subarray"><a href="#Moving-to-Subarray" class="headerlink" title="Moving to Subarray"></a>Moving to Subarray</h3><p>Use an index <code>idx</code> to store the processed element.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// case: [1 1 2 2]</span></span><br><span class="line"><span class="comment">// case: [1 1 2 3]</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">removeDuplicates</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="comment">// assume `nums` is not null</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">idx</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (i &lt; n - <span class="number">1</span> &amp;&amp; nums[i] == nums[i + <span class="number">1</span>]) &#123;</span><br><span class="line">      <span class="keyword">continue</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// the last element always falls into this branch (try the two test cases above)</span></span><br><span class="line">      nums[idx++] = nums[i];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> idx;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Two-Pointers"><a href="#Two-Pointers" class="headerlink" title="Two Pointers"></a>Two Pointers</h3><p>This is a solution in LeetCode, but I think it is not clear. Also, using this solution needs processing corner case (<code>n == 0</code>).</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 0  1  2  3  4  5  6</span></span><br><span class="line"><span class="comment">// 1  2  2  3  3  4  5</span></span><br><span class="line"><span class="comment">// i  j</span></span><br><span class="line"><span class="comment">//   i/j</span></span><br><span class="line"><span class="comment">//    i  j</span></span><br><span class="line"><span class="comment">//    i     j</span></span><br><span class="line"><span class="comment">//       i  j</span></span><br><span class="line"><span class="comment">//       i(3)  j(3)</span></span><br><span class="line"><span class="comment">//       i(3)     j</span></span><br><span class="line"><span class="comment">//          i(4)     j</span></span><br><span class="line"><span class="comment">//             i(5)     j</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">removeDuplicates</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="keyword">if</span> (n == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &lt; n; ++j) &#123; <span class="comment">// as long as nums[i] == nums[j], increment j to skip dups</span></span><br><span class="line">    <span class="keyword">if</span> (nums[i] != nums[j]) &#123; <span class="comment">// when nums[i] != nums[j], dups have ended.</span></span><br><span class="line">      ++i; <span class="comment">// move to the next new position</span></span><br><span class="line">      nums[i] = nums[j];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> i + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Variants"><a href="#Variants" class="headerlink" title="Variants"></a>Variants</h2><p><strong>Variant 1:</strong></p>
+<p>Implement a function which takes an input an array and a key, and updates the array so that all occurrences of the input key have been removed and the remaining elements have been shifted left to fill the emptied indices. Return the number of remaining elements. There are no requirements as to the values stored beyond the last element.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Testing</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  List&lt;Integer&gt; L = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="type">int</span>[] nums = <span class="keyword">new</span> <span class="title class_">int</span>[] &#123; <span class="number">3</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">1</span>, <span class="number">2</span> &#125;;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : nums) L.add(val); <span class="comment">// result: [3, 4, 2, 9, 2]</span></span><br><span class="line">  System.out.println(<span class="string">&quot;count: &quot;</span> + removeOccurrence(L, <span class="number">1</span>));</span><br><span class="line">  System.out.println(<span class="string">&quot;List: &quot;</span> + L);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// O(N)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">removeOccurrence</span><span class="params">(List&lt;Integer&gt; A, <span class="type">int</span> key)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>, idx = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (i &lt; A.size()) &#123;</span><br><span class="line">    <span class="keyword">if</span> (A.get(i).equals(key) == <span class="literal">false</span>) &#123; <span class="comment">// equal to the occurrence</span></span><br><span class="line">      A.set(idx++, A.get(i));</span><br><span class="line">    &#125;</span><br><span class="line">    ++i;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> idx;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Variant 2:</strong></p>
+<p>Write a program which takes as input a sorted array $A$ of integers and a positive integer $m$, and updates $A$ so that if $x$ appears $m$ times in $A$ it appears exactly <code>min(2, m)</code> times in $A$. The update to $A$ should be performed in one pass, and no additional storage may be allocated.</p>
+<ul>
+<li>$m \geq 2$: If the <code>count == m</code>, reduce to $2$.</li>
+<li>$m &#x3D; 1$: Not changing.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  List&lt;Integer&gt; L = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="type">int</span> <span class="variable">m</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">  <span class="type">int</span>[] nums = <span class="keyword">new</span> <span class="title class_">int</span>[] &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">6</span>, <span class="number">6</span> &#125;;</span><br><span class="line">  <span class="comment">// result:               1, 2, 2, 3, 4, 4, 5, 6, 6, 6  (m = 4)</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : nums) L.add(val);</span><br><span class="line">  System.out.println(<span class="string">&quot;count: &quot;</span> + removeExtra(L, m)); <span class="comment">// test (L, 1)</span></span><br><span class="line">  System.out.println(<span class="string">&quot;List: &quot;</span> + L);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// O(N) one-pass</span></span><br><span class="line"><span class="comment">// index | 0  1  2  3  4  5  6  7  8  9  10  11</span></span><br><span class="line"><span class="comment">// m = 4 | 1  2  2  2  2  3  4  4  5  6  6   6</span></span><br><span class="line"><span class="comment">//         i  ----------&gt; i</span></span><br><span class="line"><span class="comment">//        idx ----------&gt; idx</span></span><br><span class="line"><span class="comment">//                 idx &lt;---| (back to)</span></span><br><span class="line"><span class="comment">//                    (m - 2)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">removeExtra</span><span class="params">(List&lt;Integer&gt; A, <span class="type">int</span> m)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>, idx = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (i &lt; A.size()) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">curr</span> <span class="operator">=</span> A.get(i);</span><br><span class="line">    <span class="comment">// count the occurrence</span></span><br><span class="line">    <span class="keyword">while</span> (i &lt; A.size() &amp;&amp; A.get(i).equals(curr)) &#123;</span><br><span class="line">      count += <span class="number">1</span>;</span><br><span class="line">      A.set(idx++, A.get(i++));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (m &gt;= <span class="number">2</span> &amp;&amp; count == m) &#123; <span class="comment">// min(2, m)</span></span><br><span class="line">      idx -= (m - <span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> idx;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

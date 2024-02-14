@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium My Post: [Java] Summary of Usages of “split()” Problem Design an algorithm to encode a list of strings to a string. The encoded string is then sent over the net">
+<meta property="og:type" content="website">
+<meta property="og:title" content="271. Encode and Decode Strings">
+<meta property="og:url" content="https://junhaow.com/lc/problems/string/uncategorized/271_encode-and-decode-strings.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium My Post: [Java] Summary of Usages of “split()” Problem Design an algorithm to encode a list of strings to a string. The encoded string is then sent over the net">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sxu1d.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/e0ae3.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.141Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.141Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sxu1d.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>271. Encode and Decode Strings</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/encode-and-decode-strings/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/encode-and-decode-strings/discuss/411373/">[Java] Summary of Usages of “split()”</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Design an algorithm to encode <code>a list of strings</code> to <code>a string</code>. The encoded string is then sent over the network and is decoded back to the original list of strings.</p>
+</blockquote>
+<p><strong>Note:</strong></p>
+<ul>
+<li>The string may contain any possible characters out of <code>256 valid ascii characters</code>. Your algorithm should be generalized enough to work on any possible characters.</li>
+<li>Do not use class member&#x2F;global&#x2F;static variables to store states. Your encode and decode algorithms should be stateless.</li>
+<li>Do not rely on any library method such as <code>eval</code> or <code>serialize</code> methods. You should implement your own encode&#x2F;decode algorithm.</li>
+</ul>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p>Reference: <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/24701197/java-string-split-method-zero-and-negative-limit">Java - String split() Method, zero and negative limit</a></p>
+<p>In Java, The <code>limit</code> parameter controls the number of times the pattern is applied and therefore affects the length of the resulting <code>array</code>. We have 3 possible values for this <code>limit</code>:</p>
+<ol>
+<li>If the limit is <code>n &gt; 0</code> then the pattern will be applied <strong>at most <code>n - 1</code> times</strong>, which means the <strong>number of pieces will be no greater than <code>n</code></strong>, and the array’s last entry will contain all input beyond the last matched delimiter (<code>&quot;&quot;</code> will be kept). For example, <code>&quot;..&quot;.split(&quot;.&quot;, 2)</code> -&gt; <code>[&quot;&quot;, &quot;.&quot;]</code>.</li>
+<li>If the limit is <code>n &lt; 0</code> then the pattern will be applied <strong>as many times as possible</strong> and the array can have any length. Besides, <strong>it will keep empty strings</strong>. For example, <code>&quot;..&quot;.split(&quot;.&quot;, -1)</code> -&gt; <code>[&quot;&quot;, &quot;&quot;, &quot;&quot;]</code>.</li>
+<li>If the limit is <code>n == 0</code> (default) then the pattern will be applied <strong>as many times as possible</strong> and the array can have any length. Besides, <strong>it will delete empty strings</strong>. For example, <code>&quot;..&quot;.split(&quot;.&quot;, 0)</code> -&gt; <code>[]</code>.</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// In default, limit = 0</span></span><br><span class="line"><span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;....&quot;</span>;</span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, <span class="number">0</span>);  <span class="comment">// []  == str.split(&quot;.&quot;)</span></span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, -<span class="number">2</span>); <span class="comment">// [&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;]</span></span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, <span class="number">1</span>);  <span class="comment">// [&quot;....&quot;]                1 piece  (split for 0 time)</span></span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, <span class="number">2</span>);  <span class="comment">// [&quot;&quot;, &quot;...&quot;]             2 pieces (split for 1 time)</span></span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, <span class="number">3</span>);  <span class="comment">// [&quot;&quot;, &quot;&quot;, &quot;..&quot;]          3 pieces (split for 2 times)</span></span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, <span class="number">4</span>);  <span class="comment">// [&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;.&quot;]       4 pieces (split for 3 times)</span></span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, <span class="number">5</span>);  <span class="comment">// [&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;]    5 pieces (split for 4 times)</span></span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, <span class="number">6</span>);  <span class="comment">// [&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;]    5 pieces (split for 5 times)</span></span><br><span class="line"></span><br><span class="line"><span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;a.a.a.a.&quot;</span>;</span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, -<span class="number">1</span>); <span class="comment">// [&quot;a&quot;, &quot;a&quot;, &quot;a&quot;, &quot;a&quot;, &quot;&quot;]</span></span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, <span class="number">0</span>);  <span class="comment">// [&quot;a&quot;, &quot;a&quot;, &quot;a&quot;, &quot;a&quot;]</span></span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, <span class="number">1</span>);  <span class="comment">// [&quot;a.a.a.a.&quot;]</span></span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, <span class="number">2</span>);  <span class="comment">// [&quot;a&quot;, &quot;a.a.a.&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;a.a..a.a&quot;</span>;</span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, -<span class="number">1</span>); <span class="comment">// [&quot;a&quot;, &quot;a&quot;, &quot;&quot;, &quot;a&quot;, &quot;a&quot;]</span></span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, <span class="number">0</span>);  <span class="comment">// [&quot;a&quot;, &quot;a&quot;,&quot;a&quot;, &quot;a&quot;]</span></span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, <span class="number">1</span>);  <span class="comment">// [&quot;a.a..a.a&quot;]</span></span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, <span class="number">2</span>);  <span class="comment">// [&quot;a&quot;, &quot;a..a.a&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;..a..&quot;</span>;</span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, -<span class="number">1</span>); <span class="comment">// [&quot;&quot;, &quot;&quot;, &quot;a&quot;, &quot;&quot;, &quot;&quot;]</span></span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, <span class="number">0</span>);  <span class="comment">// [&quot;a&quot;]</span></span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, <span class="number">1</span>);  <span class="comment">// [&quot;..a..&quot;]</span></span><br><span class="line">str.split(<span class="string">&quot;.&quot;</span>, <span class="number">2</span>);  <span class="comment">// [&quot;&quot;, &quot;.a..&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;..&quot;</span>;</span><br><span class="line">str.split(<span class="string">&quot;\\W+&quot;</span>, -<span class="number">1</span>); <span class="comment">// [&quot;&quot;, &quot;&quot;]</span></span><br><span class="line">str.split(<span class="string">&quot;\\W+&quot;</span>, <span class="number">0</span>);  <span class="comment">// []</span></span><br><span class="line">str.split(<span class="string">&quot;\\W+&quot;</span>, <span class="number">1</span>);  <span class="comment">// [&quot;..&quot;]</span></span><br><span class="line">str.split(<span class="string">&quot;\\W+&quot;</span>, <span class="number">2</span>);  <span class="comment">// [&quot;&quot;, &quot;&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// &quot;\\w+&quot; matches all `alphanumeric` characters and &quot;_&quot;.</span></span><br><span class="line"><span class="comment">// &quot;\\W+&quot; matches all characters except `alphanumeric` characters and &quot;_&quot;.</span></span><br><span class="line"><span class="comment">// They are opposite.</span></span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Methods:</strong></p>
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/encode-and-decode-strings/solution/">Solution Post</a></p>
+<ol>
+<li><p>Non-ASCII Delimiter</p>
+<ul>
+<li>Since the string may contain every possible 256 valid ASCII characters, we should choose an appropriate delimiter. For example, we can use non-ASCII unichar character like <code>ā</code> (<code>Character.toString((char) 257)</code>).</li>
+<li>It’s convenient to use two different non-ASCII characters, to distinguish between situations of <code>empty array</code> and of <code>array of empty strings</code>. So we use one more unichar character <code>Character.toString((char) 258)</code>.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Encodes a list of strings to a single string.</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">encode</span><span class="params">(List&lt;String&gt; strs)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (strs == <span class="literal">null</span> || strs.size() == <span class="number">0</span>) &#123; <span class="comment">// strs list is null or empty</span></span><br><span class="line">    <span class="keyword">return</span> Character.toString((<span class="type">char</span>) <span class="number">258</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">String</span> <span class="variable">del</span> <span class="operator">=</span> Character.toString((<span class="type">char</span>) <span class="number">257</span>);</span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  <span class="keyword">for</span> (String s : strs) &#123;</span><br><span class="line">    sb.append(s + del);</span><br><span class="line">  &#125;</span><br><span class="line">  sb.setLength(sb.length() - <span class="number">1</span>);</span><br><span class="line">  <span class="keyword">return</span> sb.toString();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Decodes a single string to a list of strings.</span></span><br><span class="line"><span class="keyword">public</span> List&lt;String&gt; <span class="title function_">decode</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="type">String</span> <span class="variable">d</span> <span class="operator">=</span> Character.toString((<span class="type">char</span>) <span class="number">258</span>);</span><br><span class="line">  <span class="keyword">if</span> (s.equals(d)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">String</span> <span class="variable">del</span> <span class="operator">=</span> Character.toString((<span class="type">char</span>) <span class="number">257</span>);</span><br><span class="line">  String[] dataArray = s.split(del, -<span class="number">1</span>);</span><br><span class="line">  List&lt;String&gt; strings = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(Arrays.asList(dataArray));</span><br><span class="line">  <span class="keyword">return</span> strings;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$ for encode; $O(N)$ for decode.</li>
+</ul>
+</li>
+<li><p>Chunked Transfer Encoding</p>
+<ul>
+<li>This approach is based on the <code>encoding used in HTTP v1.1</code>. It doesn’t depend on the set of input characters, and hence is more versatile and effective.</li>
+<li>Data stream is divided into chunks. Each chunk is preceded by its <code>size in bytes</code>.</li>
+<li><strong>Encode:</strong><br> <img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sxu1d.png"><ul>
+<li>For each chunk compute its length, and convert that length into 4-byte string.</li>
+<li>Append to encoded string:<ul>
+<li>4-byte string with information about chunk size in bytes.</li>
+<li>Chunk itself.</li>
+</ul>
+</li>
+<li>Return encoded string.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">encode</span><span class="params">(List&lt;String&gt; strs)</span> &#123;</span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  <span class="keyword">for</span> (String s : strs) &#123;</span><br><span class="line">    sb.append(intToString(s));</span><br><span class="line">    sb.append(s);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> sb.toString();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">intToString</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> s.length();</span><br><span class="line">  <span class="type">char</span>[] byteChars = <span class="keyword">new</span> <span class="title class_">char</span>[<span class="number">4</span>]; <span class="comment">// 4 bytes - 32 bits</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">3</span>; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">    byteChars[<span class="number">3</span> - i] = (<span class="type">char</span>) ((x &gt;&gt;&gt; (i * <span class="number">8</span>)) &amp; <span class="number">0xff</span>); <span class="comment">// mask the low 8 bits</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">String</span>(byteChars);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><strong>Decode:</strong><br> <img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/e0ae3.png"><ul>
+<li>Iterate over the encoded string with a pointer <code>i</code>:<ul>
+<li>Read 4 bytes <code>s[i: i + 4]</code>. This chunk should be converted into integer <code>length</code>.</li>
+<li>Move the pointer by 4 bytes <code>i += 4</code>.</li>
+<li>Append to the decoded array string <code>s[i: i + length]</code>.</li>
+<li>Move the pointer by <code>length</code> bytes <code>i += length</code>.</li>
+</ul>
+</li>
+<li>Return decoded array of strings.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;String&gt; <span class="title function_">decode</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>, n = s.length();</span><br><span class="line">  List&lt;String&gt; output = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">while</span> (i &lt; n) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> stringToInt(s.substring(i, i + <span class="number">4</span>));</span><br><span class="line">    i += <span class="number">4</span>;</span><br><span class="line">    output.add(s.substring(i, i + length));</span><br><span class="line">    i += length;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> output;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">stringToInt</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">char</span> b : s.toCharArray()) &#123; <span class="comment">// 4 chars in total</span></span><br><span class="line">    result = (result &lt;&lt; <span class="number">8</span>) + (<span class="type">int</span>) b;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$ for encode to keep the output; $O(N)$ for decode to keep the output.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

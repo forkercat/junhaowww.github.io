@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode EPI 4.9Difficulty: Easy My Post: Four Solutions All In One (Why overflow is a problem?) Problem Determine whether an integer is a palindrome. An integer is a palindrome when it r">
+<meta property="og:type" content="website">
+<meta property="og:title" content="9. Palindrome Number">
+<meta property="og:url" content="https://junhaow.com/lc/problems/number-and-math/uncategorized/9_palindrome-number.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode EPI 4.9Difficulty: Easy My Post: Four Solutions All In One (Why overflow is a problem?) Problem Determine whether an integer is a palindrome. An integer is a palindrome when it r">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.136Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.135Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>9. Palindrome Number</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/palindrome-number/">LeetCode</a> <span class="gray">EPI 4.9</span><br>Difficulty: <span class="green">Easy</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/palindrome-number/discuss/316775/">Four Solutions All In One (Why overflow is a problem?)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Determine whether an integer is a palindrome. An integer is a palindrome when it reads the same backward as forward.</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input:  <span class="number">121</span>,  <span class="number">0</span>,    <span class="number">100</span>,   -<span class="number">120</span></span><br><span class="line">Output: <span class="literal">true</span>, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> Could you solve it without converting the integer to a string?</p>
+<p><strong>Hint:</strong> Beware of <code>overflow</code> when you reverse the integer.</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p><strong>Methods:</strong></p>
+<ol>
+<li>Brute-Force<ul>
+<li>Convert the number to a string.</li>
+<li><strong>Time:</strong> $O(N)$, where $N$ is the number of characters. <code>8 ms</code></li>
+<li><strong>Space:</strong> $O(N)$, since we create a string.</li>
+</ul>
+</li>
+<li>ReverseAndCompare<ul>
+<li>Reverse a number and compare it to the initial one.</li>
+<li>Note: Be aware of overflow problem.</li>
+<li><strong>Time:</strong> $O(N)$ <code>6 ms</code></li>
+<li><strong>Space:</strong> $O(1)$</li>
+</ul>
+</li>
+<li>Reverse Half<ul>
+<li>Similar idea to ReverseAndCompare, but it only reverts half of the <code>int</code> number. If the reverse of the last half of the palindrome should be the same as the first half.<ul>
+<li>E.g. <code>1221</code> from <code>21</code> to <code>12</code>.</li>
+</ul>
+</li>
+<li><strong>Time:</strong> $O(N) &#x3D; O(\log_{10}{n})$ <code>7 ms</code></li>
+<li><strong>Space:</strong> $O(1)$</li>
+</ul>
+</li>
+<li>CompareOneByOne <span class="gray">EPI 4.9</span><ul>
+<li>Calculate the most significant digit <code>msd</code> and the least significant digit <code>lsd</code> and compare.</li>
+<li><code>numDigit</code> &#x3D; <code>(int) Math.floor(Math.log10(x)) + 1</code></li>
+<li><strong>Time:</strong> $O(N)$ <code>8 ms</code></li>
+<li><strong>Space:</strong> $O(1)$</li>
+</ul>
+</li>
+</ol>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><strong>Test Case:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Input:  <span class="number">121</span>,  <span class="number">0</span>,    <span class="number">100</span>,   -<span class="number">120</span></span><br><span class="line">Output: <span class="literal">true</span>, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">Overflow test <span class="keyword">case</span>:</span><br><span class="line"><span class="number">2147483647</span> <span class="comment">// This is the max value of 32-bit integer.</span></span><br><span class="line"><span class="number">2147447412</span> <span class="comment">// A good test.</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p><strong>Note:</strong></p>
+<ul>
+<li>The condition could be written as:<ul>
+<li><code>if (x &lt;= 0) return x == 0</code></li>
+<li>Since the code can handle $0$ case, it is fine.</li>
+</ul>
+</li>
+<li>Be careful of the corner case <code>n / 2</code></li>
+<li>When getting the size of a String, remember to use <code>str.length()</code> rather than <code>str.length</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// convert to string</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">bruteForce</span><span class="params">(<span class="type">int</span> x)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x &lt; <span class="number">0</span>) &#123; <span class="comment">// negative number</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> String.valueOf(x);</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> str.length();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n / <span class="number">2</span>; ++i) &#123; <span class="comment">// right-leaning</span></span><br><span class="line">    <span class="keyword">if</span> (str.charAt(i) != str.charAt(n - i - <span class="number">1</span>)) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="ReverseAndCompare"><a href="#ReverseAndCompare" class="headerlink" title="ReverseAndCompare"></a>ReverseAndCompare</h3><p><strong>Note:</strong></p>
+<ul>
+<li>Be aware of potential overflow problems.</li>
+<li>It’s doomed when the reversed number of $x$ overflows. <span class="purple">Marked</span><ul>
+<li>But it seems okay because I can’t input number larger than <code>2147483647</code>. </li>
+<li>Also, if <code>x</code> is <code>2147483647</code>, the reversed number is <code>7463847412</code> which is actually a negative number that could not be equal to $x$.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// reverseAndCompare</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">reverseAndCompare</span><span class="params">(<span class="type">int</span> x)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x &lt; <span class="number">0</span>) &#123; <span class="comment">// negative number</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> (x == reverse(x)); <span class="comment">// x is converted to long type</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">long</span> <span class="title function_">reverse</span><span class="params">(<span class="type">long</span> x)</span> &#123;</span><br><span class="line">  <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (x != <span class="number">0</span>) &#123;</span><br><span class="line">    sum = sum * <span class="number">10</span> + x % <span class="number">10</span>;</span><br><span class="line">    x /= <span class="number">10</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Reverse-Half"><a href="#Reverse-Half" class="headerlink" title="Reverse Half"></a>Reverse Half</h3><p><strong>Note:</strong></p>
+<ul>
+<li>Careful of the corner case. Test it out for <code>x = 0</code> and <code>x = 100</code>. Unlike other solutions, this one requires special check for those numbers.</li>
+<li>In the return statement, there are different cases for even or odd numbers.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// revert half</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">revertHalf</span><span class="params">(<span class="type">int</span> x)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x &lt; <span class="number">0</span> || (x != <span class="number">0</span> &amp;&amp; x % <span class="number">10</span> == <span class="number">0</span>)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> <span class="variable">revertedNum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (x &gt; revertedNum) &#123;</span><br><span class="line">    <span class="comment">// e.g. 12321. </span></span><br><span class="line">    <span class="comment">// revertedNum = 1,    12,   123 // stop here</span></span><br><span class="line">    <span class="comment">//           x = 1232, 123,  12</span></span><br><span class="line">    revertedNum = revertedNum * <span class="number">10</span> + x % <span class="number">10</span>;</span><br><span class="line">    x /= <span class="number">10</span>;</span><br><span class="line">  &#125; <span class="comment">// x = 12, revertedNum = 123</span></span><br><span class="line">  <span class="keyword">return</span> x == revertedNum || x == revertedNum / <span class="number">10</span>; <span class="comment">// even or odd</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="CompareOneByOne"><a href="#CompareOneByOne" class="headerlink" title="CompareOneByOne"></a>CompareOneByOne</h3><p><strong>Note:</strong></p>
+<ul>
+<li>Learn how to calculate the number of digits.</li>
+<li>Use <code>msdMask</code> to get the most significant digit.</li>
+<li>Can use <code>while</code> or <code>for</code>, but <code>for</code> turns out to be clearer.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// compareOneByOne</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">compareOneByOne</span><span class="params">(<span class="type">int</span> x)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">numDigit</span> <span class="operator">=</span> (<span class="type">int</span>) Math.floor(Math.log10(x)) + <span class="number">1</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">msdMask</span> <span class="operator">=</span> (<span class="type">int</span>) Math.pow(<span class="number">10</span>, numDigit - <span class="number">1</span>); <span class="comment">// e.g. 123: 100</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; numDigit / <span class="number">2</span>; ++i) &#123; <span class="comment">// or while (x != 0) &#123;</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">lsd</span> <span class="operator">=</span> x % <span class="number">10</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">msd</span> <span class="operator">=</span> x / msdMask; <span class="comment">// e.g. 321 / 100 = 3</span></span><br><span class="line">    <span class="keyword">if</span> (lsd != msd) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// set for next</span></span><br><span class="line">    x %= msdMask; <span class="comment">// e.g. 321 % 100 = 21</span></span><br><span class="line">    x /= <span class="number">10</span>; <span class="comment">// e.g. 21 / 10 = 2</span></span><br><span class="line">    msdMask /= <span class="number">100</span>; <span class="comment">// 1234, mask 1000 =&gt; next: 23, mask = 10</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

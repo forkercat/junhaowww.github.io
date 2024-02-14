@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="TestingThinking Process Often, development is an incremental process that involves lots of tasks switching and on the fly design modification. Tests provide stability and scaffolding:  Provide confi">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CS 61B | Part 2 | Testing, Inheritance, HOFs, Polymorphism, Package, Access Control">
+<meta property="og:url" content="https://junhaow.com/studynotes/cs61b/cs61b%20p2.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="TestingThinking Process Often, development is an incremental process that involves lots of tasks switching and on the fly design modification. Tests provide stability and scaffolding:  Provide confi">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/m8hnj.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/kglyy.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/b8scz.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/t10c8.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/o7a65.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tvc05.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wtif3.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/j3xla.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wmvqc.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/totr3.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fwr4r.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7tgyb.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/hj8ag.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1217q.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8e70u.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/w6hvd.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/mmiqj.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ukdpi.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ffpd0.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.196Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.196Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/m8hnj.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CS 61B | Part 2 | Testing, Inheritance, HOFs, Polymorphism, Package, Access Control</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<h2 id="Testing"><a href="#Testing" class="headerlink" title="Testing"></a>Testing</h2><h3 id="Thinking-Process"><a href="#Thinking-Process" class="headerlink" title="Thinking Process"></a>Thinking Process</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/m8hnj.jpg" alt="The Evolution of our Design"></p>
+<p>Often, development is an <code>incremental process</code> that involves lots of tasks switching and on the fly design modification.</p>
+<p>Tests provide <code>stability</code> and <code>scaffolding</code>:</p>
+<ul>
+<li>Provide <code>confidence in basic units</code> and mitigate possibility of breaking them.</li>
+<li>Help you focus on <code>one task</code> at a time.</li>
+</ul>
+<p>In large projects, test also allow you to safely <code>refactor</code> (still have the same function)!</p>
+<h3 id="Four-Philosophies"><a href="#Four-Philosophies" class="headerlink" title="Four Philosophies"></a>Four Philosophies</h3><p>Here we have four testing philosophies:</p>
+<ul>
+<li>Autograder Driven Development (ADD)</li>
+<li>Unit Tests</li>
+<li>Test-Driven Development (TDD)</li>
+<li>Integration Testing</li>
+</ul>
+<h4 id="Autograder-Driven-Development-ADD"><a href="#Autograder-Driven-Development-ADD" class="headerlink" title="Autograder Driven Development (ADD)"></a>Autograder Driven Development (ADD)</h4><p>The worst way to approach programming. This workflow is slow and unsafe!</p>
+<p>Wait for the autograder to run, and test everything at the end of development.</p>
+<h4 id="Unit-Tests"><a href="#Unit-Tests" class="headerlink" title="Unit Tests"></a>Unit Tests</h4><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/kglyy.jpg"></p>
+<p>But, how do you test units that rely on others. e.g. how do you test <code>addFirst</code> in Project 1?</p>
+<h4 id="Test-Driven-Development-TDD"><a href="#Test-Driven-Development-TDD" class="headerlink" title="Test-Driven Development (TDD)"></a>Test-Driven Development (TDD)</h4><p>It is a <code>repeat process</code> consisting of three parts:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/b8scz.jpg"></p>
+<h4 id="Integration-Testing"><a href="#Integration-Testing" class="headerlink" title="Integration Testing"></a>Integration Testing</h4><p>Idea: Tests cover <code>many units at once</code>.</p>
+<p>Not JUnit’s focus, but JUnit can do this.</p>
+<p>But it tests at highest level of abstraction what may <code>miss subtle or rare errors</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/t10c8.jpg" alt="Dependency"></p>
+<p><strong>Exercise in Study Guide</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testEquals</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="comment">/** Arrays */</span></span><br><span class="line">  <span class="type">int</span>[][] a1 = &#123;&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;, &#123;<span class="number">2</span>&#125;, &#123;<span class="number">3</span>&#125;&#125;;</span><br><span class="line">  <span class="type">int</span>[][] a2 = &#123;&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>&#125;, &#123;<span class="number">2</span>&#125;, &#123;<span class="number">3</span>&#125;&#125;;</span><br><span class="line">  assertArrayEquals(a1, a2); <span class="comment">/* Test fails */</span></span><br><span class="line">  <span class="comment">/** String (Wrapping Class) */</span></span><br><span class="line">  <span class="type">String</span> <span class="variable">s1</span> <span class="operator">=</span> <span class="string">&quot;123123123&quot;</span>;</span><br><span class="line">  <span class="type">String</span> <span class="variable">s2</span> <span class="operator">=</span> <span class="string">&quot;123123123&quot;</span>;</span><br><span class="line">  <span class="type">String</span> <span class="variable">s3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;123123123&quot;</span>);</span><br><span class="line">  <span class="type">String</span> <span class="variable">s4</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;123123123&quot;</span>);</span><br><span class="line">  <span class="comment">// Since they are wrapping classes, Java just compare their inside values.</span></span><br><span class="line">  assertEquals(s1, s2); <span class="comment">/* Test pass! */</span></span><br><span class="line">  assertEquals(s3, s4); <span class="comment">/* Test pass! */</span></span><br><span class="line">  assertEquals(s1, s4); <span class="comment">/* Test pass! */</span></span><br><span class="line">  <span class="comment">/** Other Classes - Compare addresses (id) */</span></span><br><span class="line">  <span class="type">Object</span> <span class="variable">o1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">  <span class="type">Object</span> <span class="variable">o2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">  assertEquals(o1, o2); <span class="comment">/* Test fails */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Inheritance-Implements"><a href="#Inheritance-Implements" class="headerlink" title="Inheritance &amp; Implements"></a>Inheritance &amp; Implements</h2><h3 id="Interface-Implementation"><a href="#Interface-Implementation" class="headerlink" title="Interface &amp; Implementation"></a>Interface &amp; Implementation</h3><p>Interface Inheritance (<code>what</code>):</p>
+<ul>
+<li>Subclass inherits <code>signatures</code>, but NOT implementation</li>
+<li>So we can also say it is <code>Signature Inheritance</code>.</li>
+</ul>
+<p>Implementation Inheritance (<code>how</code>):</p>
+<ul>
+<li>Subclasses can inherit <code>signatures AND implementation</code>.</li>
+</ul>
+<h3 id="Static-vs-Dynamic-Type"><a href="#Static-vs-Dynamic-Type" class="headerlink" title="Static vs. Dynamic Type"></a>Static vs. Dynamic Type</h3><p>Every variable in Java has a <code>compile-time type</code>, a.k.a. <code>static type</code>.</p>
+<ul>
+<li>This is the type specified at <code>declaration</code>. Never changes!</li>
+</ul>
+<p>Variables also have a <code>run-time type</code>, a.k.a. <code>dynamic type</code>.</p>
+<ul>
+<li>This is the type specified at <code>instantiation</code> (e.g. when using <code>new</code>).</li>
+<li>Equal to the type of the object really being pointing at.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/o7a65.png" alt="Static Type vs. Dynamic Type"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Animal</span> <span class="variable">a</span> <span class="operator">=</span>  <span class="keyword">new</span> <span class="title class_">Animal</span>(<span class="string">&quot;Pluto&quot;</span>, <span class="number">10</span>);</span><br><span class="line"><span class="type">Dog</span> <span class="variable">d</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Dog</span>(<span class="string">&quot;Fido&quot;</span>, <span class="number">4</span>);</span><br><span class="line">a = <span class="keyword">new</span> <span class="title class_">Dog</span>(<span class="string">&quot;Spot&quot;</span>, <span class="number">10</span>);</span><br><span class="line">d = a; <span class="comment">// Dog (static)  &lt;-  Animal (static)</span></span><br><span class="line"><span class="comment">// Compiler error because the static type of d is Dog and the static type of a is Animal. We can fix this by casting:</span></span><br><span class="line">d = (Dog) a;</span><br></pre></td></tr></table></figure>
+
+<p>If Y <code>overrides</code> the method, Y’s method is used instead. This is known as <code>dynamic method selection</code>.</p>
+<p>Implementation inheritance may sound nice, but there are some <code>drawbacks</code>:</p>
+<ul>
+<li>We are fallible humans, and we can’t keep track of everything, so it’s possible that you overrode a method but forgot you did.</li>
+<li>It may be hard to resolve conflicts in case two interfaces give <code>conflicting default methods</code>.</li>
+<li>It encourages overly <code>complex code</code>.</li>
+</ul>
+<h3 id="Encapsulation"><a href="#Encapsulation" class="headerlink" title="Encapsulation"></a>Encapsulation</h3><p>When building large programs, our enemy is <code>complexity</code>.</p>
+<p>Ways of managing complexity (ultimately determine whether a programmer is successful), as shown in Software Engineering lectures:</p>
+<ul>
+<li>Hierarchical <code>abstraction</code> (List, LinkedList, ArrayList)</li>
+<li><code>Design for (future) change</code> (D. Parnas)<ul>
+<li>Organize program around <code>objects</code> (modules)</li>
+<li><code>Let objects decide</code> how things are done. Outsider needs not to know.</li>
+<li><code>Hide information</code> others don’t need (helper functions)</li>
+</ul>
+</li>
+</ul>
+<p>Even when writing tests, you don’t (usually) want to peek inside.</p>
+<p>Ideally, a user should not be able to observe the internal workings of, say, a <code>data structure</code> they are using. Java is a great language for <code>enforcing abstraction</code> barriers with <code>syntax</code> (language aspect).</p>
+<blockquote>
+<p>Later, we use Abstract Data Types (ADTs) to handle what we need.</p>
+</blockquote>
+<p><strong>Inheritance Breaks Encapsulation:</strong></p>
+<p>1st Implementation:</p>
+<p>(The upper box is in superclass)</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tvc05.jpg" alt="1st Implementation - Answer: a"></p>
+<p>2nd Implementation (Really bad):</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wtif3.jpg" alt="2nd Implementation - Answer: c (infinite loop)"></p>
+<p>By allowing inheritance in a particular situation, we now have a way to peek inside a beautifully encapsulated class. </p>
+<p>We didn’t change anything in overridden <code>barkMany</code>, but someone changed the superclass implementation that they thought it was safe and kapow (爽).</p>
+<h3 id="Type-Checking-Casting"><a href="#Type-Checking-Casting" class="headerlink" title="Type Checking &amp; Casting"></a>Type Checking &amp; Casting</h3><h4 id="Type-Checking"><a href="#Type-Checking" class="headerlink" title="Type Checking"></a>Type Checking</h4><p>Static type is also called <code>compile-time type</code>.</p>
+<p>Override:</p>
+<p>If a method in SLList is overridden by the VengefulSLList class, then the method that is called at runtime is determined by the <code>run-time type</code> (dynamic type) of that variable (<code>dynamic method selection</code>).</p>
+<ul>
+<li>If a method <code>overridden</code>: Call from <code>dynamic type</code>.</li>
+<li>If a method <code>not overriden</code>: Call from <code>static type</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Overridden: removeLast</span></span><br><span class="line"><span class="comment"> * Not Overridden: addLast</span></span><br><span class="line"><span class="comment"> * Only VengefulSLList has printLostItems() method</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">VengefulSLList&lt;Integer&gt; vsl = <span class="keyword">new</span> <span class="title class_">VengefulSLList</span>&lt;Integer&gt;(<span class="number">9</span>);</span><br><span class="line"><span class="comment">// Static type: VengefulSLList&lt;Integer&gt;</span></span><br><span class="line"><span class="comment">// Dynamic type: VengefulSLList&lt;Integer&gt;</span></span><br><span class="line">SLList&lt;Integer&gt; sl = vsl;</span><br><span class="line"><span class="comment">// Static type: SLList&lt;Integer&gt;</span></span><br><span class="line"><span class="comment">// Dynamic type: VengefulSLList&lt;Integer&gt;</span></span><br><span class="line"></span><br><span class="line">sl.removeLast(); <span class="comment">// Overridden, call dynamic type VengefulSLList&lt;Integer&gt;</span></span><br><span class="line">sl.addLast(<span class="number">50</span>); <span class="comment">// Not overridden, call static type</span></span><br></pre></td></tr></table></figure>
+
+<p>Compiler is <code>conservative</code> in type checking.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Compile-time Error */</span></span><br><span class="line">sl.printLostItems();</span><br><span class="line"><span class="comment">// Not overridden, call static type. But SLList&lt;Integer&gt; has no idea about printLostItems() in compile-time, even later it knows during runtime.</span></span><br></pre></td></tr></table></figure>
+
+<p>In general, the compiler only allows method <code>calls and assignments</code> based on <code>compile-time types</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">VengefulSLList&lt;Integer&gt; vsl2 = sl;</span><br><span class="line"><span class="comment">// Since the compiler only sees that the static type of sl is SLList, it won&#x27;t allow a VengefulSLList to hold it.</span></span><br></pre></td></tr></table></figure>
+
+<p>Also, expressions using the <code>new</code> keyword also have compile-time types.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VengefulSLList&lt;Integer&gt; vsl = <span class="keyword">new</span> <span class="title class_">SLList</span>&lt;Integer&gt;();</span><br></pre></td></tr></table></figure>
+
+<p>Above, the compile-time type of the right-hand side of the expression is <code>SLList</code>. The compiler checks if <code>SLList</code> “is-a” <code>VengefulSLList</code>, which it is not in all cases, and thus a compilation error results.</p>
+<p>Further, method calls have compile-time types equal to their <code>declared types</code>. Suppose we have this method:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Dog <span class="title function_">maxDog</span><span class="params">(Dog d1, Dog d2)</span> &#123; ... &#125;</span><br><span class="line"><span class="comment">/* Any call to maxDog will have compile-time type Dog */</span></span><br><span class="line"></span><br><span class="line"><span class="type">Poodle</span> <span class="variable">frank</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Poodle</span>(<span class="string">&quot;Frank&quot;</span>, <span class="number">5</span>);</span><br><span class="line"><span class="type">Poodle</span> <span class="variable">frankJr</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Poodle</span>(<span class="string">&quot;Frank Jr.&quot;</span>, <span class="number">15</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">Dog</span> <span class="variable">largerDog</span> <span class="operator">=</span> maxDog(frank, frankJr); <span class="comment">// okay</span></span><br><span class="line"><span class="type">Poodle</span> <span class="variable">largerPoodle</span> <span class="operator">=</span> maxDog(frank, frankJr); <span class="comment">// does not compile! </span></span><br><span class="line"><span class="comment">// Return value: RHS (right hand side) has compile-time type Dog, but on the left side it is Poodle and Dog is not a Poodle.</span></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Casting"><a href="#Casting" class="headerlink" title="Casting"></a>Casting</h4><p>Java has a special syntax where you can tell the compiler that a specific expression has a specific <code>compile-time type</code>. This is called <code>casting</code>. With casting, we can tell the compiler to view an expression as a different compile-time type, <code>ignoring its type checking duties</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Pass type checking in compile time.</span></span><br><span class="line"><span class="type">Poodle</span> <span class="variable">frank</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Poodle</span>(<span class="string">&quot;Frank&quot;</span>, <span class="number">5</span>);</span><br><span class="line"><span class="type">Malamute</span> <span class="variable">frankSr</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Malamute</span>(<span class="string">&quot;Frank Sr.&quot;</span>, <span class="number">100</span>);</span><br><span class="line"><span class="type">Poodle</span> <span class="variable">largerPoodle</span> <span class="operator">=</span> (Poodle) maxDog(frank, frankJr);</span><br><span class="line"><span class="comment">// At runtime, it&#x27;ll crash when maxDog returns the Malamute.</span></span><br></pre></td></tr></table></figure>
+
+<p>Should be careful when doing <code>downcasting</code>, especially when downcasting a superclass to a subclass.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* The problem lies in the right hand side. */</span></span><br><span class="line"><span class="type">Animal</span> <span class="variable">a</span> <span class="operator">=</span> (Dog) <span class="keyword">new</span> <span class="title class_">Animal</span>(); <span class="comment">// Runtime Error</span></span><br><span class="line"><span class="comment">// Dog is an Animal. Static types are compatible.</span></span><br><span class="line"><span class="comment">// Runtime: </span></span><br><span class="line"><span class="comment">// - Downcasting: Animal is a Dog? No</span></span><br><span class="line"></span><br><span class="line"><span class="type">Dog</span> <span class="variable">a</span> <span class="operator">=</span> (Dog) <span class="keyword">new</span> <span class="title class_">Animal</span>(); <span class="comment">// Runtime Error</span></span><br><span class="line"><span class="comment">// - Downcasting. But it is in fact an Animal. Not compatible.</span></span><br></pre></td></tr></table></figure>
+
+<p>It’s okay if we are sure that the object whose static type is superclass actually has a subclass dynamic type.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Animal</span> <span class="variable">a</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Dog</span>();</span><br><span class="line"><span class="type">Dog</span> <span class="variable">b</span> <span class="operator">=</span> a; <span class="comment">// compile error, type-checking error</span></span><br><span class="line"><span class="type">Dog</span> <span class="variable">c</span> <span class="operator">=</span> (Dog) a; <span class="comment">// pass type-checking and okay in runtime since a is indeed a Dog object.</span></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Method-Preferences"><a href="#Method-Preferences" class="headerlink" title="Method Preferences"></a>Method Preferences</h4><p><strong>Example 0:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Dog</span> <span class="variable">d</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Dog</span>();</span><br><span class="line">((Animal) d).makeNoise(d);</span><br></pre></td></tr></table></figure>
+
+<p><code>((Animal) d).makeNoise(d)</code>: In compile-time type checking, when checking to see if a method called <code>makeNoise</code> exists in Animal, do we check for a <code>makeNoise(Dog)</code> method or a <code>makeNoise(Animal)</code> method?</p>
+<ul>
+<li>Compile time (Animal):<ul>
+<li>Check <code>method name</code> -&gt; matched</li>
+<li>Check <code>parameter types</code> -&gt; It depends the methods in Animal class.<ul>
+<li>It can match Animal’s <code>makeNoise(Animal)</code></li>
+<li>Or match <code>makeNoise(Dog)</code></li>
+<li>But it will definitely goes for the later one because it is a more specific match.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Run time (Dog):<ul>
+<li><code>d</code> is a Dog, not an Animal.</li>
+<li>If the method is overridden?<ul>
+<li>Yes. Call the overridden version. (Dynamic Method Selection)</li>
+<li>No. Call the superclass version.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Idea:</strong></p>
+<ul>
+<li>Parameter type-checking <code>prefers specific</code> if possible.</li>
+<li>The order is important:<ul>
+<li><code>Class type</code> Checking:<ul>
+<li>Static type &#x3D;&#x3D; Dynamic type: <ul>
+<li>Override won’t happen. Overload may happen.</li>
+</ul>
+</li>
+<li>Static type !&#x3D; Dynamic type: <ul>
+<li>If the method is overridden -&gt; dynamic method selection.</li>
+<li>If not -&gt; just call the one matched in superclass.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The method we consider later in run time is the one <code>decided</code> in compile-time type checking.<ul>
+<li>In run time, it won’t change its mind from <code>makeNoise(Dog)</code> to <code>makeNoise(Animal)</code>.</li>
+<li>In run time, we check if this method is overridden to decide if we need <code>dynamic method selection</code>.</li>
+</ul>
+</li>
+</ul>
+<p>Consider the two examples (Very important):</p>
+<p><strong>Example 1:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">makeNoise</span><span class="params">(Animal a)</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Dog01&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// public void makeNoise(Dog d) &#123;</span></span><br><span class="line">  <span class="comment">//   System.out.println(&quot;Dog02&quot;);</span></span><br><span class="line">  <span class="comment">// &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span> <span class="keyword">extends</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">makeNoise</span><span class="params">(Animal a)</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Dog1&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* Overload */</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">makeNoise</span><span class="params">(Dog d)</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Dog2&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// main</span></span><br><span class="line"><span class="type">Animal</span> <span class="variable">a</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Dog</span>(); <span class="comment">// a is actually Dog</span></span><br><span class="line">a.makeNoise(<span class="keyword">new</span> <span class="title class_">Dog</span>()); <span class="comment">// 1: Dog1</span></span><br><span class="line">a.makeNoise(<span class="keyword">new</span> <span class="title class_">Animal</span>()); <span class="comment">// 2: Dog1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// No dynamic method selection since Dog&#x27;s makeNoise is not overridden</span></span><br><span class="line">(<span class="keyword">new</span> <span class="title class_">Dog</span>()).makeNoise(<span class="keyword">new</span> <span class="title class_">Animal</span>()); <span class="comment">// 3: Dog1</span></span><br><span class="line">(<span class="keyword">new</span> <span class="title class_">Dog</span>()).makeNoise(<span class="keyword">new</span> <span class="title class_">Dog</span>()); <span class="comment">// 4: Dog2</span></span><br></pre></td></tr></table></figure>
+
+<p>Line 1: </p>
+<ul>
+<li>Compile time (Animal):<ul>
+<li>Check <code>method name</code> -&gt; matched</li>
+<li>Check <code>parameter types</code> -&gt; compatible (Dog is an Animal), matched</li>
+</ul>
+</li>
+<li>Run time (Dog):<ul>
+<li><code>a</code> is Dog. The method <code>makeNoise(Animal)</code> is overridden. So it outputs “Dog1”.</li>
+</ul>
+</li>
+</ul>
+<p>Line 2:</p>
+<ul>
+<li>Compile time (Animal):<ul>
+<li>Check <code>method name</code> -&gt; matched</li>
+<li>Check <code>parameter types</code> -&gt; exactly matched</li>
+</ul>
+</li>
+<li>Run time (Dog):<ul>
+<li><code>a</code> is Dog. The method <code>makeNoise(Animal)</code> is overridden. So it outputs “Dog1”.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Example 2:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">makeNoise</span><span class="params">(Animal a)</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Dog01&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">makeNoise</span><span class="params">(Dog d)</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Dog02&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span> <span class="keyword">extends</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">makeNoise</span><span class="params">(Animal a)</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Dog1&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* Overridden (not overloaded) */</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">makeNoise</span><span class="params">(Dog d)</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Dog2&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// main</span></span><br><span class="line"><span class="type">Animal</span> <span class="variable">a</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Dog</span>(); <span class="comment">// a is actually Dog</span></span><br><span class="line">a.makeNoise(<span class="keyword">new</span> <span class="title class_">Dog</span>()); <span class="comment">// 1: Dog2 &lt;- Difference</span></span><br><span class="line">a.makeNoise(<span class="keyword">new</span> <span class="title class_">Animal</span>()); <span class="comment">// 2: Dog1</span></span><br></pre></td></tr></table></figure>
+
+<p>Line 1: </p>
+<ul>
+<li>Compile time (Animal):<ul>
+<li>Check <code>method name</code> -&gt; matched</li>
+<li>Check <code>parameter types</code> -&gt; prefer specific version, exactly matched (<code>makeNoise(Dog)</code>).</li>
+</ul>
+</li>
+<li>Run time (Dog):<ul>
+<li><code>a</code> is Dog. The method <code>makeNoise(Dog)</code> is overridden (not overloaded). So it outputs “Dog2”.</li>
+</ul>
+</li>
+</ul>
+<p>Line 2:</p>
+<ul>
+<li>Compile time (Animal):<ul>
+<li>Check <code>method name</code> -&gt; matched</li>
+<li>Check <code>parameter types</code> -&gt; exactly matched</li>
+</ul>
+</li>
+<li>Run time (Dog):<ul>
+<li><code>a</code> is Dog. The method <code>makeNoise(Animal)</code> is overridden. So it outputs “Dog1”.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Higher-Order-Functions-HoFs"><a href="#Higher-Order-Functions-HoFs" class="headerlink" title="Higher Order Functions (HoFs)"></a>Higher Order Functions (HoFs)</h2><p>Higher Order Function: A function that treats another function as <code>data</code> (or <code>input</code>?).</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># In Python</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">tenX</span>(<span class="params">x</span>):</span><br><span class="line">  <span class="keyword">return</span> <span class="number">10</span> * x</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">do_twice</span>(<span class="params">f, x</span>):</span><br><span class="line">  <span class="keyword">return</span> f(f(x))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(do_twice(tenX, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+
+<p>In old school Java (Java 7 and earlier), memory boxes (variables) could not contain pointers to functions. What that means is that we could not write a function that has a “Function” type, as there was simply no type for functions.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/j3xla.jpg" alt="The Default Way"></p>
+<p>In Java, we can use Interface to do this. Use a Interface class to wrap up a method &#x2F; function.</p>
+<p>Interface:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">IntUnaryFunction</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">apply</span><span class="params">(<span class="type">int</span> x)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Implementation:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TenX</span> <span class="keyword">implements</span> <span class="title class_">IntUnaryFunction</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">apply</span><span class="params">(<span class="type">int</span> x)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">10</span> * x;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Using:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Use Interface IntUnaryFunction rather than TenX - Abstraction</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">do_twice</span><span class="params">(IntUnaryFunction f, <span class="type">int</span> x)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> f.apply(f.apply(x));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  do_twice(<span class="keyword">new</span> <span class="title class_">TenX</span>(), <span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Ex-Examprep-4"><a href="#Ex-Examprep-4" class="headerlink" title="Ex (Examprep 4)"></a>Ex (Examprep 4)</h2><h3 id="Ex-1-Puppers"><a href="#Ex-1-Puppers" class="headerlink" title="Ex 1 (Puppers)"></a>Ex 1 (Puppers)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Dog</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">bark</span><span class="params">(Dog d)</span> &#123; <span class="comment">/* Method A */</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Corgi</span> <span class="keyword">extends</span> <span class="title class_">Dog</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">bark</span><span class="params">(Corgi c)</span> &#123; <span class="comment">/* Method B */</span> &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">bark</span><span class="params">(Dog d)</span> &#123; <span class="comment">/* Method C */</span> &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">play</span><span class="params">(Dog d)</span> &#123; <span class="comment">/* Method D */</span> &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">play</span><span class="params">(Corgi c)</span> &#123; <span class="comment">/* Method E */</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>For the following main method, at each call to play or bark, tell us what happens at runtime by selecting which method is run or if there is a compiler error or runtime error.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  <span class="type">Dog</span> <span class="variable">d</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Corgi</span>();</span><br><span class="line">  <span class="type">Corgi</span> <span class="variable">c</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Corgi</span>();</span><br><span class="line"></span><br><span class="line">  d.play(d);  <span class="comment">/* Compile-Error: Dog has no method play(Dog) */</span></span><br><span class="line">  d.play(c);  <span class="comment">/* Compile-Error: Dog has no method play(Corgi) */</span></span><br><span class="line">  c.play(d);  <span class="comment">/* Method D */</span></span><br><span class="line">  c.play(c);  <span class="comment">/* Method E */</span></span><br><span class="line"></span><br><span class="line">  c.bark(d);  <span class="comment">/* Method C */</span></span><br><span class="line">  c.bark(c);  <span class="comment">/* Method B */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Notice there is no bark(Corgi c), so d.bark(c) matchs A first, and then matchs C in dynamic method selection.</span></span><br><span class="line">  d.bark(d);  <span class="comment">/* Method C (dynamic selecting) */</span></span><br><span class="line">  d.bark(c);  <span class="comment">/* Method C (dynamic selecting), not B */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Ex-2-Cast-the-line"><a href="#Ex-2-Cast-the-line" class="headerlink" title="Ex 2 (Cast the line)"></a>Ex 2 (Cast the line)</h3><p>Consider each line independently whether it causes a compilation error, runtime error, or runs successfully.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Animal    Tree</span></span><br><span class="line"><span class="comment">// ^  ^</span></span><br><span class="line"><span class="comment">// |   \</span></span><br><span class="line"><span class="comment">// Cat  Dog</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  <span class="type">Cat</span> <span class="variable">c</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Animal</span>();  <span class="comment">// Compile Error</span></span><br><span class="line">  <span class="type">Animal</span> <span class="variable">a</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Cat</span>();  <span class="comment">// Okay</span></span><br><span class="line">  <span class="type">Dog</span> <span class="variable">d</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Cat</span>();     <span class="comment">// Compile Error</span></span><br><span class="line">  <span class="type">Tree</span> <span class="variable">t</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Animal</span>(); <span class="comment">// Compile Error</span></span><br><span class="line"></span><br><span class="line">  <span class="type">Animal</span> <span class="variable">a</span> <span class="operator">=</span> (Cat) <span class="keyword">new</span> <span class="title class_">Cat</span>();     <span class="comment">// Okay</span></span><br><span class="line">  <span class="type">Animal</span> <span class="variable">a</span> <span class="operator">=</span> (Animal) <span class="keyword">new</span> <span class="title class_">Cat</span>();  <span class="comment">// Okay</span></span><br><span class="line">  <span class="type">Dog</span> <span class="variable">d</span> <span class="operator">=</span> (Dog) <span class="keyword">new</span> <span class="title class_">Animal</span>();     <span class="comment">// Runtime Error</span></span><br><span class="line">  <span class="type">Cat</span> <span class="variable">c</span> <span class="operator">=</span> (Cat) <span class="keyword">new</span> <span class="title class_">Dog</span>();        <span class="comment">// Compile Error (not up-or-down casting)</span></span><br><span class="line">  <span class="type">Animal</span> <span class="variable">a</span> <span class="operator">=</span> (Animal) <span class="keyword">new</span> <span class="title class_">Tree</span>(); <span class="comment">// Compile Error: The casting is not compatible</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Ex-3-SLList-Vista"><a href="#Ex-3-SLList-Vista" class="headerlink" title="Ex 3 (SLList Vista)"></a>Ex 3 (SLList Vista)</h3><p>indexOf:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IntList class: </span></span><br><span class="line"><span class="comment">// - item</span></span><br><span class="line"><span class="comment">// - next</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">indexOf</span><span class="params">(<span class="type">int</span> x)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">IntList</span> <span class="variable">p</span> <span class="operator">=</span> <span class="built_in">this</span>.first; <span class="comment">// no sentinel</span></span><br><span class="line">  <span class="keyword">while</span> (p != <span class="literal">null</span>) &#123; <span class="comment">// end at the last item</span></span><br><span class="line">    <span class="keyword">if</span> (p.item == x) &#123;</span><br><span class="line">      <span class="keyword">return</span> index;</span><br><span class="line">    &#125;</span><br><span class="line">    index += <span class="number">1</span>;</span><br><span class="line">    p = p.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h2 id="Polymorphism-vs-HoFs"><a href="#Polymorphism-vs-HoFs" class="headerlink" title="Polymorphism vs. HoFs"></a>Polymorphism vs. HoFs</h2><h3 id="Polymorphism"><a href="#Polymorphism" class="headerlink" title="Polymorphism"></a>Polymorphism</h3><p>Polymorphism, at its core, means <code>many forms</code>. In Java, polymorphism refers to how objects can have many forms or <code>types</code>.</p>
+<p>In object-oriented programming, polymorphism relates to how an object can be regarded as:</p>
+<ul>
+<li>an instance of its <code>own class</code>,</li>
+<li>an instance of its <code>superclass</code>, </li>
+<li>an instance of its <code>superclass&#39;s superclass</code>, </li>
+<li>and so on.</li>
+</ul>
+<blockquote>
+<p>The above statement is very great.</p>
+</blockquote>
+<h3 id="Subtype-Poly-vs-HoF"><a href="#Subtype-Poly-vs-HoF" class="headerlink" title="Subtype Poly. vs. HoF"></a>Subtype Poly. vs. HoF</h3><p>Explicit HoF Approach:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">print_larger</span>(<span class="params">x, y, compare, stringify</span>):  </span><br><span class="line">  <span class="comment"># callback: a function needs the help of another function (callback) that might not have been written yet (function passing)</span></span><br><span class="line">  <span class="keyword">if</span> compare(x, y):</span><br><span class="line">    <span class="keyword">return</span> stringify(x)</span><br><span class="line">  <span class="keyword">return</span> stringify(y)</span><br></pre></td></tr></table></figure>
+
+<p>Subtype Polymorphism Approach:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">print_larger</span>(<span class="params">x, y</span>):</span><br><span class="line">  <span class="keyword">if</span> x.largerThan(y): <span class="comment"># x object makes its choices</span></span><br><span class="line">    <span class="keyword">return</span> x.<span class="built_in">str</span>()</span><br><span class="line">  <span class="keyword">return</span> y.<span class="built_in">str</span>()</span><br></pre></td></tr></table></figure>
+
+<p>In Python or C++, the way that the <code>&gt;</code> operator works could be redefined (overloaded) to work in different ways when applied to different types. </p>
+<p>Unfortunately, Java does not have this capability. Instead, we turn to <code>interface inheritance</code> to help us out. We do this by wrapping up the needed function in an interface (e.g. <code>Arrays.sort</code> needs <code>compare</code> which lives inside the <code>comparator</code> interface). <code>Arrays.sort</code> “calls back” whenever it needs a comparison.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">OurComparable</span> &#123;  <span class="comment">// should be &quot;extends Comparable&quot;?</span></span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compareTo</span><span class="params">(Object o)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Dog</span> <span class="keyword">implements</span> <span class="title class_">OurComparable</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  <span class="keyword">private</span> <span class="type">int</span> size;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compareTo</span><span class="params">(Object o)</span> &#123;  <span class="comment">// or Comparable o</span></span><br><span class="line">    <span class="type">Dog</span> <span class="variable">uddaDog</span> <span class="operator">=</span> (Dog) o;  <span class="comment">// casting</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.size - uddaDog.size;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>So we can generalize the max function.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Maximizer class */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> OurComparable <span class="title function_">max</span><span class="params">(OurComparable[] items)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">maxDex</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; items.length - <span class="number">1</span>; i += <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> items[i].compareTo(items[maxDex]);</span><br><span class="line">    <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      maxDex = i;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> items[maxDex];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>What are the benefits to this approach?</p>
+<ul>
+<li>No need for maximization code in every class (i.e. no <code>Dog.maxDog(Dog[])</code> function required.<ul>
+<li>We don’t need to know that class should be Dog class.</li>
+</ul>
+</li>
+<li>We have code that operates on multiple types (mostly) gracefully</li>
+</ul>
+<p>Easy Quizzes:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wmvqc.jpg" alt="Answer: Dog.java"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/totr3.jpg" alt="Answer: DogLauncher.java (Maximizer.java won&#39;t fail because of abstraction code)"></p>
+<h3 id="Comparable"><a href="#Comparable" class="headerlink" title="Comparable"></a>Comparable<T></h3><p>The <code>OurComparable</code> interface that we just built works, but it’s not perfect. Here are some issues with it:</p>
+<ul>
+<li><code>Awkward casting</code> to&#x2F;from Objects<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compareTo</span><span class="params">(Object o)</span> &#123;  <span class="comment">// or Comparable</span></span><br><span class="line">  <span class="type">Dog</span> <span class="variable">uddaDog</span> <span class="operator">=</span> (Dog) o;  <span class="comment">// casting</span></span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">this</span>.size - uddaDog.size;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>We made it up.<ul>
+<li>No existing classes implement <code>OurComparable</code> (e.g. String, etc.)</li>
+<li>No existing classes use <code>OurComparable</code> (e.g. no built-in max function that uses OurComparable)</li>
+</ul>
+</li>
+</ul>
+<p>The solution? We’ll take advantage of an interface that already exists called <code>Comparable</code>. <code>Comparable</code> is already defined by Java and is used by countless libraries.</p>
+<p>Comparable looks very similar to the <code>OurComparable</code> interface we made, but with one main difference.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Comparable</span>&lt;T&gt; &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compareTo</span><span class="params">(T obj)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The <code>generic type</code> will help us <code>avoid casting</code> an object to a specific type.</p>
+<h3 id="Comparator"><a href="#Comparator" class="headerlink" title="Comparator"></a>Comparator<T></h3><p>Let’s start off by defining some terminology.</p>
+<ul>
+<li><code>Natural order</code> - used to refer to the ordering implied in the <code>compareTo</code> method of a particular class. (Dog - size)</li>
+</ul>
+<p>What if we’d like to sort Dogs <code>in a different way</code> than their natural ordering, such as by alphabetical order of their name?</p>
+<p>In explicit HoF approach, we can use <code>compare</code> to specify a different compare function. However, in subtype polymorphism approach, <code>compareTo1</code>, <code>compareTo2</code>, and so forth? No!</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">print_larger</span>(<span class="params">T x, T y, comparator&lt;T&gt; c</span>):</span><br><span class="line">  <span class="keyword">if</span> c.compare(x, y):</span><br><span class="line">    <span class="keyword">return</span> x.<span class="built_in">str</span>()</span><br><span class="line">  <span class="keyword">return</span> y.<span class="built_in">str</span>()</span><br></pre></td></tr></table></figure>
+
+<p>Java’s way of doing this is by using <code>Comparator</code>‘s. Since a comparator is an object, the way we’ll use <code>Comparator</code> is by writing a <code>nested class</code> (so it’s static) inside Dog that implements the <code>Comparator</code> interface.</p>
+<p>Note: It is <code>static</code> because we don’t need to instantiate a Dog to get a NameComparator. Instead, we get it when initializing the class.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Comparator</span>&lt;T&gt; &#123;</span><br><span class="line">  <span class="type">int</span> <span class="title function_">compare</span><span class="params">(T o1, T o2)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Now, the Dog class should be like:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Comparator;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Dog</span> <span class="keyword">implements</span> <span class="title class_">Comparable</span>&lt;Dog&gt; &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compareTo</span><span class="params">(Dog uddaDog)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.size - uddaDog.size;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Nested class */</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">NameComparator</span> <span class="keyword">implements</span> <span class="title class_">Comparator</span>&lt;Dog&gt; &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compare</span><span class="params">(Dog a, Dog b)</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> a.name.compareTo(b.name);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** getNameComparator()</span></span><br><span class="line"><span class="comment">   *  public: accessible (set NameComparator class as private)</span></span><br><span class="line"><span class="comment">   *  static: Dog.getNameComparator()</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> Comparator&lt;Dog&gt; <span class="title function_">getNameComparator</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">NameComparator</span>();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// We can have other comparators, but we have only one compareTo().</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In DogLauncher, the code is:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Dog.<span class="type">NameComparator</span> <span class="variable">nc</span> <span class="operator">=</span> Dog.getNameComparator();</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line">Comparator&lt;Dog&gt; nc = Dog.getNameComparator();</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line">someMethod(data, Dog.getNameComparator()); <span class="comment">// more common</span></span><br></pre></td></tr></table></figure>
+
+<p>In summary, a <code>Comparable</code> says, “I want to compare myself to another object”. It is imbedded within the object itself, and it defines the <code>natural ordering</code> of a type.</p>
+<p>However, a <code>Comparator</code>, on the other hand, is more like a <code>third party machine</code> that compares two objects to each other. Since there’s <code>only room</code> for one <code>compareTo</code> method, if we want multiple ways to compare, we must turn to <code>Comparator</code>.</p>
+<h2 id="Abstract-Data-Types-ADT"><a href="#Abstract-Data-Types-ADT" class="headerlink" title="Abstract Data Types (ADT)"></a>Abstract Data Types (ADT)</h2><h3 id="Interface"><a href="#Interface" class="headerlink" title="Interface"></a>Interface</h3><p>In Java, <code>Deque</code> is called an <code>interface</code>. Conceptually, we call <code>deque</code> an <code>Abstract Data Type</code>. <code>Deque</code> only comes with <code>behaviors</code>, not any concrete ways to exhibit those behaviors. In this way, it is <code>abstract</code>.</p>
+<p><code>Stack</code>: LIFO property<br><code>Queue</code>: FIFO property<br><code>Deque</code>: Both LIFO and FIFO</p>
+<p>In Java, we use interfaces to achieve ADTs:</p>
+<ul>
+<li>Cannot be instantiated.</li>
+<li>Can provide either <code>abstract</code> or <code>concrete</code> methods.<ul>
+<li>Use <code>default</code> keyword for concrete methods.</li>
+</ul>
+</li>
+<li>Can provide only <code>public static final</code> variables.</li>
+<li>Can provide only <code>public</code> methods.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// In an interface class</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">hahah</span><span class="params">()</span>; <span class="comment">// Error: Static methods in interfaces should have a body</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Abstract-Class"><a href="#Abstract-Class" class="headerlink" title="Abstract Class"></a>Abstract Class</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fwr4r.jpg" alt="Answer: C"></p>
+<p>Abstract class doesn’t have to implement the method listed in interface.</p>
+<h4 id="Interface-vs-Abstract-Class"><a href="#Interface-vs-Abstract-Class" class="headerlink" title="Interface vs. Abstract Class"></a>Interface vs. Abstract Class</h4><p>Interfaces:</p>
+<ul>
+<li>Primarily for <code>interface inheritance</code>. Limited implementation inheritance.</li>
+<li>Classes can implement <code>multiple interfaces</code>. (main difference)</li>
+</ul>
+<p>Abstract classes:</p>
+<ul>
+<li>Can do anything an interface can do, and more.</li>
+<li>Subclasses <code>only extend one</code> abstract class.</li>
+</ul>
+<h4 id="List-Hierarchy"><a href="#List-Hierarchy" class="headerlink" title="List Hierarchy"></a>List Hierarchy</h4><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7tgyb.jpg"></p>
+<p><strong>Why didn’t we use Interface only?</strong></p>
+<p><code>AbstractList</code> provides <code>default</code> implementations for methods. But why not just put them in List itself? No default methods in Java interfaces until 2014, and the <code>AbstractList</code> was public so we can’t just throw it away.</p>
+<p>A more of the real list hierarchy:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/hj8ag.jpg" alt="More of the real list hierarchy"></p>
+<p>Even more:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1217q.jpg" alt="The Whole Shebang"></p>
+<p>When in doubt, try to use <code>interfaces</code> in order to build up abstraction, reduce complexity, and hide unnecessary information.</p>
+<p><strong>Discussion 5:</strong></p>
+<p>Some scenes of application:</p>
+<ul>
+<li><p>Given a news article, find the frequency of each word used in the article:</p>
+<p>Use a <code>map</code>.</p>
+</li>
+<li><p>Given an unsorted array of integers, return the array sorted from least to greatest:</p>
+<p>Use a <code>priority queue</code>. For each integer in the unsorted array, enqueue the integer with a priority equal to its value.</p>
+</li>
+<li><p>Implement the forward and back buttons for a web browser:</p>
+<p><code>Use two stacks</code>, one for each button. Each time you visit a new web page, add the previous page to the back button’s stack, and also clear the forward button stack.</p>
+<p>When you click the back button, add the current page to the forward button stack, and pop a page from the back button stack.</p>
+<p>When you click the forward button, add the current page to the back button stack, and pop a page from the forward button stack.</p>
+</li>
+</ul>
+<h2 id="Ex-Discussion-5"><a href="#Ex-Discussion-5" class="headerlink" title="Ex (Discussion 5)"></a>Ex (Discussion 5)</h2><h3 id="Ex-1-Queue"><a href="#Ex-1-Queue" class="headerlink" title="Ex 1 (Queue)"></a>Ex 1 (Queue)</h3><h4 id="Two-Stack-Version"><a href="#Two-Stack-Version" class="headerlink" title="Two-Stack Version"></a>Two-Stack Version</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Queue</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="type">Stack</span> <span class="variable">stack</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Stack</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">enqueue</span><span class="params">(E element)</span> &#123;</span><br><span class="line">    <span class="type">Stack</span> <span class="variable">temp</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Stack</span>();  <span class="comment">// a temp stack</span></span><br><span class="line">    <span class="keyword">while</span> (!stack.isEmpty()) &#123; <span class="comment">// move to temp stack</span></span><br><span class="line">      temp.push(stack.pop());</span><br><span class="line">    &#125;</span><br><span class="line">    stack.push(element);</span><br><span class="line">    <span class="keyword">while</span> (!temp.isEmpty()) &#123; <span class="comment">// move from temp stack</span></span><br><span class="line">      stack.push(temp.pop());</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> E <span class="title function_">dequeue</span><span class="params">()</span> &#123; <span class="keyword">return</span> stack.pop(); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>A <code>Stack</code> can also be implemented by two <code>Queue</code>s.</p>
+<h4 id="Recursive-Version"><a href="#Recursive-Version" class="headerlink" title="Recursive Version"></a>Recursive Version</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Queue</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="type">Stack</span> <span class="variable">stack</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Stack</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">enqueue</span><span class="params">(E element)</span> &#123; stack.push(element); &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> E <span class="title function_">dequeue</span><span class="params">()</span> &#123;  <span class="comment">// recursion</span></span><br><span class="line">    <span class="keyword">return</span> dequeue(stack.pop()); </span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> E <span class="title function_">dequeue</span><span class="params">(E previous)</span> &#123; <span class="comment">// consider size = 1</span></span><br><span class="line">    <span class="keyword">if</span> (stack.isEmpty()) &#123;  <span class="comment">// size = 0</span></span><br><span class="line">      <span class="keyword">return</span> previous;  <span class="comment">// previous is the last item</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">E</span> <span class="variable">toReturn</span> <span class="operator">=</span> dequeue(stack.pop());</span><br><span class="line">    stack.push(previous);  <span class="comment">// push it back to the stack</span></span><br><span class="line">    <span class="keyword">return</span> toReturn;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Ex-2-TwoSum"><a href="#Ex-2-TwoSum" class="headerlink" title="Ex 2 (TwoSum)"></a>Ex 2 (TwoSum)</h3><p>Given an array of integers $A$ and an integer $k$, return true if any two numbers in the array sum up to $k$, and return false otherwise. How would you do this? Give the main idea and what ADT you would use.</p>
+<p>Brute-force: 2 loops.</p>
+<p>A smarter way (use a map): </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">twoSum</span><span class="params">(<span class="type">int</span>[] A, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  Set&lt;Integer&gt; seenItems = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> i : A) &#123;</span><br><span class="line">    <span class="keyword">if</span> (seenItems.contains(k - i)) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    seenItems.add(i);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="Ex-3-K-most-Words"><a href="#Ex-3-K-most-Words" class="headerlink" title="Ex 3 (K-most Words)"></a>Ex 3 (K-most Words)</h3><p>Find the <code>k-most</code> common words in a document. Assume that you can represent a string as an array of words, where each word is an element in the array. You might find using <code>multiple data structures</code> useful.</p>
+<p>Keep a count of all the words in the document using a <code>HashMap&lt;String, Integer&gt;.</code> After we go through all of the words, each word will be mapped to how many times it’s appeared.</p>
+<p>Then we can put all the words into a <code>MaxPriorityQueue&lt;String&gt;</code>, using a custom comparator that compares words based on the counts in the HashMap. We can then pop off the k-most common words by just calling poll() on the MaxPriorityQueue k times.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">topFivePopularWords</span><span class="params">(String[] words, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="comment">/** Counting words */</span></span><br><span class="line">  Map&lt;String, Integer&gt; counts = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (String w : words) &#123;</span><br><span class="line">    counts.put(w, counts.getOrDefault(w, <span class="number">0</span>) + <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/** Comparator */</span></span><br><span class="line">  PriorityQueue&lt;String&gt; pq = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;(<span class="keyword">new</span> <span class="title class_">Comparator</span>&lt;String&gt;()&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compare</span><span class="params">(String a, String b)</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> counts.get(b) - counts.get(a);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (String w : counts.keySet()) &#123;</span><br><span class="line">    pq.add(w); <span class="comment">/* automatically put in order */</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; k; i += <span class="number">1</span>) &#123;</span><br><span class="line">    System.out.println(pq.poll());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Ex-4-SortedStack"><a href="#Ex-4-SortedStack" class="headerlink" title="Ex 4 (SortedStack)"></a>Ex 4 (SortedStack)</h3><p>Suppose we wanted a data structure <code>SortedStack</code> that takes in integers, and maintains them in sorted order. <code>SortedStack</code> supports two operations: <code>push(int i)</code> and <code>pop()</code>. Popping returns the <code>next smallest</code> item in the SortedStack.</p>
+<p>For example, if we inserted [10, 4, 8, 2, 14, 3] into a SortedStack, and then popped everything off, we would get [2, 3, 4, 8, 10, 14].</p>
+<h4 id="My-Way"><a href="#My-Way" class="headerlink" title="My Way"></a>My Way</h4><p>Not using stacks (iterative way). We have some invariants:</p>
+<ul>
+<li>The smallest item is at the top of stack.</li>
+<li>Push guarantees that the items in stack is in increasing order.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SortedStack</span>() &#123;</span><br><span class="line">  </span><br><span class="line">  <span class="type">SLList</span> <span class="variable">items</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SLList</span>();</span><br><span class="line">  <span class="comment">/** Push */</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">push</span><span class="params">(<span class="type">int</span> x)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (items.size == <span class="number">0</span>) &#123;</span><br><span class="line">      items.addLast(x);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/* From big to small number (First -&gt; Last)*/</span></span><br><span class="line">    <span class="type">IntNode</span> <span class="variable">ptr</span> <span class="operator">=</span> items.sentinel.next; <span class="comment">/* First element */</span></span><br><span class="line">    <span class="keyword">while</span> (ptr != sentinel) &#123;</span><br><span class="line">      <span class="keyword">if</span> (x &lt;= ptr.item) &#123;</span><br><span class="line">        <span class="comment">/** Insert! But we have no related function of SLList */</span></span><br><span class="line">        ptr.next = <span class="keyword">new</span> <span class="title class_">IntNode</span>(x, ptr.next);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      ptr = ptr.next;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/** Pop */</span></span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">pop</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (items.size == <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> items.removeLast();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Answer"><a href="#Answer" class="headerlink" title="Answer"></a>Answer</h4><p>Using stacks:</p>
+<p>We have two stacks A and B. A holds all the items, and B is our buffer.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SortedStack</span>&lt;Item <span class="keyword">extends</span> <span class="title class_">Comparable</span>&lt;Item&gt;&gt; &#123;</span><br><span class="line">  <span class="keyword">private</span> Stack&lt;Item&gt; main;</span><br><span class="line">  <span class="keyword">private</span> Stack&lt;Item&gt; buffer;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">SortedStack</span><span class="params">()</span> &#123;</span><br><span class="line">    main = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">    buffer = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">push</span><span class="params">(Item t)</span> &#123;</span><br><span class="line">    <span class="comment">// keep smaller items away in the buffer</span></span><br><span class="line">    <span class="keyword">while</span> (!main.empty() &amp;&amp; main.peek().compareTo(t) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">      buffer.push(main.pop());</span><br><span class="line">    &#125;</span><br><span class="line">    main.push(t);</span><br><span class="line">    <span class="comment">// push back the smaller items</span></span><br><span class="line">    <span class="keyword">while</span> (!buffer.empty( )) &#123;</span><br><span class="line">      main.push(buffer.pop());</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> Item <span class="title function_">pop</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> main.pop();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h2 id="Package"><a href="#Package" class="headerlink" title="Package"></a>Package</h2><p>Package names give a <code>canonical</code> name for everything. “Canonical” means a unique representation for a thing.</p>
+<h3 id="Importing-Class"><a href="#Importing-Class" class="headerlink" title="Importing Class"></a>Importing Class</h3><p>Here are some different ways we can use a class:</p>
+<ul>
+<li>Entire name.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ug.joshh.animal.<span class="type">Dog</span> <span class="variable">d</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ug</span>.joshh.animal.Dog();</span><br></pre></td></tr></table></figure></li>
+<li>Can use import statement to provide shorthand notation for usage of a single class in a package.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ug.joshh.animal.Dog;</span><br><span class="line"><span class="type">Dog</span> <span class="variable">d</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Dog</span>();</span><br></pre></td></tr></table></figure></li>
+<li>Wildcard import: Also possible to import multiple classes, but this is often a bad idea!<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ug.joshh.animal.*;</span><br><span class="line"><span class="type">Dog</span> <span class="variable">d</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Dog</span>();</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>Import <code>static</code> members:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.junit.Assert.assertEquals;</span><br><span class="line">assertEquals(<span class="number">5</span>, <span class="number">5</span>);</span><br><span class="line"><span class="comment">// we usually use (probably only wildcard import used in the course):</span></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.junit.Assert.*;</span><br></pre></td></tr></table></figure>
+
+<p>The built-in <code>java.util</code> package provides a number of useful interfaces and implementations.</p>
+<h3 id="Creating-A-Package"><a href="#Creating-A-Package" class="headerlink" title="Creating A Package"></a>Creating A Package</h3><p>The reason why we use Package is to address the fact that classes might share names. A package is a <code>namespace</code> that organizes classes and interfaces.</p>
+<p><strong>Naming convention:</strong> Package name starts with <code>website address</code> (backwards).</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> bearmaps.hw4.wordladderpuzzle;</span><br><span class="line"><span class="keyword">package</span> com.junhaow;</span><br></pre></td></tr></table></figure>
+
+<p>Two steps:</p>
+<ul>
+<li>At the <code>top</code> of every file in the package, put the package name.</li>
+<li>Make sure that the file is stored in a folder with the appropriate folder name. For a package with name <code>ug.joshh.animal</code>, use folder <code>ug/joshh/animal</code>.</li>
+</ul>
+<h3 id="The-Default-Package"><a href="#The-Default-Package" class="headerlink" title="The Default Package"></a>The Default Package</h3><p>Any Java class without a package name at the top are part of the <code>default package</code>. In other words, from now on, when writing real programs, your Java files should always start with a default package declaration.</p>
+<p><strong>Idea:</strong> Ensure that we never have two classes with the same name at any situation.</p>
+<p>But, you cannot import code from the default package! For example, if I were to create a <code>DogLauncher</code> class in the default package in a <code>DogLauncher.java</code> file, I would be unable to access this <code>DogLauncher</code> class anywhere else <code>outside of the default package</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cat.place;</span><br><span class="line"></span><br><span class="line">DogLauncher.launch(); <span class="comment">// don&#x27;t work</span></span><br><span class="line"><span class="keyword">default</span>.DogLauncher.launch(); <span class="comment">// doesn&#x27;t exist</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="JAR-Files"><a href="#JAR-Files" class="headerlink" title="JAR Files"></a>JAR Files</h3><p>JAR file are just <code>zip files</code>.</p>
+<ul>
+<li>They do not keep your code safe!</li>
+<li>Easy to unzip and transform back into .Java files (from .class).</li>
+</ul>
+<p><strong>Note:</strong> Do not share <code>.jar</code> files of your projects with other students.</p>
+<h2 id="Ex-Guide"><a href="#Ex-Guide" class="headerlink" title="Ex (Guide)"></a>Ex (Guide)</h2><h3 id="Ex-1-Q-A"><a href="#Ex-1-Q-A" class="headerlink" title="Ex 1 (Q&amp;A)"></a>Ex 1 (Q&amp;A)</h3><ul>
+<li><p>If an <code>abstract class</code> extends an <code>abstract class</code>, would it need to have function definitions for the abstract methods in the parent class? Similarly would an <code>interface</code> that implements another <code>interface</code> have to implement the non-default methods in the parent interface.</p>
+<p>No. No. If not implementing in the subclass or subinterface, the sub-subclass or sub-subinterface should do the job.</p>
+</li>
+<li><p>Can an <code>abstract class</code> be the subclass of a <code>normal class</code>?</p>
+<p>Yes. (The default package)</p>
+</li>
+</ul>
+<h3 id="Ex-2-Same-Method-Name"><a href="#Ex-2-Same-Method-Name" class="headerlink" title="Ex 2 (Same Method Name)"></a>Ex 2 (Same Method Name)</h3><p>Consider the following code:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Tree</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">bark</span><span class="params">()</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;haha - Tree&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Dog</span> &#123;</span><br><span class="line">  <span class="keyword">default</span> <span class="keyword">void</span> <span class="title function_">bark</span><span class="params">()</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;haha - Dog&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TreeDog</span> <span class="keyword">extends</span> <span class="title class_">Tree</span> <span class="keyword">implements</span> <span class="title class_">Dog</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">TreeDog</span> <span class="variable">td</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeDog</span>();</span><br><span class="line">    td.bark();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The output is:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">haha - Dog</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Autoboxing"><a href="#Autoboxing" class="headerlink" title="Autoboxing"></a>Autoboxing</h2><p>How it works (<code>wrapper type</code> and <code>primitive type</code>):</p>
+<ul>
+<li>If Java code expects a wrapper type and gets a primitive, it is <code>autoboxed</code>.</li>
+<li>If the code expects a primitive and gets a wrapper, it is <code>unboxed</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Not a magic */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">Integer</span> <span class="keyword">extends</span> <span class="title class_">Number</span> <span class="keyword">implements</span> <span class="title class_">Comparable</span>&lt;Integer&gt; &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> value;</span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">Integer</span><span class="params">(<span class="type">int</span> value)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.value = value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Note:</p>
+<ul>
+<li>Arrays are never autoboxed&#x2F;unboxed, e.g. an <code>Integer[]</code> cannot be used in place of an <code>int[]</code> (or vice versa).</li>
+<li>Autoboxing &#x2F; unboxing incurs a <code>measurable</code> performance impact!</li>
+<li>Wrapper types use <code>much</code> more memory than primitive types because of object overheads.</li>
+</ul>
+<p>Space occupied:</p>
+<ul>
+<li>Addresses are 64 bits.</li>
+<li>ints are 32 bits.</li>
+<li>All Java objects take 64 bits + their fields.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">bleepblorp</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="type">Integer</span> <span class="variable">x</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Integer</span>(<span class="number">5</span>);</span><br><span class="line">  System.out.println(x);</span><br><span class="line">  <span class="comment">// Output: 64 (address) + 64 (other information) + 32 (int)</span></span><br><span class="line">  <span class="comment">//         = 160</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Access-Control"><a href="#Access-Control" class="headerlink" title="Access Control"></a>Access Control</h2><h3 id="Access-Modifier"><a href="#Access-Modifier" class="headerlink" title="Access Modifier"></a>Access Modifier</h3><p>How do public and private behave with packages and subclasses?</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8e70u.jpg" alt="Access Table"></p>
+<ul>
+<li><p><strong>Public:</strong> This keyword opens up the access to everyone! This is generally what <code>clients</code> of the package can rely on to use. </p>
+<ul>
+<li>Once deployed, the public members’ signatures should not change. It’s like a <code>promise</code> and <code>contract</code> to people using this public code that it will always be accessible to them. </li>
+<li>Usually if developers want to “get rid of” something that’s public, rather than removing it, they would call it <code>deprecated</code> instead. </li>
+<li>TL;DR: Open and promised to the world.</li>
+</ul>
+</li>
+<li><p><strong>Protected:</strong> Protected members are protected from the <code>outside</code> world. </p>
+<ul>
+<li>Classes within the <code>same package</code> and <code>subclasses</code> can access these members, but the rest of the world (e.g. classes external to the package or non-subclasses) cannot!</li>
+<li>TL;DR: Subtypes might need it, but subtype clients will not.</li>
+</ul>
+</li>
+<li><p><strong>Package Private:</strong> This is the default access given to Java members if there is no explicit modifier written.</p>
+<ul>
+<li>Package private entails that classes that belong in the same package can access, but not subclasses!</li>
+<li>The original owners of the class that’s being extended may not want certain features or members to be tampered with, if people choose to extend it — hence, package-private allows those who are familiar with the inner workings of the program to access and modify certain members, whereas it blocks those who are subclassing from doing the same. </li>
+<li>TL;DR: Only classes that live in the same package can access.</li>
+</ul>
+</li>
+<li><p><strong>Private:</strong> Only code from the <code>given class</code> can access private members.</p>
+<ul>
+<li>It is truly private from everything else, as subclasses, packages, and other external classes cannot access private members.</li>
+<li>TL;DR: Only the class needs this piece of code.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> syntax3.map;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ArrayMap</span></span><br><span class="line">  <span class="type">int</span> size; <span class="comment">// package-private</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> syntax3.map;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyonicArrayMap</span> <span class="keyword">extends</span> <span class="title class_">ArrayMap</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">MyonicArrayMap</span><span class="params">(<span class="type">int</span> s)</span> &#123;</span><br><span class="line">    size = s; </span><br><span class="line">    <span class="comment">// Will this work? Yes, because it is part of the same package</span></span><br><span class="line">    <span class="comment">// Don&#x27;t need to think about whether it is part of the same subclass</span></span><br><span class="line">    <span class="comment">// Default access (package private) only supports Class, Package</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> syntax3.map;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MapHelper</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">printSize</span><span class="params">(ArrayMap am)</span> &#123;</span><br><span class="line">    System.out.println(am.size); <span class="comment">// OK. It&#x27;s part of the same package</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Subtleties:</strong></p>
+<p>Interface methods are public in default.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/w6hvd.jpg" alt="Access Is Based Only on Static Types - Client has no idea about HasHair but BlackHole"></p>
+<h3 id="Nested-class"><a href="#Nested-class" class="headerlink" title="Nested class"></a>Nested class</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Outer</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> outvar;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Inner</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> invar;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In the example above: Anybody can create an Outer, anybody can create an Inner, and anybody can access an Inner’s variable. And an Inner can access this.outvar.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Outer</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> outvar;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">Inner</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> invar;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In the example above, Inner is private. At this point, the access modifiers to all of inners’ members are <strong>irrelevant</strong>.</p>
+<ul>
+<li>An Outer <code>can access</code> an Inner’s variables. The reason is that “Inner” is a subordinate slave of Outer, and thus has no personal possessions.</li>
+<li>We can change public (invar) to anything and have no observable effect (its function has been shadowed).</li>
+<li>Classes other than Outer cannot make or access Inner anymore. Common for things like LinkedListDeque (make your IntNode class private).</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Outer</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="type">int</span> outvar;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">Inner</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> invar;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span> &#123;</span><br><span class="line">      outvar = <span class="number">5</span>; <span class="comment">/* OKAY */</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In the example above, can an Inner access an Outer’s outvar? Yes, it can because Inner is part of the Outer class.</p>
+<p>What could I do so that an Inner can’t use outvar?</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Outer</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="type">int</span> outvar;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Inner</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> invar;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span> &#123;</span><br><span class="line">      outvar = <span class="number">5</span>;  <span class="comment">// I cannot access my enclosing instance&#x27;s outvar</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Can I instantiate a non-static inner class (nested class) without an outer instance?</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** 1 */</span></span><br><span class="line"><span class="type">Outer</span> <span class="variable">out</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Outer</span>();</span><br><span class="line">Outer.<span class="type">Inner</span> <span class="variable">in1</span> <span class="operator">=</span> out.<span class="keyword">new</span> <span class="title class_">Inner</span>();</span><br><span class="line"><span class="comment">/** 2 */</span></span><br><span class="line">Outer.<span class="type">Inner</span> <span class="variable">in2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Outer</span>().<span class="keyword">new</span> <span class="title class_">Inner</span>();</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Discussion-6"><a href="#Discussion-6" class="headerlink" title="Discussion 6"></a>Discussion 6</h2><h3 id="Exception"><a href="#Exception" class="headerlink" title="Exception"></a>Exception</h3><p>There are 2 overarching types of exceptions:</p>
+<ul>
+<li><p>Checked</p>
+<p>You must either wrap them in a <code>try/catch block</code> or pass the buck by using <code>throws exception</code> in the method header.</p>
+</li>
+<li><p>Unchecked</p>
+<p>You don’t need to handle these. They are typically an error on a user’s part, which can’t really be helped.</p>
+</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/mmiqj.jpg" alt="Exception Hierarchy"></p>
+<h3 id="Iterators-and-Iterables"><a href="#Iterators-and-Iterables" class="headerlink" title="Iterators and Iterables"></a>Iterators and Iterables</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ukdpi.jpg"></p>
+<h2 id="Ex-Discussion-6"><a href="#Ex-Discussion-6" class="headerlink" title="Ex (Discussion 6)"></a>Ex (Discussion 6)</h2><h3 id="Ex-1-AltList"><a href="#Ex-1-AltList" class="headerlink" title="Ex 1 (AltList)"></a>Ex 1 (AltList)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> AltList&lt;X, Y&gt; <span class="title function_">pairSwapped</span><span class="params">()</span> &#123;</span><br><span class="line">  AltList&lt;Y, X&gt; ret = <span class="keyword">new</span> <span class="title class_">AltList</span>&lt;Y, X&gt;(next.item, <span class="keyword">new</span> <span class="title class_">AltList</span>&lt;X, Y&gt;(item, <span class="literal">null</span>));</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Recursive */</span></span><br><span class="line">  <span class="keyword">if</span> (next.next != <span class="literal">null</span>) &#123;</span><br><span class="line">    ret.next.next = next.next.pairSwapped();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Iterative */</span></span><br><span class="line">  AltList&lt;X, Y&gt; ptr = next.next;</span><br><span class="line">  AltList&lt;Y, X&gt; newPtr = ret;</span><br><span class="line">  <span class="keyword">while</span> (ptr != <span class="literal">null</span>) &#123;</span><br><span class="line">    newPtr.next.next = <span class="keyword">new</span> <span class="title class_">AltList</span>&lt;Y, X&gt;(ptr.next.item, <span class="keyword">new</span> <span class="title class_">AltList</span>&lt;X, Y&gt;(ptr.item, <span class="literal">null</span>))</span><br><span class="line">    newPtr = newPtr.next.next;</span><br><span class="line">    ptr = ptr.next.next;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Ex-2-Every-K-th-Element"><a href="#Ex-2-Every-K-th-Element" class="headerlink" title="Ex 2 (Every K-th Element)"></a>Ex 2 (Every K-th Element)</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ffpd0.jpg"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">KthIntList</span> <span class="keyword">implements</span> <span class="title class_">Iterator</span>&lt;Integer&gt; &#123;</span><br><span class="line">  <span class="keyword">private</span> IntList curList;</span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> k;</span><br><span class="line">  <span class="keyword">private</span> <span class="type">boolean</span> hasNext;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">KthIntList</span><span class="params">(IntList L, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.curList = L;</span><br><span class="line">    <span class="built_in">this</span>.k = k;</span><br><span class="line">    <span class="built_in">this</span>.hasNext = <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">hasNext</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.hasNext;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Returns the next K-th element of the IntList given in the constructor</span></span><br><span class="line"><span class="comment">   * Returns the 0-th element firsts. Throws a NoSuchElementException if</span></span><br><span class="line"><span class="comment">   * there are no Integers available to return.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">public</span> Integer <span class="title function_">next</span><span class="params">()</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (curList == <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoSuchElementException</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="type">Integer</span> <span class="variable">ret</span> <span class="operator">=</span> curList.item;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> k;</span><br><span class="line">    <span class="keyword">while</span> (count &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      curList = curList.next;</span><br><span class="line">      count -= <span class="number">1</span>;</span><br><span class="line">      <span class="keyword">if</span> (curList == <span class="literal">null</span>) &#123;</span><br><span class="line">        hasNext = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

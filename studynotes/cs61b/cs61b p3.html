@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Efficient ProgrammingEfficiency comes in two flavors:  Programming cost (development) Execution cost (time and memory)  TerminologyModule: A set of methods that work together as a whole to perform s">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CS 61B | Part 3 | Asymptotic, Disjoint Set (Dynamic Connectivity)">
+<meta property="og:url" content="https://junhaow.com/studynotes/cs61b/cs61b%20p3.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Efficient ProgrammingEfficiency comes in two flavors:  Programming cost (development) Execution cost (time and memory)  TerminologyModule: A set of methods that work together as a whole to perform s">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vt2ff.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2vajm.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fvgq1.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/hqhcu.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/l64uz.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/pyd7j.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/b4ybr.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qibga.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/lwh3l.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/aom3p.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/k9qyk.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/90r7r.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/q841i.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/t0y6b.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/0wcoq.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gaf6k.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/x3s3v.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jkpab.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/k7vq9.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3g6jn.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3h48o.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yaeaw.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bxee4.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8orz8.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/umubw.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zlwjl.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/iz91x.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bpxpc.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wqgm8.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/j8pu3.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/mj3hi.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/azv7r.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/i7ulc.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zzu6z.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/70eq0.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/n468p.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qokk3.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/74d19.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/k52aw.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rwdqe.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/b3fva.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4skg0.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/treqa.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6qi1t.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/kse7k.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gtrzb.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vmrhw.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dup8k.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/hl0xx.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fgy4q.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dqccc.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dbf6j.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yufp6.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3hamm.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2s56a.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/an5l1.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1y0p7.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/c7lv6.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/u3ef5.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/di2lw.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/t3hwh.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/o9fsd.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/h9don.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zyufl.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.196Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.196Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vt2ff.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CS 61B | Part 3 | Asymptotic, Disjoint Set (Dynamic Connectivity)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<h2 id="Efficient-Programming"><a href="#Efficient-Programming" class="headerlink" title="Efficient Programming"></a>Efficient Programming</h2><p>Efficiency comes in two flavors:</p>
+<ul>
+<li>Programming cost (development)</li>
+<li>Execution cost (time and memory)</li>
+</ul>
+<h3 id="Terminology"><a href="#Terminology" class="headerlink" title="Terminology"></a>Terminology</h3><p><strong>Module:</strong> A set of methods that work together as a whole to perform some task or set of related tasks.</p>
+<p><strong>Encapsulated:</strong> A module is said to be encapsulated if its <code>implementation is completely hidden</code>, and it can be accessed only through a documented interface.</p>
+<p><strong>API:</strong> An API (Application Programming Interface) of an ADT is the list of <code>constructors</code> and <code>methods</code> (public) and a short <code>description</code> of each.</p>
+<p><strong>ADT:</strong> ADT (Abstract Data Type) is a <code>high-level</code> type that is defined by its <code>behaviors</code>, not their <code>implementations</code>.</p>
+<ul>
+<li><p>Deque in Proj1 is an ADT that had certain behaviors (addFirst, addLast, etc.). But, the <code>data structures</code> we actually used to implement it were <code>ArrayDeque</code> and <code>LinkedListDeque</code>.</p>
+</li>
+<li><p>Some ADTs are actually special cases of other ADTs. For example, <code>Stack</code> and <code>Queue</code> are just <code>Lists</code> that have even more specific behaviors.</p>
+</li>
+</ul>
+<h3 id="Extension-Delegation"><a href="#Extension-Delegation" class="headerlink" title="Extension &amp; Delegation"></a>Extension &amp; Delegation</h3><p><strong>1. Extension (Implementation Inheritance)</strong></p>
+<p>  Borrow the methods from <code>LinkedList&lt;Item&gt;</code> and use them as its own.</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ExtensionStack</span>&lt;Item&gt; <span class="keyword">extends</span> <span class="title class_">LinkedList</span>&lt;Item&gt; &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">push</span><span class="params">(Item x)</span> &#123;</span><br><span class="line">    add(x);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. Delegation (Abstraction)</strong></p>
+<p>  Create a Linked List object and call its methods.</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DelegationStack</span>&lt;Item&gt; &#123;</span><br><span class="line">  <span class="keyword">private</span> LinkedList&lt;Item&gt; L = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;Item&gt;();</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">push</span><span class="params">(Item x)</span> &#123;</span><br><span class="line">    L.add(x);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3. Adapter (Assignable)</strong></p>
+<p>  Similar to delegation, but it can use any class that implements the <code>List</code> interface (Linked List, ArrayList, etc.)</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StackAdapter</span>&lt;Item&gt; &#123;</span><br><span class="line">  <span class="keyword">private</span> List L;</span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">StackAdapter</span><span class="params">(List&lt;Item&gt; worker)</span> &#123;</span><br><span class="line">    L = worker;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">push</span><span class="params">(Item x)</span> &#123;</span><br><span class="line">    L.add(x);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Extension vs. Delegation:</strong> Right now it may seem that Extension and Delegation are pretty much <code>interchangeable</code>; however, there are some important differences that must be remembered when using them:</p>
+<ul>
+<li><p><code>Extension</code> tends to be used when you know what is going on in the parent class. </p>
+<ul>
+<li>In other words, <strong>you know how the methods are implemented</strong>. </li>
+<li>Additionally, with extension, you are basically saying that the class you are extending from acts <strong>similarly</strong> to the one that is doing the extending.</li>
+</ul>
+</li>
+<li><p><code>Delegation</code> is when you do not want to consider your current class to be a version of the class that you are pulling the method from. It is <code>independent</code> (interface inheritance).</p>
+</li>
+</ul>
+<h3 id="Idea-of-“View”"><a href="#Idea-of-“View”" class="headerlink" title="Idea of “View”"></a>Idea of “View”</h3><p><strong>Views:</strong> An alternative representation of an existed object. Views essentially limit the access that the user has to the underlying object. However, changes done through the views will <code>affect the actual object</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vt2ff.jpg" alt="View: List&lt;String&gt; SL = L.subList(1, 4)"></p>
+<p><strong>Issue:</strong> How do you return an actual List but still have it affect another List? Access methods</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** Assume in an Outer Class (MyList) */</span></span><br><span class="line">List&lt;Item&gt; <span class="title function_">subList</span><span class="params">(<span class="type">int</span> start, <span class="type">int</span> end)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">this</span>.SubList(start, end); <span class="comment">// Constructor</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Inner Class */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">SubList</span> <span class="keyword">extends</span> <span class="title class_">AbstractList</span>&lt;Item&gt; &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="type">int</span> start, end;</span><br><span class="line">  SubList(<span class="type">int</span> start, <span class="type">int</span> end) &#123; ... &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> Item <span class="title function_">get</span><span class="params">(<span class="type">int</span> k)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> AbstractList.<span class="built_in">this</span>.get(start + k); <span class="comment">// Gez</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> k, Item x)</span> &#123;</span><br><span class="line">    AbstractList.<span class="built_in">this</span>.add(start + k, x);</span><br><span class="line">    end += <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Usage:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Item&gt; L = <span class="keyword">new</span> <span class="title class_">MyList</span>&lt;&gt;(); L.add(<span class="number">1</span>); L.add(<span class="number">2</span>); ...</span><br><span class="line"><span class="type">List</span> <span class="variable">subL</span> <span class="operator">=</span> L.subList(<span class="number">1</span>, <span class="number">3</span>); <span class="comment">/* subL is a SubList */</span></span><br><span class="line">subL.get(<span class="number">1</span>); <span class="comment">/* equals to L.get(2) */</span></span><br><span class="line"><span class="comment">/* But we don&#x27;t need to know its type is SubList */</span></span><br></pre></td></tr></table></figure>
+
+<p>An observation that should be made is that getting the k-th item from our subList is the same as getting the k-th item from our original list <strong>with an offset equal to our start index</strong>. Since we are using a get method of our outer class (the most parent one) we change our original list.</p>
+<p>Similarly, adding an element to our subList is the same as adding an element to our original list with an offset equal to the start index of the subList.</p>
+<h3 id="The-Takeaway"><a href="#The-Takeaway" class="headerlink" title="The Takeaway"></a>The Takeaway</h3><p>APIs are pretty hard to design; however, having a coherent design philosophy can make your code much cleaner and easier to deal with.</p>
+<p><code>Implementation Inheritance</code> (extension) is tempting to use frequently, but it has problems and <strong>should be used sparingly</strong>, only when you are certain about attributes of your classes (both those being extended and doing the extending).</p>
+<h2 id="Asymptotics"><a href="#Asymptotics" class="headerlink" title="Asymptotics"></a>Asymptotics</h2><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2vajm.jpg"></p>
+<h3 id="Counting"><a href="#Counting" class="headerlink" title="Counting"></a>Counting</h3><p>The problem is to check if there is a duplicate in the array.</p>
+<p><strong>Technique 2B:</strong> Count possible operations in terms of input array size $N$.</p>
+<ul>
+<li><code>Good</code>: Machine independent. Input dependence captured in model. Tells you how algorithm <code>scales</code>.</li>
+<li><code>Bad</code>: Even more tedious to compute. Doesn’t tell you actual time.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fvgq1.jpg"></p>
+<p>Comparison:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/hqhcu.jpg"></p>
+<p>Which one is better? Three answers:</p>
+<ul>
+<li>An answer: It takes fewer operations to accomplish the same goal.</li>
+<li>Better answer: Algorithm scales better in the worst case $\frac{(N^2 + 3N + 2)}{2}$ vs. $N$.</li>
+<li>Even better answer: Parabolas $N^2$ grow faster than lines $N$.<ul>
+<li>Note: This is the same idea as our “better” answer, but it provides a more <code>general geometric intuition</code>.</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/l64uz.jpg" alt="Scaling Across Many Domains"></p>
+<h3 id="Simplification"><a href="#Simplification" class="headerlink" title="Simplification"></a>Simplification</h3><p>Convert the table into <code>worst case o.o.g.</code> (order of growth):</p>
+<ul>
+<li><p><strong>Simplification 1: Consider only the Worst Case</strong></p>
+<p>When comparing algorithms, we often only care about the worst case (though we’ll see some exceptions later in this course, like Quicksort?).</p>
+<ul>
+<li>$N$ [linear]</li>
+<li>$N^2$ [quadratic]</li>
+<li>$N^3$ [cubic]</li>
+<li>$N^6$ [sextic]</li>
+</ul>
+<p>Example: $\alpha (100 N^2 + 3N)+\beta (2 N^3 + 1) + 5000\gamma$</p>
+<p>For very large $N$, the $2\beta N^3$ term is much larger than the others.</p>
+</li>
+<li><p><strong>Simplification 2: Restrict Attention to One Operation</strong></p>
+<p>Pick some <code>representative operation</code> to act as a <code>proxy</code> for overall runtime. The operation we choose can be called the <code>cost model</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; A.length; ++i) &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i + <span class="number">1</span>; j &lt; A.length; ++j) &#123;</span><br><span class="line">    <span class="keyword">if</span> (A[i] == A[j]) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="literal">false</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Good choice: <code>increment</code>, or <code>&lt;</code> or <code>==</code>, or <code>array accesses</code>.</li>
+<li>Bad choice: <code>assignment</code> of <code>j = i + 1</code>, or <code>i = 0</code> (since they execute only once).</li>
+</ul>
+</li>
+<li><p><strong>Simplification 3: Eliminate Low Order Terms</strong></p>
+<p>We can use tilde notation $\sim$ and ignore lower order terms.</p>
+</li>
+<li><p><strong>Simplification 4: Eliminate Multiplicative Constants</strong></p>
+<p>Ignore multiplicative constants.</p>
+<p>Why? No real meaning! Remember that by choosing a single representative operation, we already “threw away” some information.</p>
+</li>
+</ul>
+<p><strong>Summary:</strong></p>
+<ol>
+<li>Only consider the <code>worst case</code>.</li>
+<li>Pick a representative operation (aka: <code>cost model</code>).</li>
+<li>Ignore <code>lower order</code> terms</li>
+<li>Ignore multiplicative <code>constants</code></li>
+</ol>
+<p>However, rather than <code>building the entire table</code> (it means counting table), we can instead:</p>
+<ol>
+<li>Choose our cost model (representative operation we want to count).</li>
+<li>Figure out the order of growth for the count of our representative operation by either:</li>
+</ol>
+<ul>
+<li><code>Making an exact count</code>, and discarding unnecessary pieces.</li>
+<li><code>Using intuition / inspection</code> to determine orders of growth.<ul>
+<li><strong>Comes with practice!</strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/pyd7j.jpg" alt="Observe the area of right triangle of side length N-1"></p>
+<h3 id="Big-Theta-Notation"><a href="#Big-Theta-Notation" class="headerlink" title="Big-Theta Notation"></a>Big-Theta Notation</h3><blockquote>
+<p>We only care about the <code>o.o.g.</code> of $R(N)$.</p>
+</blockquote>
+<p>Given a piece of code, we can express its runtime as a function $R(N)$. Rather than finding $R(N)$ exactly, we instead usually only care about the <code>order of growth</code> of $R(N)$.</p>
+<p>Big Theta $\Theta$ is <code>exactly equivalent</code> to order of growth. Suppose we have a function $R(N)$ with order of growth $f(N)$:</p>
+<p>$$R(N) \in \Theta(f(N))$$</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/b4ybr.png" alt="Examples"></p>
+<p><strong>Big-Theta’s Formal Definition:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qibga.png" alt="R(N), Runtime Function of Input Size N"></p>
+<p>In other words, $R(N)$ is both upper and lower bounded by $\Theta(f(N))$.</p>
+<p>Using Big-Theta doesn’t change anything about runtime analysis (no need to find $k_1$ or $k_2$ or anything like that).</p>
+<p>The only difference is that we use $\Theta$ symbol anywhere we would have said “order of growth”, showing that we are considering the <code>scale</code>.</p>
+<p>In summary, the approach is as follows:</p>
+<ul>
+<li>Choose a representative operation, and let $C(N)$ be the count of how many times that the operation occurs as a function of $N$.</li>
+<li>Determine order of growth $f(N)$ for $C(N)$, i.e. $C(N) \in \Theta(f(N))$.<ul>
+<li>Often (but not always) we consider the worst case count.</li>
+</ul>
+</li>
+<li>If <strong>each operation takes constant time</strong>, then we say our runtime is $R(N) \in \Theta(f(N))$.</li>
+</ul>
+<h3 id="Big-O-Notation"><a href="#Big-O-Notation" class="headerlink" title="Big-O Notation"></a>Big-O Notation</h3><p>We use <code>Big Theta</code> to describe the <code>order of growth</code> of a function, or the <code>rate of growth of the runtime</code> of a piece of code.</p>
+<p>For example, binary search on $N$ items has worst case runtime of $\Theta(log N)$.</p>
+<p>Whereas Big Theta can informally be thought of as something like <code>equals</code>, Big O can be thought of as <code>less than or equal</code>.</p>
+<p>In other words, $R(N)$ is only <code>upper</code> bounded by $f(N)$.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/lwh3l.jpg"></p>
+<p>Comparison:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/aom3p.jpg" alt="Big Theta vs. Big O"></p>
+<p><strong>$N$ should be large enough:</strong></p>
+<p>Suppose we have a function <code>bleepBlorp</code>, and its runtime $R(N)$ has order of growth $\Theta(N^2)$. For large $N$, if we run <code>bleepBlorp</code> on an input of size $N$, and an input size $10N$, we will have to wait roughly 100 times as long for the larger input.</p>
+<ul>
+<li><code>True</code>. It is the nature of quadratics.</li>
+</ul>
+<p>If we run <code>bleepBlorp</code> on an input of size 1000, and an input of size 10000, we will have to wait roughly 100 times as long for the larger input. </p>
+<ul>
+<li><code>False</code>. 1000 may not be a large enough $N$ to exhibit quadratic behavior.</li>
+</ul>
+<h3 id="Big-Theta-vs-Big-O"><a href="#Big-Theta-vs-Big-O" class="headerlink" title="Big-Theta vs. Big-O"></a>Big-Theta vs. Big-O</h3><p><strong>Dependency On Input:</strong></p>
+<p>Consider a trick question:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// same version</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">dup4</span><span class="params">(<span class="type">int</span>[] a)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">N</span> <span class="operator">=</span> a.length;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i + <span class="number">1</span>; j &lt; N; ++j) &#123;</span><br><span class="line">      <span class="keyword">if</span> (a[i] == a[j]) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Let $R(N)$ be the runtime of the code below as a function of $N$. What is the order of growth of $R(N)$?</p>
+<ol>
+<li>$\Theta(1)$</li>
+<li>$\Theta(N)$</li>
+<li>$\Theta(N^2)$</li>
+<li>Something else (depends on the input) (X)</li>
+</ol>
+<p>Analysis:</p>
+<ul>
+<li>The best case runtime: $\Theta(1)$</li>
+<li>The worst case runtime: $\Theta(N^2)$</li>
+</ul>
+<p>In this case, we can just use Big-O to avoid qualifying our statement at all, i.e. $O(N^2)$ includes a sense that the runtime could possibly be $\Theta(1)$.</p>
+<p><strong>The Limitations of Big Theta:</strong></p>
+<p>Big-Theta expresses <code>exact order of growth</code> for runtime in terms of $N$. If runtime depends on more factors than just $N$, we may need different Big Theta for every interesting condition.</p>
+<p><strong>Big-O Is Less Informative:</strong></p>
+<p>Which statement gives you more specific information about the runtime of a piece of code?</p>
+<ol>
+<li>The worst case runtime is $\Theta(N^2)$. (X)</li>
+<li>The runtime is $O(N^2)$. (it exhibits too much)</li>
+</ol>
+<p>Example:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/k9qyk.jpg"></p>
+<p><strong>Common Usage:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/90r7r.png"></p>
+<p><strong>Note:</strong> Despite lower precision, Big-O is used way more often in conversation. Although it does not mean “worst case”, it is often abused to mean this and used as such.</p>
+<p>However, Big-O is still a useful idea:</p>
+<ul>
+<li>Allows us to make simple blanket statements <code>without case qualifications</code>.<ul>
+<li>E.g. we can just say “binary search is $O(\log{N})$” instead of “binary search is $\Theta(\log{N})$ in the worst case”.</li>
+</ul>
+</li>
+<li>Sometimes don’t know the exact runtime, so use $O$ to give an <code>upper bound</code>.<ul>
+<li>Example: Runtime for finding shortest route that goes to all world cities is $O(2^N)^*$. There might be a faster way, but nobody knows one yet.</li>
+</ul>
+</li>
+<li>Easier to write proofs for Big-O than Big-Theta.</li>
+</ul>
+<h3 id="Big-Omega-Notation"><a href="#Big-Omega-Notation" class="headerlink" title="Big-Omega Notation"></a>Big-Omega Notation</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/q841i.jpg" alt="$\Theta(f(N))$, $O(f(N))$, $\Omega(f(N))$"></p>
+<p>Two common uses for Big-Omega:</p>
+<ul>
+<li>Very careful proofs of <code>Big-Theta</code> runtime.<ul>
+<li>If $R(N) &#x3D; O(f(N))$ and $R(N) &#x3D; \Omega(f(N))$, then $R(N) &#x3D; \Theta(f(N))$.</li>
+<li>Sometimes it’s easier to show $O$ and $\Omega$ separately.</li>
+</ul>
+</li>
+<li><code>Provide lower bounds</code> for the hardness of a problem (the best case).<ul>
+<li>Example: The time to find whether an array has duplicates is $\Omega(N)$ in the worst case since we have to actually look at every item.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Note:</strong> Big-Omega does not mean best case.</p>
+<h2 id="Amortized-Analysis"><a href="#Amortized-Analysis" class="headerlink" title="Amortized Analysis"></a>Amortized Analysis</h2><p>It provides a way to prove the average cost of operations.</p>
+<h3 id="Grigometh’s-Hay"><a href="#Grigometh’s-Hay" class="headerlink" title="Grigometh’s Hay"></a>Grigometh’s Hay</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/t0y6b.jpg"></p>
+<p><strong>Note:</strong> Just like the growth of a binary tree by levels.</p>
+<p><strong>Punchline:</strong> Grigometh’s consumption per day is effectively constant.</p>
+<h3 id="Geometric-Resizing"><a href="#Geometric-Resizing" class="headerlink" title="Geometric Resizing"></a>Geometric Resizing</h3><p>It turns out, Grigometh’s hay dilemma is very similar to AList resizing.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/0wcoq.jpg"></p>
+<p>As for the second implementation, most add operations take $\Theta(1)$ time, but some are very expensive, and linear to the current size. However, if we average out the cost of expensive adds with resize, overall the adds that are cheap. And it turns out that <code>on average</code>, the runtime of add is $\Theta(1)$.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gaf6k.jpg" alt="Notice the cumulative average is approaching at 3"></p>
+<p>A more rigorous examination of amortized analysis is done here, in three steps:</p>
+<ul>
+<li>Pick a cost model (like in regular runtime analysis).</li>
+<li>Compute the average cost of the i-th operation.</li>
+<li>Show that this average (amortized) cost is bounded by a constant.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/x3s3v.jpg" alt="Cost Model: Array accesses (read and write)"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jkpab.jpg" alt="Cost of The First Five Operations"></p>
+<p>Even though some elements cost linear time $\Theta(N)$, average cost of each insert is $\Theta(1)$.</p>
+<ul>
+<li>Amortized total cost seems to be about $(44 &#x2F; 14) &#x3D; 3.14$ accesses &#x2F; item.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/k7vq9.png" alt="Amortization of Runtime (starting from size 1)"></p>
+<p><strong>Note:</strong> For the first 8 adds, the average cost is 39&#x2F;8 &#x3D; 4.875 per add. It seems like it might be bounded by 5. But just by looking at the first 13 adds, we cannot be completely sure.</p>
+<p>How do we prove it?</p>
+<h3 id="The-Idea-of-Potential"><a href="#The-Idea-of-Potential" class="headerlink" title="The Idea of Potential"></a>The Idea of Potential</h3><p>We’ll now introduce the idea of <code>potential</code> to aid us in solving this amortization mystery.</p>
+<p><strong>Idea:</strong> Select an amortized cost $a_i$ such that potential $\Phi_i$ is never negative.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3g6jn.jpg" alt="Potentials and Amortized Cost Bounds"></p>
+<p><strong>Now back to ArrayList resizing</strong></p>
+<p>For ArrayList, the goal: $a_i \in \Theta(1)$ and $\Phi_i \geq 0$ for all $i$.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3h48o.jpg"></p>
+<p>Finally, we’ve shown that ArrayList add operations are indeed amortized constant time. Geometric resizing (multiplying by the <code>RFACTOR</code>) leads to good list performance.</p>
+<h2 id="Extra-Notes-algs4"><a href="#Extra-Notes-algs4" class="headerlink" title="Extra Notes (algs4)"></a>Extra Notes (algs4)</h2><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yaeaw.jpg"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bxee4.jpg"></p>
+<blockquote>
+<p>An algorithm must be seen to be believed.  – Donald Knuth</p>
+</blockquote>
+<p>Log million, lg(1,000,000), is approximately 20.</p>
+<p>$1 + \frac{1}{2} + \frac{1}{3} + … + \frac{1}{N} &#x3D; \ln N$</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8orz8.jpg" alt="Cost of Basic Operations I"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/umubw.jpg" alt="Cost of Basic Operations II"></p>
+<p>Note: Cost of substring extraction is constant.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zlwjl.jpg" alt="Typical Orders of Growth"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/iz91x.jpg" alt="Commonly-used Notations"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bpxpc.png" alt="Typical Memory Usage For Objects in Java"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wqgm8.jpg" alt="Memory Usage Example"></p>
+<p><strong>61B Style:</strong></p>
+<p>The TA demonstrates a general model to solve this kind of problems.</p>
+<p>Steps:</p>
+<ul>
+<li>Height of Tree (<code>layers</code>)<ul>
+<li>$h &#x3D; \log N$</li>
+</ul>
+</li>
+<li>Branching Factor (<code>#node</code> &#x3D; <code>#subproblem</code>)<ul>
+<li>Note each time andslam() is called, it makes 1 recursive call on n&#x2F;2</li>
+<li><code>#node</code> per layer is 1</li>
+</ul>
+</li>
+<li><code>Amount of Work</code> each node &#x2F; layer does ($f(N) &#x3D; D(N) + C(N)$)<ul>
+<li>Sometimes it includes <code>println</code>, <code>merging</code> and <code>combining</code> time, etc.</li>
+</ul>
+</li>
+</ul>
+<p>Note: In Discussion 7, Spring 2019.</p>
+<h2 id="Ex-In-Class-Practice"><a href="#Ex-In-Class-Practice" class="headerlink" title="Ex (In-Class Practice)"></a>Ex (In-Class Practice)</h2><h3 id="Ex-1-i-2"><a href="#Ex-1-i-2" class="headerlink" title="Ex 1 (i *&#x3D; 2)"></a>Ex 1 (i *&#x3D; 2)</h3><p>Problem:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/j8pu3.jpg"></p>
+<p><strong>Note:</strong> We drop some information for easily computation. Remember to use tilde notation <code>~</code>.</p>
+<p>Solution:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/mj3hi.jpg"></p>
+<p>Since the red line is bounded by two linear lines ($N$ and $4N$), the runtime must also be linear!</p>
+<p>If we compute the “exact” count, we have a stricter bound $2N - 1$:</p>
+<p>$$<br>\begin{aligned}<br>C(N) &amp;&#x3D; 2^0 + 2^1 + 2^2 + \ldots + 2^{lgN}\<br>&amp;&#x3D; 2^{(lgN + 1)} - 1\<br>&amp;&#x3D; 2^{(lgN + lg2)} - 1\<br>&amp;&#x3D; 2^{lg2N} - 1\<br>&amp;&#x3D; 2N - 1\<br>\end{aligned}<br>$$</p>
+<p>So we can draw a new line in the graph $C(N) &#x3D; 2N - 1$:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/azv7r.jpg" alt="4N, 2N, C(N), N"></p>
+<p>It would be super convenient if all nested for loops were $N^2$. However, they’re not.</p>
+<p><strong>Caveats For Runtime Analysis:</strong></p>
+<ul>
+<li>There is <code>no magic shortcut</code> for these problems.</li>
+<li>Runtime analysis often <code>requires careful thought</code>.<ul>
+<li>In programming, one little tiny statement in the middle of the code can cause the runtime to be completely different.</li>
+<li>Therefore, we can’t always assume that the runtime of a statement takes constant time.</li>
+</ul>
+</li>
+<li>In this class, there are basically two sums you need to know:<ul>
+<li><code>Sum of First Natural Numbers</code>: $1 + 2 + 3 + … + Q &#x3D; \frac{Q(Q+1)}{2} &#x3D; \Theta(Q^2)$</li>
+<li><code>Sum of First Powers of Two</code>: $1 + 2 + 4 + 8 + … + Q &#x3D; 2Q - 1 &#x3D; \Theta(Q)$</li>
+</ul>
+</li>
+<li>Strategies:<ul>
+<li>Find exact sum</li>
+<li>Write out examples</li>
+<li>Draw graphs</li>
+</ul>
+</li>
+</ul>
+<h3 id="Ex-2-j-2"><a href="#Ex-2-j-2" class="headerlink" title="Ex 2 (j *&#x3D; 2)"></a>Ex 2 (j *&#x3D; 2)</h3><p>Consider the variant of the previous example:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">printParty</span><span class="params">(<span class="type">int</span> N)</span> &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i += <span class="number">1</span>) &#123; <span class="comment">// N times</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &lt; N; j *= <span class="number">2</span>) &#123; <span class="comment">// 1 ~ lgN</span></span><br><span class="line">      System.out.println(<span class="string">&quot;Show me the code!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Cost model:</strong> println<br><strong>Analysis:</strong> </p>
+<ul>
+<li>The outer loop will execute ~$N$ times. The inner loop grows very fast: Execute 0, 1, 2, 2, 3, 3, 4, …, 4, …, lgN times each.</li>
+<li>It is difficult to sum it up so we better look into its upper bound. Let each inner loop execute $\log{N}$ times, so we have runtime $O(N\log{N})$.</li>
+</ul>
+<h3 id="Ex-3-Binary-Search"><a href="#Ex-3-Binary-Search" class="headerlink" title="Ex 3 (Binary Search)"></a>Ex 3 (Binary Search)</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/i7ulc.jpg"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zzu6z.jpg"></p>
+<p><strong>Note:</strong> Cost model could also be the comparison statement. The worst case runtime of Binary Tree is determine by the height of the tree.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/70eq0.jpg" alt="A couple of properties worth knowing"></p>
+<p>The last one essentially states that for logarithmic runtimes, <strong>the base of the logarithm doesn’t matter at all</strong>, because they are all equivalent in terms of Big-O (this can be seen by applying the logarithm change of base).</p>
+<p>According to: $\log_b(a) &#x3D; \frac{\log_x(a)}{\log_x(b)}$, we have: $\log_P(N) &#x3D; \frac{\log_Q(N)}{\log_Q(P)}$.</p>
+<p><strong>Log time is super good!</strong> In practice, logarithmic time algorithms have almost constant runtime. Even for incredibly huge datasets, practically equivalent to <code>constant time</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/n468p.jpg" alt="Logarithmic Runtime"></p>
+<h3 id="Ex-4-f-n-1-f-n-1"><a href="#Ex-4-f-n-1-f-n-1" class="headerlink" title="Ex 4 (f(n-1) + f(n-1))"></a>Ex 4 (f(n-1) + f(n-1))</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">f3</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (n &lt;= <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">return</span> f3(n - <span class="number">1</span>) + f3(n - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qokk3.jpg" alt="Every time we increase N by 1, we double the work!"></p>
+<p>It’s the recursion tree on which we can guess the runtime.</p>
+<p><code>Cost model</code>: #calls to $f_3$.</p>
+<p>Firstly, draw out the recursion tree to get an intuitive feeling or guess.</p>
+<p>Secondly, write down number of operations at each level.</p>
+<ul>
+<li>1st level: 1 x f(5)</li>
+<li>2nd level: 2 x f(4)</li>
+<li>3rd level: 4 x f(3)</li>
+<li>4th level: 8 x f(2)</li>
+<li>…</li>
+<li>Nth level: 2^(N-1) x f(1)</li>
+</ul>
+<p><strong>Sum:</strong> According to <code>sum of first powers of 2</code>, O(2 x 2^(N-1) - 1) &#x3D; O(2^N)</p>
+<p><strong>More Formal Version (CDQ):</strong></p>
+<p>It is a CDQ problem and the time complexity recurrence is as follows:</p>
+<p>$$T(N) &#x3D; 2T(N-1) + D(N) + C(N) &#x3D; 2T(N-1)$$</p>
+<p>But it could not be solved by the master method, since $b$ could not be expressed by a constant.</p>
+<h3 id="Ex-5-Mergesort"><a href="#Ex-5-Mergesort" class="headerlink" title="Ex 5 (Mergesort)"></a>Ex 5 (Mergesort)</h3><p><strong>Selection sort:</strong></p>
+<ul>
+<li>Find the smallest unfixed item, move it to the front, and ‘fix’ it.</li>
+<li>Sort the remaining unfixed items using selection sort.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/74d19.jpg" alt="Runtime of selection sort is $\Theta(N^2)$"></p>
+<p>Given that runtime is quadratic, for N &#x3D; 64, we might say the runtime for selection sort is 2,048 arbitrary units of time (AU).</p>
+<ul>
+<li>N &#x3D; 6 &#x3D;&gt; ~36 AUs</li>
+<li>N &#x3D; 64 &#x3D;&gt; ~2048 AUs (Shouldn’t it be 4096 ???)</li>
+</ul>
+<p><strong>Array Merging:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/k52aw.jpg"></p>
+<p>The runtime is $\Theta(N)$. Use array writes as cost model.</p>
+<p><strong>Improvement</strong></p>
+<p>Merging can give us an improvement over vanilla selection sort:</p>
+<ul>
+<li>Selection sort the <code>left half</code>: $\Theta(N^2)$</li>
+<li>Selection sort the <code>right half</code>: $\Theta(N^2)$</li>
+<li>Merge the results: $\Theta(N)$</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rwdqe.jpg" alt="~1088 vs. ~2048 AUs for N = 64"></p>
+<p>Still $\Theta(N^2)$, but faster since $N + 2 \times (\frac{N}{2})^2 &lt; N^2$</p>
+<p>And we can go on doing it:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/b3fva.jpg" alt="Two layers of merges"></p>
+<p><strong>Mergesort</strong></p>
+<p>Mergesort does merges all the way down (no selection sort):</p>
+<ol>
+<li>If array is of size 1, return.</li>
+<li>Mergesort the left half.</li>
+<li>Mergesort the right half.</li>
+<li>Merge the results: $\Theta(N)$</li>
+</ol>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4skg0.jpg"></p>
+<p>For an array of size $N$, what is the worst case runtime of Mergesort?</p>
+<p>For $N$, there will be $\log(N)$ layers, and each layer contains $N$ AUs. So in total there are $N\log(N)$ AUs.</p>
+<p><strong>More Formally:</strong></p>
+<p>Mergesort is a classic CDQ problem and its runtime could be written as a recurrence form:</p>
+<p>$$<br>\begin{aligned}<br>f(N) &amp;&#x3D; D(N) + C(N) &#x3D; \Theta(N)\<br>T(N) &amp;&#x3D; 2T(N&#x2F;2) + f(N) &#x3D; 2T(N&#x2F;2) + \Theta(N)\<br>\end{aligned}<br>$$</p>
+<p>According to the master method, the runtime of this case is $O(N\log{N})$.</p>
+<p><strong>How good the linearithmic runtime is?</strong></p>
+<p>$N\log N$ is basically as good as $N$, and is vastly better than $N^2$.</p>
+<p>Going from $N\log N$ to $N$ is nice, but not a radical change, just like going from $\log{N}$ to $1$.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/treqa.jpg"></p>
+<h2 id="Ex-Discussion-7"><a href="#Ex-Discussion-7" class="headerlink" title="Ex (Discussion 7)"></a>Ex (Discussion 7)</h2><ul>
+<li>Any exponential $k^n$ dominates any polynomial $n^k$</li>
+<li>Any polynomial dominates any logarithm</li>
+</ul>
+<p><strong>Increasing Order of Time Complexity:</strong> </p>
+<p>$\Theta(1) &lt; \Theta(\log{n}) &lt; \Theta(n) &lt; \Theta(n\log{n}) \sim \Theta(\log{n!}) &lt; \Theta(n^2) &lt; \Theta(n^2 \log{n}) &lt; \Theta(n^3) &lt; \Theta(2^n) &lt; \Theta(n!) &lt; \Theta(n^n)$</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6qi1t.jpg" alt="Common Asymptotic Sets"></p>
+<h3 id="Ex-1-ping"><a href="#Ex-1-ping" class="headerlink" title="Ex 1 (ping)"></a>Ex 1 (ping)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> N; i &gt; <span class="number">0</span>; --i) &#123;</span><br><span class="line">  <span class="keyword">for</span> (; j &lt;= M; ++j) &#123;</span><br><span class="line">    <span class="keyword">if</span> (ping(i, j) &gt; <span class="number">64</span>) &#123;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Here we need to choose 2 cost models: <code>i &gt; 0</code> and <code>j &lt;= M</code> or <code>if ()</code>. It’s very similar to the runtime analysis of graph problems, since the outer and inner loops are irrelevant.</p>
+<p>Runtime: $O(N + M)$</p>
+<h3 id="Ex-2-mystery"><a href="#Ex-2-mystery" class="headerlink" title="Ex 2 (mystery)"></a>Ex 2 (mystery)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">mystery</span><span class="params">(<span class="type">int</span>[] array)</span> &#123;</span><br><span class="line">  array = mrpoolsort(array); <span class="comment">// NlogN</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">N</span> <span class="operator">=</span> array.length;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; ++i) &#123;</span><br><span class="line">    <span class="type">boolean</span> <span class="variable">x</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; N; ++j) &#123;</span><br><span class="line">      <span class="keyword">if</span> (i != j &amp;&amp; array[i] == array[j]) &#123;</span><br><span class="line">        x = <span class="literal">true</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!x) &#123; <span class="comment">// if (x == false)</span></span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Worst: $\Theta(N \log{N} + N^2) &#x3D; \Theta(N^2)$<br>Best: $\Theta(N \log N + N) &#x3D; \Theta(N \log N)$ (when <code>i = 0</code>, survive during the first inner loop. <code>x</code> stays <code>false</code>)</p>
+<h3 id="Ex-3-comeOn"><a href="#Ex-3-comeOn" class="headerlink" title="Ex 3 (comeOn)"></a>Ex 3 (comeOn)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; ++i) &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &lt;= M; ) &#123;</span><br><span class="line">    <span class="keyword">if</span> (comeOn()) &#123;</span><br><span class="line">      j += <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      j *= <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Worst: $\Theta(NM)$, when <code>comeOn()</code> always returns <code>true</code>.<br>Best: $\Theta(N \log M)$, when <code>comeOn()</code> always returns <code>false</code>.</p>
+<h3 id="Ex-4-findSum"><a href="#Ex-4-findSum" class="headerlink" title="Ex 4 (findSum)"></a>Ex 4 (findSum)</h3><p>Note: the array is sorted!</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Naive */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">findSum</span><span class="params">(<span class="type">int</span>[] A, <span class="type">int</span> x)</span> &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; A.length; i++) &#123; <span class="comment">// N</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; A.length; j++) &#123; <span class="comment">// N</span></span><br><span class="line">      <span class="keyword">if</span> (A[i] + A[j] == x) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Worst: $\Theta(N^2)$<br>Best: $\Theta(1)$, when <code>i = 0</code> and <code>j = 0</code> and <code>A[i] + A[j] == x</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Optimized Version: Using two pointers */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">findSumFaster</span><span class="params">(<span class="type">int</span>[] A, <span class="type">int</span> x)</span> &#123;</span><br><span class="line">  <span class="comment">// 1 2 3 4 5 6 7</span></span><br><span class="line">  <span class="comment">// i           j  left: i   right: j</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> <span class="number">0</span>; <span class="type">int</span> <span class="variable">right</span> <span class="operator">=</span> A.length - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">    <span class="keyword">if</span> (A[left] + A[right] == x) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (A[left] + A[right] &lt; x) &#123;</span><br><span class="line">      left += <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      right -= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Worst: $\Theta(N)$<br>Best: $\Theta(1)$</p>
+<h3 id="Ex-5-Union-Intersection"><a href="#Ex-5-Union-Intersection" class="headerlink" title="Ex 5 (Union &amp; Intersection)"></a>Ex 5 (Union &amp; Intersection)</h3><p>Implementation of Union &amp; Intersection of Two Arrays:</p>
+<p>Union:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Union */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span>[] union(<span class="type">int</span>[] A, <span class="type">int</span>[] B) &#123;</span><br><span class="line">  HashSet&lt;Integer&gt; set = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> num : A) &#123; <span class="comment">// add to set</span></span><br><span class="line">    set.add(num);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> num : B) &#123;</span><br><span class="line">    set.add(num);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span>[] unionArray = <span class="keyword">new</span> <span class="title class_">int</span>[set.size()]; <span class="comment">// to array</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> num : set) &#123;</span><br><span class="line">    unionArray[index] = num;</span><br><span class="line">    index += <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> unionArray;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Intersection:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Intersection */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span>[] intersection(<span class="type">int</span>[] A, <span class="type">int</span>[] B) &#123;</span><br><span class="line">  HashSet&lt;Integer&gt; setOfA = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">  HashSet&lt;Integer&gt; intersectionSet = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> num : A) &#123;</span><br><span class="line">    setOfA.add(num);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> num : B) &#123;</span><br><span class="line">    <span class="keyword">if</span> (setOfA.contains(num)) &#123;</span><br><span class="line">      intersectionSet.add(num);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="type">int</span>[] intersectionArray = <span class="keyword">new</span> <span class="title class_">int</span>[intersectionSet.size()]; <span class="comment">// to array</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> num : intersectionSet) &#123;</span><br><span class="line">    intersectionArray[index] = num;</span><br><span class="line">    index += <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> intersectionArray;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="Ex-Guide"><a href="#Ex-Guide" class="headerlink" title="Ex (Guide)"></a>Ex (Guide)</h2><h3 id="Ex-1-Memo-Fibonacci"><a href="#Ex-1-Memo-Fibonacci" class="headerlink" title="Ex 1 (Memo Fibonacci)"></a>Ex 1 (Memo Fibonacci)</h3><p><strong>Traditional Manner:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">fib</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (n &lt;= <span class="number">1</span>) <span class="keyword">return</span> n;</span><br><span class="line">  <span class="keyword">return</span> fib(n - <span class="number">1</span>) + fib(n - <span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>$N$</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$C(N)$</td>
+<td>0</td>
+<td>0</td>
+<td>3</td>
+<td>5</td>
+<td>9</td>
+<td>15</td>
+<td>25</td>
+</tr>
+</tbody></table>
+<p>$C(N) &#x3D; C(N - 1) + C(N - 2)$<br>$C(N) &#x3D; (\frac{1 + \sqrt{5}}{2})^N + (\frac{1 - \sqrt{5}}{2})^N$<br>$T(N) &#x3D; O((\frac{1 + \sqrt{5}}{2})^N + (\frac{1 - \sqrt{5}}{2})^N) &#x3D; O((\frac{1 + \sqrt{5}}{2})^N) &#x3D; O(1.6180^N)$</p>
+<p>Reference: <a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/time-complexity-recursive-fibonacci-program/">link</a></p>
+<p><strong>Faster Manner:</strong></p>
+<p>Assume that <code>values</code> is an array of size $n$. If a value in an int array is not initialized to a number, it is automatically set to 0.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 0   1   2   3   4   5</span></span><br><span class="line"><span class="comment">// 0   0   0   0   0   0</span></span><br><span class="line"><span class="comment">// n-2 n-1 n</span></span><br><span class="line"><span class="comment">// Note: values&#x27;s size should be n + 1 including 0 and 1~n</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">modified_fib</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span>[] values)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (n &lt;= <span class="number">1</span>) &#123; <span class="comment">// 0, 1 =&gt; n itself</span></span><br><span class="line">    values[n] = n; <span class="comment">// write</span></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">val</span> <span class="operator">=</span> values[n];</span><br><span class="line">    <span class="keyword">if</span> (val == <span class="number">0</span>) &#123; <span class="comment">// check if fib is calculated</span></span><br><span class="line">      val = modified_fib(n - <span class="number">1</span>, values) + modified_fib(n - <span class="number">2</span>, values);</span><br><span class="line">      values[n] = val; <span class="comment">// write</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> val;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Let’s examine the recursion tree below. We always examine the left subtree first. It takes $\Theta(n)$ to reach the leftmost leave.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">           f(5)</span><br><span class="line">           /  \</span><br><span class="line">        f(4)  f(3)</span><br><span class="line">       /   \    | \</span><br><span class="line">      f(3) f(2)  ... will not expand</span><br><span class="line">     /  \    | \</span><br><span class="line">   f(2) f(1)  ...</span><br><span class="line">   /  \</span><br><span class="line">f(1)  f(0)</span><br></pre></td></tr></table></figure>
+
+<p>Then, we don’t need to calculate the right subtree. For example, <code>f(1)</code>, <code>f(2)</code>, <code>f(3)</code> have all been calculated.</p>
+<ul>
+<li>Total number of calls to <code>f(n)</code> is $n + (n - 1)$ according to the tree.</li>
+</ul>
+<p>So the total runtime should $\Theta(n)$.</p>
+<h3 id="Ex-2-Combo-1"><a href="#Ex-2-Combo-1" class="headerlink" title="Ex 2 (Combo #1)"></a>Ex 2 (Combo #1)</h3><p><strong>1.</strong> Find the runtime of running <code>print_fib()</code> with for arbitrary large $n$.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">print_fib</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">    System.out.println(fib(i));</span><br><span class="line">    <span class="comment">// System.out.println(fib(n));  // for the next question</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">fib</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (n &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (n == <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> fib(n - <span class="number">1</span>) + fib(n - <span class="number">2</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Cost model: <code># of calls to fib()</code></p>
+<p>$C(N) &#x3D; 1.618^0 + 1.618^1 + 1.618^2 + 1.618^3 + … + 1.618^N &#x3D; 1 + \frac{1.618 (1 - 1.618^N)}{1 - 1.618} \in \Theta(1.618^N)$</p>
+<p>$\Theta(f(N)) &#x3D; \Theta(1.618^N)$</p>
+<p><strong>2.</strong> Do the problem again, but change the body of the for loop in <code>print_fib</code> to be:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(fib(n));</span><br></pre></td></tr></table></figure>
+
+<p>$O(f(N)) &#x3D; O(N \times 1.618^N)$</p>
+<p><strong>3.</strong> Find the runtime of this function <code>melo()</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">melo</span><span class="params">(<span class="type">int</span> N)</span> &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N * N; i++) &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Gelo is fruit pudding&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N * N * N; i++) &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Zo Two the Warriors&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Cost Model: <code>println</code><br>$\Theta(N^2 + N^3) &#x3D; \Theta(N^3)$</p>
+<p><strong>4.</strong> Find the runtime of this function:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">gb</span><span class="params">(<span class="type">int</span> N)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (N == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Gul-great&quot;</span>);</span><br><span class="line">  &#125; <span class="comment">/* N */</span></span><br><span class="line"></span><br><span class="line">  gb(N * <span class="number">1</span>/<span class="number">2</span>);  <span class="comment">/* C1 */</span></span><br><span class="line">  gb(N * <span class="number">1</span>/<span class="number">4</span>);  <span class="comment">/* C2 */</span></span><br><span class="line">  gb(N * <span class="number">1</span>/<span class="number">4</span>);  <span class="comment">/* C2 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Recursion Tree:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">                  gb(N)                        =&gt; N</span><br><span class="line">                /    |    \</span><br><span class="line">      gb(N/2)    gb(N/4)   gb(N/4)             =&gt; N/2 + N/4 + N/4</span><br><span class="line">      /  |  \     / | \    /   |   \</span><br><span class="line">gb(N/4) N/8  N/8   ...    N/8 N/16 N/16        =&gt; N</span><br><span class="line">  / | \  /|\  /|\         /|\  /|\  /|\</span><br><span class="line">                (these paths finish early)</span><br><span class="line">(longest path is supposed to be the leftmost)  =&gt; Max Height = logN</span><br></pre></td></tr></table></figure>
+
+<p>Cost Model: <code>println</code><br>Worst case runtime: $\Theta(N\log{N})$</p>
+<p>Note: Combine the subtrees horizontally.</p>
+<h3 id="Ex-3-Combo-2"><a href="#Ex-3-Combo-2" class="headerlink" title="Ex 3 (Combo #2)"></a>Ex 3 (Combo #2)</h3><p><a target="_blank" rel="noopener" href="https://sp18.datastructur.es/materials/exam/cs61b-sp18-mt2-solutionv1.pdf">Problem 8</a> from Spring 2018 Midterm #2</p>
+<p><strong>1. Find the runtime:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/kse7k.jpg"></p>
+<p>Note: <code>i *= i</code> &#x3D;&gt; $\log{(\log{N})}$</p>
+<p>Another way to think about the 3rd problem is that the first for-loop is less than $N$ and the second is approximately $N$, so it’s not necessary to compute C1.</p>
+<p><strong>2. True or False:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gtrzb.jpg"></p>
+<p><strong>3. Find the runtime of these two functions:</strong></p>
+<p>Assume $k(N)$ runs in <code>constant time</code> and returns a boolean.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">g4</span><span class="params">(<span class="type">int</span> N)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (N == <span class="number">0</span>) &#123; <span class="keyword">return</span>; &#125;</span><br><span class="line">  g4(N - <span class="number">1</span>);</span><br><span class="line">  <span class="keyword">if</span> (k(N)) &#123; g4(N - <span class="number">1</span>); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Worst case: $\Theta(2^N)$, when $k(N)$ always returns <code>true</code>.<br>Best case: $\Theta(N)$, when $k(N)$ always returns <code>false</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">g5</span><span class="params">(<span class="type">int</span> N)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (N == <span class="number">0</span>) &#123; <span class="keyword">return</span>; &#125;</span><br><span class="line">  g5(N / <span class="number">2</span>);</span><br><span class="line">  <span class="keyword">if</span> (k(N)) &#123; g5(N / <span class="number">2</span>); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Worst case: $\Theta(N)$, when $k(N)$ always returns <code>true</code>.<br>Best case: $\Theta(\log{N})$, when $k(N)$ always returns <code>false</code>.</p>
+<p><strong>4. Find the runtime:</strong></p>
+<p>Assume <code>HashSet</code>s use the idea of external chaining with resizing used in class, and that resize is <code>linear</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Set&lt;Planet&gt; <span class="title function_">uniques</span><span class="params">(ArrayList&lt;Planet&gt; x)</span> &#123;</span><br><span class="line">  HashSet&lt;Planet&gt; items = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; x.size(); i += <span class="number">1</span>) &#123; <span class="comment">// N</span></span><br><span class="line">    items.add(x.get(i)); <span class="comment">// compute the hash code, best case: O(1)</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> items;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Worst case: $\Theta(N^2)$, when elements are different and the array is always resizing.<br>Best case: $\Theta(N)$, when elements are all the same.</p>
+<blockquote>
+<p>Marked: Worst case</p>
+</blockquote>
+<p>Consider $x$ is a list of Strings. Suppose that the list contains $N$ strings, each of which is length $N$.</p>
+<p>Worst case: $\Theta(N^3)$</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> ...</span><br><span class="line"><span class="comment">// O(N^2) in worst case</span></span><br><span class="line"><span class="keyword">for</span> (String s : theChain) &#123; <span class="comment">// assume lengths are equal</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; str.length; i += <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (s.charAt(i) != str.charAt(i)) &#123;</span><br><span class="line">      <span class="keyword">break</span>; <span class="comment">// not equal</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>All $N$ strings are different. In the function <code>add()</code>, it does comparison for <code>[0, i)</code> times. Since equality check for strings is <code>linear time</code>, so N-length strings need char-by-char equality check which takes $\Theta(N)$ time.</li>
+</ul>
+<p>Best case: $\Theta(N)$</p>
+<h3 id="Ex-4-Combo-3"><a href="#Ex-4-Combo-3" class="headerlink" title="Ex 4 (Combo #3)"></a>Ex 4 (Combo #3)</h3><p>From: Spring 2017 Midterm #2</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">f4</span><span class="params">(<span class="type">int</span> N)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (N == <span class="number">0</span>) &#123; <span class="keyword">return</span>; &#125;</span><br><span class="line">  f4(N / <span class="number">2</span>);</span><br><span class="line">  f4(N / <span class="number">2</span>);</span><br><span class="line">  f4(N / <span class="number">2</span>);</span><br><span class="line">  f4(N / <span class="number">2</span>);</span><br><span class="line">  g(N);         <span class="comment">// runs in (N^2) time.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Note: <code>f4()</code> is constant time $\Theta(1)$. <code>g()</code> is quadratic $O(N^2)$.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// Recursion Tree</span><br><span class="line">1.        N            4^0 x N^2</span><br><span class="line">      / |   |  \</span><br><span class="line">2.  N/2 N/2 N/2 N/2    4^1 x (N/2)^2 = 4^1 x N^2 / 4^1</span><br><span class="line">   /||\ ...     /||\</span><br><span class="line">3. N/4 ...             4^2 x (N/4)^2 = 4^2 x N^2 / 4^2</span><br><span class="line">   ...</span><br><span class="line">~N.                    4^lgN x (N/?)^2 = 4^lgN x N^2 x 4^lgN</span><br></pre></td></tr></table></figure>
+
+<p>Sum: $\Theta(N^2\log{N})$</p>
+<p>Also, the recurrence is $T(N) &#x3D; 4T(N&#x2F;2) + N^2$.</p>
+<p>According to the master theorem in case 2, the runtime is $T(N) &#x3D; N^2 \log{N}$.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vmrhw.jpg"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">f5</span><span class="params">(<span class="type">int</span> N, <span class="type">int</span> M)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (N &lt; <span class="number">10</span>) &#123; <span class="keyword">return</span>; &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N % <span class="number">10</span>; i++) &#123;</span><br><span class="line">    f5(N / <span class="number">10</span>, M / <span class="number">10</span>);</span><br><span class="line">    System.out.println(M);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The recursion tree:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Cost model: println</span><br><span class="line">// M does not affect the analysis, could be omitted</span><br><span class="line">         f5(N, M)                  =&gt; N %10</span><br><span class="line">         /  | ... \ x N %10</span><br><span class="line">    f5(N/10)  ... f5(N/10)         =&gt; (N/10) %10</span><br><span class="line">    /               x (N/10) %10</span><br><span class="line">f5(N/10/10) ...                    =&gt; (N/10/10) %10</span><br><span class="line">  /</span><br><span class="line">...</span><br><span class="line">/</span><br><span class="line">f5(N/(10^lgN)) ...                 =&gt; (N/(10^lgN)) %10</span><br><span class="line">Height: log10 (N)</span><br></pre></td></tr></table></figure>
+
+<p>Sum: </p>
+<p>$$<br>\begin{aligned}<br>T(N) &amp;&#x3D; \Theta(\frac{N}{10^0} \mod 10 + \frac{N}{10^1} \mod 10 + \ldots + \frac{N}{10^{\log{N}}} \mod 10) \<br>&amp;&#x3D; \Theta(1\times N) &#x3D; \Theta(N)<br>\end{aligned}<br>$$</p>
+<p>Since each term is between $[0, 10)$, we can treat it as a constant.</p>
+<h2 id="Ex-Discussion-7-Spring-19"><a href="#Ex-Discussion-7-Spring-19" class="headerlink" title="Ex (Discussion 7, Spring 19)"></a>Ex (Discussion 7, Spring 19)</h2><p>Give the worst case and best case runtime in $\Theta(\cdot)$ notation.</p>
+<h3 id="Ex-1-andslam"><a href="#Ex-1-andslam" class="headerlink" title="Ex 1 (andslam)"></a>Ex 1 (andslam)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">andslam</span><span class="params">(<span class="type">int</span> N)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (N &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i += <span class="number">1</span>) &#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;datboi.jpg&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    andslam(N / <span class="number">2</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The recursion tree:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// cost model: println</span><br><span class="line">          a(N)   =&gt; N   \</span><br><span class="line">          /              \</span><br><span class="line">      a(N/2)     =&gt; N/2   \</span><br><span class="line">      /                    \ height = log N</span><br><span class="line">  a(N/4)         =&gt; N/4    /</span><br><span class="line">    /                     /</span><br><span class="line">  ...                    /</span><br><span class="line">  /                     /</span><br><span class="line">a(1)             =&gt; 1  /</span><br></pre></td></tr></table></figure>
+
+<p>Sum: $\sim 2N - 1$</p>
+<p>Worst case: $\Theta(N)$<br>Best case: $\Theta(N)$</p>
+<p>In both cases the runtime is $\sum^{\log(N)}<em>{i&#x3D;0} \frac{N}{2^i} \leq N \sum^{\log(\infty)}</em>{i&#x3D;0} \frac{1}{2^i} &#x3D; 2N$. </p>
+<p>$$1 + \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \ldots + \frac{1}{N} \rightarrow 2$$</p>
+<p>One potentially tricky portion is that $\sum^{\log(n)}_{i&#x3D;0}\frac{1}{2^i}$ is at most $2$ because the geometric sum as it goes to infinity is bounded by $2$.</p>
+<p><strong>61B Style:</strong></p>
+<p>The TA demonstrates a general model to solve this kind of problems.</p>
+<p>Steps:</p>
+<ul>
+<li>Height of Tree (<code>layers</code>)<ul>
+<li>$h &#x3D; \log N$</li>
+</ul>
+</li>
+<li>Branching Factor (<code>#node</code> &#x3D; <code>#subproblem</code>)<ul>
+<li>Note each time andslam() is called, it makes 1 recursive call on n&#x2F;2</li>
+<li><code>#node</code> per layer is 1</li>
+</ul>
+</li>
+<li><code>Amount of Work</code> each node &#x2F; layer does ($f(N) &#x3D; D(N) + C(N)$)<ul>
+<li>Sometimes it includes <code>println</code>, <code>merging</code> and <code>combining</code> time, etc.</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dup8k.png"></p>
+<h3 id="Ex-2-andwelcome"><a href="#Ex-2-andwelcome" class="headerlink" title="Ex 2 (andwelcome)"></a>Ex 2 (andwelcome)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">andwelcome</span><span class="params">(<span class="type">int</span> low, <span class="type">int</span> high)</span> &#123;</span><br><span class="line">  System.out.print(<span class="string">&quot;[&quot;</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> low; i &lt; high; i += <span class="number">1</span>) &#123;</span><br><span class="line">    System.out.print(<span class="string">&quot;loyal &quot;</span>); <span class="comment">// O(N)</span></span><br><span class="line">  &#125;</span><br><span class="line">  System.out.println(<span class="string">&quot;]&quot;</span>);</span><br><span class="line">  <span class="keyword">if</span> (high - low &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="type">double</span> <span class="variable">coin</span> <span class="operator">=</span> Math.random(); <span class="comment">/* 0 ~ 1 */</span></span><br><span class="line">    <span class="keyword">if</span> (coin &gt; <span class="number">0.5</span>) &#123;</span><br><span class="line">      andwelcome(low, low + (high - low) / <span class="number">2</span>);  <span class="comment">// f(N/2)</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; </span><br><span class="line">      andwelcome(low, low + (high - low) / <span class="number">2</span>);  <span class="comment">// f(N/2)</span></span><br><span class="line">      andwelcome(low + (high - low) / <span class="number">2</span>, high); <span class="comment">// f(N/2)</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Cost model: <code>print(&quot;loyal &quot;)</code></p>
+<p><code>#layer</code>: $\log N$<br><code>#node</code>: $1$ or $2^i$<br><code>Amount of work</code>: $N$ (all nodes)</p>
+<p>Worst case: $\Theta(N \log N)$ , if there is no <code>print</code>: $\Theta(N)$<br>Best case: $\Theta(N)$, if there is no <code>print</code>: $\Theta(\log{N})$</p>
+<p><strong>Note:</strong> If amount of work equals $1$, the best-case running time will be $\Theta(\log N)$, just like the running time of binary search.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/hl0xx.png"></p>
+<h3 id="Ex-3-spacejam"><a href="#Ex-3-spacejam" class="headerlink" title="Ex 3 (spacejam)"></a>Ex 3 (spacejam)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">spacejam</span><span class="params">(<span class="type">int</span> N)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (N &lt;= <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i += <span class="number">1</span>) &#123;</span><br><span class="line">    spacejam(N - <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Cost model: <code>spacejam()</code></p>
+<p>The recursion tree:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">            s(N)               =&gt; N calls to s()</span><br><span class="line">        /  |   ...   \</span><br><span class="line">  s(N-1)  s(N-1)  ... s(N-1)   =&gt; N x (N-1) calls</span><br><span class="line">    /   ...   |    ...</span><br><span class="line">s(N-2) ...        ... s(N-2)   =&gt; N x (N-1) x (N-2) calls</span><br><span class="line"></span><br><span class="line">............................   =&gt; ~N! calls</span><br><span class="line">Height: N</span><br></pre></td></tr></table></figure>
+
+
+<p><code>#layer</code>: $N$<br><code>#node</code>: $\frac{N!}{(N - i)!}$<br>i &#x3D; 1: N<br>i &#x3D; 2: (N - 1) x N<br>i &#x3D; 3: (N - 2) x (N - 1) x N<br>i &#x3D; 4: (N - 3) x (N - 2) x (N - 1) x N<br>…<br>i &#x3D; N: N!<br><code>Amount of work</code>: $O(1)$</p>
+<p>Worst case: $\sum^{N}_0 \frac{N!}{(N - i)!}\times 1 \sim N \times N! \in O(N \times N!)$<br>Best case: $O(N \times N!)$</p>
+<p>Actually, calculating the sum of $\frac{N!}{(N-i)!}$ is a bit tricky because there is a pesky $(N-i)!$ term in the denominator. We can <code>upper bound</code> the sum by just removing the denominator, but in the strictest sense we would now have a $O$ bound instead of $\Theta$.</p>
+<h2 id="Ex-Examprep-7"><a href="#Ex-Examprep-7" class="headerlink" title="Ex (Examprep 7)"></a>Ex (Examprep 7)</h2><h3 id="Ex-1-p-r-s"><a href="#Ex-1-p-r-s" class="headerlink" title="Ex 1 (p&#x2F;r&#x2F;s)"></a>Ex 1 (p&#x2F;r&#x2F;s)</h3><p>What is the worst-case runtime for $p(N)$? Assume $h$ is a boolean function requiring constant time.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">p</span><span class="params">(<span class="type">int</span> M)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> r(<span class="number">0</span>, M);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">r</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> M)</span> &#123;     <span class="comment">// O(M - i) in worst case. Since i = 0, O(M)</span></span><br><span class="line">  <span class="keyword">if</span> (i &gt;= M) <span class="keyword">return</span> <span class="number">0</span>;   <span class="comment">// assume false</span></span><br><span class="line">  <span class="keyword">if</span> (s(i) &gt; <span class="number">0</span>) <span class="keyword">return</span> i; <span class="comment">// assume false, s(i) takes O(i)</span></span><br><span class="line">  <span class="keyword">return</span> r(i + <span class="number">1</span>, M);     <span class="comment">// go deep</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">s</span><span class="params">(<span class="type">int</span> k)</span> &#123;            <span class="comment">// O(k) in worst case</span></span><br><span class="line">  <span class="keyword">if</span> (k &lt;= <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> (h(k)) <span class="keyword">return</span> k;     <span class="comment">// assume h(k) =&gt; false</span></span><br><span class="line">  <span class="keyword">return</span> s(k - <span class="number">1</span>);        <span class="comment">// go deep</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The recursion tree:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">p(M):</span><br><span class="line">           r(0, M)    =&gt; s(0) =&gt; O(0)    \</span><br><span class="line">             /                            \</span><br><span class="line">         r(1, M)      =&gt; s(1) =&gt; O(1)      \</span><br><span class="line">           /                                \</span><br><span class="line">       r(2, M)        =&gt; s(2) =&gt; O(2)        \ height = M = N</span><br><span class="line">        /                                    /</span><br><span class="line">      ...                                   /</span><br><span class="line">      /                                    /</span><br><span class="line">r(M-1, M)             =&gt; s(M-1) =&gt; O(M-1) /</span><br></pre></td></tr></table></figure>
+
+<p>Worst case: $\Theta(N^2)$</p>
+<h3 id="Ex-2-M-L-U"><a href="#Ex-2-M-L-U" class="headerlink" title="Ex 2 (M&#x2F;L&#x2F;U)"></a>Ex 2 (M&#x2F;L&#x2F;U)</h3><p>What is the worst-case runtime of $p(N)$? Assume that calls to $h$ require constant time.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">p</span><span class="params">(<span class="type">int</span> M)</span> &#123;</span><br><span class="line">  <span class="type">int</span> L, U;</span><br><span class="line">  <span class="keyword">for</span> (L = U = <span class="number">0</span>; U &lt; M; L += <span class="number">1</span>, U += <span class="number">2</span>) &#123; <span class="comment">// U &lt; M, U += 2 =&gt; M / 2 ~ M</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> L; i &lt; U; i += <span class="number">1</span>) &#123;</span><br><span class="line">      h(i);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Cost model: <code>h()</code></p>
+<table>
+<thead>
+<tr>
+<th>L</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>U</td>
+<td>0</td>
+<td>2</td>
+<td>4</td>
+<td>6</td>
+<td>8</td>
+<td>10</td>
+<td>12</td>
+<td>14</td>
+<td>16</td>
+<td>18</td>
+</tr>
+<tr>
+<td>U-L</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+</tr>
+</tbody></table>
+<p>Worst-case: $\Theta(N^2)$</p>
+<h2 id="Disjoint-Sets"><a href="#Disjoint-Sets" class="headerlink" title="Disjoint Sets"></a>Disjoint Sets</h2><p>Two sets are named disjoint sets if they have no elements in common. A <code>Disjoint Set</code> (or <code>Union-Find</code>) data structure keeps track of a fixed number of elements partitioned into a number of disjoint sets.</p>
+<ol>
+<li><code>connect(x, y)</code>: connect $x$ and $y$. Also known as <code>union</code></li>
+<li><code>isConnected(x, y)</code>: returns true if $x$ and $y$ are connected (i.e. part of the same set).</li>
+</ol>
+<p>Goal: Design an efficient disjoint set implementation.</p>
+<ul>
+<li>Number of elements $N$ can be huge.</li>
+<li>Number of method calls $M$ can be huge.</li>
+<li>Calls to methods may be interspersed (invoking order).</li>
+</ul>
+<p>The Naive Approach:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fgy4q.jpg"></p>
+<p>The Better Approach:</p>
+<p><code>Connected Components</code>. Rather than manually writing out every single connecting line, only record the sets that each item belongs to. In other words, we only need to keep track of which connected component each item belongs to.</p>
+<p>This chapter will be a chance to see how an implementation of a data structure evolves. We will discuss <code>four iterations</code> of a Disjoint Set design before being satisfied:</p>
+<ul>
+<li>ListOfSets</li>
+<li>Quick Find</li>
+<li>Quick Union</li>
+<li>Weighted Quick Union (WQU)</li>
+<li>Weighted Quick Union with Path Compression (WQU-PC)</li>
+</ul>
+<p>We will see how design decisions greatly affect asymptotic runtime and code complexity.</p>
+<h3 id="ListOfSets"><a href="#ListOfSets" class="headerlink" title="ListOfSets"></a>ListOfSets</h3><p>Intuitively, we might first consider representing a disjoint set as a list of sets, e.g, <code>List&lt;Set&lt;Integer&gt;&gt;</code>.</p>
+<p>For instance, if we have $6$ elements and nothing has been connected yet, our list of sets looks like: <code>[&#123;0&#125;, &#123;1&#125;, &#123;2&#125;, &#123;3&#125;, &#123;4&#125;, &#123;5&#125;, &#123;6&#125;]</code>. Looks good. However, consider how to complete an operation like <code>connect(5, 6)</code>. We’d have to iterate through up to $N$ sets to find $5$ and $N$ sets to find $6$. Our runtime becomes <code>O(N)</code>.</p>
+<p>The lesson to take away is that initial design decisions determine our code complexity.</p>
+<h3 id="Quick-Find"><a href="#Quick-Find" class="headerlink" title="Quick Find"></a>Quick Find</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dqccc.jpg"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">QuickFindDS</span> <span class="keyword">implements</span> <span class="title class_">DisjointSets</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="type">int</span>[] id;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// O(1)</span></span><br><span class="line">  <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isConnected</span><span class="params">(<span class="type">int</span> p, <span class="type">int</span> q)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> id[p] == id[q];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Need to iterate through the array =&gt; O(N)</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">connect</span><span class="params">(<span class="type">int</span> p, <span class="type">int</span> q)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">pid</span> <span class="operator">=</span> id[p];</span><br><span class="line">    <span class="type">int</span> <span class="variable">qid</span> <span class="operator">=</span> id[q];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; id.length; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (id[i] == pid) &#123;</span><br><span class="line">        id[i] = qid;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Having to create $N$ distinct sets initially is $\Theta(N)$.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dbf6j.jpg"></p>
+<h3 id="Quick-Union"><a href="#Quick-Union" class="headerlink" title="Quick Union"></a>Quick Union</h3><p>Quick Find’s bad feature: Connecting two sets is slow (need much checking and updating)!</p>
+<blockquote>
+<p>We’ve changed so many values in Quick Find.</p>
+</blockquote>
+<p><strong>Hard question:</strong> How could we change our set representation so that combining two sets into their union requires changing <code>one</code> value?</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yufp6.jpg" alt="{0, 1, 2, 4}, {3, 5}, {6}"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3hamm.jpg"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">QuickUnionDS</span> <span class="keyword">implements</span> <span class="title class_">DisjointSets</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="type">int</span>[] parent;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">QuickUnionDS</span><span class="params">(<span class="type">int</span> N)</span> &#123;</span><br><span class="line">    parent = <span class="keyword">new</span> <span class="title class_">int</span>[N];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i += <span class="number">1</span>) &#123;</span><br><span class="line">      parent[i] = -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="type">int</span> <span class="title function_">find</span><span class="params">(<span class="type">int</span> p)</span> &#123; <span class="comment">/* root() */</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> p;</span><br><span class="line">    <span class="keyword">while</span> (parent[r] &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">      r = parent[r];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> r;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isConnected</span><span class="params">(<span class="type">int</span> p, <span class="type">int</span> q)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> find(p) == find(q);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">connect</span><span class="params">(<span class="type">int</span> p, <span class="type">int</span> q)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> find(p);</span><br><span class="line">    <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> find(q);</span><br><span class="line">    parent[i] = j;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Runtime Table:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2s56a.jpg"></p>
+<p><strong>Defect:</strong> Trees can get tall. Results in potentially even worse performance than QuickFind if tree is imbalanced since <code>isConnected</code> does not take constant time.</p>
+<p>Things would be fine if we just kept our tree balanced.</p>
+<h3 id="Weighted-Quick-Union"><a href="#Weighted-Quick-Union" class="headerlink" title="Weighted Quick Union"></a>Weighted Quick Union</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/an5l1.jpg"></p>
+<p>Modify quick-union to avoid tall trees.</p>
+<ul>
+<li>Track tree size (<code>number</code> of elements)</li>
+<li>New Rule: Always link root of a <code>smaller</code> tree to a <code>larger</code> tree (weight, not height).</li>
+</ul>
+<p><code>connect(int p, int q)</code> needs to somehow keep track of sizes. Two common approaches:</p>
+<ol>
+<li>Use values other than <code>-1</code> in parent array for root nodes to track size</li>
+<li>Create a separate size array. (algs4)</li>
+</ol>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1y0p7.jpg" alt="Weighted Quick Union - Worst Case (Connect 2 items into one group, then connect it to other groups)"></p>
+<p><strong>Note:</strong> If every time it just connects one item, it would be great (the height keeps small).</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/c7lv6.jpg"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">find</span><span class="params">(<span class="type">int</span> p)</span> &#123; <span class="comment">/* root() */</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> p;</span><br><span class="line">  <span class="keyword">while</span> (parent[r] &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">    r = parent[r]; <span class="comment">// O(log N)</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isConnected</span><span class="params">(<span class="type">int</span> p, <span class="type">int</span> q)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> find(p) == find(q); <span class="comment">// O(log N)</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">connect</span><span class="params">(<span class="type">int</span> p, <span class="type">int</span> q)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> find(p); <span class="comment">// O(log N)</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> find(q); <span class="comment">// O(log N)</span></span><br><span class="line">  parent[i] = j;   <span class="comment">// O(1)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Path-Compression"><a href="#Path-Compression" class="headerlink" title="Path Compression"></a>Path Compression</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/u3ef5.jpg" alt="The Difference Between O(N) and O(log N)"></p>
+<p>Another clever idea when doing <code>find</code>:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/di2lw.jpg" alt="We can do it in find()"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Set to next.next */</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">find_better_1</span><span class="params">(<span class="type">int</span> p)</span> &#123; <span class="comment">/* root() */</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> p;</span><br><span class="line">  <span class="keyword">while</span> (parent[r] &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> r;</span><br><span class="line">    r = parent[r];</span><br><span class="line">    <span class="keyword">if</span> (parent[r] &gt;= <span class="number">0</span>) &#123; <span class="comment">/* == temp.next.next */</span></span><br><span class="line">      parent[temp] = r; <span class="comment">/* In case we set it to -1. It already points to root */</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Point to root (The lecture uses this method) */</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">find_better_2</span><span class="params">(<span class="type">int</span> p)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> p;</span><br><span class="line">  <span class="keyword">while</span> (parent[r] &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">    r = parent[r];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* Set related parents to root  - Same order of growth */</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">root</span> <span class="operator">=</span> r;</span><br><span class="line">  r = p; <span class="comment">/* reset */</span></span><br><span class="line">  <span class="keyword">while</span> (parent[r] &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> r;</span><br><span class="line">    r = parent[r]; <span class="comment">/* next */</span></span><br><span class="line">    parent[temp] = root;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> r;</span><br><span class="line">&#125; <span class="comment">/* O(log N) x 2 */</span></span><br></pre></td></tr></table></figure>
+
+<p>Recall that both <code>connect(x, y)</code> and <code>isConnected(x, y)</code> always call <code>find(x)</code> and <code>find(y)</code>. Thus, after calling <code>connect</code> or <code>isConnected</code> enough, essentially all elements will point directly to their root.</p>
+<p>By extension, the average runtime of <code>connect</code> and <code>isConnected</code> becomes <code>almost constant</code> in the long term! This is called the <code>amortized runtime</code>.</p>
+<p>Technically, the order of growth of this data structure becomes $O(N + M lg* N)$. </p>
+<p><code>lg* N</code>, aka. the <code>iterated logarithm</code>, is less than 5 for any realistic input.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/t3hwh.jpg" alt="lg* N - you can think of it, a(N), as a constant, since it grows very slowly"></p>
+<p>Actually, there is a tighter bound: $O(N + M\alpha(N))$, where $\alpha$ is the <code>inverse Ackermann function</code> which is less than 5 for all practical inputs!</p>
+<p><strong>Done</strong></p>
+<p>The end result of our iterative design process is the standard way disjoint sets are implemented today - quick union and path compression (once you have path compression, you don’t need weighted quick union).</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/o9fsd.jpg" alt="Summary - Perform M operations, where an operation is defined as either a call to connected or isConnected"></p>
+<h3 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/junhaowww/cs61b-sp18/blob/master/lab6/UnionFind.java">Lab 6 - UnionFind.java (with PC)</a></li>
+<li><a target="_blank" rel="noopener" href="https://algs4.cs.princeton.edu/15uf/WeightedQuickUnionUF.java.html">Princeton - WeightedQuickUnionUF.java</a></li>
+</ul>
+<h2 id="HW-2-Percolation"><a href="#HW-2-Percolation" class="headerlink" title="HW 2: Percolation"></a>HW 2: Percolation</h2><p><a target="_blank" rel="noopener" href="https://sp19.datastructur.es/materials/hw/hw2/hw2#my-code-is-compiling-on-my-computer-but-not-on-the-autograder">HW 2: Percolation</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/junhaowww/cs61b-sp18/blob/master/hw2/hw2/Percolation.java">My Implementation</a></p>
+<p>Idea:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/h9don.png" alt="Speeding Things Up With Virtual Sites"></p>
+<p>Backwash Problem (<code>isFull(row, col)</code>):</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zyufl.png" alt="Backwash Problem"></p>
+<p><code>Solution</code>: Use two WeightedQuickUnionUFs (one with only top entry, the other one with both top and bottom entries)</p>
+<p><code>Possible Solution (Online)</code>: <a target="_blank" rel="noopener" href="https://github.com/alexilyenko/Algorithms1/issues/2">One additional N by N grid to store states</a></p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

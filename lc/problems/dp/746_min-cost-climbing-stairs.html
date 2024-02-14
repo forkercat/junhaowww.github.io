@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Easy My Post: Java Solutions Recurrence, DP Bottom-up (easy-understand with comments) Problem On a staircase, the i-th step has some non-negative cost cost[i] assigned">
+<meta property="og:type" content="website">
+<meta property="og:title" content="746. Min Cost Climbing Stairs">
+<meta property="og:url" content="https://junhaow.com/lc/problems/dp/746_min-cost-climbing-stairs.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Easy My Post: Java Solutions Recurrence, DP Bottom-up (easy-understand with comments) Problem On a staircase, the i-th step has some non-negative cost cost[i] assigned">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.122Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.122Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>746. Min Cost Climbing Stairs</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/min-cost-climbing-stairs/">LeetCode</a><br>Difficulty: <span class="green">Easy</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/min-cost-climbing-stairs/discuss/405912">Java Solutions Recurrence, DP Bottom-up (easy-understand with comments)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>On a staircase, the i-th step has some non-negative cost <code>cost[i]</code> assigned (0 indexed).</p>
+</blockquote>
+<blockquote>
+<p>Once you pay the cost, you can either climb one or two steps. You need to find minimum cost to reach the top of the floor, and you can either start from the step with index 0, or the step with index 1.</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<ol>
+<li><code>cost</code> will have a length in the range <code>[2, 1000]</code>.</li>
+<li>Every <code>cost[i]</code> will be an integer in the range <code>[0, 999]</code>.</li>
+</ol>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// notice the top is at stair n (not the last element)</span></span><br><span class="line">Input: cost = [<span class="number">10</span>, <span class="number">15</span>, <span class="number">20</span>]</span><br><span class="line">Output: <span class="number">15</span></span><br><span class="line"></span><br><span class="line">Input: cost = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">Output: <span class="number">0</span></span><br><span class="line"></span><br><span class="line">Input: cost = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>]</span><br><span class="line">Output: <span class="number">1</span></span><br><span class="line"></span><br><span class="line">Input: cost = [<span class="number">1</span>, <span class="number">100</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">100</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">100</span>, <span class="number">1</span>]</span><br><span class="line">Output: <span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Recursion"><a href="#Recursion" class="headerlink" title="Recursion"></a>Recursion</h3><p>Check out the comment.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// the top stair is at position n, not the last element at (n - 1)</span></span><br><span class="line"><span class="comment">// If n == 0 or n == 1, the cost is 0 because we can reach the top without cost.</span></span><br><span class="line"><span class="comment">// Define: opt(i) is minimum cost to reach step i; opt(n) is our solution.</span></span><br><span class="line"><span class="comment">// Recurrence: opt(i) = min&#123; opt(i - 2) + cost[i - 2], opt(i - 1) + cost[i - 1] &#125;</span></span><br><span class="line"><span class="comment">// Initialization: opt(0) = 0, opt(1) = 0 (two starting points)</span></span><br><span class="line"><span class="comment">// Caveat: when i == 1, no need to consider starting from 0 -&gt; 1, since cost[0] + cost[1] must be greater than cost[1] only.</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">minCostClimbingStairs</span><span class="params">(<span class="type">int</span>[] cost)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> cost.length;</span><br><span class="line">  <span class="comment">// if (n == 0 || n == 1) return 0; // this check is unnecessary, consider why?</span></span><br><span class="line">  <span class="keyword">return</span> minCost(n, cost); <span class="comment">// i = 0...n</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">minCost</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span>[] cost)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (i == <span class="number">0</span> || i == <span class="number">1</span>) &#123; <span class="comment">// base case: two starting points</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>; <span class="comment">// notice: 0 instead of cost[i], consider why? The cost is added in the recurrence</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">f1</span> <span class="operator">=</span> minCost(i - <span class="number">2</span>, cost) + cost[i - <span class="number">2</span>];</span><br><span class="line">  <span class="type">int</span> <span class="variable">f2</span> <span class="operator">=</span> minCost(i - <span class="number">1</span>, cost) + cost[i - <span class="number">1</span>];</span><br><span class="line">  <span class="keyword">return</span> Math.min(f1, f2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(2^N)$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="DP-bottom-up"><a href="#DP-bottom-up" class="headerlink" title="DP (bottom-up)"></a>DP (bottom-up)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">minCostClimbingStairs</span><span class="params">(<span class="type">int</span>[] cost)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> cost.length;</span><br><span class="line">  <span class="type">int</span>[] opt = <span class="keyword">new</span> <span class="title class_">int</span>[n + <span class="number">1</span>];</span><br><span class="line">  opt[<span class="number">0</span>] = <span class="number">0</span>; <span class="comment">// init</span></span><br><span class="line">  opt[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">2</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">    opt[i] = Math.min(opt[i - <span class="number">1</span>] + cost[i - <span class="number">1</span>], opt[i - <span class="number">2</span>] + cost[i - <span class="number">2</span>]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> opt[n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</p>
+<p>Optimized Space Complexity:</p>
+<p><strong>Note:</strong> <code>f1</code> is corresponding with <code>cost[i - 2]</code>!</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">minCostClimbingStairs</span><span class="params">(<span class="type">int</span>[] cost)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> cost.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">f1</span> <span class="operator">=</span> <span class="number">0</span>, f2 = <span class="number">0</span>; <span class="comment">// init</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">2</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> Math.min(f1 + cost[i - <span class="number">2</span>], f2 + cost[i - <span class="number">1</span>]); <span class="comment">// [i - 2] is before</span></span><br><span class="line">    f1 = f2;</span><br><span class="line">    f2 = temp;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> f2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

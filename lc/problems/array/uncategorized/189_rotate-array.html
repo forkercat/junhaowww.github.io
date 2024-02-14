@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Easy My Post: Java 4 Solutions with Detailed Comments and Explanations (b-f, extra space, in-place) Problem Given an array, rotate the array to the right by k steps, w">
+<meta property="og:type" content="website">
+<meta property="og:title" content="189. Rotate Array">
+<meta property="og:url" content="https://junhaow.com/lc/problems/array/uncategorized/189_rotate-array.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Easy My Post: Java 4 Solutions with Detailed Comments and Explanations (b-f, extra space, in-place) Problem Given an array, rotate the array to the right by k steps, w">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.104Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.104Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>189. Rotate Array</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/rotate-array/">LeetCode</a><br>Difficulty: <span class="green">Easy</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/rotate-array/discuss/401197">Java 4 Solutions with Detailed Comments and Explanations (b-f, extra space, in-place)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given an array, rotate the array to the right by <code>k</code> steps, where <code>k</code> is non-negative.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Input: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>] <span class="type">and</span> <span class="variable">k</span> <span class="operator">=</span> <span class="number">3</span></span><br><span class="line">Output: [<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line">Explanation:</span><br><span class="line">rotate <span class="number">1</span> steps to the right: [<span class="number">7</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">rotate <span class="number">2</span> steps to the right: [<span class="number">6</span>,<span class="number">7</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">rotate <span class="number">3</span> steps to the right: [<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> </p>
+<ul>
+<li>Try to come up as many solutions as you can, there are at least 3 different ways to solve this problem.</li>
+<li>Could you do it <code>in-place</code> with $O(1)$ extra space?</li>
+</ul>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Extra-Space"><a href="#Extra-Space" class="headerlink" title="Extra Space"></a>Extra Space</h3><p>The extra-space approach violates the requirement of the problem. The idea is simple. Find the start index after shifting and traverse the whole array starting from this index. Every time we visit an element, we put it into a new array.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>  k = <span class="number">3</span>, n = <span class="number">7</span></span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span></span><br><span class="line">        s</span><br><span class="line">s goes through <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span></span><br><span class="line"><span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong> Before accessing the element at where the cursor points to, calculate <code>cursor index</code> modulo <code>number of elements</code>, which is <code>(startIdx + i) % n</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">rotate</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  k = k % n;</span><br><span class="line">  <span class="type">int</span> <span class="variable">startIdx</span> <span class="operator">=</span> n - k;</span><br><span class="line">  <span class="type">int</span>[] result = <span class="keyword">new</span> <span class="title class_">int</span>[nums.length];</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    result[i] = nums[(startIdx + i) % n];</span><br><span class="line">  &#125;</span><br><span class="line">  System.arraycopy(result, <span class="number">0</span>, nums, <span class="number">0</span>, n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="Brute-Force-In-Place"><a href="#Brute-Force-In-Place" class="headerlink" title="Brute-Force (In-Place)"></a>Brute-Force (In-Place)</h3><p>The brute-force solution just simulates the rotating process in a step-by-step manner. The outer loop indicates how many rotations we should do; the inner loop rotates each element from left to right.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>  k = <span class="number">3</span>, n = <span class="number">7</span></span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span>  prev = <span class="number">7</span></span><br><span class="line"><span class="number">7</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>  prev = <span class="number">6</span></span><br><span class="line"><span class="number">6</span> <span class="number">7</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p>As for the inner loop, <code>prev</code> starts by pointing the last element (eg. 7). Before it goes to its position (eg. index &#x3D; 0), the original element (eg. 1) in that position should be stored in <code>temp</code>. Then we set <code>prev</code> as <code>temp</code> and process the next element (prev &#x3D; 1).</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">rotate</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  k = k % n;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; k; ++i) &#123; <span class="comment">// rotate by k times</span></span><br><span class="line">    <span class="comment">// each time rotate all elements by one step, starting from the rihgtmost element</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">prev</span> <span class="operator">=</span> nums[n - <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; n; ++j) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> nums[j]; <span class="comment">// backup</span></span><br><span class="line">      nums[j] = prev;</span><br><span class="line">      prev = temp;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>We can also using the idea of shifting. We shift the first $n - 1$ elements by one before placing the last element in the beginning of the array.</p>
+<p><strong>Time:</strong> $O(N \times K)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Shift-Elements-In-Place"><a href="#Shift-Elements-In-Place" class="headerlink" title="Shift Elements (In-Place)"></a>Shift Elements (In-Place)</h3><p>Although we still process $k$-time rotations, at each time we just shift $(n - k)$ elements. Check the example below.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>  k = <span class="number">3</span>, n = <span class="number">7</span></span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span>  moveIdx points to <span class="number">5</span>, and <span class="number">6</span>, and <span class="number">7</span></span><br><span class="line">shift <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span> right providing space <span class="keyword">for</span> <span class="number">5</span></span><br><span class="line">  <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">6</span> <span class="number">7</span></span><br><span class="line"><span class="number">5</span>   &lt;-- place <span class="number">5</span> here</span><br><span class="line"></span><br><span class="line">shift <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span> right providing space <span class="keyword">for</span> <span class="number">6</span></span><br><span class="line"><span class="number">5</span>   <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">7</span></span><br><span class="line">  <span class="number">6</span></span><br><span class="line"></span><br><span class="line">shift <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span> right providing space <span class="keyword">for</span> <span class="number">7</span></span><br><span class="line"><span class="number">5</span> <span class="number">6</span>   <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span></span><br><span class="line">    <span class="number">7</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong> Use <code>leftIdx</code> to indicate where we put the element at. It also guides the shifting range.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">rotate</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  k = k % n;</span><br><span class="line">  <span class="type">int</span> <span class="variable">moveIdx</span> <span class="operator">=</span> n - k;</span><br><span class="line">  <span class="comment">// move elements from moveIdx to the beginning</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> moveIdx, leftIdx = <span class="number">0</span>; i &lt; n; ++i, ++leftIdx) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">num</span> <span class="operator">=</span> nums[i];</span><br><span class="line">    <span class="comment">// move elements [0, moveIdx - 1] to the right by one</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i - <span class="number">1</span>; j &gt;= leftIdx; --j) &#123;</span><br><span class="line">      nums[j + <span class="number">1</span>] = nums[j];</span><br><span class="line">    &#125;</span><br><span class="line">    nums[leftIdx] = num;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(k \times (N - k))$. In the worst case, it is bounded by $O(N^2)$.<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Reverse-In-Place"><a href="#Reverse-In-Place" class="headerlink" title="Reverse (In-Place)"></a>Reverse (In-Place)</h3><p>To achieve $O(N)$ time complexity, we can use the idea of reversing. Let’s verify the correctness by an example.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>  k = <span class="number">3</span>, n = <span class="number">7</span></span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span></span><br><span class="line">Reverse all elements</span><br><span class="line"><span class="number">7</span> <span class="number">6</span> <span class="number">5</span> <span class="number">4</span> <span class="number">3</span> <span class="number">2</span> <span class="number">1</span></span><br><span class="line">Reverse first k elements</span><br><span class="line"><span class="number">5</span> <span class="number">6</span> <span class="number">7</span></span><br><span class="line">Reverse <span class="title function_">last</span> <span class="params">(n - k)</span> elements</span><br><span class="line">      <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span></span><br><span class="line"><span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Reverse all elements | $O(N)$</li>
+<li>Reverse first $k$ elements | $O(k)$</li>
+<li>Reverse last $(n - k)$ elements | $O(N - k)$</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">rotate</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  k = k % n;</span><br><span class="line">  reverse(nums, <span class="number">0</span>, n - <span class="number">1</span>);</span><br><span class="line">  reverse(nums, <span class="number">0</span>, k - <span class="number">1</span>);</span><br><span class="line">  reverse(nums, k, n - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">reverse</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> lo, <span class="type">int</span> hi)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> hi - lo + <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n / <span class="number">2</span>; ++i) &#123;</span><br><span class="line">    swap(nums, lo + i, hi - i);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> i, <span class="type">int</span> j)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> nums[i];</span><br><span class="line">  nums[i] = nums[j];</span><br><span class="line">  nums[j] = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Cyclic-Replacements-In-Place"><a href="#Cyclic-Replacements-In-Place" class="headerlink" title="Cyclic Replacements (In-Place)"></a>Cyclic Replacements (In-Place)</h3><p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/rotate-array/solution/">LeetCode Solution</a></p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

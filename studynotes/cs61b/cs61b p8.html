@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="TriesReflectionIn terms of the ADTs Set and Map, let’s recall the runtimes for both of these:  Balanced Search Tree: contains(x): $\Theta(\log{N})$ add(x): $\Theta(\log{N})$   Resizing Separate Chai">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CS 61B | Part 8 | Tries (Prefix), Range Searching and Multi-Dimensional Data">
+<meta property="og:url" content="https://junhaow.com/studynotes/cs61b/cs61b%20p8.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="TriesReflectionIn terms of the ADTs Set and Map, let’s recall the runtimes for both of these:  Balanced Search Tree: contains(x): $\Theta(\log{N})$ add(x): $\Theta(\log{N})$   Resizing Separate Chai">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7g5i0.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wcamq.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dsqkx.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wcamq.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/kr346.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/pbr3s.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/q9rwr.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/c79sf.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8iw19.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/anhp4.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/w7w6v.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/byoc9.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/v31uf.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/flcqz.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/x857f.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/01n3g.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fbjb2.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ptrcv.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fxxk5.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ew0ym.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qn2wd.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/acgdk.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xx0cs.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/we0wd.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/eb6fx.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/omt1s.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/468iu.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qslxj.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qkv2f.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gp034.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gf0f9.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/lyn3k.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xszv4.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/q60wg.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.198Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.198Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7g5i0.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CS 61B | Part 8 | Tries (Prefix), Range Searching and Multi-Dimensional Data</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<h2 id="Tries"><a href="#Tries" class="headerlink" title="Tries"></a>Tries</h2><h3 id="Reflection"><a href="#Reflection" class="headerlink" title="Reflection"></a>Reflection</h3><p>In terms of the ADTs <code>Set</code> and <code>Map</code>, let’s recall the runtimes for both of these:</p>
+<ul>
+<li>Balanced Search Tree:<ul>
+<li><code>contains(x)</code>: $\Theta(\log{N})$</li>
+<li><code>add(x)</code>: $\Theta(\log{N})$</li>
+</ul>
+</li>
+<li>Resizing Separate Chaining Hash Table:<ul>
+<li><code>contains(x)</code>: $\Theta(1)$ (assuming even spread)</li>
+<li><code>add(x)</code>: $\Theta(1)$ (assuming even spread and amortized)</li>
+</ul>
+</li>
+</ul>
+<p>Question: Can we do even better than this? That could depend on the nature of our problem. What if we knew a <code>special characteristic</code> of the keys?</p>
+<p>Answer: Yes, for example if we always know our keys are ASCII characters then instead of using a general-purpose HashMap, simply use an array where each character is a different index in our array:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DataIndexedCharMap</span>&lt;V&gt; &#123;</span><br><span class="line">  <span class="keyword">private</span> V[] items;</span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">DataIndexedCharMap</span><span class="params">(<span class="type">int</span> R)</span> &#123; </span><br><span class="line">    items = (V[]) <span class="keyword">new</span> <span class="title class_">Object</span>[R];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">put</span><span class="params">(<span class="type">char</span> c, V val)</span> &#123; items[c] = val; &#125;</span><br><span class="line">  <span class="keyword">public</span> V <span class="title function_">get</span><span class="params">(<span class="type">char</span> c)</span> &#123; <span class="keyword">return</span> items[c]; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The value R represents the number of possible characters (e.g. 128 for ASCII). So, by knowing the <code>range</code> of our keys as well as what types of values they will be we have a simple and efficient data structure.</p>
+<p>A key <code>takeaway</code> is that we can often improve a <code>general-purpose</code> data structure when we add <code>specificity</code> to our problem, often by adding additional constraints. For example, we improved our implementation of HashMap when we restricted the keys to only be ASCII character, creating extremely efficient data structure.</p>
+<h3 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h3><p>The <code>Trie</code> is a specific implementation for Sets and Maps that is specialized for <code>strings</code> (like hash table is specialized for the non-comparable).</p>
+<p>It is a short for <code>Retrieval</code> tree, but almost everyone pronounces it as “try”. The inventor Edward Fredkin suggested it be pronounced as “tree”.</p>
+<p>Tries are a very useful data structure used in cases where keys can be broken into “characters” and share <code>prefixes</code> with other keys (e.g. strings).</p>
+<p>With the previous implementations BST and RST Hash Table, we may have the following structures:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7g5i0.jpg"></p>
+<p>Key ideas:</p>
+<ul>
+<li>Every node stores only one letter.</li>
+<li>Nodes can be shared by multiple keys.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wcamq.jpg" alt="a, awls, sad, sap, sam, same"></p>
+<p>An important observation to make is that most of these words <code>share the same prefixes</code>.</p>
+<p>To check if the trie contains a key, walk down the tree from the root along the correct nodes.</p>
+<p>Since we are going to share nodes, we must figure out some way to represent which strings belong in our set and which don’t. To search, we will traverse our trie and compare to each character. There are only two cases when we would not be able to find a string:</p>
+<ul>
+<li>Hit an unmarked node or the final node is not marked (not the ending node).</li>
+<li>Fall off the tree (no node matching the current character).</li>
+</ul>
+<p>A trie can be used as a map too.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dsqkx.png" alt="A TrieMap"></p>
+<h3 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h3><h4 id="Approach-1"><a href="#Approach-1" class="headerlink" title="Approach 1"></a>Approach 1</h4><p><code>DataIndexedCharMap</code> is for a node accessing its children. For example, node <code>a</code> can access node <code>d</code> by “d”, node <code>m</code> by “m”, and node <code>p</code> by “p”.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wcamq.jpg" alt="a, awls, sad, sap, sam, same"></p>
+<p>We can make an important observation: Each link corresponds to a character if and only if that character exists. Therefore, we can remove the Node’s character variable and instead base the value of the character from its position in the parent DataIndexedCharMap.</p>
+<p><strong>Note:</strong> In real implementation, <code>contains(char)</code> and <code>contains(String)</code> are different. In this case, we’d better use String.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DataIndexedCharMap</span>&lt;V&gt; &#123;</span><br><span class="line">  <span class="keyword">private</span> V[] items;</span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">DataIndexedCharMap</span><span class="params">(<span class="type">int</span> R)</span> &#123;</span><br><span class="line">    items = (V[]) <span class="keyword">new</span> <span class="title class_">Object</span>[R];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">put</span><span class="params">(<span class="type">char</span> c, V x)</span> &#123;</span><br><span class="line">    items[c] = x;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> V <span class="title function_">get</span><span class="params">(<span class="type">char</span> c)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (c &lt; <span class="number">0</span> || c &gt; R - <span class="number">1</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> items[c];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> V <span class="title function_">contains</span><span class="params">(<span class="type">char</span> c)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> get(c) != <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TrieSet</span> &#123;</span><br><span class="line">  <span class="comment">// R indicates how many possible children a node may have</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">R</span> <span class="operator">=</span> <span class="number">128</span>; <span class="comment">// ASCII</span></span><br><span class="line">  <span class="keyword">private</span> Node root;  <span class="comment">// root of trie</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">TrieSet</span><span class="params">()</span> &#123;</span><br><span class="line">    root = <span class="keyword">new</span> <span class="title class_">Node</span>(<span class="literal">false</span>, R);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Node</span> &#123;</span><br><span class="line">    <span class="comment">// private char ch;</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> isKey;  <span class="comment">// is an ending node?</span></span><br><span class="line">    <span class="keyword">private</span> DataIndexedCharMap next;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Node</span><span class="params">(<span class="type">boolean</span> b, <span class="type">int</span> R)</span> &#123;</span><br><span class="line">      <span class="comment">// ch = c; </span></span><br><span class="line">      isKey = b;</span><br><span class="line">      next = <span class="keyword">new</span> <span class="title class_">DataIndexedCharMap</span>&lt;Node&gt;(R);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setKey</span><span class="params">(<span class="type">boolean</span> k)</span> &#123;</span><br><span class="line">      isKey = k;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//    root</span></span><br><span class="line">  <span class="comment">//    / \</span></span><br><span class="line">  <span class="comment">//   a  [c]</span></span><br><span class="line">  <span class="comment">//  /</span></span><br><span class="line">  <span class="comment">// [d]</span></span><br><span class="line">  <span class="comment">// Test: &quot;a&quot;, &quot;c&quot;, &quot;d&quot;, &quot;ad&quot;, &quot;ae&quot;, &quot;ca&quot;, &quot;adc&quot;</span></span><br><span class="line">  <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">contains</span><span class="params">(String str)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (str == <span class="literal">null</span> || str.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="type">Node</span> <span class="variable">p</span> <span class="operator">=</span> root;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; str.length(); i += <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="type">boolean</span> <span class="variable">end</span> <span class="operator">=</span> (i == (str.length() - <span class="number">1</span>));</span><br><span class="line">      <span class="type">char</span> <span class="variable">c</span> <span class="operator">=</span> str.charAt(i);</span><br><span class="line">      <span class="type">DataIndexedCharMap</span> <span class="variable">map</span> <span class="operator">=</span> p.next;</span><br><span class="line">      <span class="keyword">if</span> (map.contains(c) == <span class="literal">false</span>) <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">// fall off</span></span><br><span class="line">      p = map.get(c);  <span class="comment">// get the current node &amp; set next</span></span><br><span class="line">      <span class="keyword">if</span> (end) <span class="keyword">return</span> p.isKey;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">// actually won&#x27;t be executed</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Consider adding &quot;same&quot; first, and then add &quot;sam&quot;</span></span><br><span class="line">  <span class="comment">// We need to update &quot;m&quot; rather than new an &quot;m&quot; node.</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">add</span><span class="params">(String str)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (str == <span class="literal">null</span> || str.length() == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="type">Node</span> <span class="variable">p</span> <span class="operator">=</span> root;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; str.length(); i += <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="type">boolean</span> <span class="variable">end</span> <span class="operator">=</span> (i == (str.length() - <span class="number">1</span>);</span><br><span class="line">      <span class="type">char</span> <span class="variable">c</span> <span class="operator">=</span> str.charAt(i);</span><br><span class="line">      <span class="type">DataIndexedCharMap</span> <span class="variable">map</span> <span class="operator">=</span> p.next;</span><br><span class="line">      <span class="keyword">if</span> (map.contains(c) == <span class="literal">false</span>) &#123; <span class="comment">// not existed -&gt; add</span></span><br><span class="line">        map.put(c, <span class="keyword">new</span> <span class="title class_">Node</span>(end, R));</span><br><span class="line">      &#125;</span><br><span class="line">      p = map.get(c); <span class="comment">// set next</span></span><br><span class="line">      <span class="keyword">if</span> (end) &#123; <span class="comment">// update last node&#x27;s key if it exists.</span></span><br><span class="line">        p.setKey(<span class="literal">true</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Problem: If we use a DataIndexedCharMap to track children, every node has $R$ links.</p>
+<p>Observation: The letter stored inside each node is actually redundant. So we can remove from the representation.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/kr346.png"></p>
+<p><strong>Performance in Terms of N</strong></p>
+<p>Given a Trie with $N$ keys. What are the runtimes of <code>add</code> and <code>contains</code>? $\Theta(1)$.</p>
+<p>Runtimes independent of number of keys. It doesn’t matter how many items we have in our trie.</p>
+<p>Or in terms of $L$, the length of the key: $\Theta(L)$.</p>
+<h4 id="Approach-2"><a href="#Approach-2" class="headerlink" title="Approach 2"></a>Approach 2</h4><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/pbr3s.png" alt="Previous Approach"></p>
+<p><strong>Alternate Idea #1: Hash Table</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/q9rwr.png" alt="The Hash-Table-Based Trie"></p>
+<p><strong>Alternate Idea #2: BST</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/c79sf.png" alt="The BST-Based Trie"></p>
+<p>So, when we implement a Trie, we have to pick a map to our children.</p>
+<p>Now we have:</p>
+<ul>
+<li><code>DataIndexedCharMap</code>: Very fast, but memory hungry.</li>
+<li><code>Hash Table</code>: Almost as fast, uses less memory.</li>
+<li><code>Balanced BST</code>: A little slower than Hash Table, uses similar amount of memory.</li>
+</ul>
+<p>Let’s look into the details:</p>
+<ul>
+<li><code>DataIndexedCharMap</code><ul>
+<li>Space: 128 links per node.</li>
+<li>Runtime: $\Theta(1)$</li>
+</ul>
+</li>
+<li><code>BST</code><ul>
+<li>Space: $C$ links per node, where $C$ is the number of children.</li>
+<li>Runtime: $O(\log{R})$, where $R$ is the size of alphabet.</li>
+</ul>
+</li>
+<li><code>Hash Table</code><ul>
+<li>Space: $C$ links per node.</li>
+<li>Runtime: $O(R)$. (if all keys all mapping to a bucket)</li>
+</ul>
+</li>
+</ul>
+<p><strong>Note:</strong> Cost per link is higher in BST and Hash Table.</p>
+<p>However, since $R$ is fixed (e.g. 128), we can think of all three as $\Theta(1)$.</p>
+<p>You would have to do computational experiments to see which is best for your application.</p>
+<h3 id="String-Operations"><a href="#String-Operations" class="headerlink" title="String Operations"></a>String Operations</h3><p>Theoretical asymptotic speed improvement is nice, but the <code>main appeal of tries</code> is their ability to efficiently support string specific operations like <code>prefix matching</code>.</p>
+<ul>
+<li>Finding all keys that match a given prefix: <code>keysWithPrefix(&quot;sa&quot;)</code></li>
+<li>Finding longest prefix of: <code>longestPrefixOf(&quot;sample&quot;)</code></li>
+</ul>
+<h4 id="collect"><a href="#collect" class="headerlink" title="collect()"></a>collect()</h4><p>Given an algorithm for collecting all the keys in a Trie.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8iw19.png"></p>
+<p><code>collect()</code> returns [“a”, “awls”, “sad”, “sam”, “same”, “sap”]</p>
+<p>collect():</p>
+<ul>
+<li>Create an empty list of returns <code>x</code></li>
+<li>For character <code>c</code> in root.next.keys():<ul>
+<li>Call <code>colHelp(c, root.next.get(c))</code></li>
+</ul>
+</li>
+<li>Return <code>x</code></li>
+</ul>
+<p>colHelp(String s, List<String> x, Node n):</p>
+<ul>
+<li>If <code>n.isKey == true</code>, then <code>x.add(s)</code>.</li>
+<li>For character <code>c</code> in <code>n.next.keys()</code>: Call colHelp again.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;String&gt; <span class="title function_">collect</span><span class="params">()</span> &#123;</span><br><span class="line">  List&lt;String&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">char</span> c : root.next.keys()) &#123; <span class="comment">// All the first character</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">cs</span> <span class="operator">=</span> c + <span class="string">&quot;&quot;</span>;</span><br><span class="line">    colHelp(cs, result, root.next.get(c)); <span class="comment">// get(c) -&gt; the first node</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">colHelp</span><span class="params">(String s, List&lt;String&gt; x, Node n)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (n == <span class="literal">null</span>) <span class="keyword">return</span>;</span><br><span class="line">  <span class="keyword">if</span> (n.isKey) &#123;</span><br><span class="line">    x.add(s);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">char</span> c : n.next.keys()) &#123;</span><br><span class="line">    colHelp(s + c, x, n.next.get(c));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="keysWithPrefix"><a href="#keysWithPrefix" class="headerlink" title="keysWithPrefix()"></a>keysWithPrefix()</h4><p>Example: keysWithPrefix(“sa”) is [“sad”, “sam”, “same”, “sap”].</p>
+<ul>
+<li>Find the node <code>a</code> corresponding to the prefix string <code>pf</code>.</li>
+<li>Create an empty list <code>x</code>.</li>
+<li>For character <code>c</code> in <code>a.next.keys()</code>:<ul>
+<li>Call <code>colHelp(&quot;sa&quot; + c, x, a.next.get(c))</code>.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;String&gt; <span class="title function_">keysWithPrefix</span><span class="params">(String pf)</span> &#123;</span><br><span class="line">  <span class="comment">// Find the node a</span></span><br><span class="line">  <span class="type">Node</span> <span class="variable">p</span> <span class="operator">=</span> root;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; pf.length(); i += <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="type">char</span> <span class="variable">c</span> <span class="operator">=</span> pf.charAt(i);</span><br><span class="line">    p = p.next.get(c);</span><br><span class="line">    <span class="keyword">if</span> (p == <span class="literal">null</span>) <span class="keyword">break</span>;</span><br><span class="line">  &#125; <span class="comment">// now p points to the node a</span></span><br><span class="line"></span><br><span class="line">  List&lt;String&gt; x = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">char</span> c : p.next.keys()) &#123;</span><br><span class="line">    colHelp(pf + c, x, p.next.get(c));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="longestPrefixOf"><a href="#longestPrefixOf" class="headerlink" title="longestPrefixOf()"></a>longestPrefixOf()</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">longestPrefixOf</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (s == <span class="literal">null</span> || s.length() == <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="type">Node</span> <span class="variable">p</span> <span class="operator">=</span> root;</span><br><span class="line">  <span class="type">String</span> <span class="variable">longestPrefix</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; s.length(); i += <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="type">char</span> <span class="variable">c</span> <span class="operator">=</span> s.charAt(i);</span><br><span class="line">    <span class="comment">// get the current node</span></span><br><span class="line">    p = root.next.get(c);  <span class="comment">// may be null</span></span><br><span class="line">    <span class="keyword">if</span> (p == <span class="literal">null</span>) <span class="keyword">break</span>;</span><br><span class="line">    <span class="comment">// match</span></span><br><span class="line">    longestPrefix += Character.toString(c);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> longestPrefix;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Autocomplete"><a href="#Autocomplete" class="headerlink" title="Autocomplete"></a>Autocomplete</h4><p><strong>Example:</strong> When we type “how are” into Google, we get 10 results.</p>
+<p>One way to do this is to create a Trie-Based Map from strings to values.</p>
+<ul>
+<li><code>Value</code>: Represents how important Google thinks that string is.</li>
+<li>Can store billions of strings efficiently since they share nodes.</li>
+<li>When a user types in a string “hello”, we:<ul>
+<li>Call <code>keysWithPrefix(&quot;hello&quot;)</code>.</li>
+<li>Return the 10 strings with the highest value.</li>
+</ul>
+</li>
+</ul>
+<p><strong>More Efficient:</strong></p>
+<p>If we enter a short string, the number of keys with the appropriate prefix will be too big.</p>
+<p>Solution: Each node stores its own value, as well as the value of its best substring.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/anhp4.png"></p>
+<p>Search will consider nodes in order of “best”.</p>
+<ul>
+<li>Consider <code>sp</code> before <code>sm</code> (since the value of node <code>p</code> is 20).</li>
+<li>Can stop when top 3 matches are all better than best remaining.</li>
+</ul>
+<p>Hint: Use a PQ.</p>
+<p><strong>Even More Efficient:</strong></p>
+<p>Can also merge nodes that are redundant!</p>
+<ul>
+<li>This version of trie is known as a <code>radix tree</code> or <code>radix trie</code>.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/w7w6v.png" alt="Radix Tree"></p>
+<p>Bottom line: Data structures interact in beautiful and important ways!</p>
+<h2 id="Ex-Guide"><a href="#Ex-Guide" class="headerlink" title="Ex (Guide)"></a>Ex (Guide)</h2><h3 id="C-level"><a href="#C-level" class="headerlink" title="C level"></a>C level</h3><h4 id="Ex-1-TST"><a href="#Ex-1-TST" class="headerlink" title="Ex 1 (TST)"></a>Ex 1 (TST)</h4><p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spring15/cos226/exams/fin-s08.pdf">Problem 5</a> from Princeton’s Spring 2008 final.</p>
+<p>A <code>ternary search tree</code> (also called a <code>prefix tree</code>) is a special trie data structure where the child nodes of a standard trie are ordered as a binary search tree.</p>
+<p>Unlike tries where each node contains 26 pointers for its children, each node in a ternary search tree contains <code>only 3 pointers</code>:</p>
+<ul>
+<li>The <code>left pointer</code> must point to a node whose character value is less than the current node. </li>
+<li>The <code>right pointer</code> must point to a node whose character is greater than the current node.</li>
+<li>The <code>equal pointer</code> points to the <code>next character</code> in the word.</li>
+</ul>
+<p>Wikipedia: <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Ternary_search_tree">link</a></p>
+<p><strong>Problem:</strong> Consider the following TST, where the black nodes correspond to strings in the TST.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/byoc9.png"></p>
+<p>(a) Which 7 strings (in alphabetical order) are in the TST?</p>
+<p>aac, aat, ac, ca, ct, g, ta</p>
+<p>(b) Draw the results of adding the following strings into the TST above: cgt, aaca, tt</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/v31uf.png"></p>
+<h4 id="Ex-2-TST"><a href="#Ex-2-TST" class="headerlink" title="Ex 2 (TST)"></a>Ex 2 (TST)</h4><p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spring15/cos226/exams/fin-f11.pdf">Problem 8</a> from Princeton’s Spring 2011 final.</p>
+<p>Consider the following ternary search trie, with string keys and integer value.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/flcqz.png"></p>
+<p>Circle which one or more of the following strings are keys in the TST.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/x857f.png"></p>
+<h3 id="B-level"><a href="#B-level" class="headerlink" title="B level"></a>B level</h3><p>Throughout, we define $R$ as the size of the alphabet, and $N$ as the number of items in a trie.</p>
+<h4 id="Ex-1-Single-Character-String"><a href="#Ex-1-Single-Character-String" class="headerlink" title="Ex 1 (Single Character String)"></a>Ex 1 (Single Character String)</h4><p>When looking for a single character string in a Trie, what is the worst case time to find that string in terms of $R$ and $N$?</p>
+<p>$\Theta(1)$</p>
+<h4 id="Ex-2-Why-TST"><a href="#Ex-2-Why-TST" class="headerlink" title="Ex 2 (Why TST?)"></a>Ex 2 (Why TST?)</h4><p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spring15/cos226/exams/fin-f09.pdf">Problem 5</a> from Princeton’s Fall 2009 final.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/01n3g.png"></p>
+<p>(a) List (in alphabetical order) the set of strings that were inserted.</p>
+<p>ear, fo, his, hitch, hold, holdup, hotel, hum, humble, ill.</p>
+<p>(c) List two compelling reasons why a programmer would use a TST instead of a red-black tree.</p>
+<ul>
+<li>Faster, especially for search miss.</li>
+<li>Support character-based operations such as prefix match (autocomplete), longest prefix, and wildcard match.</li>
+</ul>
+<h4 id="Ex-3-Height-of-TST"><a href="#Ex-3-Height-of-TST" class="headerlink" title="Ex 3 (Height of TST)"></a>Ex 3 (Height of TST)</h4><p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spring15/cos226/exams/fin-s12.pdf">Problem 9</a> from Princeton’s Fall 2012 final.</p>
+<p>Suppose that the following set of 11 strings are inserted into a TST (in some order).</p>
+<p>CANNON, CAP, CHARTER, CLOISTER, COLONIAL, COTTAGE,<br>IVY, QUAD, TERRACE, TIGER, TOWER</p>
+<p>(a) Suppose that the strings are inserted into the TST in alphabetical order. What is the height of the resulting TST?</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fbjb2.png"></p>
+<p>The height is <code>9</code>.</p>
+<p>(b) Suppose that the strings are inserted into the TST in an order which minimizes the height. What is the height then?</p>
+<p>Since COLONIAL and CLOISTER each contains 8 characters, at least one of them will end up at depth 8 (height &#x3D; 7) or higher. To control the height, we can add COLONIAL and CLOISTER before other items.</p>
+<h4 id="Ex-4-Height-of-TST"><a href="#Ex-4-Height-of-TST" class="headerlink" title="Ex 4 (Height of TST)"></a>Ex 4 (Height of TST)</h4><p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/fall13/cos226/exams/fin-f13.pdf">Problem 1</a> from Hug’s Fall 2013 final.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ptrcv.png"></p>
+<p>(a) List the 8 strings in the TST in alphabetical order.</p>
+<p>ID, IDD, IDDQD, IDKFA, XC, XD, XEA, XYZZY.</p>
+<p>(b) Give an example of a minimum length string that will increase the height of the TST.</p>
+<p>IDAAAA or XDAAAA or XCAAAA.</p>
+<h3 id="A-level"><a href="#A-level" class="headerlink" title="A level"></a>A level</h3><h4 id="Ex-1-Questions"><a href="#Ex-1-Questions" class="headerlink" title="Ex 1 (Questions)"></a>Ex 1 (Questions)</h4><p><a target="_blank" rel="noopener" href="http://datastructur.es/sp16/materials/exam/CS61B_Fall2014_MT2.pdf">Problem 9</a> from Hug’s Fall 2014 midterm 2.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fxxk5.png"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ew0ym.png"></p>
+<h2 id="Multi-Dimensional-Keys"><a href="#Multi-Dimensional-Keys" class="headerlink" title="Multi-Dimensional Keys"></a>Multi-Dimensional Keys</h2><h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>Suppose we want to perform operations on a set of Body objects in space. For example, perhaps we wanted to ask questions about the Sun bodies (shown as yellow dots below) in our two-dimension image space.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qn2wd.png"></p>
+<p><code>Question 1</code>: 2D Range Finding (# suns in a region)</p>
+<p><code>Question 2</code>: Nearest Neighbors (closest to a horse)</p>
+<p><strong>HashTable</strong></p>
+<p>If we store the suns in a HashTable, the runtime for finding the nearest neighbors is $\Theta(N)$. We need to iterate over all $N$ items in each bucket to check.</p>
+<p><strong>Uniform Partitioning</strong></p>
+<p>One fix is to ensure that the bucket numbers depend only on <code>position</code>. If we uniformly partition our image space by throwing a 4x4 grid over it, we get nice organized buckets (sometimes called “spatial hashing”).</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/acgdk.jpg"></p>
+<p>So we can put it into a specific bucket by <code>getX()</code> and <code>getY()</code>.</p>
+<p>For the <code>Question 1</code>, we just need to look into the bucket 1; for the <code>Question 2</code>, we just need to go over the buckets 5, 6, 9, 10.</p>
+<p>What is the runtime assuming the suns are evenly spread out?</p>
+<p>On average, the runtime will be $16$ times faster than without spatial partitioning, but $\frac{N}{16}$ is still $\Theta(N)$.</p>
+<p>But in practice, it does indeed work better!</p>
+<h3 id="X-Y-Based-Tree"><a href="#X-Y-Based-Tree" class="headerlink" title="X&#x2F;Y-Based Tree"></a>X&#x2F;Y-Based Tree</h3><p>One key advantage of Search Trees over Hash Tables is that trees explicitly track the order of items. In two (or more) dimensional space, one object might be “less than” another in one dimension, but “greater than” the other in the other dimension.</p>
+<p>Say we use the X-based Tree to construct a BST looking only at the x-coordinate (ignore y-coordinate).</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xx0cs.jpg"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/we0wd.jpg"></p>
+<p>We are able to restrict our search space from the entire image space, to just the green rectangle, which is called <code>pruning</code>.</p>
+<p>No matter whether we choose the X-based tree representation or the Y-based tree representation, we will always have suboptimal pruning; search in the optimized dimension will be $N\log{N}$, but search in the non-optimized dimension will be $N$ in runtime.</p>
+<h3 id="QuadTrees"><a href="#QuadTrees" class="headerlink" title="QuadTrees"></a>QuadTrees</h3><p>We can solve the problem by splitting in both directions simultaneously.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/eb6fx.png" alt="QuadTree"></p>
+<p>QuadTrees are also spatial partitioning in disguise.</p>
+<p>Note that just like in a BST, the <code>order</code> in which we insert nodes determines the topology of the QuadTree.</p>
+<ul>
+<li>Earlier approach: Uniform partitioning (perfect grid of rectangles).</li>
+<li>QuadTres: Hierarchical partitioning. Each node “owns” 4 <code>subspaces</code>.<ul>
+<li>Space is more finely divided in regions where there are more points.</li>
+<li>Results in better runtime in many circumstances.</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/omt1s.png"></p>
+<p><strong>How it works in range search?</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/468iu.png" alt="And then examine B"></p>
+<p>Then which subspaces of B might have good points? All four, so explore all four.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qslxj.png" alt="Examine C"></p>
+<p>As for 3D data, one approach is to use an <code>Oct-Tree</code> or <code>Octree</code>. It is very widely used in practice.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qkv2f.png"></p>
+<h3 id="K-D-Trees"><a href="#K-D-Trees" class="headerlink" title="K-D Trees"></a>K-D Trees</h3><p>You may want to organize data on a large number of dimensions like finding songs with features:</p>
+<ul>
+<li>Between 1,000 and 20,000 listens.</li>
+<li>Between 120 to 150 BPM.</li>
+<li>Were recorded after 2004.</li>
+</ul>
+<p>In this case, we can use <code>K-D Trees</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gp034.jpg" alt="A 2-D Trees"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gf0f9.jpg" alt="Corresponding 2-D Space"></p>
+<p>Note: When you are running operations on a K-D Tree or quadtree, you should be thinking about the tree structure (1st image) and not the 2-D space (2nd picture) because only the tree holds information about the levels. It is more easily generalized to higher dimensions and keep itself as a <code>binary</code> tree.</p>
+<p>For the 3-D case, it rotates between each of the three dimensions every three levels, and so on and so forth for even higher dimensions.</p>
+<p>Also, we can break ties by saying that items equal in one dimension should always fall the same way across the border (fall to the right for example).</p>
+<p>For a demo on K-D tree insertion, check out these [slides](For a demo on K-D tree insertion, check out these slides).</p>
+<p>The takeaway is similar to quadtrees that each point &#x2F; node controls subspaces. As for K-D trees, each node controls 2 subspaces.</p>
+<h3 id="Nearest-Problem"><a href="#Nearest-Problem" class="headerlink" title="Nearest Problem"></a>Nearest Problem</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/lyn3k.jpg" alt="We want to find the nearest point of (0, 7)"></p>
+<ul>
+<li>Start at the root and store that point as the “best so far”. Compute its distance to the query point, and save that as the “score to beat”. In the image above, we start at <code>A</code> whose distance to the flagged point is 4.5.</li>
+<li>This node partitions the space around it into two subspaces. For each subspace, ask: “Can a better point be possibly found inside of this space?” This question can be answered by computing the shortest distance between the query point and the edge of our subspace.</li>
+<li>Continue recursively for each subspace identified as containing a possibly better point.</li>
+<li>In the end, our “best so far” is the best point; the point closest to the query point.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xszv4.jpg"></p>
+<p>For a step by step walkthrough, see these <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1DNunK22t-4OU_9c-OBgKkMAdly9aZQkWuv_tBkDg1G4/edit">slides</a>. (Very interesting!)</p>
+<p>Nearest Pseudocode:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// n is the current node</span><br><span class="line">nearest(Node n, Point goal, Node best):</span><br><span class="line">  if n is null:</span><br><span class="line">    return best</span><br><span class="line">  if n.distance(goal) &lt; best.distance(goal): // update best</span><br><span class="line">    best = n</span><br><span class="line">  if goal &lt; n (according to n&#x27;s comparator): // goal.x or goal.y</span><br><span class="line">    // some use x-coordinate, some use y-coordinate</span><br><span class="line">    goodSide = n.leftChild</span><br><span class="line">    badSide = n.rightChild</span><br><span class="line">  else:</span><br><span class="line">    goodSide = n.rightChild</span><br><span class="line">    badSide = n.leftChild</span><br><span class="line">  best = nearest(goodSide, goal, best)</span><br><span class="line">  if badSide could still have something useful: // this if statement can be removed, but it turns out slower.</span><br><span class="line">    best = nearest(badSide, goal, best)</span><br><span class="line">  return best</span><br></pre></td></tr></table></figure>
+
+<p>My implementation in Proj2B: <a target="_blank" rel="noopener" href="https://github.com/junhaowww/cs61b-sp18/blob/master/proj2ab/bearmaps/KDTree.java">link</a></p>
+<h3 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h3><p>As for the two types of problems, we have the most common approach which is <code>spatial partitioning</code>:</p>
+<ul>
+<li><code>Uniform Partitioning</code>: Analogous to hashing.</li>
+<li><code>QuadTree</code>: Generalized 2D BST where each node “owns” 4 subspaces.</li>
+<li><code>K-D Tree</code>: Generalized K-D BST where each node “owns” 2 subspaces.<ul>
+<li>Dimension of ownership cycles with each level of depth in tree. For example, <code>x</code> and <code>y</code> will cycle in 2-D Tree.</li>
+</ul>
+</li>
+</ul>
+<p>Spatial partitioning allows for <code>pruning</code> of the search space.</p>
+<p><strong>Application:</strong></p>
+<ul>
+<li><p>Application #1: Murmuration</p>
+<p>Real starlings and simulated starlings. Efficient simulation means “birds” have to find their nearest neighbors efficiently.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/q60wg.png" alt="Boid Rules"></p>
+</li>
+<li><p>Application #2: NBody Simulation</p>
+<p>Every object has to calculate the force from every other object. This is very silly if the force exerted is too small, e.g. individual star in the Andromeda galaxy pulling on the sun.</p>
+<p>One optimization is called <code>Barnes-Hut</code>. Basic idea:</p>
+<ul>
+<li>Represent universe as a quadtree (or octree) of objects.</li>
+<li>If a node is sufficiently far away from $X$, then treat that node and all of its children as a single object (e.g. Andromeda).</li>
+</ul>
+</li>
+</ul>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

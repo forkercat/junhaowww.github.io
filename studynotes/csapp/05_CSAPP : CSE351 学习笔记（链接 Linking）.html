@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="链接（linking）是将各种代码和数据片段收集并组合成为一个单一文件的过程，这个文件可被加载（复制）到内存并执行。链接可以执行于编译时（compile time）；也可以执行于加载时（load time）；甚至可以执行于运行时（run time）。链接是由叫做链接器（linker）的程序自动执行的。 为什么要学习链接器的原理？  理解链接器将帮助你构造大型程序 理解链接器将帮助你避免一些危险">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CSAPP &#x2F; CSE 351 学习笔记（链接 Linking）">
+<meta property="og:url" content="https://junhaow.com/studynotes/csapp/05_CSAPP%20:%20CSE351%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E9%93%BE%E6%8E%A5%20Linking%EF%BC%89.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="链接（linking）是将各种代码和数据片段收集并组合成为一个单一文件的过程，这个文件可被加载（复制）到内存并执行。链接可以执行于编译时（compile time）；也可以执行于加载时（load time）；甚至可以执行于运行时（run time）。链接是由叫做链接器（linker）的程序自动执行的。 为什么要学习链接器的原理？  理解链接器将帮助你构造大型程序 理解链接器将帮助你避免一些危险">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/pkcl7.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ck0zm.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4b42l.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/at9kr.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/p4jrw.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ccfum.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.200Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.200Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/pkcl7.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CSAPP / CSE 351 学习笔记（链接 Linking）</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>链接（linking）是将各种代码和数据片段收集并组合成为一个单一文件的过程，这个文件可被加载（复制）到内存并执行。链接可以执行于编译时（compile time）；也可以执行于加载时（load time）；甚至可以执行于运行时（run time）。链接是由叫做链接器（linker）的程序自动执行的。</p>
+<p>为什么要学习链接器的原理？</p>
+<ul>
+<li>理解链接器将帮助你构造大型程序</li>
+<li>理解链接器将帮助你避免一些危险的编程错误（如，强弱符号的问题）</li>
+<li>理解链接器将帮助你理解其他重要的系统概念（如，虚拟内存）</li>
+<li>理解链接器将使你能够利用共享库（如，微软的升级压缩包的二进制程序）</li>
+</ul>
+<p>以下内容基于：Linux 的 x86-64 系统和 ELF-64 标准。</p>
+<h2 id="编译器驱动程序"><a href="#编译器驱动程序" class="headerlink" title="编译器驱动程序"></a>编译器驱动程序</h2><p>编译器驱动程序（compiler driver）在需要时调用语言预处理器、编译器、汇编器和链接器。如 GCC 驱动程序：</p>
+<ul>
+<li>C 预处理器（cpp）将 C 的源程序<code>main.c</code>翻译成一个 ASCII 码的中间文件<code>main.i</code></li>
+<li>C 编译器（ccl）将<code>main.i</code>翻译成一个 ASCII 汇编语言文件<code>main.s</code>。</li>
+<li>汇编器（as）将<code>main.s</code>翻译成一个可重定位目标文件（Relocatable Object File）<code>main.o</code>（同理于<code>sum.o</code>）。</li>
+<li>链接器（ld）将<code>main.o</code>和<code>sum.o</code>以及一些必要的系统目标文件组合起来，创建一个可执行目标文件<code> Executable Object File</code>（名字自己定，如<code>a.out</code>、<code>prog</code>）。</li>
+<li>最后，shell 调用操作系统中一个叫做<code>加载器</code>（loader）的函数，将可执行文件中的代码和数据复制到内存，然后将控制转移到这个程序的开头（设置 PC 寄存器的值）。</li>
+</ul>
+<h2 id="静态链接"><a href="#静态链接" class="headerlink" title="静态链接"></a>静态链接</h2><p><code>静态链接</code>（static linking）：静态链接器以一组可重定位目标文件和命令行参数作为输入生成一个完全链接的、可以加载和运行的可执行目标文件作为输出。</p>
+<p>为了构造可执行文件，链接器必须完成以下两个任务：</p>
+<ul>
+<li><code>符号解析</code>（symbol resolution）：将每个符号引用和一个符号定义关联起来（绑定到一个唯一的定义）。</li>
+<li><code>重定位</code>（relocation）：确定每个符号的最终内存地址，并修改对那些目标的引用。</li>
+</ul>
+<p>汇编器：生成符号表（不同于编译器生成的符号表）。<br>链接器：对可重定位目标文件进行符号解析、重定位。</p>
+<h2 id="目标文件"><a href="#目标文件" class="headerlink" title="目标文件"></a>目标文件</h2><p>基本事实：目标文件纯粹是字节块的集合，包含程序代码或者程序数据，甚至包括引导链接器和加载器的数据结构。链接器将这些块连接起来，确定被连接块的运行时位置，并且修改代码和数据块中的各种位置。</p>
+<p>目标文件有三种形式：</p>
+<ul>
+<li><code>可重定位目标文件</code>：与其它可重定位目标文件合并起来，创建一个可执行目标文件。（编译器、汇编器）</li>
+<li><code>可执行目标文件</code>：可以被直接复制到内存并执行。（链接器）</li>
+<li><code>共享目标文件</code>：一种特殊类型的可重定位目标文件，可以在加载或者运行时被动态地加载进内存并链接。</li>
+</ul>
+<p>一个<code>目标模块</code>（object module）就是一个<code>字节序列</code>，而一个<code>目标文件</code>就是一个以文件形式存放在磁盘中的目标模块。一般情况下，这些术语可以互换。</p>
+<p>各个系统的目标文件格式不同（风格相似）：</p>
+<ul>
+<li>Unix：<code>a.out</code>（沿用至今）</li>
+<li>Windows：<code>可移植可执行格式</code>（Portable Executable，PE）</li>
+<li>Mac OS：<code>Mach-O 格式</code></li>
+<li>现代 x86-64 Linux 和 Unix 系统：<code>可执行可链接格式</code>（Executable and Linkable Format，ELF）</li>
+</ul>
+<h3 id="可重定位目标文件"><a href="#可重定位目标文件" class="headerlink" title="可重定位目标文件"></a>可重定位目标文件</h3><p>ELF 头（ELF header）以一个 16 字节的序列开始，描述了生成文件的系统的字的大小和字节顺序。剩下的部分是帮助链接器<code>语法分析</code>和<code>解析目标文件</code>的信息：</p>
+<ul>
+<li>ELF 头的大小</li>
+<li>目标文件的类型（上面三种）</li>
+<li>机器类型（如 x86-64）</li>
+<li>节头部表（section header table）的文件偏移</li>
+<li>节头部表中条目的大小、数量（该表记录着不同节的位置和大小）</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/pkcl7.jpg" alt="典型的 ELF 可重定位目标文件（CSAPP 7.3）"></p>
+<p>一个典型的 ELF 可重定位目标文件包含下面几个节：</p>
+<ul>
+<li><code>.text</code>：已编译程序的机器代码。</li>
+<li><code>.rodata</code>：只读数据，比如 printf 语句中的格式串和 switch 语句的跳转表（Jump Table）。</li>
+<li><code>.data</code>：已初始化的全局、静态变量。</li>
+<li><code>.bss</code>：未初始化以及所有被初始化为 0 的全局、静态变量。这个节并不占实际的空间，仅仅是一个占位符；直到运行时才在内存中分配这些变量（初始值为 0）。<ul>
+<li>它起始于 IBM 704 汇编语言中的「块存储开始（Block Storage Start）」，或者把它看成是「Better Save Space」的缩写。</li>
+</ul>
+</li>
+<li><code>.symtab</code>：符号表，它存放着程序中定义和引用的函数和全局变量的信息（实体存在于 .data）。然而，<strong>和编译器中的符号表不同，.symtab 符号表不包含局部变量的条目</strong>。</li>
+<li><code>.rel.text</code>：一个 .text 节中位置的列表，当链接器把这个目标文件和其他文件组合时，需要修改这些位置。一般而言，任何调用外部函数或者引用全局变量的指令都需要修改。</li>
+<li><code>.rel.data</code>：被模块引用或定义的所有全局变量的重定位信息。（存放重定位条目，后面会讲到）</li>
+<li><code>.debug</code>：调试符号表，只有在 -g 选项调用编译器驱动程序时才能得到，其条目是程序中的局部变量和类型的定义，以及所有全局变量。</li>
+<li><code>.line</code>：原始 C 程序的行号和 .text 节中机器指令之间的映射，也需要 -g 选项才能得到。</li>
+<li><code>.strtab</code>：一个字符串表，其内容包括 .symtab 和 .debug 节中的符号表，以及节头部中的节名字，其就是以 null 结尾的字符串的序列。</li>
+</ul>
+<h3 id="可执行目标文件"><a href="#可执行目标文件" class="headerlink" title="可执行目标文件"></a>可执行目标文件</h3><p>可执行目标文件包含加载程序到内存并运行所需的所有信息，可以分成三段：</p>
+<ul>
+<li>代码段（code segment，只读）</li>
+<li>数据段（data segment，读写）</li>
+<li>不加载到内存的符号表和调试信息</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ck0zm.jpg" alt="ELF 可执行文件中的各类信息（CSAPP 7-13）"></p>
+<ul>
+<li><code>ELF 头</code>：描述文件的总体格式，包括程序的入口点（entry point）。</li>
+<li><code>.text</code>、<code>.rodata</code>、<code>.data</code>：与可重定位目标文件中的节是相似的，只是这些节已经被重定位到它们最终的运行时内存地址（所以没有<code>.rel</code>节）。</li>
+<li><code>.init</code>：定义了一个小函数，叫<code>_init</code>，程序的初始化代码会调用它。</li>
+</ul>
+<p>ELF 可执行文件被设计得很容易加载到内存，可执行文件的连续的<code>片</code>（chunk）被映射到连续的内存段。可执行目标文件的<code>程序头部表</code>（program header table）描述了这种映射关系。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4b42l.jpg" alt="示例可执行文件 prog 的程序头部表（CSAPP 7-14）"></p>
+<ul>
+<li><code>off</code>：目标文件中的偏移。</li>
+<li><code>vaddr/paddr</code>：内存地址。</li>
+<li><code>align</code>：对齐要求。</li>
+<li><code>filesz</code>：目标文件中的段大小。</li>
+<li><code>memsz</code>：内存中的段大小。</li>
+<li><code>flags</code>：运行时访问权限。</li>
+</ul>
+<h2 id="符号和符号表"><a href="#符号和符号表" class="headerlink" title="符号和符号表"></a>符号和符号表</h2><p>在链接器的上下文中，有三种不同的符号：</p>
+<ul>
+<li><code>全局符号</code>（全局变量、函数）</li>
+<li><code>外部符号</code>（extern）</li>
+<li><code>局部符号</code>（static，注意不是函数块内的局部变量，链接器不关心这个）</li>
+</ul>
+<p>符号表是由<code>汇编器</code>构造。.symtab 节中包含 ELF 符号表，其是一个包含若干条目的数组。条目的格式如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 符号表的条目（CSAPP 7-4） */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">  <span class="type">int</span>   name;       <span class="comment">/* String table offset */</span></span><br><span class="line">  <span class="type">char</span>  type:<span class="number">4</span>,     <span class="comment">/* Function or data (4 bits) */</span></span><br><span class="line">        binding:<span class="number">4</span>;  <span class="comment">/* Local or global (4 bits) */</span></span><br><span class="line">  <span class="type">char</span>  reserved;   <span class="comment">/* Unused */</span></span><br><span class="line">  <span class="type">short</span> section;    <span class="comment">/* Section header index */</span></span><br><span class="line">  <span class="type">long</span>  value;      <span class="comment">/* Section offset or absolute address */</span></span><br><span class="line">  <span class="type">long</span>  size;       <span class="comment">/* Object size in bytes */</span></span><br><span class="line">&#125; Elf64_Symbol;</span><br></pre></td></tr></table></figure>
+
+<p>每个符号会被分到目标文件的某个节（如 .data 或者 .text），该节由 section 字段来表示。该字段有三个特殊的伪节（pseudosection），它们没有对应实际的条目：</p>
+<ul>
+<li><code>ABS</code>：不需要被重定位的符号。</li>
+<li><code>UNDEF</code>：未定义的符号，也就是当前目标文件的引用，在其他地方被定义。</li>
+<li><code>COMMON</code>：未被分配位置的未初始化的数据目标，它与 .bss 区别是：<ul>
+<li>COMMON：未初始化的全局变量。</li>
+<li>.bss：未初始化的静态变量，以及初始化为 0 的全局或静态变量。</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/at9kr.jpg" alt="示例（CSAPP p469）"></p>
+<h2 id="符号解析"><a href="#符号解析" class="headerlink" title="符号解析"></a>符号解析</h2><p>链接器解析符号引用的方法是：将每个引用与它输入的可重定位目标文件的符号表中的一个确定的符号定义关联起来。当编译器遇到一个不是在当前模块中定义的符号时，<strong>会假设该符号是在其他某个模块中定义的，生成一个链接器符号表条目，并把它交给链接器处理</strong>。</p>
+<blockquote>
+<p>对 C++ 和 Java 中链接器符号进行重整：</p>
+<p>C++ 和 Java 都支持重载方法，是因为编译器将每个唯一的方法和参数列表组合编码成一个对链接器来说唯一的名字。这种编码过程叫做<code>重整</code>（mangling），而相反的过程叫做<code>回复</code>（demangling）。</p>
+<p>C++ 和 Java 使用兼容的重整策略。一个被重整的类名字是由名字中字符的整数数量，后面跟原始名字组成的，如类 Foo 被编码成 3Foo。方法被编码为原始方法名，后面加上 __ 和被重整的类名，再加上每个参数的单字母编码，如方法 Foo::bar(int, long) 被编码为 bar__3Fooil。</p>
+</blockquote>
+<p>链接器如何解析多重定义的全局符号：<a href="http://junhaow.com/2018/06/17/029%20%7C%20C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/">C 语言全局变量初始化和符号重名的问题
+</a></p>
+<p>所有的编译系统都提供一种机制，将所有相关的目标模块打包成为一个单独的文件，称为<code>静态库</code>（static library），它可以作为链接器的的输入，然后链接器输出可执行目标文件。</p>
+<p>在 Linux 系统中，静态库以一种称为<code>存档</code>（archive）的特殊文件格式存放在磁盘中。存档文件是一组连接起来的可重定位目标文件的集合，有一个头部用来描述每个成员目w文件的大小和位置，其以后缀<code>.a</code>标识。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gcc -static -o prog2c main2.o ./libvector.a</span><br><span class="line"><span class="comment"># 等价于</span></span><br><span class="line">gcc -static -o prog2c main2.o -L. -lvector</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>-static</code>参数告诉编译器驱动程序，链接器应该构建一个完全链接的可执行目标文件，无需再进一步链接。</li>
+<li><code>-lvector</code>参数是 libvector.a 的缩写。</li>
+<li><code>-L.</code>参数告诉编译器在当前目录下查找 libvector.a。</li>
+</ul>
+<p>命令行上的库和目标文件的顺序非常重要。如果定义一个符号的库出现在引用这个符号的目标文件之前，那么引用就不能被解析，链接就会失败。一般准则是将库放在命令行的几位。如果需要满足依赖需求，可以在命令行上重复库。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gcc goo.c libx.a liby.a libx.a</span><br><span class="line"><span class="comment"># foo.c 调用 libx.a 中的函数，libx.a 调用 liby.a 的函数，liby.a 中又调用 libx.a 的函数</span></span><br><span class="line"><span class="comment"># 或者将两者合并为一个单独的存档文件</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="重定位"><a href="#重定位" class="headerlink" title="重定位"></a>重定位</h2><p>在<code>链接器</code>完成符号解析后，链接就知道它的输入目标模块中的代码节和数据节的确切大小。在重定位这个步骤中，链接器将合并输入模块，并为每个符号分配运行时地址。重定位一般由两步完成：</p>
+<ul>
+<li>重定位节和符号定义<ul>
+<li>将所有相同类型的节合并为同一类型的新的聚合节</li>
+<li>将运行时内存地址赋值给新的聚合节，赋值给输入模块定义的每个节，以及输入模块定义的每个符号<br>此时，程序中的每条指令和全局变量都有唯一的运行时内存地址了。</li>
+</ul>
+</li>
+<li>重定位节中的符号引用<ul>
+<li>修改代码节和数据节中对每个符号的引用，使得它们指向正确的运行时地址，此步依赖于可重定位目标模块中称为<code>重定位条目</code>（relocation entry）的数据结构</li>
+</ul>
+</li>
+</ul>
+<h3 id="可重定位条目"><a href="#可重定位条目" class="headerlink" title="可重定位条目"></a>可重定位条目</h3><p>当汇编器生成一个目标模块时，它并不知道数据和代码最终将放在内存中的什么位置。所以，汇编器遇到对最终位置未知的目标引用，就会生成一个<code>重定位条目</code>，告诉链接器在合并成可执行文件时如何修改这个引用。代码的重定位条目放在<code>.rel.text</code>，已初始化数据的重定位条目放在<code>.rel.data</code>中。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* ELF 重定位条目（CSAPP 7-9） */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">  <span class="type">long</span> offset;    <span class="comment">/* Offset of the reference to relocate */</span></span><br><span class="line">  <span class="type">long</span> type:<span class="number">32</span>,   <span class="comment">/* Relocation type */</span></span><br><span class="line">       symbol:<span class="number">32</span>; <span class="comment">/* Symbol table index */</span></span><br><span class="line">  <span class="type">long</span> addend;    <span class="comment">/* Constant part of relocation expression */</span></span><br><span class="line">&#125; Elf64_Rela;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>offset</code>：需要被修改的引用的节偏移。</li>
+<li><code>symbol</code>：标识被修改引用应该指向的符号。</li>
+<li><code>type</code>：告知链接器如何修改新的引用。</li>
+<li><code>addend</code>：符号常数，对引用值进行偏移调整。</li>
+</ul>
+<p>ELF 定义了 32 种不同的重定位类型，有些相当隐秘。我们只关心其中两种最基本的重定位类型：</p>
+<ul>
+<li><code>R_X86_64_PC32</code>：重定位一个使用 32 位 PC 相对地址的引用。一个 PC 相对地址就是距离程序计数器（PC）的当前运行值的偏移量。当 CPU 执行一条使用 PC 相对寻址的指令时，它将在指令中编码的 32 位值上加上 PC 的当前运行值，得到有效地址（如 call 指令的目标），PC 值通常是下一条指令在内存中的地址。</li>
+<li><code>R_X86_64_32</code>：重定位一个使用 32 位绝对地址的引用。通过绝对寻址，CPU 直接使用在指令中编码的 32 位值作为有效地址，不需要进一步修改。</li>
+</ul>
+<p>具体例子和解释可参考：CSAPP p480</p>
+<h2 id="加载可执行目标文件"><a href="#加载可执行目标文件" class="headerlink" title="加载可执行目标文件"></a>加载可执行目标文件</h2><p>要运行可执行目标文件 prog，我们可以在 Linux shell 的命令行中输入它的名字：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./prog</span><br></pre></td></tr></table></figure>
+
+<p>shell 通过调用某个驻留在存储器中称为<code>加载器</code>（loader）的操作系统代码来运行 prog 程序。任何 Linux 程序都可以通过调用 execve 函数来调用加载器。</p>
+<p>每个 Linux 程序都有一个运行时内存映像。在 Linux x86-64 系统中，代码段总是从地址<code>0x400000</code>处开始，后面是数据段。运行时堆在数据段之后，通过调用 malloc 库往上增长。堆后面的区域是为共享模块保留的。用户栈总是从最大的合法用户地址（$2^{48}$ - 1）开始，向较小内地址增长。栈上的区域，从地址<code>$2^&#123;48&#125;$</code>开始，是为内核（kernel）中的代码和数据保留的，所谓内核就是操作系统驻留在内存的部分。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/p4jrw.jpg" alt="Linux x86-64 运行时内存映像图（CSAPP 7-15）"></p>
+<p>实际上，由于 .data 段有对齐要求，所以代码段和数据段之间是有间隙的。此外，链接器还会使用地址空间布局随机化技术（ASLR）。虽然每次程序运行时这些区域的地址都会改变，但是它们的<code>相对位置</code>是不变的。</p>
+<p><strong>加载 C 程序的过程：</strong></p>
+<ol>
+<li>在<code>程序头部表</code>的引导下，加载器将可执行文件的片复制到代码段和数据段。</li>
+</ol>
+<ul>
+<li>Linux 系统中的每个程序都运行在一个进程上下文中，有自己的虚拟地址空间。</li>
+<li>当 shell 运行一个程序时，父 shell 进程生成一个子进程（父进程的一个复制）。子进程通过调用<code>execve</code>函数调用启动加载器。</li>
+<li>加载器删除子进程现有的虚拟内存段，并创建一组新的代码、数据、堆和栈段。</li>
+<li>通过将虚拟地址空间中的页映射到可执行文件的页大小的片。</li>
+</ul>
+<ol start="2">
+<li>加载器跳转到程序的入口点，也就是<code>_start</code>函数的地址，这个函数是在系统目标文件<code>ctrl.o</code>中定义的。</li>
+<li><code>_start</code>函数调用系统启动函数<code>__libc_start_main</code>，该函数定义在<code>libc.so</code>中。</li>
+<li><code>__libc_start_main</code>函数调用用户层的<code>main</code>函数，处理其返回的值，并在需要的时候返回给内核。</li>
+</ol>
+<p><strong>注意：</strong>加载过程中没有任何从磁盘到内存的数据复制（只是构建了引用、映射关系）。直到 CPU 引用一个被映射的虚拟页时才会进行复制，此时，操作系统利用它的页面调度机制自动将页面从磁盘传送到内存。</p>
+<h2 id="动态链接共享库"><a href="#动态链接共享库" class="headerlink" title="动态链接共享库"></a>动态链接共享库</h2><p>静态链接库存在的问题：</p>
+<ul>
+<li>静态库和所有的软件一样，需要定期维护和更新。如果应用程序员需要使用一个库的最新版本，他们必须以某种方式了解到该库的更新情况，然后<code>显式</code>地将他们的程序与更新了的库重新连接。</li>
+<li>几乎每个 C 程序都使用标准 I&#x2F;O 函数，比如 printf 和 scanf。在运行时，这些函数的代码会被复制到每个运行进程的文本段中，会造成内存系统资源的极大浪费（内存的一个有趣的属性就是不论系统的内存有多大，它总是一个稀缺资源）。</li>
+</ul>
+<p><strong>解决的基本思路：</strong>当创建可执行文件时，静态执行一些链接，然后在程序加载时，动态完成链接过程。</p>
+<p><code>共享库</code>（shared library）是一个目标模块，在运行或加载时，可以加载到任意的内存地址，并和一个在内存中的程序链接起来。这个过程称为<code>动态链接</code>（dynamic linking），在 Linux 系统中通常使用<code>.so</code>后缀来表示。微软的操作系统大量地使用了共享库，它们称为<code>DLL</code>（动态链接库）。两种共享方式：</p>
+<ul>
+<li>对于一个库只有一个<code>.so</code>文件。所有引用该库的可执行目标文件共享这个<code>.so</code>文件中的代码和数据，而不是静态库的内容那样被复制和嵌入到引用它们的可执行文件中。</li>
+<li>在内存中，一个共享库的<code>.text</code>节的一个副本可以被不同的正在运行的进程共享。</li>
+</ul>
+<p>比如，我们需要使用向量例程的共享库<code>libvector.so</code>，我们调用编译器驱动程序，给编译器和链接器如下指令：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 构建动态链接库 libvector.so（-fpic 指示编译器生成位置无关代码）</span></span><br><span class="line">gcc -shared -fpic -o libvector.so addvec.c multvec.c</span><br><span class="line"><span class="comment"># 使用 libvector.so</span></span><br><span class="line">gcc -o prog main.c ./libvector.so</span><br></pre></td></tr></table></figure>
+
+<p>链接器只是复制了一些重定位和符号表信息，它们使得运行时可以解析对<code>libvector.so</code>中代码和数据的引用。</p>
+<p><strong>注意：</strong>（静态）链接器（ld）在加载器（execve）<code>之前</code>，而动态链接器（ld-linux.so）是在加载器<code>之后</code>。</p>
+<p>在动态链接中，prog 程序包含一个<code>.interp</code>节，其中有动态链接器的路径名，动态链接器本身就是一个共享目标（如在 Linux 系统上的<code>ld-linux.so</code>）。加载器会加载和运行这个动态链接器。然后，动态链接器执行下面的重定位来完成链接任务：</p>
+<ul>
+<li>重定位<code>libvector.so</code>的文本和数据到一个内存段。</li>
+<li>重定位<code>prog</code>中所有对由<code>libvector.so</code>定义的符号的引用。</li>
+</ul>
+<p>最后，动态链接器将控制传递给应用程序。</p>
+<h3 id="运行时加载共享库"><a href="#运行时加载共享库" class="headerlink" title="运行时加载共享库"></a>运行时加载共享库</h3><p>动态链接是一项强大有用的技术。下面是一些现实世界的例子：</p>
+<ul>
+<li><code>分发软件</code>：微软 Windows 应用的开发者常常利用共享库来分发软件更新。在替换旧版本后，下一次用户在运行程序时，它将自动链接和加载新的共享库。</li>
+<li><code>构建高性能 Web 服务器</code>：早期的 Web 服务器通过使用 fork 和 execve 创建一个子进程，并在该子进程的上下文中运行 CGI 程序来生成动态内容。然而，现代高性能的 Web 服务器可以使用基于动态链接的方法来生成动态内容。它将每个生成动态内容的函数打包在共享库中。当一个来自 Web 浏览器的请求到达时，服务器动态地加载和链接适当的函数，然后调用它。</li>
+</ul>
+<p>Linux 系统为动态链接器提供了一个简单的接口，允许应用程序在运行时加载和链接共享库：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;dlfcn.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> *<span class="title function_">dlopen</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *filename, <span class="type">int</span> flag)</span>;  <span class="comment">/* NULL if it fails */</span></span><br><span class="line"><span class="type">void</span> *<span class="title function_">dlsym</span><span class="params">(<span class="type">void</span> *handle, <span class="type">char</span> *symbol)</span>; <span class="comment">/* return an address of a symbol */</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">dlclose</span><span class="params">(<span class="type">void</span> *handle)</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">char</span> *<span class="title function_">dlerror</span><span class="params">(<span class="type">void</span>)</span>;  </span><br></pre></td></tr></table></figure>
+
+<p><strong>共享库和 Java 本地接口：</strong></p>
+<p>Java 定义了一个标准调用规则，叫做<code>Java 本地接口</code>（Java Native Interface，JNI），它允许 Java 程序调用「本地的」C 和 C++ 函数。JNI 的基本思想是将本地 C 函数（如 foo）编译到一个共享库中（如 foo.so）。当一个正在运行的 Java 程序试图调用函数 foo 时，Java 解释器利用 dlopen 接口（或者其它类似的接口）动态链接和加载 foo.so，然后再调用 foo。</p>
+<h2 id="位置无关代码（PIC）"><a href="#位置无关代码（PIC）" class="headerlink" title="位置无关代码（PIC）"></a>位置无关代码（PIC）</h2><p><strong>多个进程是如何共享程序的一个副本？</strong></p>
+<p>一种方法是给每个共享库分配一个事先预备的专用的地址空间片。但是它会造成一些严重的问题：</p>
+<ul>
+<li>它对地址空间的使用效率不高，因为即使一个进程不使用这个库，那部分空间还是会被分配出来。</li>
+<li>它难以管理，我们必须保证没有片会重叠。</li>
+<li>每次当一个库修改后，我们必须确认已分配给它的片是否还适合它的大小。</li>
+<li>如果创建了一个新的库，我们还必须为它寻找空间。</li>
+</ul>
+<p>要避免这些问题，现代系统通过一种方式编译共享模块的代码段，使得把它们加载到内存的任何位置而无需链接器修改。使用这种方法，无限多个进程可以共享一个共享模块的代码段的单一副本（但每个进程还是有自己的读写数据块）。</p>
+<p>可以加载而无需重定位的代码称为<code>位置无关代码</code>（Position-Independent Code，PIC）。共享库的编译必须总是使用<code>-fpic</code>这一选项（GCC）。</p>
+<p>在一个 x86-64 系统中，对同一个目标模块中符号的引用是不需要特殊处理使之成为 PIC，可以用 PC 相对寻址来编译这些引用，构造目标文件时由<code>静态链接器</code>重定位。然而，对于共享模块定义的外部过程和全局变量的引用需要一些特殊的技巧。</p>
+<h3 id="PIC-数据引用"><a href="#PIC-数据引用" class="headerlink" title="PIC 数据引用"></a>PIC 数据引用</h3><p>编译器通过运用以下这个事实来生成对全局变量的引用：无论我们在内存中的何处加载一个目标模块（包括共享目标模块），<code>数据段与代码段的距离总是保持不变</code>。因此，代码段中任何指令和数据段中任何变量之间的距离都是一个运行时的<code>常量</code>。</p>
+<p>编译器利用这个事实，在数据段开始的地方创建了一给表，叫做<code>全局偏移量表</code>（Global Offset Table，GOT）。在 GOT 中，每个被这个目标模块引用的全局数据目标都有一个 8 字节条目。编译器还为 GOT 中每个条目生成一个重定位记录。在加载时，动态链接器会重定位 GOT 中的每个条目，使得它包含目标的正确的绝对地址。每个引用全局目标的目标模块都有自己的 GOT。【特么好复杂】</p>
+<p>下图展示了<code>libvector.so</code>共享模块的 GOT：<code>libvector.so</code>中的 addvec 例程通过<code>libvector.so</code>中的 GOT 间接引用了全局变量 addcnt。这里的关键思想是：对 GOT[3] 的 PC 相对引用中的偏移量是一个运行时常量（下图中是<code>0x2008b9</code>）。（PC 指向的是 addl 这条指令）</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ccfum.jpg" alt="用 GOT 引用全局变量（CSAPP 7-18）"></p>
+<p>因为 addcnt 是由<code>libvector.so</code>模块定义的，编译器可以利用代码段和数据段之间不变的距离，产生对 addcnt 的直接 PC 相对引用，并增加一个重定位，让连接器在构造这个共享模块时解析它。</p>
+<h3 id="PIC-函数调用"><a href="#PIC-函数调用" class="headerlink" title="PIC 函数调用"></a>PIC 函数调用</h3><p>假设程序调用一个由共享库定义的函数。编译器没有办法预测这个函数的运行d地址，因为定义它的共享模块在运行时可以加载到任意位置。正常的办法是为该引用生成一条重定位记录，然后动态链接器在程序加载时再解析它。不过，这种方法不是 PIC，因为它需要链接器修改调用模块的代码段。GNU 编译系统使用了一种很有趣的技术来解决这个问题，称为<code>延迟绑定</code>（lazy binding），将过程地址的绑定推迟到第一次调用该过程时，能避免动态链接器在加载时进行成百上千个其实并不需要的重定位。</p>
+<p>延迟绑定是通过两个数据结构之间简洁但又有些复杂的交互来实现的，这两个数据结构是<code>GOT</code>和<code>过程链接表</code>（Procedure Linkage Table，PLT）。如果一个目标模块调用定义在共享库中的任何函数，那么它就有自己的 GOT 和 PLT。GOT 是数据段的一部分，而 PLT 是代码段的一部分。</p>
+<ul>
+<li><code>GOT[0]</code>和<code>GOT[1]</code>包含动态链接器在解析函数地址时用到的信息，而<code>GOT[2]</code>是动态链接器在<code>ld-linux.so</code>模块中的入口点。其余的每个条目对应于一个被调用的函数，其地址需要再运行时被解析。</li>
+<li><code>PLT[0]</code>是一个特殊条目，它跳转到动态链接器中。<code>PLT[1]</code>调用系统启动函数<code>__libc_start_mian</code>，它初始化执行环境并调用<code>main</code>函数。从<code>PLT[2]</code>开始的条目调用用户代码调用的函数。</li>
+</ul>
+<p>两者系统工作的方式有点复杂，了解一下有这么个东西就好（参考：CSAPP p491）。</p>
+<h2 id="库打桩机制"><a href="#库打桩机制" class="headerlink" title="库打桩机制"></a>库打桩机制</h2><p>Linux 链接器支持<code>库打桩</code>（library interpositioning），它允许你截获对共享库函数的调用，取而代之执行自己的代码。使用打桩机制，你可以追踪对某个特殊库函数的调用次数，验证和追踪它的输入和输出值，或者甚至把它替换成一个完全不同的实现。</p>
+<p>基本思想：给定一个需要打桩的<code>目标函数</code>，创建一个<code>包装函数</code>，它的原型与目标函数完全一样，然后使用某种特殊的打桩机制，欺骗系统调用包装函数而不是目标函数。包装函数通常会执行自己的逻辑，然后调用目标函数，再将目标函数的返回值传递给调用者。</p>
+<p>打桩可以发生在编译时（.I）、链接时（–wrap f）、加载或运行运行。</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: EPI 5.4 Problem In this board game, a player has to try to advance through a sequence of positions. Each position has a nonnegative integer associated with it, representing the maximum yo">
+<meta property="og:type" content="website">
+<meta property="og:title" content="EPI 5.4 | Advancing Through an Array">
+<meta property="og:url" content="https://junhaow.com/lc/problems/array/uncategorized/epi_5_4_advancing-through-an-array.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: EPI 5.4 Problem In this board game, a player has to try to advance through a sequence of positions. Each position has a nonnegative integer associated with it, representing the maximum yo">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.107Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.107Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>EPI 5.4 | Advancing Through an Array</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <span class="gray">EPI 5.4</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>In this board game, a player has to try to advance through a sequence of positions. Each position has a nonnegative integer associated with it, representing the maximum you can advance from that position in one move.</p>
+</blockquote>
+<blockquote>
+<p>Write a program which takes an array of $n$ integers, where <code>A[i]</code> denotes the maximum you can advance from index $i$, and returns whether it is possible to advance to the last index starting from the beginning of the array.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Reachable</span></span><br><span class="line">     <span class="number">0</span>  <span class="number">1</span>  <span class="number">2</span>  <span class="number">3</span>  <span class="number">4</span>  <span class="number">5</span>  <span class="number">6</span></span><br><span class="line">A = [<span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>]</span><br><span class="line">     ---- <span class="number">1</span> step</span><br><span class="line">        ---------- <span class="number">3</span> steps</span><br><span class="line">                 ------- <span class="number">2</span> steps</span><br><span class="line"><span class="comment">// Non-Reachable</span></span><br><span class="line">     <span class="number">0</span>  <span class="number">1</span>  <span class="number">2</span>  <span class="number">3</span>  <span class="number">4</span>  <span class="number">5</span>  <span class="number">6</span></span><br><span class="line">A = [<span class="number">3</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p>Try every possible solution to see if we can reach the end. For example, if we can move by $3$ steps, we would try to move by $1$, $2$, and $3$ steps.</p>
+<p>If the last index is reachable, it returns <code>true</code> immediately, which is the base case of the recursive function.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// brute-force</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">canReachEnd</span><span class="params">(List&lt;Integer&gt; A)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> dfs(A, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// dfs</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">dfs</span><span class="params">(List&lt;Integer&gt; steps, <span class="type">int</span> pos)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (pos &gt;= steps.size() - <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">numStep</span> <span class="operator">=</span> steps.get(pos);</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt;= numStep; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (dfs(steps, pos + i)) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Imagine there is an input array like $A &#x3D; [N - 1, N - 2, N - 3, \ldots, 1]$ and the length of the array is also $N$. <span class="purple">Marked</span></p>
+<p>I think it depends on the input array.</p>
+<p><strong>Time:</strong> $O(N^N)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Start-End-Overlap"><a href="#Start-End-Overlap" class="headerlink" title="Start-End Overlap"></a>Start-End Overlap</h3><p>Using the idea in <a target="_blank" rel="noopener" href="https://www.junhaow.com/studynotes/cs61b/cs61b%20clab8%20flight.html">CS 61B | Challenge Lab 8 | Flight Problem (HeapPQ)</a>, we can reduce the problem as the following illustration.</p>
+<p>We can draw a line starting from $i$ and crossing $n + 1$ elements if <code>A[i] = n</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Reachable</span></span><br><span class="line">     <span class="number">0</span>  <span class="number">1</span>  <span class="number">2</span>  <span class="number">3</span>  <span class="number">4</span>  <span class="number">5</span>  <span class="number">6</span></span><br><span class="line">A = [<span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>]</span><br><span class="line">     ----------</span><br><span class="line">        ----------</span><br><span class="line">           ----</span><br><span class="line">                 -------</span><br><span class="line">                       ----</span><br><span class="line"><span class="comment">// Non-Reachable</span></span><br><span class="line">     <span class="number">0</span>  <span class="number">1</span>  <span class="number">2</span>  <span class="number">3</span>  <span class="number">4</span>  <span class="number">5</span>  <span class="number">6</span></span><br><span class="line">A = [<span class="number">3</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>]</span><br><span class="line">     ----------</span><br><span class="line">        -------</span><br><span class="line">                 -------</span><br><span class="line">                       ----</span><br><span class="line">               ^ <span class="comment">// here is a gap, so the end is not reachable</span></span><br></pre></td></tr></table></figure>
+
+<p>The problem is reduced to another problem: Whether the lines are overlapped. We go through the array. If there is an entry, <code>count[i] += 1</code>; if there is an exit, <code>count[i] -= 1</code>.</p>
+<p>We can maintain an array <code>count</code> that stores a value denoting the number of entries minus the number of exits.</p>
+<p>Meanwhile, when we go through the array, we use a variable to store a value (we can called it <code>balance</code>). If the <code>balance</code> is less than $0$ before the last index, it means that there is gap between those lines.</p>
+<p>In the examples above, we have this following illustration.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Reachable</span></span><br><span class="line">     <span class="number">0</span>  <span class="number">1</span>  <span class="number">2</span>  <span class="number">3</span>  <span class="number">4</span>  <span class="number">5</span>  <span class="number">6</span></span><br><span class="line">A = [<span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>]</span><br><span class="line">     ----------</span><br><span class="line">        ----------</span><br><span class="line">           ----</span><br><span class="line">                 -------</span><br><span class="line">                       ----</span><br><span class="line">    +<span class="number">1</span> +<span class="number">1</span> +<span class="number">1</span> -<span class="number">1</span> -<span class="number">1</span>    -<span class="number">1</span></span><br><span class="line">             -<span class="number">1</span> +<span class="number">1</span>    +<span class="number">1</span></span><br><span class="line">Bal: <span class="number">1</span>  <span class="number">2</span>  <span class="number">3</span>  <span class="number">1</span>  <span class="number">1</span>  <span class="number">1</span>  <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Non-Reachable</span></span><br><span class="line">     <span class="number">0</span>  <span class="number">1</span>  <span class="number">2</span>  <span class="number">3</span>  <span class="number">4</span>  <span class="number">5</span>  <span class="number">6</span></span><br><span class="line">A = [<span class="number">3</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>]</span><br><span class="line">     ----------</span><br><span class="line">        -------</span><br><span class="line">                 -------</span><br><span class="line">                       ----</span><br><span class="line">    +<span class="number">1</span> +<span class="number">1</span>    -<span class="number">1</span> +<span class="number">1</span>    -<span class="number">1</span></span><br><span class="line">             -<span class="number">1</span>       +<span class="number">1</span></span><br><span class="line">Bal: <span class="number">1</span>  <span class="number">2</span>  <span class="number">2</span>  <span class="number">0</span> <span class="comment">// &lt;- gap is detected</span></span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Note:</strong> We allow that when <code>i = n - 1</code> (the last index) the <code>balance</code> becomes $0$. Since we have already been at the last index, it is reachable.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">canReachEnd</span><span class="params">(List&lt;Integer&gt; A)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> A.size();</span><br><span class="line">  <span class="type">int</span>[] numStartExit = <span class="keyword">new</span> <span class="title class_">int</span>[n];</span><br><span class="line">  <span class="type">int</span> <span class="variable">balance</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="comment">// if (A.get(i) &gt; 0) &#123; // if A.get(i) == 0, do nothing</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">start</span> <span class="operator">=</span> i;</span><br><span class="line">    <span class="type">int</span> <span class="variable">end</span> <span class="operator">=</span> start + A.get(i);</span><br><span class="line">    numStartExit[start] += <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (end &lt; n) &#123;</span><br><span class="line">      numStartExit[end] -= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// &#125; // the if can be removed (think about why~)</span></span><br><span class="line">    balance += numStartExit[i];</span><br><span class="line">    <span class="comment">// check: not the last element &amp;&amp; balance &lt;= 0</span></span><br><span class="line">    <span class="keyword">if</span> (i &lt; n - <span class="number">1</span> &amp;&amp; balance &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$ needs extra space.</p>
+<h3 id="Furthest-Greedy"><a href="#Furthest-Greedy" class="headerlink" title="Furthest (Greedy)"></a>Furthest (Greedy)</h3><p>As we iterate through the array, we track the array, we track the furthest index we know we can advance to. The furthest we can advance is <code>i + A[i]</code>.</p>
+<p>During the iteration, if the current index <code>i</code> is larger than <code>furthestIndex</code>, we stop because <code>i</code> could not be reached. In other words, we only advance when <code>i &lt;= furthestIndex</code>.</p>
+<p><strong>Note:</strong> The other condition could be <code>i &lt; n</code> or <code>furthestIndex &lt; n - 1</code>. The latter one shows that we only advance when we cannot reach the last index.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">canReachEnd</span><span class="params">(List&lt;Integer&gt; A)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> A.size();</span><br><span class="line">  <span class="type">int</span> <span class="variable">lastIndex</span> <span class="operator">=</span> n - <span class="number">1</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">furthestIndex</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt;= furthestIndex &amp;&amp; furthestIndex &lt; lastIndex; ++i) &#123;</span><br><span class="line">    furthestIndex = Math.max(furthestIndex, i + A.get(i));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> furthestIndex &gt;= lastIndex;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+<h2 id="Variant"><a href="#Variant" class="headerlink" title="Variant"></a>Variant</h2><p>Write a program to compute the minimum number of steps needed to advance to the last location. <span class="purple">Marked</span></p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

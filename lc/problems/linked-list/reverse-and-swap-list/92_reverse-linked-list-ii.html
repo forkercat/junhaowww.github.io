@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode EPI 7.2Difficulty: Medium My Post: 0 ms Java Solution (Iteration &amp; Recursion) Idx is important! Problem Reverse a linked list from position $m$ to $n$. Do it in one-pass.  No">
+<meta property="og:type" content="website">
+<meta property="og:title" content="92. Reverse Linked List II">
+<meta property="og:url" content="https://junhaow.com/lc/problems/linked-list/reverse-and-swap-list/92_reverse-linked-list-ii.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode EPI 7.2Difficulty: Medium My Post: 0 ms Java Solution (Iteration &amp; Recursion) Idx is important! Problem Reverse a linked list from position $m$ to $n$. Do it in one-pass.  No">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.129Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.129Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>92. Reverse Linked List II</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/reverse-linked-list-ii/">LeetCode</a> <span class="gray">EPI 7.2</span><br>Difficulty: <span class="orange">Medium</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/reverse-linked-list-ii/discuss/317302/">0 ms Java Solution (Iteration &amp; Recursion) Idx is important!</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Reverse a linked list from position $m$ to $n$. Do it in one-pass.</p>
+</blockquote>
+<p><strong>Note:</strong> <code>1 ≤ m ≤ n ≤ length</code> of list.</p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="number">1</span>-&gt;<span class="number">2</span>-&gt;<span class="number">3</span>-&gt;<span class="number">4</span>-&gt;<span class="number">5</span>-&gt;NULL, m = <span class="number">2</span>, n = <span class="number">4</span></span><br><span class="line">Output: <span class="number">1</span>-&gt;<span class="number">4</span>-&gt;<span class="number">3</span>-&gt;<span class="number">2</span>-&gt;<span class="number">5</span>-&gt;NULL</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p><strong>Focus on One-Pass Iteration!</strong></p>
+<h3 id="One-Pass-Iteration"><a href="#One-Pass-Iteration" class="headerlink" title="One-Pass Iteration"></a>One-Pass Iteration</h3><ul>
+<li>The drawback of the above approach is that it requires two passes over the sublist.</li>
+<li>Once we reach the m-th node, we start the reversing process and keep counting.</li>
+<li>Once we reach the n-th node, we stop the reversion process and link the reversed section with the unreversed sections.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//       2         4</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//  1    2    3    4    5</span></span><br><span class="line"><span class="comment">//  bef oldH  p    nT</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//  1    3    2    4    5</span></span><br><span class="line"><span class="comment">//  bef      oldH  p    nT</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//  1    4    3    2    5</span></span><br><span class="line"><span class="comment">//  bef           oldH  p</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">reverseBetween</span><span class="params">(ListNode head, <span class="type">int</span> m, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">null</span> || head.next == <span class="literal">null</span> || m &gt; n) &#123;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// assume m and n are valid</span></span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">dummy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(-<span class="number">1</span>);</span><br><span class="line">  dummy.next = head;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">before</span> <span class="operator">=</span> dummy;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> m; <span class="comment">// m = 2</span></span><br><span class="line">  <span class="keyword">while</span> (count &gt; <span class="number">1</span>) &#123;</span><br><span class="line">    before = before.next;</span><br><span class="line">    --count;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">oldHead</span> <span class="operator">=</span> before.next;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> oldHead.next;</span><br><span class="line">  <span class="keyword">while</span> (m &lt; n) &#123;</span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">nextTemp</span> <span class="operator">=</span> p.next;</span><br><span class="line">    p.next = before.next;</span><br><span class="line">    before.next = p;</span><br><span class="line">    oldHead.next = nextTemp;</span><br><span class="line">    <span class="comment">// update</span></span><br><span class="line">    p = nextTemp;</span><br><span class="line">    ++m;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Two-Pass-Iteration"><a href="#Two-Pass-Iteration" class="headerlink" title="Two-Pass Iteration"></a>Two-Pass Iteration</h3><p>We can treat this problem as a pure list reversal problem, but we need to locate the m-th node and n-th node.</p>
+<ul>
+<li>Get the list between $m$ and $n$.</li>
+<li>Reverse the list.</li>
+<li>Concatenate the list with the list before $m$ and the list after $n$.</li>
+</ul>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>Using a <code>count</code> variable brings about clean code.</li>
+<li>Use a dummy node to get rid of null check.</li>
+<li>Use two pointers <code>p</code> and <code>prev</code>. After reversal, we need to update the next pointer of (m-1)-th node.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Iteration</span></span><br><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">iterationSolution</span><span class="params">(ListNode head, <span class="type">int</span> m, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (m == n) <span class="keyword">return</span> head;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">dummy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(-<span class="number">1</span>);</span><br><span class="line">  dummy.next = head;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> dummy;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (count &lt; m) &#123; <span class="comment">// before m</span></span><br><span class="line">    prev = p;</span><br><span class="line">    p = p.next;</span><br><span class="line">    ++count;</span><br><span class="line">  &#125; <span class="comment">// now: p -&gt; m-th node</span></span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">mthNode</span> <span class="operator">=</span> p;</span><br><span class="line">  <span class="keyword">while</span> (count &lt; n) &#123; <span class="comment">// between m and n</span></span><br><span class="line">    p = p.next;</span><br><span class="line">    ++count;</span><br><span class="line">  &#125; <span class="comment">// now: p -&gt; n-th node</span></span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">rest</span> <span class="operator">=</span> p.next; <span class="comment">// the nodes after n-th node</span></span><br><span class="line">  p.next = <span class="literal">null</span>;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">tailNode</span> <span class="operator">=</span> mthNode;</span><br><span class="line">  mthNode = reverse(mthNode);</span><br><span class="line">  prev.next = mthNode;</span><br><span class="line">  tailNode.next = rest; <span class="comment">// connect the rest of the nodes</span></span><br><span class="line">  <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Reverse helper:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// pure reverse</span></span><br><span class="line"><span class="keyword">private</span> ListNode <span class="title function_">reverse</span><span class="params">(ListNode x)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span> || x.next == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">ret</span> <span class="operator">=</span> reverse(x.next);</span><br><span class="line">  x.next.next = x;</span><br><span class="line">  x.next = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Recursion"><a href="#Recursion" class="headerlink" title="Recursion"></a>Recursion</h3><p>Write a recursive function that does not really reverse the list, but locate the nodes $m$ and $n$.</p>
+<p>Use a pure reverse function to reverse the list.</p>
+<p>Here is the helper function.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> ListNode <span class="title function_">reverseAmong</span><span class="params">(ListNode x, <span class="type">int</span> m, <span class="type">int</span> n, <span class="type">int</span> count)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (count &gt;= n) &#123; <span class="comment">// points to the n-th node</span></span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (count &lt; m) &#123; <span class="comment">// not within range</span></span><br><span class="line">    x.next = reverseAmong(x.next, m, n, count + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (count == m) &#123; <span class="comment">// points to the m-th node</span></span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">nthNode</span> <span class="operator">=</span> reverseAmong(x.next, m, n, count + <span class="number">1</span>);</span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">rest</span> <span class="operator">=</span> nthNode.next; <span class="comment">// nodes that after n-th</span></span><br><span class="line">    nthNode.next = <span class="literal">null</span>; <span class="comment">// make the list m~n. Set null for reverse</span></span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">tailNode</span> <span class="operator">=</span> x;</span><br><span class="line">    x = reverse(x); <span class="comment">// reverse the m~n nodes</span></span><br><span class="line">    tailNode.next = rest; <span class="comment">// rest = null / nodes that are after n-th</span></span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// points to the nodes between (m, n)</span></span><br><span class="line">  <span class="keyword">return</span> reverseAmong(x.next, m, n, count + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$ in the worst case when we have to reverse the entire list.</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

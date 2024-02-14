@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode EPI 11.6Difficulty: Medium Problem Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has the following properties:   Integers in each row are">
+<meta property="og:type" content="website">
+<meta property="og:title" content="240. Search a 2D Matrix II">
+<meta property="og:url" content="https://junhaow.com/lc/problems/binary-search/matrix/240_search-a-2d-matrix-ii.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode EPI 11.6Difficulty: Medium Problem Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has the following properties:   Integers in each row are">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.115Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.115Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>240. Search a 2D Matrix II</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/search-a-2d-matrix-ii/">LeetCode</a> <span class="gray">EPI 11.6</span><br>Difficulty: <span class="orange">Medium</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Write an efficient algorithm that searches for a value in an <code>m x n</code> matrix. This matrix has the following properties:</p>
+</blockquote>
+<ul>
+<li>Integers in each row are sorted in ascending from left to right.</li>
+<li>Integers in each column are sorted in ascending from top to bottom.</li>
+</ul>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  [<span class="number">1</span>,   <span class="number">4</span>,  <span class="number">7</span>, <span class="number">11</span>, <span class="number">15</span>],</span><br><span class="line">  [<span class="number">2</span>,   <span class="number">5</span>,  <span class="number">8</span>, <span class="number">12</span>, <span class="number">19</span>],</span><br><span class="line">  [<span class="number">3</span>,   <span class="number">6</span>,  <span class="number">9</span>, <span class="number">16</span>, <span class="number">22</span>],</span><br><span class="line">  [<span class="number">10</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">17</span>, <span class="number">24</span>],</span><br><span class="line">  [<span class="number">18</span>, <span class="number">21</span>, <span class="number">23</span>, <span class="number">26</span>, <span class="number">30</span>]</span><br><span class="line">]</span><br><span class="line"><span class="type">Given</span> <span class="variable">target</span> <span class="operator">=</span> <span class="number">5</span>, <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line"><span class="type">Given</span> <span class="variable">target</span> <span class="operator">=</span> <span class="number">20</span>, <span class="keyword">return</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">searchMatrix</span><span class="params">(<span class="type">int</span>[][] matrix, <span class="type">int</span> target)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (matrix == <span class="literal">null</span> || matrix.length == <span class="number">0</span> || matrix[<span class="number">0</span>].length == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">row</span> <span class="operator">=</span> matrix.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">col</span> <span class="operator">=</span> matrix[<span class="number">0</span>].length;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> <span class="number">0</span>; r &lt; row; ++r) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> <span class="number">0</span>; c &lt; col; ++c) &#123;</span><br><span class="line">      <span class="keyword">if</span> (matrix[r][c] == target) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(MN)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Binary-Search"><a href="#Binary-Search" class="headerlink" title="Binary Search"></a>Binary Search</h3><p>Iterate over elements along the <code>diagonal</code>, and each time perform binary search <code>horizontally</code> and <code>vertically</code>.</p>
+<p><strong>Note:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">searchMatrix</span><span class="params">(<span class="type">int</span>[][] matrix, <span class="type">int</span> target)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (matrix == <span class="literal">null</span> || matrix.length == <span class="number">0</span> || matrix[<span class="number">0</span>].length == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">row</span> <span class="operator">=</span> matrix.length, col = matrix[<span class="number">0</span>].length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> <span class="number">0</span>, c = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (r &lt; row &amp;&amp; c &lt; col) &#123; <span class="comment">// min(M, N)</span></span><br><span class="line">    <span class="keyword">if</span> (bsHelper(matrix, r, c, target)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    r += <span class="number">1</span>;</span><br><span class="line">    c += <span class="number">1</span>;</span><br><span class="line">  &#125;    </span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">bsHelper</span><span class="params">(<span class="type">int</span>[][] matrix, <span class="type">int</span> r, <span class="type">int</span> c, <span class="type">int</span> target)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">row</span> <span class="operator">=</span> matrix.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">col</span> <span class="operator">=</span> matrix[<span class="number">0</span>].length;</span><br><span class="line">  <span class="keyword">if</span> (r &gt;= row || c &gt;= col) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// horizontal</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">lo</span> <span class="operator">=</span> c, hi = col - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (lo &lt;= hi) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> lo + (hi - lo) / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (matrix[r][mid] == target) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (matrix[r][mid] &gt; target) &#123;</span><br><span class="line">      hi = mid - <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      lo = mid + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// vertical</span></span><br><span class="line">  lo = r; hi = row - <span class="number">1</span>; <span class="comment">// semicolon</span></span><br><span class="line">  <span class="keyword">while</span> (lo &lt;= hi) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> lo + (hi - lo) / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (matrix[mid][c] == target) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (matrix[mid][c] &gt; target) &#123;</span><br><span class="line">      hi = mid - <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      lo = mid + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N\log{M})$ or $O(M\log{N})$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Search-Space-Reduction"><a href="#Search-Space-Reduction" class="headerlink" title="Search Space Reduction"></a>Search Space Reduction</h3><p>Start from the corner <code>up-right</code> or <code>bottom-left</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">searchMatrix</span><span class="params">(<span class="type">int</span>[][] matrix, <span class="type">int</span> target)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (matrix == <span class="literal">null</span> || matrix.length == <span class="number">0</span> || matrix[<span class="number">0</span>].length == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">row</span> <span class="operator">=</span> matrix.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">col</span> <span class="operator">=</span> matrix[<span class="number">0</span>].length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> <span class="number">0</span>, c = col - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (r &lt; row &amp;&amp; c &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (matrix[r][c] == target) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (matrix[r][c] &gt; target) &#123;</span><br><span class="line">      c -= <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      r += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(M + N)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Divide-and-Conquer"><a href="#Divide-and-Conquer" class="headerlink" title="Divide and Conquer"></a>Divide and Conquer</h3><p><span class="purple">Marked. I don’t quite really understand.</span></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">searchMatrix</span><span class="params">(<span class="type">int</span>[][] matrix, <span class="type">int</span> target)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (matrix == <span class="literal">null</span> || matrix.length == <span class="number">0</span> || matrix[<span class="number">0</span>].length == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">row</span> <span class="operator">=</span> matrix.length, col = matrix[<span class="number">0</span>].length;</span><br><span class="line">  <span class="keyword">return</span> searchRect(matrix, target, <span class="number">0</span>, <span class="number">0</span>, col - <span class="number">1</span>, row - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">searchRect</span><span class="params">(<span class="type">int</span>[][] matrix, <span class="type">int</span> target, <span class="type">int</span> left, <span class="type">int</span> up, <span class="type">int</span> right, <span class="type">int</span> down)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (left &gt; right || up &gt; down) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">// this submatrix has no height or no width</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (target &lt; matrix[up][left] || target &gt; matrix[down][right]) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">// &quot;target&quot; is already larger than the largest or the smallest element</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> left + (right - left) / <span class="number">2</span>;</span><br><span class="line">  <span class="comment">// Locate &quot;row&quot; such that matrix[row - 1][mid] &lt; target &lt; matrix[row][mid]</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">row</span> <span class="operator">=</span> up;</span><br><span class="line">  <span class="keyword">while</span> (row &lt;= down &amp;&amp; matrix[row][mid] &lt;= target) &#123;</span><br><span class="line">    <span class="keyword">if</span> (matrix[row][mid] == target) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    row += <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> searchRect(matrix, target, left, row, mid - <span class="number">1</span>, down) || searchRect(matrix, target, mid + <span class="number">1</span>, up, right, row - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N\log{N})$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

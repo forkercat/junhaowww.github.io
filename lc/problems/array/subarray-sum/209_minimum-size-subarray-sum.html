@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium Problem Given an array of n positive integers and a positive integer s, find the minimal length of a contiguous subarray of which the sum ≥ s. If there isn’t on">
+<meta property="og:type" content="website">
+<meta property="og:title" content="209. Minimum Size Subarray Sum">
+<meta property="og:url" content="https://junhaow.com/lc/problems/array/subarray-sum/209_minimum-size-subarray-sum.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium Problem Given an array of n positive integers and a positive integer s, find the minimal length of a contiguous subarray of which the sum ≥ s. If there isn’t on">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sdeez.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.103Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.103Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sdeez.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>209. Minimum Size Subarray Sum</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/minimum-size-subarray-sum/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given an array of <code>n</code> positive integers and a positive integer <code>s</code>, find the minimal length of a contiguous subarray of which the <code>sum ≥ s</code>. If there isn’t one, return <code>0</code> instead.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: s = <span class="number">7</span>, nums = [<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">3</span>]</span><br><span class="line">Output: <span class="number">2</span></span><br><span class="line">Explanation: the subarray [<span class="number">4</span>,<span class="number">3</span>] has the minimal length under the problem constraint.</span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> If you have figured out the $O(N)$ solution, try coding another solution of which the time complexity is $O(N\log{N})$.</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p><strong>Note:</strong> Be careful of the initialization.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">minSubArrayLen</span><span class="params">(<span class="type">int</span> s, <span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="comment">// assume nums is not null</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">minLen</span> <span class="operator">=</span> Integer.MAX_VALUE;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i; j &lt; n; ++j) &#123;</span><br><span class="line">      sum += nums[j];</span><br><span class="line">      <span class="keyword">if</span> (sum &gt;= s) &#123;</span><br><span class="line">        minLen = Math.min(minLen, j - i + <span class="number">1</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> minLen == Integer.MAX_VALUE ? <span class="number">0</span> : minLen;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^2)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="TreeMap"><a href="#TreeMap" class="headerlink" title="TreeMap"></a>TreeMap</h3><p>My TreeMap Post: <a href="http://junhaow.com/lc/notes/treeset-treemap-usage-and-binarySearch.html">TreeSet&#x2F;TreeMap Usage &amp; binarySearch()</a></p>
+<p>Based on the idea in <code>325. Maximum Size Subarray Sum Equals K</code>, we can use a tree map for solving this problem.</p>
+<p><strong>Modification:</strong></p>
+<p>When we have duplicate prefix sums, we update the index. It is because in this problem we want the minimum size. <strong>However</strong>, since the problem statement says there are all positive integers, there won’t be duplicate prefix sums.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  x      s</span><br><span class="line">-----&gt; ------&gt;</span><br><span class="line">-------------&gt;</span><br><span class="line">     sum</span><br></pre></td></tr></table></figure>
+
+<p>Also, in this problem we want the sum greater than or equal to <code>s</code>, so we cannot use hash map. Instead, we use a tree map. In the example above, when we have a prefix sum <code>sum</code>, we check if there is an <code>x</code> such that <code>sum - x &gt;= s</code>. In other words, we want <code>x &lt;= sum - s</code>. It is to find the greatest <code>x</code> that satisfies the equation. This can be achieved by using <code>floorKey(K)</code> in TreeMap.</p>
+<p><strong>Try it by hand with an example!</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">minSubArrayLen</span><span class="params">(<span class="type">int</span> s, <span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="comment">// assume nums is not null</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  TreeMap&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">TreeMap</span>&lt;&gt;(); <span class="comment">// &lt;prefixSum, index&gt;</span></span><br><span class="line">  map.put(<span class="number">0</span>, -<span class="number">1</span>);</span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> <span class="variable">minLen</span> <span class="operator">=</span> Integer.MAX_VALUE;</span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    sum += nums[i];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (map.floorKey(sum - s) != <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">size</span> <span class="operator">=</span> i - map.get(map.floorKey(sum - s)); <span class="comment">// or floorEntry(K).getValue()</span></span><br><span class="line">      minLen = Math.min(minLen, size);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    map.put(sum, i); <span class="comment">// update to the latest index</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> minLen == Integer.MAX_VALUE ? <span class="number">0</span> : minLen;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N\log{N})$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="Binary-Search"><a href="#Binary-Search" class="headerlink" title="Binary Search"></a>Binary Search</h3><p>Based on the same idea, we can implement the binary search by ourselves. We don’t need a tree map here because we have positive elements such that prefix sums are always increasing; in other words, as we build the array, it is always sorted in ascending order.</p>
+<p>In this solution, we apply upper-bound binary search (FYI: <a target="_blank" rel="noopener" href="https://www.junhaow.com/lc/notes/binary-search-template-notes.html">Binary Search Template Notes</a>).</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">minSubArrayLen</span><span class="params">(<span class="type">int</span> s, <span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="comment">// assume nums is not null</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="type">int</span>[] prefix = <span class="keyword">new</span> <span class="title class_">int</span>[n + <span class="number">1</span>];</span><br><span class="line">  prefix[<span class="number">0</span>] = <span class="number">0</span>; <span class="comment">// corresponding to map.put(0, -1), but index starts from 0</span></span><br><span class="line">  <span class="comment">// prefix[0] = 0, prefix[1] = nums[0], prefix[2] = nums[0] + nums[1], ...</span></span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> <span class="variable">minLen</span> <span class="operator">=</span> Integer.MAX_VALUE;</span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    sum += nums[i];</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> binarySearch(prefix, <span class="number">0</span>, i, sum - s);</span><br><span class="line">    <span class="keyword">if</span> (result != -<span class="number">1</span>) &#123; <span class="comment">// &lt;= sum - s</span></span><br><span class="line">      <span class="type">int</span> <span class="variable">size</span> <span class="operator">=</span> i - result + <span class="number">1</span>;</span><br><span class="line">      minLen = Math.min(minLen, size);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    prefix[i + <span class="number">1</span>] = sum;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> minLen == Integer.MAX_VALUE ? <span class="number">0</span> : minLen;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// To find the one (&lt;= key)</span></span><br><span class="line"><span class="comment">// we use upper-bound BS to find (&gt; key)</span></span><br><span class="line"><span class="comment">// exists:     lo - 1 --&gt; existing item</span></span><br><span class="line"><span class="comment">// not exists: lo - 1 --&gt; greatest item &lt; key</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">binarySearch</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> lo, <span class="type">int</span> hi, <span class="type">int</span> key)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">oldLo</span> <span class="operator">=</span> lo;</span><br><span class="line">  <span class="type">int</span> <span class="variable">oldHi</span> <span class="operator">=</span> hi;</span><br><span class="line">  <span class="keyword">while</span> (lo &lt;= hi) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> lo + (hi - lo) / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (nums[mid] &gt; key) &#123;</span><br><span class="line">      hi = mid - <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      lo = mid + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  lo -= <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span> (lo &gt;= oldLo &amp;&amp; lo &lt;= oldHi) <span class="keyword">return</span> lo;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N\log{N})$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="Two-Pointers"><a href="#Two-Pointers" class="headerlink" title="Two Pointers"></a>Two Pointers</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="number">0</span>, nums = [<span class="number">0</span>] <span class="comment">// this is an invalid input</span></span><br></pre></td></tr></table></figure>
+
+<p>Instead of having the starting index fixed, we update it when it no longer contributes to a solution.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="number">7</span>, nums = [<span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">3</span>]  <span class="comment">// output: 2</span></span><br><span class="line">              i/j (<span class="number">2</span>)             <span class="comment">// i = start, j = end</span></span><br><span class="line">               i  <span class="title function_">j</span> <span class="params">(<span class="number">5</span>)</span></span><br><span class="line">               i     <span class="title function_">j</span> <span class="params">(<span class="number">6</span>)</span></span><br><span class="line">               i        <span class="title function_">j</span> <span class="params">(<span class="number">8</span>)</span> <span class="comment">// increasing j does not give us a better solution</span></span><br><span class="line">                  i     <span class="title function_">j</span> <span class="params">(<span class="number">6</span>)</span></span><br><span class="line">                  i        <span class="title function_">j</span> <span class="params">(<span class="number">10</span>)</span></span><br><span class="line">                     i     <span class="title function_">j</span> <span class="params">(<span class="number">7</span>)</span></span><br><span class="line">                        i  <span class="title function_">j</span> <span class="params">(<span class="number">6</span>)</span></span><br><span class="line">                        i     <span class="title function_">j</span> <span class="params">(<span class="number">9</span>)</span></span><br><span class="line">                           i  <span class="title function_">j</span> <span class="params">(<span class="number">7</span>)</span></span><br><span class="line">                             i/j (<span class="number">3</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>My Version: (initialize <code>sum</code> as <code>nums[0]</code>)</p>
+<p><strong>Note:</strong> The subarray is <code>[start, end]</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">minSubArrayLen</span><span class="params">(<span class="type">int</span> s, <span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="comment">// assume nums is not null</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="keyword">if</span> (n == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> nums[<span class="number">0</span>];</span><br><span class="line">  <span class="type">int</span> <span class="variable">minLen</span> <span class="operator">=</span> Integer.MAX_VALUE;</span><br><span class="line">  <span class="type">int</span> <span class="variable">start</span> <span class="operator">=</span> <span class="number">0</span>, end = <span class="number">0</span>; <span class="comment">// [start, end]</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (end &lt; n) &#123;</span><br><span class="line">    <span class="keyword">if</span> (sum &lt; s) &#123;</span><br><span class="line">      ++end;</span><br><span class="line">      <span class="keyword">if</span> (end == n) <span class="keyword">break</span>;</span><br><span class="line">      sum += nums[end];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// sum &gt;= s</span></span><br><span class="line">      minLen = Math.min(minLen, end - start + <span class="number">1</span>);</span><br><span class="line">      sum -= nums[start];</span><br><span class="line">      ++start;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> minLen == Integer.MAX_VALUE ? <span class="number">0</span> : minLen;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>We can also use <code>while</code> to update <code>start</code> until it satisfies the condition:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">minSubArrayLen</span><span class="params">(<span class="type">int</span> s, <span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="comment">// assume nums is not null</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="keyword">if</span> (n == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> nums[<span class="number">0</span>];</span><br><span class="line">  <span class="type">int</span> <span class="variable">minLen</span> <span class="operator">=</span> Integer.MAX_VALUE;</span><br><span class="line">  <span class="type">int</span> <span class="variable">start</span> <span class="operator">=</span> <span class="number">0</span>, end = <span class="number">0</span>; <span class="comment">// [start, end]</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (end &lt; n) &#123;</span><br><span class="line">    <span class="keyword">if</span> (sum &lt; s) &#123;</span><br><span class="line">      ++end;</span><br><span class="line">      <span class="keyword">if</span> (end == n) <span class="keyword">break</span>;</span><br><span class="line">      sum += nums[end];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (sum &gt;= s) &#123; <span class="comment">// nums[] can&#x27;t be 0</span></span><br><span class="line">      minLen = Math.min(minLen, end - start + <span class="number">1</span>);</span><br><span class="line">      sum -= nums[start];</span><br><span class="line">      ++start;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> minLen == Integer.MAX_VALUE ? <span class="number">0</span> : minLen;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>Other:</p>
+<p><strong>Note:</strong> The subarray is <code>[start, end)</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">minSubArrayLen</span><span class="params">(<span class="type">int</span> s, <span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="comment">// assume nums is not null</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">minLen</span> <span class="operator">=</span> Integer.MAX_VALUE;</span><br><span class="line">  <span class="type">int</span> <span class="variable">start</span> <span class="operator">=</span> <span class="number">0</span>, end = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (end &lt; n) &#123;</span><br><span class="line">    sum += nums[end];</span><br><span class="line">    ++end;</span><br><span class="line">    <span class="keyword">if</span> (sum &gt;= s) &#123;</span><br><span class="line">      minLen = Math.min(minLen, end - start);</span><br><span class="line">      --end;</span><br><span class="line">      sum -= nums[end]; <span class="comment">// restore</span></span><br><span class="line">      sum -= nums[start]; ++start;</span><br><span class="line">    &#125; <span class="comment">// sum &lt; s</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> minLen == Integer.MAX_VALUE ? <span class="number">0</span> : minLen;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Use <code>while</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">minSubArrayLen</span><span class="params">(<span class="type">int</span> s, <span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="comment">// assume nums is not null</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">minLen</span> <span class="operator">=</span> Integer.MAX_VALUE;</span><br><span class="line">  <span class="type">int</span> <span class="variable">start</span> <span class="operator">=</span> <span class="number">0</span>, end = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (end &lt; n) &#123;</span><br><span class="line">    sum += nums[end];</span><br><span class="line">    ++end;</span><br><span class="line">    <span class="keyword">while</span> (sum &gt;= s) &#123;</span><br><span class="line">      minLen = Math.min(minLen, end - start);</span><br><span class="line">      sum -= nums[start];</span><br><span class="line">      ++start;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> minLen == Integer.MAX_VALUE ? <span class="number">0</span> : minLen;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sdeez.png"></p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

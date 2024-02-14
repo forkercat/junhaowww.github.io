@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium Problem Given a linked list, swap every two adjacent nodes and return its head.  Note: You may not modify the values in the list’s nodes, only nodes itself may">
+<meta property="og:type" content="website">
+<meta property="og:title" content="24. Swap Nodes in Paris">
+<meta property="og:url" content="https://junhaow.com/lc/problems/linked-list/reverse-and-swap-list/24_swap-nodes-in-pairs.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium Problem Given a linked list, swap every two adjacent nodes and return its head.  Note: You may not modify the values in the list’s nodes, only nodes itself may">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.129Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.129Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>24. Swap Nodes in Paris</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/swap-nodes-in-pairs/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a linked list, swap every two adjacent nodes and return its head.</p>
+</blockquote>
+<p><strong>Note:</strong> You may <code>not</code> modify the values in the list’s nodes, only nodes itself may be changed.</p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Given <span class="number">1</span>-&gt;<span class="number">2</span>-&gt;<span class="number">3</span>-&gt;<span class="number">4</span>, you should <span class="keyword">return</span> the list as <span class="number">2</span>-&gt;<span class="number">1</span>-&gt;<span class="number">4</span>-&gt;<span class="number">3.</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p><strong>Test Case:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line">[<span class="number">1</span>]</span><br><span class="line">[<span class="number">1</span>]</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>]</span><br><span class="line">[<span class="number">2</span>,<span class="number">1</span>]</span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">[<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>]</span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line">[<span class="number">2</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Recursion"><a href="#Recursion" class="headerlink" title="Recursion"></a>Recursion</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">swapPairs</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">null</span> || head.next == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// prev -&gt; head -&gt; t -&gt; nextTemp</span></span><br><span class="line">  <span class="comment">// prev -&gt; t -&gt; head -&gt; nextTemp</span></span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">t</span> <span class="operator">=</span> head.next;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">nextTemp</span> <span class="operator">=</span> head.next.next;  <span class="comment">// head.next is not null</span></span><br><span class="line">  head.next = swapPairs(nextTemp);</span><br><span class="line">  t.next = head;</span><br><span class="line">  <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="Iteration"><a href="#Iteration" class="headerlink" title="Iteration"></a>Iteration</h3><p><strong>Note:</strong> Use this template for most iterative methods:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ListNode</span> <span class="variable">dummy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(<span class="number">0</span>);</span><br><span class="line">dummy.next = head;</span><br><span class="line"><span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> head; <span class="comment">// or use curr</span></span><br><span class="line"><span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> dummy; <span class="comment">// act as a sentinel</span></span><br><span class="line"><span class="keyword">while</span> (p != <span class="literal">null</span>) &#123; <span class="comment">// p != null or p.next != null</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> dummy.next;</span><br></pre></td></tr></table></figure>
+
+<p>If I use <code>p.next</code> as a left-value in the block code, I have to indicate in the while condition that <code>p.next != null</code>. And usually, <code>p != null</code> and <code>p.next != null</code> are together.</p>
+<p>Update <code>prev</code> before updating <code>p</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">swapPairs</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">null</span> || head.next == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">dummy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(<span class="number">0</span>); <span class="comment">// since head might be swapped</span></span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> dummy;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="comment">// dummy -&gt; 1 -&gt; 2 -&gt;   3    -&gt;    4</span></span><br><span class="line">  <span class="comment">// prev     p    t  nextTemp</span></span><br><span class="line">  <span class="comment">// prev     t    p</span></span><br><span class="line">  <span class="keyword">while</span> (p != <span class="literal">null</span> &amp;&amp; p.next != <span class="literal">null</span>) &#123; <span class="comment">// p.next is not necessary since each time move by 2 steps</span></span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">t</span> <span class="operator">=</span> p.next;</span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">nextTemp</span> <span class="operator">=</span> p.next.next;</span><br><span class="line">    prev.next = t;</span><br><span class="line">    t.next = p;</span><br><span class="line">    p.next = nextTemp;</span><br><span class="line">    <span class="comment">// update</span></span><br><span class="line">    prev = p;</span><br><span class="line">    p = nextTemp;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

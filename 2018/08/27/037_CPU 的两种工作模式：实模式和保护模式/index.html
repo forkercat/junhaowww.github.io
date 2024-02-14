@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="首先我们要知道这两种模式都是 CPU 的工作模式，实模式是早期 CPU 运行的工作模式，而保护模式则是现代 CPU 运行的工作模式。 实模式（Real Mode）起源实模式出现于早期 8086 CPU 时期，8086 也是第一款支持内存分段模型的处理器。当时，8086 只有一种工作模式，即实模式，但当时还没有这个说法。由于 CPU 的性能有限，一共只有 20 位地址线（地址空间只有 1M），以及">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CPU 的两种工作模式：实模式和保护模式">
+<meta property="og:url" content="https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="首先我们要知道这两种模式都是 CPU 的工作模式，实模式是早期 CPU 运行的工作模式，而保护模式则是现代 CPU 运行的工作模式。 实模式（Real Mode）起源实模式出现于早期 8086 CPU 时期，8086 也是第一款支持内存分段模型的处理器。当时，8086 只有一种工作模式，即实模式，但当时还没有这个说法。由于 CPU 的性能有限，一共只有 20 位地址线（地址空间只有 1M），以及">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/le2mx.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/m3h63.jpg">
+<meta property="article:published_time" content="2018-08-27T20:40:55.000Z">
+<meta property="article:modified_time" content="2024-02-13T16:15:34.602Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="CPU 工作模式">
+<meta property="article:tag" content="实模式">
+<meta property="article:tag" content="保护模式">
+<meta property="article:tag" content="Real Mode">
+<meta property="article:tag" content="Protected Mode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/le2mx.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CPU 的两种工作模式：实模式和保护模式</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Posts</a></li><!--
+     --><!--
+       --><li><a href="/studynotes/">Notes</a></li><!--
+     --><!--
+       --><li><a href="/lc/">Leetcode</a></li><!--
+     --><!--
+       --><li><a href="/games/">Games</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">Me</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/09/20/038_C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%EF%BC%9A%E4%B8%8D%E8%A6%81%E5%86%8D%E5%8F%AB%E6%88%91%E6%98%AF%E6%8C%87%E9%92%88%E4%BA%86%EF%BC%81/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/08/15/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/&text=CPU 的两种工作模式：实模式和保护模式"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/&title=CPU 的两种工作模式：实模式和保护模式"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/&is_video=false&description=CPU 的两种工作模式：实模式和保护模式"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CPU 的两种工作模式：实模式和保护模式&body=Check out this article: https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/&title=CPU 的两种工作模式：实模式和保护模式"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/&title=CPU 的两种工作模式：实模式和保护模式"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/&title=CPU 的两种工作模式：实模式和保护模式"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/&title=CPU 的两种工作模式：实模式和保护模式"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/&name=CPU 的两种工作模式：实模式和保护模式&description=&lt;p&gt;首先我们要知道这两种模式都是 CPU 的工作模式，实模式是早期 CPU 运行的工作模式，而保护模式则是现代 CPU 运行的工作模式。&lt;/p&gt;
+&lt;h2 id=&#34;实模式（Real-Mode）&#34;&gt;&lt;a href=&#34;#实模式（Real-Mode）&#34; class=&#34;headerlink&#34; title=&#34;实模式（Real Mode）&#34;&gt;&lt;/a&gt;实模式（Real Mode）&lt;/h2&gt;&lt;h3 id=&#34;起源&#34;&gt;&lt;a href=&#34;#起源&#34; class=&#34;headerlink&#34; title=&#34;起源&#34;&gt;&lt;/a&gt;起源&lt;/h3&gt;&lt;p&gt;实模式出现于早期 8086 CPU 时期，8086 也是第一款支持内存分段模型的处理器。当时，8086 只有一种工作模式，即实模式，但当时还没有这个说法。由于 CPU 的性能有限，一共只有 20 位地址线（地址空间只有 1M），以及 8 个 16 位的通用寄存器，以及 4 个 16 位的段寄存器。16 位的物理地址只能访问 64KB 的内存。所以，为了能够通过这些 16 位的寄存器去构成 20 位的主存地址，访问 1 MB 的内存，必须采取一种特殊的方式。&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/&t=CPU 的两种工作模式：实模式和保护模式"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%A8%A1%E5%BC%8F%EF%BC%88Real-Mode%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">实模式（Real Mode）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%B7%E6%BA%90"><span class="toc-number">1.1.</span> <span class="toc-text">起源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.2.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F%EF%BC%88Protected-Mode%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">保护模式（Protected Mode）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%B7%E6%BA%90-1"><span class="toc-number">2.1.</span> <span class="toc-text">起源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-1"><span class="toc-number">2.2.</span> <span class="toc-text">原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        CPU 的两种工作模式：实模式和保护模式
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Junhao Wang</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-08-27T20:40:55.000Z" class="dt-published" itemprop="datePublished">2018-08-27</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/OS/">OS</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/CPU-%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/" rel="tag">CPU 工作模式</a>, <a class="p-category" href="/tags/Protected-Mode/" rel="tag">Protected Mode</a>, <a class="p-category" href="/tags/Real-Mode/" rel="tag">Real Mode</a>, <a class="p-category" href="/tags/%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/" rel="tag">保护模式</a>, <a class="p-category" href="/tags/%E5%AE%9E%E6%A8%A1%E5%BC%8F/" rel="tag">实模式</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>首先我们要知道这两种模式都是 CPU 的工作模式，实模式是早期 CPU 运行的工作模式，而保护模式则是现代 CPU 运行的工作模式。</p>
+<h2 id="实模式（Real-Mode）"><a href="#实模式（Real-Mode）" class="headerlink" title="实模式（Real Mode）"></a>实模式（Real Mode）</h2><h3 id="起源"><a href="#起源" class="headerlink" title="起源"></a>起源</h3><p>实模式出现于早期 8086 CPU 时期，8086 也是第一款支持内存分段模型的处理器。当时，8086 只有一种工作模式，即实模式，但当时还没有这个说法。由于 CPU 的性能有限，一共只有 20 位地址线（地址空间只有 1M），以及 8 个 16 位的通用寄存器，以及 4 个 16 位的段寄存器。16 位的物理地址只能访问 64KB 的内存。所以，为了能够通过这些 16 位的寄存器去构成 20 位的主存地址，访问 1 MB 的内存，必须采取一种特殊的方式。</p>
+<span id="more"></span>
+
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>第一个字段是由段寄存器提供的，是一个 16 位的段基址。第二字段是段内偏移量，它的值是由通用寄存器（如 EIP）来提供，所以也是 16 位。那么问题来了，两个 16 位的值如何组合成一个 20 位的地址呢？这里采用的方式是：把段寄存器所提供的段基址先向左移 4 位（或乘以 16），这样就变成了一个 20 位的值，然后再与 16 位的段偏移量相加。如下所示：</p>
+<p>$$物理地址 &#x3D; 段基址 &lt;&lt; 4 + 段内偏移$$</p>
+<p>所以，假设段基址的值是 <code>0xFF00</code>，段内偏移的值是 <code>0x0110</code>。则物理地址可表示为： </p>
+<p>$$0xFF00 &lt;&lt; 4 + 0x0110 &#x3D; 0xFF000 + 0x0110 &#x3D; 0xFF110$$</p>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p><strong>在现代计算机上，实模式存在的时间非常短</strong>，所以一般我们是感觉不到它的存在。CPU 复位（reset）或加电（power on）的时候就是以实模式启动，在这个时候处理器以实模式工作，不能实现权限分级，也不能访问 20 位以上的地址线，也就只能访问 1M 内存。之后，加载操作系统模块，进入保护模式。</p>
+<p>此外，在这种模式下，系统在计算实际地址的时候是按照对 1M 求模的方式进行的，这种技术被称为 wrap-around。也就是说，当程序员给出超过 1M（100000H ~ 10FFEFH）的地址时，为了保持逻辑上正常，系统并不认为其访问越界而产生异常，而是自动从 0 开始计算。</p>
+<p>然而，在实模式中整个物理内存被看成分段的区域，程序代码和数据位于不同区域，<strong>系统程序和用户程序没有区别对待</strong>，而且每一个指针都是指向「实在」的物理地址。这样一来，用户程序的一个指针如果指向了系统程序区域或其他用户程序区域，并改变了值，容易造成软件甚至系统崩溃。</p>
+<h2 id="保护模式（Protected-Mode）"><a href="#保护模式（Protected-Mode）" class="headerlink" title="保护模式（Protected Mode）"></a>保护模式（Protected Mode）</h2><h3 id="起源-1"><a href="#起源-1" class="headerlink" title="起源"></a>起源</h3><p>最开始的程序寻址是直接的 <code>段基址 : 段内偏移</code> 模式，这样的好处是所见即所得，程序员指定的地址就是物理地址，物理地址对程序员是可见的。但这就带来一些问题：</p>
+<ol>
+<li>无法支持多任务</li>
+<li>程序的安全性无法得到保证</li>
+</ol>
+<p>随着 CPU 的发展，CPU 的地址线的个数也从原来的 20 根变为现在的 32 根，所以可以访问的内存空间也从 1 MB 变为现在 4 GB，寄存器的位数也变为 32 位。因此，实模式下的内存地址计算方式就已经不再适用了，需要引入新的模式，即保护模式，实现更大空间的、更灵活的内存访问。</p>
+<p>在保护模式下，全部 32 条地址线有效，可寻址高达 4 GB 的物理地址空间。扩充的存储器 <code>段式管理机制</code> 和可选的 <code>页式管理机制</code>，不仅为存储器共享和保护提供了硬件支持，而且为实现 <code>虚拟存储器</code> 提供了硬件支持，支持多任务，能够快速地进行任务切换和保护任务环境。四个特权级和完善的特权检查机制，既能实现资源共享又能保证代码和数据的安全及任务的隔离。</p>
+<p>总的来说，保护模式出现的原因名副其实：<strong>保护进程地址空间</strong>。</p>
+<h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p>在保护模式下，地址的表示方式与实模式是一样的，都是 <code>段基址 : 段内偏移</code>。不过，保护模式下 <code>段</code> 的概念发生了根本性的改变。实模式下的段值可以看作是地址的一部分，可直接参与转换计算。而保护模式下的段值（尽管仍然由原来的段寄存器表示）变成了一个索引（准确来说是 16 位的段选择子&#x2F;段标识符 Selector，前 13 位为索引信息，后 3 位是硬件信息），指向了一个数据结构的一个表项（段表项），表项中详细定义了 <code>段基址</code>、<code>界限</code>、<code>属性（权限）</code>等内容。这个数据结构是 <code>全局描述符</code>（GDT，Global Descriptor Table），也有可能是 <code>本地描述符</code>（LDT，Local Descriptor Table）。它们存放关于某个运行在内存中的程序的分段信息的，比如某个程序的代码段是从哪里开始，有多大；数据段又是从哪里开始，有多大。</p>
+<p>GDT 的作用是用来提供段式存储机制，这种机制是段寄存器和 GDT 中的描述符（段表项）共同支持的。每个描述符在 GDT 中占 8 字节，也就是 2 个双字（一个字等于两个字节，双字等于四个字节），或者说是 64 位。描述符的构成如下图所示：</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/le2mx.jpg" alt="GDT 描述符示意图（来源见参考）"></p>
+<p>其中：</p>
+<ul>
+<li>G 位是 <code>粒度位</code>（Granularity），用于解释段界限的含义；</li>
+<li>D&#x2F;B 位是 <code>默认的操作数大小</code>（Default Operation Size），主要是为了能够在 32 位处理器上兼容运行 16 位保护模式的程序；</li>
+<li>L 位，是 <code>64 位代码段标志</code>，保留此位给 64 位处理器使用；</li>
+<li>AVL 位，是 <code>可以使用的位</code>（Available），通常由操作系统来用，处理器并不使用它；</li>
+<li>P 位是 <code>段存在位</code>（Segment Present），表示对应的段是否存在；</li>
+<li>DPL 表示描述符的 <code>特权级</code>（Descriptor Privilege Level），<code>0 ~ 3</code>，0 表示最高特权级别，<strong>这里再次点明了为何叫保护模式</strong>；</li>
+<li>S 位是 <code>描述符的类型位</code>（Descriptor Type），0 为系统段，1 为代码段或数据段；</li>
+<li>TYPE 字段共 4 位，用于指示描述符的类型（X 执行、W 读写、R 读出、A 已访问）。</li>
+</ul>
+<p>很明显，描述符中指定了 32 位的 <code>段基址</code>，以及 20 位的 <code>段界限</code>。在实模式下，段基址并非是真实的物理地址，在计算物理地址时，还要左移 4 位（乘以 16）。和实模式不同，在 32 位保护模式下，段基址是 32 位的，若加上段内偏移即为 <code>线性地址</code>。如果未开启分页功能，该线性地址就是 <code>物理地址</code>。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/m3h63.jpg" alt="GDT 和 LDT 示意图（来源见参考）"></p>
+<p>GDT 和 LDT 的区别在于：</p>
+<ol>
+<li>全局可见（global）和局部可见（local）；</li>
+<li>LDT 表存放在 LDT 类型的段之中，此时 GDT 必须含有 LDT 的段描述符；</li>
+<li>LDT 本身是一个段，而 GDT 不是。</li>
+</ol>
+<p><strong>访问流程：</strong></p>
+<ul>
+<li>查找 GDT 在线性地址中的段基址（表本身的位置），需要借助 GDTR 寄存器；</li>
+<li>通过该段基址和 <code>逻辑地址</code> 中的段标识符（selector），可以找到 LDT 段描述符；</li>
+<li>通过 GDT 中的这个 LDT 段描述符可以找到 LDT 相应的基地址；</li>
+<li>访问 LDT 需要使用 LDT 基地址和 LDT 段选择符（或叫段标识符），为了减少访问 LDT 时的段转换次数，LDT 段基址、LDT 段选择符、LDT 段限长都存放在 LDTR 寄存器中。</li>
+</ul>
+<p><strong>注意：</strong>这里和 <a href="https://junhaow.com/2018/08/15/%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/">关于操作系统内存管理的总结</a> 中关于段式内存管理的描述有点出入。这里多了 LDT，因此从 GDT 中获得的是 LDT 段描述符，而不再是段基址。</p>
+<p>对于操作系统来说，每个系统必须定义一个 GDT，用于系统中的所有任务和程序。系统可选择性定义若干个 LDT。GDT 本身不是一个段，而是线性地址空间的一个数据结构；而 LDT 本身是一个段。</p>
+<p>想知道更多可以参考第三篇文章，整理得很好。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/fatsheep9146/p/5116426.html">MIT 6.828 JOS 学习笔记 6. Appendix 1: 实模式（real mode）与保护模式（protected mode）</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/chenwb89/p/operating_system_002.html">操作系统篇-浅谈实模式与保护模式</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/chenwb89/p/operating_system_003.html">操作系统篇-分段机制与 GDT | LDT</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.voidcn.com/article/p-cdfddfhd-dr.html">汇编学习（十七）X86汇编学习 (4) GDT</a></li>
+</ul>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Posts</a></li>
+        
+          <li><a href="/studynotes/">Notes</a></li>
+        
+          <li><a href="/lc/">Leetcode</a></li>
+        
+          <li><a href="/games/">Games</a></li>
+        
+          <li><a href="/links/">Links</a></li>
+        
+          <li><a href="/about/">Me</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%A8%A1%E5%BC%8F%EF%BC%88Real-Mode%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">实模式（Real Mode）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%B7%E6%BA%90"><span class="toc-number">1.1.</span> <span class="toc-text">起源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.2.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F%EF%BC%88Protected-Mode%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">保护模式（Protected Mode）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%B7%E6%BA%90-1"><span class="toc-number">2.1.</span> <span class="toc-text">起源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-1"><span class="toc-number">2.2.</span> <span class="toc-text">原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/&text=CPU 的两种工作模式：实模式和保护模式"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/&title=CPU 的两种工作模式：实模式和保护模式"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/&is_video=false&description=CPU 的两种工作模式：实模式和保护模式"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CPU 的两种工作模式：实模式和保护模式&body=Check out this article: https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/&title=CPU 的两种工作模式：实模式和保护模式"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/&title=CPU 的两种工作模式：实模式和保护模式"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/&title=CPU 的两种工作模式：实模式和保护模式"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/&title=CPU 的两种工作模式：实模式和保护模式"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/&name=CPU 的两种工作模式：实模式和保护模式&description=&lt;p&gt;首先我们要知道这两种模式都是 CPU 的工作模式，实模式是早期 CPU 运行的工作模式，而保护模式则是现代 CPU 运行的工作模式。&lt;/p&gt;
+&lt;h2 id=&#34;实模式（Real-Mode）&#34;&gt;&lt;a href=&#34;#实模式（Real-Mode）&#34; class=&#34;headerlink&#34; title=&#34;实模式（Real Mode）&#34;&gt;&lt;/a&gt;实模式（Real Mode）&lt;/h2&gt;&lt;h3 id=&#34;起源&#34;&gt;&lt;a href=&#34;#起源&#34; class=&#34;headerlink&#34; title=&#34;起源&#34;&gt;&lt;/a&gt;起源&lt;/h3&gt;&lt;p&gt;实模式出现于早期 8086 CPU 时期，8086 也是第一款支持内存分段模型的处理器。当时，8086 只有一种工作模式，即实模式，但当时还没有这个说法。由于 CPU 的性能有限，一共只有 20 位地址线（地址空间只有 1M），以及 8 个 16 位的通用寄存器，以及 4 个 16 位的段寄存器。16 位的物理地址只能访问 64KB 的内存。所以，为了能够通过这些 16 位的寄存器去构成 20 位的主存地址，访问 1 MB 的内存，必须采取一种特殊的方式。&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/08/27/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/&t=CPU 的两种工作模式：实模式和保护模式"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

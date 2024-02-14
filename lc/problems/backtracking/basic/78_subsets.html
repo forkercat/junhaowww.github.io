@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: Subsets I &amp; Subsets II EPI 15.5Difficulty: MediumI think it should be hard for Subsets II My Post: Subsets I &amp; II, Java Solution with Detailed Explanation and Comments (Recursion">
+<meta property="og:type" content="website">
+<meta property="og:title" content="78. Subsets I &amp; II">
+<meta property="og:url" content="https://junhaow.com/lc/problems/backtracking/basic/78_subsets.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: Subsets I &amp; Subsets II EPI 15.5Difficulty: MediumI think it should be hard for Subsets II My Post: Subsets I &amp; II, Java Solution with Detailed Explanation and Comments (Recursion">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/mgtg8.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gfdd3.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wek92.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/y0inx.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.111Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.111Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/mgtg8.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>78. Subsets I &amp; II</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/subsets/">Subsets I</a> &amp; <a target="_blank" rel="noopener" href="https://leetcode.com/problems/subsets-ii/">Subsets II</a> <span class="gray">EPI 15.5</span><br>Difficulty: <span class="orange">Medium</span><span class="purple">I think it should be hard for Subsets II</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/subsets-ii/discuss/388566/">Subsets I &amp; II, Java Solution with Detailed Explanation and Comments (Recursion &amp; Iteration)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a set of <code>distinct</code> integers, <code>nums</code>, return all possible subsets (the power set).</p>
+</blockquote>
+<p><strong>Note:</strong> The solution set must not contain duplicate subsets.</p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Input: nums = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">Output: [</span><br><span class="line">  [<span class="number">3</span>],</span><br><span class="line">  [<span class="number">1</span>],</span><br><span class="line">  [<span class="number">2</span>],</span><br><span class="line">  [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],</span><br><span class="line">  [<span class="number">1</span>,<span class="number">3</span>],</span><br><span class="line">  [<span class="number">2</span>,<span class="number">3</span>],</span><br><span class="line">  [<span class="number">1</span>,<span class="number">2</span>],</span><br><span class="line">  []</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> Check out the <a href="#subsets_ii">Subsets II</a> section below.</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p>The power set of a set $S$ is the set of all subsets of $S$, including both the empty set $\emptyset$ and $S$ itself. The power set of ${1, 2, 3}$ is graphically illustrated as follows.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/mgtg8.jpg"></p>
+<h3 id="Backtracking"><a href="#Backtracking" class="headerlink" title="Backtracking"></a>Backtracking</h3><p>The idea is that we loop over the number list. For each number, we have two choices: pick it, or not. For example, in <code>[1, 2, 3]</code>, we pick $1$ and then do the same thing for the subproblem <code>[2, 3]</code>; and we don’t pick $1$ and then do the same thing for the subproblem <code>[2, 3]</code>.</p>
+<p>The size of subproblems is decreasing. When picking $2$, the subproblem becomes <code>[3]</code> instead of <code>[1, 3]</code>.</p>
+<p>Consider the following questions:</p>
+<ul>
+<li>What is the base case?</li>
+<li>When do we add the list to the result?</li>
+</ul>
+<p>Here is an illustration of recursive process on <code>[1, 2, 3]</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gfdd3.jpg"></p>
+<p><strong>Note:</strong> Remember to add empty set manually.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="title function_">subsets</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  List&lt;List&lt;Integer&gt;&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  List&lt;Integer&gt; numList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  </span><br><span class="line">  result.add(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;()); <span class="comment">// empty set</span></span><br><span class="line">  subsets(<span class="number">0</span>, nums, numList, result);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">subsets</span><span class="params">(<span class="type">int</span> offset, <span class="type">int</span>[] nums, List&lt;Integer&gt; numList, List&lt;List&lt;Integer&gt;&gt; result)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (offset &gt;= nums.length) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">val</span> <span class="operator">=</span> nums[offset];</span><br><span class="line">  <span class="comment">// pick</span></span><br><span class="line">  numList.add(val);</span><br><span class="line">  subsets(offset + <span class="number">1</span>, nums, numList, result);</span><br><span class="line">  <span class="comment">// add to result</span></span><br><span class="line">  result.add(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(numList));</span><br><span class="line">  <span class="comment">// not pick</span></span><br><span class="line">  numList.remove(numList.size() - <span class="number">1</span>);</span><br><span class="line">  subsets(offset + <span class="number">1</span>, nums, numList, result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N \times 2^N)$ since the recurrence is $T(N) &#x3D; 2T(N - 1)$ and we also spend at most $O(N)$ time within a call.<br><strong>Space:</strong> $O(N \times 2^N)$ since there are $2^N$ subsets. If we only print the result, we just need $O(N)$ space.</p>
+<h3 id="Iteration"><a href="#Iteration" class="headerlink" title="Iteration"></a>Iteration</h3><p>The idea is simple. We go through the elements in the <code>nums</code> list. For each element, we loop over the current <code>result</code> list we have constructed so far. For each list in the <code>result</code>, we make a copy of this list and append the current element to it (it means picking the element). It is based on the same idea in backtracking (in each step you have choices: <code>pick</code> or <code>not pick</code>).</p>
+<p>The result list initially contains an empty list <code>[]</code>. We loop over each element of <code>nums</code>, e.g. <code>[1, 2, 3]</code>.</p>
+<ul>
+<li>After the first round, we have <code>[[], [1]]</code>.</li>
+<li>After the second round, we have <code>[[], [1], [2], [1,2]]</code>.</li>
+<li>After the third round, we have <code>[[], [1], [2], [1,2], [3], [1,3], [2,3], [1,2,3]]</code>.</li>
+</ul>
+<p>First, let’s go over an incorrect version. There are two errors:</p>
+<ol>
+<li>We add a new element to <code>L</code>, but it changes the existed <code>L</code>. Thus, we should make a new copy of it.</li>
+<li>While looping over <code>result</code>, we are modifying its size. In Java, the compiler would yell.</li>
+</ol>
+<p><strong>Incorrect version:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="title function_">subsets</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  List&lt;List&lt;Integer&gt;&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  result.add(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;());  <span class="comment">// empty set</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums.length; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (List&lt;Integer&gt; L : result) &#123;</span><br><span class="line">      L.add(nums[i]);</span><br><span class="line">      result.add(L);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Correct version:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="title function_">subsets</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  List&lt;List&lt;Integer&gt;&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  result.add(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;());  <span class="comment">// empty set</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums.length; ++i) &#123;</span><br><span class="line">    List&lt;List&lt;Integer&gt;&gt; newResult = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(); <span class="comment">// used for new lists</span></span><br><span class="line">    <span class="keyword">for</span> (List&lt;Integer&gt; L : result) &#123;</span><br><span class="line">      L = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(L); <span class="comment">// copy</span></span><br><span class="line">      L.add(nums[i]);</span><br><span class="line">      newResult.add(L);</span><br><span class="line">    &#125;</span><br><span class="line">    result.addAll(newResult);  <span class="comment">// concatenate</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N\times 2^N)$</p>
+<ul>
+<li>The outer loop takes $O(N)$ time.</li>
+<li>The inner loop takes $2, 4, 8, \ldots, 2^N$ time respectively.</li>
+<li>In inner loop, making a new copy of <code>L</code> takes at most $O(N)$ time.</li>
+<li>Total runtime $T(N) &#x3D; N \times (2 + 4 + 8 + \ldots + 2^N) \approx N \times 2^N$</li>
+</ul>
+<p><strong>Space:</strong> $O(N\times 2^N)$</p>
+<h3 id="K-Size-Subsets"><a href="#K-Size-Subsets" class="headerlink" title="K-Size Subsets"></a>K-Size Subsets</h3><p>Actually, we can use the code in <a target="_blank" rel="noopener" href="https://www.junhaow.com/lc/problems/backtracking/77_combinations.html">77. Combinations</a> to solve this problem.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="title function_">subsets</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  List&lt;List&lt;Integer&gt;&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  List&lt;Integer&gt; numList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> <span class="number">0</span>; k &lt;= n; ++k) &#123; <span class="comment">// compatible with empty set</span></span><br><span class="line">    combine(n, k, <span class="number">1</span>, nums, numList, result);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">combine</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> k, <span class="type">int</span> d, <span class="type">int</span>[] nums, List&lt;Integer&gt; numList, List&lt;List&lt;Integer&gt;&gt; result)</span> &#123;</span><br><span class="line">  <span class="comment">// base case (in order to handle empty set, ordering of two IFs matters)</span></span><br><span class="line">  <span class="keyword">if</span> (numList.size() == k) &#123; <span class="comment">// get a result</span></span><br><span class="line">    result.add(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(numList));</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (n - d + <span class="number">1</span> &lt; k - numList.size()) &#123; <span class="comment">// remaining elements are not enough</span></span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> d; i &lt;= n; ++i) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">val</span> <span class="operator">=</span> nums[i - <span class="number">1</span>];</span><br><span class="line">    numList.add(val);</span><br><span class="line">    combine(n, k, i + <span class="number">1</span>, nums, numList, result);</span><br><span class="line">    numList.remove(numList.size() - <span class="number">1</span>); <span class="comment">// remove the last</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N\times 2^N)$</p>
+<ul>
+<li>$C^0_N + C^1_N + C^2_N + C^3_N + \ldots + C^N_N &#x3D; 2^N$</li>
+</ul>
+<p><strong>Space:</strong> $O(N\times 2^N)$</p>
+<span id="subsets_ii">
+## Subsets II <span class="purple">Interesting!</span>
+
+<p>Reference:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/subsets-ii/discuss/169226/Java-Two-Way-of-Recursive-thinking">[Java] Two Way of Recursive thinking</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/subsets-ii/discuss/30137/Simple-iterative-solution">Simple iterative solution</a></li>
+</ul>
+<blockquote>
+<p>Given a collection of integers that might <strong>contain duplicates</strong>, <code>nums</code>, return all possible subsets (the power set).</p>
+</blockquote>
+<p><strong>Note:</strong> The solution set must not contain duplicate subsets.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Input: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>]</span><br><span class="line">Output: [</span><br><span class="line">  [<span class="number">2</span>],</span><br><span class="line">  [<span class="number">1</span>],</span><br><span class="line">  [<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>],</span><br><span class="line">  [<span class="number">2</span>,<span class="number">2</span>],</span><br><span class="line">  [<span class="number">1</span>,<span class="number">2</span>],</span><br><span class="line">  []</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="Backtracking-1"><a href="#Backtracking-1" class="headerlink" title="Backtracking"></a>Backtracking</h3><p>We need to know when we <strong>should not</strong> add a list to the result list.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wek92.jpg"></p>
+<p>By observation, a duplicate list occurs when <code>offset &gt;= 1</code> (when <code>offset = 0</code>, duplicate cannot occur) and <code>nums[offset - 1] == nums[offset]</code> and in the previous step we did not pick <code>nums[offset - 1]</code>. The information of whether it picks or not could be passed down by a <strong>boolean parameter</strong> <code>isPicked</code>.</p>
+<p>If the above condition is satisfied:</p>
+<ul>
+<li>Do not add the list to the result list.</li>
+<li>Do not do the subproblem after picking the current element.</li>
+<li>Only do the subproblem after not picking the current element.</li>
+</ul>
+<p><strong>Note:</strong> Be careful where we should put the <code>numList.add(val)</code> and <code>numList.remove(numList.size() - 1)</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="title function_">subsetsWithDup</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="comment">// sorting</span></span><br><span class="line">  Arrays.sort(nums);</span><br><span class="line">  </span><br><span class="line">  List&lt;List&lt;Integer&gt;&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  List&lt;Integer&gt; numList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  result.add(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;());</span><br><span class="line">  subsets(<span class="number">0</span>, nums, numList, result, <span class="literal">true</span>);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">subsets</span><span class="params">(<span class="type">int</span> offset, <span class="type">int</span>[] nums, List&lt;Integer&gt; numList, List&lt;List&lt;Integer&gt;&gt; result, <span class="type">boolean</span> isPicked)</span> &#123;</span><br><span class="line">  <span class="comment">// base case</span></span><br><span class="line">  <span class="keyword">if</span> (offset &gt;= nums.length) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">val</span> <span class="operator">=</span> nums[offset];</span><br><span class="line">  <span class="comment">// duplicate checking (convert &amp;&amp; to ||)</span></span><br><span class="line">  <span class="keyword">if</span> (offset == <span class="number">0</span> || nums[offset - <span class="number">1</span>] != nums[offset] || isPicked == <span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="comment">// pick</span></span><br><span class="line">    numList.add(val);</span><br><span class="line">    subsets(offset + <span class="number">1</span>, nums, numList, result, <span class="literal">true</span>);</span><br><span class="line">    result.add(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(numList));  <span class="comment">// add to the result list</span></span><br><span class="line">    numList.remove(numList.size() - <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// not pick</span></span><br><span class="line">  subsets(offset + <span class="number">1</span>, nums, numList, result, <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Another version (similar): </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">subsets</span><span class="params">(<span class="type">int</span> offset, <span class="type">int</span>[] nums, List&lt;Integer&gt; numList, List&lt;List&lt;Integer&gt;&gt; result, <span class="type">boolean</span> isPicked)</span> &#123;</span><br><span class="line">  <span class="comment">// base case</span></span><br><span class="line">  <span class="keyword">if</span> (offset &gt;= nums.length) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">val</span> <span class="operator">=</span> nums[offset];</span><br><span class="line">  <span class="comment">// not pick</span></span><br><span class="line">  subsets(offset + <span class="number">1</span>, nums, numList, result, <span class="literal">false</span>);</span><br><span class="line">  <span class="comment">// duplicate check</span></span><br><span class="line">  <span class="keyword">if</span> (offset &gt;= <span class="number">1</span> &amp;&amp; nums[offset - <span class="number">1</span>] == nums[offset] &amp;&amp; isPicked == <span class="literal">false</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// pick</span></span><br><span class="line">  numList.add(val);</span><br><span class="line">  subsets(offset + <span class="number">1</span>, nums, numList, result, <span class="literal">true</span>);</span><br><span class="line">  result.add(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(numList));  <span class="comment">// add to the result list</span></span><br><span class="line">  numList.remove(numList.size() - <span class="number">1</span>); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N \times 2^N)$<br><strong>Space:</strong> $O(N \times 2^N)$</p>
+<h3 id="Iteration-1"><a href="#Iteration-1" class="headerlink" title="Iteration"></a>Iteration</h3><p>Using the same idea in backtracking, we need to figure out when we should add a list to the result list. Check out three examples below (<code>[1,2,3]</code>, <code>[1,2,2]</code>, <code>[5,5,5]</code>).</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/y0inx.jpg"></p>
+<p>By observation, we learn that we should start from, if duplicate is detected, a specific location in the result list. In Subsets I, we always start from $0$.</p>
+<p>Interestingly, the specific location corresponds to the initial size of the result list in the previous round. Since we change the result list in each round, we should cache the size of the result list as <code>cachedSize</code>.</p>
+<p>Then we denote the starting index as <code>startIdx</code>. In each round, similar to what we’ve done in Subsets I, we set <code>startIdx</code> as:</p>
+<ul>
+<li><code>0</code> (no duplicate or <code>i == 0</code>)</li>
+<li><code>cachedSize</code> (duplicate occurs)</li>
+</ul>
+<p>After setting <code>startIdx</code>, remember to do the caching job for the current size of the result list. Notice a fact that this cached size may not be used in the next round.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="title function_">subsetsWithDup</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="comment">// sort</span></span><br><span class="line">  Arrays.sort(nums);</span><br><span class="line">  </span><br><span class="line">  List&lt;List&lt;Integer&gt;&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  result.add(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;());  <span class="comment">// empty set</span></span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> <span class="variable">cachedSize</span> <span class="operator">=</span> <span class="number">0</span>, startIdx = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums.length; ++i) &#123;</span><br><span class="line">    List&lt;List&lt;Integer&gt;&gt; newResult = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();  <span class="comment">// used for new lists</span></span><br><span class="line">    <span class="comment">// set startIdx first before we update cachedSize</span></span><br><span class="line">    startIdx = (i &gt; <span class="number">0</span> &amp;&amp; nums[i - <span class="number">1</span>] == nums[i]) ? cachedSize : <span class="number">0</span>; <span class="comment">// if duplicate occurs</span></span><br><span class="line">    cachedSize = result.size(); <span class="comment">// cache the size for startIdx in the next round</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> startIdx; j &lt; result.size(); ++j) &#123;</span><br><span class="line">      List&lt;Integer&gt; L = result.get(j);</span><br><span class="line">      L = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(L);  <span class="comment">// copy</span></span><br><span class="line">      L.add(nums[i]);</span><br><span class="line">      newResult.add(L);</span><br><span class="line">    &#125;</span><br><span class="line">    result.addAll(newResult);  <span class="comment">// concatenate</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N \times 2^N)$<br><strong>Space:</strong> $O(N \times 2^N)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

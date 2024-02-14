@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium My Post: Java DP Solutions with Illustration T_T Problem Given a string s, find the longest palindromic substring in s. You may assume that the maximum length o">
+<meta property="og:type" content="website">
+<meta property="og:title" content="5. Longest Palindromic Substring">
+<meta property="og:url" content="https://junhaow.com/lc/problems/string/palindrome/5_longest-palindromic-substring.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium My Post: Java DP Solutions with Illustration T_T Problem Given a string s, find the longest palindromic substring in s. You may assume that the maximum length o">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/10ayv.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.140Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.140Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/10ayv.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>5. Longest Palindromic Substring</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-palindromic-substring/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-palindromic-substring/discuss/417359">Java DP Solutions with Illustration T_T</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a string <code>s</code>, find the longest palindromic substring in <code>s</code>. You may assume that the maximum length of <code>s</code> is <code>1000</code>.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="string">&quot;babad&quot;</span></span><br><span class="line">Output: <span class="string">&quot;bab&quot;</span></span><br><span class="line">Note: <span class="string">&quot;aba&quot;</span> is also a valid answer.</span><br><span class="line"></span><br><span class="line">Input: <span class="string">&quot;cbbd&quot;</span></span><br><span class="line">Output: <span class="string">&quot;bb&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p>For each character <code>i</code>, we examine all substrings starting from index <code>i</code> and check if they are palindromic.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">longestPalindrome</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (s == <span class="literal">null</span> || s.length() == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">  <span class="type">String</span> <span class="variable">maxStr</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i; j &lt; n; ++j) &#123;</span><br><span class="line">      <span class="keyword">if</span> (isValid(s, i, j) == <span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (j - i + <span class="number">1</span> &gt; maxStr.length()) &#123; <span class="comment">// update maxStr</span></span><br><span class="line">          maxStr = s.substring(i, j + <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> maxStr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isValid</span><span class="params">(String s, <span class="type">int</span> lo, <span class="type">int</span> hi)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> hi - lo + <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n / <span class="number">2</span>; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (s.charAt(lo + i) != s.charAt(hi - i)) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^3)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Expansion-From-the-Center"><a href="#Expansion-From-the-Center" class="headerlink" title="Expansion From the Center"></a>Expansion From the Center</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">longestPalindrome</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (s == <span class="literal">null</span> || s.length() == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">longest</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    findPalindrome(s, i, i, longest); <span class="comment">// odd</span></span><br><span class="line">    findPalindrome(s, i, i + <span class="number">1</span>, longest); <span class="comment">// even</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> longest.toString();</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">findPalindrome</span><span class="params">(String s, <span class="type">int</span> lo, <span class="type">int</span> hi, StringBuilder longest)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  <span class="keyword">while</span> (lo &gt;= <span class="number">0</span> &amp;&amp; hi &lt; n &amp;&amp; s.charAt(lo) == s.charAt(hi)) &#123;</span><br><span class="line">    <span class="keyword">if</span> (lo == hi) &#123;</span><br><span class="line">      sb.append(s.charAt(lo));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      sb.insert(<span class="number">0</span>, s.charAt(lo));</span><br><span class="line">      sb.append(s.charAt(hi));</span><br><span class="line">    &#125;</span><br><span class="line">    --lo;</span><br><span class="line">    ++hi;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (sb.length() &gt; longest.length()) &#123;</span><br><span class="line">    longest.delete(<span class="number">0</span>, longest.length());</span><br><span class="line">    longest.append(sb);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^2)$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="DP"><a href="#DP" class="headerlink" title="DP"></a>DP</h3><p>Based on the brute-force solution, we can improve on it by avoiding unnecessary re-computation while validating palindromes. Consider the case <code>ababa</code>. If we already knew that <code>bab</code> is a palindrome, it is obvious that <code>ababa</code> must be a palindrome since the two end letters are the same.</p>
+<p>So we can <strong>define</strong> <code>dp[i][j]</code> as <code>true</code> if the substring <code>S(i, j)</code> is a palindrome.</p>
+<p>The <strong>recurrence</strong> is then obvious: <code>dp[i][j]</code> &#x3D; (<code>dp[i + 1][j - 1]</code> &amp;&amp; <code>Si == Sj</code>)</p>
+<p>The base cases are: <code>dp[i][i]</code> &#x3D; <code>true</code>, <code>dp[i][i + 1] = (Si == Si+1)</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/10ayv.jpg"></p>
+<p><strong>Note:</strong> Determining ranges of <code>i</code> and <code>j</code> would be easy if you pick a starting point in the graph to get some intuition. For example, in this case <code>j</code> starts from <code>i + 2</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">longestPalindrome</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (s == <span class="literal">null</span> || s.length() == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">  <span class="type">boolean</span>[][] dp = generateDP(s);</span><br><span class="line">  <span class="comment">// Check each substring</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">maxLen</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span>[] maxIdx = <span class="keyword">new</span> <span class="title class_">int</span>[] &#123; <span class="number">0</span>, <span class="number">0</span> &#125;;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i; j &lt; n; ++j) &#123;</span><br><span class="line">      <span class="keyword">if</span> (dp[i][j] == <span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (j - i + <span class="number">1</span> &gt; maxLen) &#123;</span><br><span class="line">          maxLen = j - i + <span class="number">1</span>;</span><br><span class="line">          maxIdx[<span class="number">0</span>] = i;</span><br><span class="line">          maxIdx[<span class="number">1</span>] = j;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> s.substring(maxIdx[<span class="number">0</span>], maxIdx[<span class="number">1</span>] + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span>[][] generateDP(String s) &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">  <span class="type">boolean</span>[][] dp = <span class="keyword">new</span> <span class="title class_">boolean</span>[n][n];</span><br><span class="line">  <span class="comment">// Init</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123; <span class="comment">// diagonal</span></span><br><span class="line">    dp[i][i] = <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n - <span class="number">1</span>; ++i) &#123; <span class="comment">// one line below diagonal</span></span><br><span class="line">    dp[i][i + <span class="number">1</span>] = (s.charAt(i) == s.charAt(i + <span class="number">1</span>));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// DP</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> n - <span class="number">3</span>; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i + <span class="number">2</span>; j &lt; n; ++j) &#123;</span><br><span class="line">      dp[i][j] = dp[i + <span class="number">1</span>][j - <span class="number">1</span>] &amp;&amp; s.charAt(i) == s.charAt(j);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^2)$<br><strong>Space:</strong> $O(N^2)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium My Post: [Java] B-F, One-Pass, DP Solutions with Explanations (easy-understand) Problem Let’s call any (contiguous) subarray B (of A) a mountain if the followin">
+<meta property="og:type" content="website">
+<meta property="og:title" content="845. Longest Mountain in Array">
+<meta property="og:url" content="https://junhaow.com/lc/problems/dp/845_longest-mountain-in-array.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium My Post: [Java] B-F, One-Pass, DP Solutions with Explanations (easy-understand) Problem Let’s call any (contiguous) subarray B (of A) a mountain if the followin">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.123Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.123Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>845. Longest Mountain in Array</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-mountain-in-array/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-mountain-in-array/discuss/406481">[Java] B-F, One-Pass, DP Solutions with Explanations (easy-understand)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Let’s call any (contiguous) subarray B (of A) a mountain if the following properties hold:</p>
+</blockquote>
+<ul>
+<li>B.length &gt;&#x3D; 3</li>
+<li>There exists some <code>0 &lt; i &lt; B.length - 1</code> such that <code>B[0] &lt; B[1] &lt; ... B[i-1] &lt; B[i] &gt; B[i+1] &gt; ... &gt; B[B.length - 1]</code></li>
+</ul>
+<p>(Note that B could be any subarray of A, including the entire array A.)</p>
+<blockquote>
+<p>Given an array A of integers, return the length of the longest mountain. </p>
+</blockquote>
+<blockquote>
+<p>Return <code>0</code> if there is no mountain.</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>0 &lt;&#x3D; A.length &lt;&#x3D; 10000<ul>
+<li>Indicate that $O(N^2)$ is not okay.</li>
+</ul>
+</li>
+<li>0 &lt;&#x3D; A[i] &lt;&#x3D; 10000</li>
+</ul>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Input: [<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>] or [<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>]</span><br><span class="line">Output: <span class="number">0</span></span><br><span class="line">Explanation: There is no mountain.</span><br><span class="line"></span><br><span class="line">Input: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">Output: <span class="number">0</span></span><br><span class="line"></span><br><span class="line">Input: [<span class="number">2</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">7</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">5</span>]</span><br><span class="line">          --------- <span class="number">5</span></span><br><span class="line">Output: <span class="number">5</span></span><br><span class="line">Explanation: The largest mountain is [<span class="number">1</span>,<span class="number">4</span>,<span class="number">7</span>,<span class="number">3</span>,<span class="number">2</span>] which has length <span class="number">5.</span></span><br><span class="line"></span><br><span class="line">Input: [<span class="number">2</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">7</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">7</span>,<span class="number">6</span>,<span class="number">5</span>,<span class="number">1</span>]</span><br><span class="line">          --------- <span class="number">5</span></span><br><span class="line">                  ----------- <span class="number">6</span></span><br><span class="line">Output: <span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> </p>
+<ul>
+<li>Can you solve it using only one pass?</li>
+<li>Can you solve it in O(1) space?</li>
+</ul>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p>For an array of size $n$, we compute the mountain lengths for every subarray from size at least <code>3</code> to <code>n</code>.</p>
+<p><strong>Note:</strong> Be very careful about the index update.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">longestMountain</span><span class="params">(<span class="type">int</span>[] A)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> A.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">maxLen</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> <span class="number">3</span>; len &lt;= n; ++len) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i + len - <span class="number">1</span> &lt; n; ++i) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">end</span> <span class="operator">=</span> i + len - <span class="number">1</span>;</span><br><span class="line">      maxLen = Math.max(maxLen, mountainLen(A, i, end));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> maxLen;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In terms of the mountain length calculation (the mountain should start from the first element), check out the examples in comments. The following code is similar to the one-pointer solution.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">mountainLen</span><span class="params">(<span class="type">int</span>[] A, <span class="type">int</span> lo, <span class="type">int</span> hi)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> hi - lo + <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span> (n &lt; <span class="number">3</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 5 4 3 2 1    -&gt; no mountain</span></span><br><span class="line">  <span class="comment">//   i</span></span><br><span class="line">  <span class="comment">// 1 2 3 4 5    -&gt; no mountain</span></span><br><span class="line">  <span class="comment">//   i       i</span></span><br><span class="line">  <span class="comment">// 1 2 3 2 1    -&gt; returns i = n</span></span><br><span class="line">  <span class="comment">//   i   i   i</span></span><br><span class="line">  <span class="comment">// 1 2 3 2 1 2  -&gt; returns i = n - 1 (not includes the last element)</span></span><br><span class="line">  <span class="comment">//   i   i   i </span></span><br><span class="line">  <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> lo + <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (i &lt;= hi &amp;&amp; A[i - <span class="number">1</span>] &lt; A[i]) &#123;</span><br><span class="line">    ++i;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (i == lo + <span class="number">1</span> || i == hi + <span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>; <span class="comment">// no mountain</span></span><br><span class="line">  <span class="comment">// i now points to the first element that A[i - 1] &gt; A[i]</span></span><br><span class="line">  <span class="keyword">while</span> (i &lt;= hi &amp;&amp; A[i - <span class="number">1</span>] &gt; A[i]) &#123;</span><br><span class="line">    ++i;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> i - lo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^3)$ (unacceptable)<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="One-Pass-one-pointer"><a href="#One-Pass-one-pointer" class="headerlink" title="One-Pass (one pointer)"></a>One-Pass (one pointer)</h3><p>By observation of the example below, we can actually go through the array and get the maximum mountain length in one pass.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span> <span class="number">10</span></span><br><span class="line">[<span class="number">2</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">7</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">7</span>,<span class="number">6</span>,<span class="number">5</span>,<span class="number">1</span>]</span><br><span class="line">   --------- <span class="number">5</span></span><br><span class="line">           ----------- <span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+<p>In order to do that, we have to simulate the <code>going-up</code> and <code>going-down</code> processes in order. For example, while going up, the start point is at <code>1</code>, the peek is at <code>3</code>, and the end point is at <code>5</code>. We cannot go further, so we have a mountain of length 5. We do that for the following mountain until we reach the end of the array.</p>
+<p>The idea is not difficult, but the implementation is because of index manipulation and special&#x2F;corner cases. Try to come up with some small examples and get some invariants.</p>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>Since we check elements at <code>A[i]</code> and <code>A[i + 1]</code>, the condition is <code>i &lt; n - 1</code>.</li>
+<li>Record the starting point in each process, reconstruct a new mountain if <code>i</code> does not move at all (which means invalidity).</li>
+<li>Go through your code for cases: <code>[1,2,2]</code>, <code>[2]</code>, <code>[1,2,3]</code>, <code>[3,2,1]</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">longestMountain</span><span class="params">(<span class="type">int</span>[] A)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> A.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">maxLen</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (i &lt; n - <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">upStart</span> <span class="operator">=</span> i;</span><br><span class="line">    <span class="comment">// Go up</span></span><br><span class="line">    <span class="keyword">while</span> (i &lt; n - <span class="number">1</span> &amp;&amp; A[i] &lt; A[i + <span class="number">1</span>]) ++i;</span><br><span class="line">    <span class="keyword">if</span> (i == upStart) &#123; <span class="comment">// does not move</span></span><br><span class="line">      ++i; <span class="keyword">continue</span>;</span><br><span class="line">    &#125; <span class="comment">// i stops the peek</span></span><br><span class="line">    <span class="comment">// Go down</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">downStart</span> <span class="operator">=</span> i;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; n - <span class="number">1</span> &amp;&amp; A[i] &gt; A[i + <span class="number">1</span>]) ++i;</span><br><span class="line">    <span class="keyword">if</span> (i == downStart) &#123;</span><br><span class="line">      ++i; <span class="keyword">continue</span>;</span><br><span class="line">    &#125; <span class="comment">// i stops at the last in the subarray</span></span><br><span class="line">    <span class="comment">// Update length</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> i - upStart + <span class="number">1</span>;</span><br><span class="line">    maxLen = Math.max(maxLen, len);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> maxLen;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="DP"><a href="#DP" class="headerlink" title="DP"></a>DP</h3><p>Use extra two arrays <code>inc[]</code> and <code>dec[]</code> to store information we need and then go through the array.</p>
+<ul>
+<li><strong>inc[i]</strong>: The maximum increasing length for the subarray ending at <code>i</code>. (constructed from left)<ul>
+<li>For example: <code>[1,2,3]</code> the <code>inc[i] = [0,1,2]</code>.</li>
+</ul>
+</li>
+<li><strong>dec[i]</strong>: The maximum decreasing length for the subarray starting at <code>i</code>. (constructed from right)</li>
+<li>Both <code>inc[]</code> and <code>dec[]</code> are initialized with $0$.</li>
+</ul>
+<p>Then we go through the array from <code>1</code> to <code>n - 1</code> for each possible peak. We calculate the peak only when <code>inc[i]</code> and <code>dec[i]</code> are both non-zero.</p>
+<p><strong>Note:</strong> The length is <code>inc[i] + dec[i] + 1</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// inc[] and inc[] are initialized with 0</span></span><br><span class="line">index    <span class="number">0</span>   <span class="number">1</span>   <span class="number">2</span>   <span class="number">3</span>   <span class="number">4</span>   <span class="number">5</span>   <span class="number">6</span>   <span class="number">7</span>   <span class="number">8</span>   <span class="number">9</span>   <span class="number">10</span></span><br><span class="line">------------------------------------------------------</span><br><span class="line">         <span class="number">2</span>   <span class="number">1</span>   <span class="number">4</span>   <span class="number">7</span>   <span class="number">3</span>   <span class="number">2</span>   <span class="number">3</span>   <span class="number">7</span>   <span class="number">6</span>   <span class="number">5</span>   <span class="number">1</span></span><br><span class="line">inc[i]   <span class="number">0</span>   <span class="number">0</span>   <span class="number">1</span>   <span class="number">2</span>   <span class="number">0</span>   <span class="number">0</span>   <span class="number">1</span>   <span class="number">2</span>   <span class="number">0</span>   <span class="number">0</span>   <span class="number">0</span></span><br><span class="line">dec[i]   <span class="number">0</span>   <span class="number">0</span>   <span class="number">0</span>   <span class="number">2</span>   <span class="number">1</span>   <span class="number">0</span>   <span class="number">0</span>   <span class="number">3</span>   <span class="number">2</span>   <span class="number">1</span>   <span class="number">0</span></span><br><span class="line">------------------------------------------------------</span><br><span class="line">len          <span class="number">0</span>   <span class="number">0</span> <span class="number">4</span>+<span class="number">1</span>=<span class="number">5</span> <span class="number">0</span>   <span class="number">0</span>   <span class="number">0</span> <span class="number">5</span>+<span class="number">1</span>=<span class="number">6</span> <span class="number">0</span>   <span class="number">0</span>   <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>Here is the code:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">longestMountain</span><span class="params">(<span class="type">int</span>[] A)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> A.length;</span><br><span class="line">  <span class="type">int</span>[] inc = <span class="keyword">new</span> <span class="title class_">int</span>[n]; <span class="comment">// init with 0</span></span><br><span class="line">  <span class="type">int</span>[] dec = <span class="keyword">new</span> <span class="title class_">int</span>[n]; </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>, j = n - <span class="number">2</span>; i &lt; n; ++i, --j) &#123;</span><br><span class="line">    <span class="keyword">if</span> (A[i - <span class="number">1</span>] &lt; A[i]) inc[i] = inc[i - <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (A[j] &gt; A[j + <span class="number">1</span>]) dec[j] = dec[j + <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// otherwise, keep it 0</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// for each possible peak</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">maxLen</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; n - <span class="number">1</span>; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (inc[i] &gt; <span class="number">0</span> &amp;&amp; dec[i] &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      maxLen = Math.max(maxLen, inc[i] + dec[i] + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> maxLen;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

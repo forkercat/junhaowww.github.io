@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Source: LearnCpp.com by Alex The Standard Template LibraryThe Standard LibraryTechnically ‘STL’ is incorrect. What you’re calling the ‘STL’ is actually the C++ standard library.The STL was a differe">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Study Notes on LearnCpp (Part 7 - STL, I&#x2F;O, Updates, Appendix)">
+<meta property="og:url" content="https://junhaow.com/studynotes/cpp/learncpp/Study%20Notes%20on%20LearnCpp%20Part%207.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Source: LearnCpp.com by Alex The Standard Template LibraryThe Standard LibraryTechnically ‘STL’ is incorrect. What you’re calling the ‘STL’ is actually the C++ standard library.The STL was a differe">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/owh0p.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/mqh5w.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/uvbbe.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ehyd5.jpg">
+<meta property="article:published_time" content="2019-02-28T20:04:03.000Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.185Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/owh0p.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Study Notes on LearnCpp (Part 7 - STL, I/O, Updates, Appendix)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Source: <a target="_blank" rel="noopener" href="https://www.learncpp.com/">LearnCpp.com</a> by Alex</p>
+<h2 id="The-Standard-Template-Library"><a href="#The-Standard-Template-Library" class="headerlink" title="The Standard Template Library"></a>The Standard Template Library</h2><h3 id="The-Standard-Library"><a href="#The-Standard-Library" class="headerlink" title="The Standard Library"></a>The Standard Library</h3><p>Technically ‘STL’ is incorrect. What you’re calling the ‘STL’ is actually the C++ standard library.<br>The STL was a different library that merely influenced the C++ standard library</p>
+<p><strong>The term “STL” or “Standard Template Library” does not show up anywhere in the ISO 14882 C++ standard. So referring to the C++ standard library as STL is wrong.</strong> The term “C++ Standard Library” or “standard library” is what’s officially used by ISO 14882:</p>
+<p>STL is a library originally designed by <code>Alexander Stepanov</code>, independent of the C++ standard. However, some components of the C++ standard library include STL components like vector, list and algorithms like copy and swap.</p>
+<h3 id="STL-containers-overview"><a href="#STL-containers-overview" class="headerlink" title="STL containers overview"></a>STL containers overview</h3><p>Generally speaking, the container classes fall into three basic categories:</p>
+<ul>
+<li><code>Sequence Containers</code></li>
+<li><code>Associative Containers</code></li>
+<li><code>Container Adapters</code></li>
+</ul>
+<p><strong>Sequence Containers</strong></p>
+<p>As of C++11, the STL contains 6 sequence containers: </p>
+<ul>
+<li>std::vector</li>
+<li>std::deque</li>
+<li>std::array</li>
+<li>std::list</li>
+<li>std::forward_list</li>
+<li>std::basic_string</li>
+</ul>
+<p>Specifically, </p>
+<ul>
+<li>The <code>deque</code> class (pronounced “deck”) is a <code>double-ended queue</code> class, implemented as a dynamic array that can <strong>grow from both ends</strong>.</li>
+<li>A <code>list</code> is a special type of sequence container called a <code>doubly linked list</code> where each element in the container contains pointers that point at the next and previous elements in the list. Lists only provide access to the start and end of the list.</li>
+<li>Although the STL <code>string</code> (and wstring) class aren’t generally included as a type of sequence container, they essentially are, as they can be thought of as a vector with data elements of type char (or wchar).</li>
+</ul>
+<p><strong>Associative Containers</strong></p>
+<p>Associative containers are containers that automatically sort their inputs when those inputs are inserted into the container. By default, associative containers compare elements using <code>operator&lt;</code>.</p>
+<ul>
+<li>A <code>set</code> is a container that stores unique elements, with duplicate elements disallowed. <strong>The elements are sorted according to their values.</strong></li>
+<li>A <code>multiset</code> is a set where <code>duplicate</code> elements are allowed.</li>
+<li>A <code>map</code> (also called an <code>associative array</code>) is a set where each element is a pair, called a key&#x2F;value pair. The key is used for sorting and indexing the data, and must be unique. The value is the actual data.</li>
+<li>A <code>multimap</code> (also called a <code>dictionary</code>) is a map that allows <code>duplicate keys</code>. Real-life dictionaries are multimaps: the key is the word, and the value is the meaning of the word. <strong>All the keys are sorted in ascending order</strong>, and you can look up the value by key. Some words can have multiple meanings, which is why the dictionary is a multimap rather than a map.</li>
+</ul>
+<p><strong>Container Adapters</strong></p>
+<p>Container adapters are special predefined containers that are adapted to specific uses. The interesting part about container adapters is that you can choose which sequence container you want them to use.</p>
+<ul>
+<li>A <code>stack</code> is a container where elements operate in a LIFO (Last In, First Out) context, where elements are inserted (pushed) and removed (popped) from the end of the container. Stacks default to using deque as their default sequence container (which seems odd, since vector seems like a more natural fit), but can use vector or list as well.</li>
+<li>A <code>queue</code> is a container where elements operate in a FIFO (First In, First Out) context, where elements are inserted (pushed) to the back of the container and removed (popped) from the front. Queues default to using deque, but can also use list.</li>
+<li>A <code>priority queue</code> is a type of queue where the elements are kept sorted (via operator&lt;). When elements are pushed, the element is sorted in the queue. Removing an element from the front returns the highest priority item in the priority queue.</li>
+</ul>
+<h3 id="STL-iterators-overview"><a href="#STL-iterators-overview" class="headerlink" title="STL iterators overview"></a>STL iterators overview</h3><p>An <code>Iterator</code> is an <code>object</code> that can traverse (iterate over) a container class <strong>without the user having to know how the container is implemented</strong>. With many classes (particularly lists and the associative classes), iterators are the primary way elements of these classes are accessed.</p>
+<p>An iterator is best visualized as a <code>pointer</code> to a given element in the container, with a set of overloaded operators to provide a set of well-defined functions:</p>
+<ul>
+<li><code>Operator*</code> – Dereferencing the iterator returns the element that the iterator is currently pointing at.</li>
+<li><code>Operator++</code> – Moves the iterator to the next element in the container. Most iterators also provide <code>Operator--</code> to move to the previous element.</li>
+<li><code>Operator==</code> and <code>Operator!=</code> – Basic comparison operators to determine if two iterators point to the same element. <strong>To compare the values that two iterators are pointing at, dereference the iterators first, and then use a comparison operator.</strong></li>
+<li><code>Operator=</code> – Assign the iterator to a new position (typically the start or end of the container’s elements). To assign the value of the element the iterator is point at, dereference the iterator first, then use the assign operator.</li>
+</ul>
+<p>Each container includes four basic member functions for use with Operator&#x3D;:</p>
+<ul>
+<li><code>begin()</code> returns an iterator representing the beginning of the elements in the container.</li>
+<li><code>end()</code> returns an iterator representing <strong>the element just past the end of the elements</strong>.</li>
+<li><code>cbegin()</code> returns a <code>const</code> (read-only) iterator representing the beginning of the elements in the container.</li>
+<li><code>cend()</code> returns a <code>const</code> (read-only) iterator representing the element just past the end of the elements.</li>
+</ul>
+<p>It might seem weird that <code>end()</code> doesn’t point to the last element in the list, but this is done primarily to make looping easy: iterating over the elements can continue until the iterator reaches <code>end()</code>, and then you know you’re done.</p>
+<p>Finally, all containers provide (at least) two types of iterators:</p>
+<ul>
+<li><code>container::iterator</code> provides a read&#x2F;write iterator</li>
+<li><code>container::const_iterator</code> provides a read-only iterator</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  std::vector&lt;<span class="type">int</span>&gt; vect;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> count = <span class="number">0</span>; count &lt; <span class="number">6</span>; ++count)</span><br><span class="line">    vect.<span class="built_in">push_back</span>(count);</span><br><span class="line"></span><br><span class="line">  std::vector&lt;<span class="type">int</span>&gt;::const_iterator it; <span class="comment">// declare a read-only iterator</span></span><br><span class="line">  it = vect.<span class="built_in">begin</span>(); <span class="comment">// assign it to the start of the vector</span></span><br><span class="line">  <span class="keyword">while</span> (it != vect.<span class="built_in">end</span>()) &#123; <span class="comment">// while it hasn&#x27;t reach the end</span></span><br><span class="line">    std::cout &lt;&lt; *it &lt;&lt; <span class="string">&quot; &quot;</span>; <span class="comment">// print the value of the element it points to</span></span><br><span class="line">    ++it; <span class="comment">// and iterate to the next element</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  std::map&lt;<span class="type">int</span>, string&gt; mymap;</span><br><span class="line">  mymap.<span class="built_in">insert</span>(<span class="built_in">make_pair</span>(<span class="number">4</span>, <span class="string">&quot;apple&quot;</span>));</span><br><span class="line">  mymap.<span class="built_in">insert</span>(<span class="built_in">make_pair</span>(<span class="number">2</span>, <span class="string">&quot;orange&quot;</span>));</span><br><span class="line">  mymap.<span class="built_in">insert</span>(<span class="built_in">make_pair</span>(<span class="number">1</span>, <span class="string">&quot;banana&quot;</span>));</span><br><span class="line">  mymap.<span class="built_in">insert</span>(<span class="built_in">make_pair</span>(<span class="number">3</span>, <span class="string">&quot;grapes&quot;</span>));</span><br><span class="line">  mymap.<span class="built_in">insert</span>(<span class="built_in">make_pair</span>(<span class="number">6</span>, <span class="string">&quot;mango&quot;</span>));</span><br><span class="line">  mymap.<span class="built_in">insert</span>(<span class="built_in">make_pair</span>(<span class="number">5</span>, <span class="string">&quot;peach&quot;</span>));</span><br><span class="line">  </span><br><span class="line">  std::map&lt;<span class="type">int</span>, string&gt;::const_iterator it; <span class="comment">// declare an iterator</span></span><br><span class="line">  it = mymap.<span class="built_in">begin</span>(); <span class="comment">// assign it to the start of the vector</span></span><br><span class="line">  <span class="keyword">while</span> (it != mymap.<span class="built_in">end</span>()) &#123; <span class="comment">// while it hasn&#x27;t reach the end</span></span><br><span class="line">    std::cout &lt;&lt; it-&gt;first &lt;&lt; <span class="string">&quot;=&quot;</span> &lt;&lt; it-&gt;second &lt;&lt; <span class="string">&quot; &quot;</span>; <span class="comment">// print the value of the element it points to</span></span><br><span class="line">    ++it; <span class="comment">// and iterate to the next element</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>One point worth noting: <strong>Iterators must be implemented on a per-class basis</strong>, because the iterator does need to know how a class is implemented. Thus iterators are always tied to <code>specific</code> container classes.</p>
+<h3 id="STL-algorithms-overview"><a href="#STL-algorithms-overview" class="headerlink" title="STL algorithms overview"></a>STL algorithms overview</h3><p>In addition to container classes and iterators, STL also provides a number of generic algorithms for working with the elements of the container classes. These allow you to do things like search, sort, insert, reorder, remove, and copy elements of the container class.</p>
+<p>Note that algorithms are implemented as <code>global functions</code> that operate using iterators. This means that each algorithm only needs to be implemented once, and it will generally automatically work for all containers that provides a set of iterators (including your custom container classes). While this is very powerful and can lead to the ability to write complex code very quickly, it’s also got a <code>dark side</code>: some combination of algorithms and container types may not work, may cause infinite loops, or may work but be extremely poor performing. So use these at your risk.</p>
+<p><strong>min_element and max_element</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">std::list&lt;<span class="type">int</span>&gt;::const_iterator it; <span class="comment">// declare an iterator</span></span><br><span class="line">it = <span class="built_in">min_element</span>(li.<span class="built_in">begin</span>(), li.<span class="built_in">end</span>());</span><br><span class="line">std::cout &lt;&lt; *it &lt;&lt; <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">it = <span class="built_in">max_element</span>(li.<span class="built_in">begin</span>(), li.<span class="built_in">end</span>());</span><br><span class="line">std::cout &lt;&lt; *it &lt;&lt; <span class="string">&#x27; &#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>find (and list::insert)</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">it = <span class="built_in">find</span>(li.<span class="built_in">begin</span>(), li.<span class="built_in">end</span>(), <span class="number">3</span>); <span class="comment">// find the value 3 in the list</span></span><br><span class="line">li.<span class="built_in">insert</span>(it, <span class="number">8</span>); <span class="comment">// use list::insert to insert the value 8 [before iterator it]</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>sort and reverse</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::<span class="built_in">sort</span>(vect.<span class="built_in">begin</span>(), vect.<span class="built_in">end</span>()); <span class="comment">// sort the list</span></span><br><span class="line">std::<span class="built_in">reverse</span>(vect.<span class="built_in">begin</span>(), vect.<span class="built_in">end</span>()); <span class="comment">// reverse the list</span></span><br></pre></td></tr></table></figure>
+
+<p>Note that <code>sort()</code> doesn’t work on list container classes – the list class provides its own <code>sort()</code> member function, which is much more efficient than the generic version would be.</p>
+<h2 id="std-string"><a href="#std-string" class="headerlink" title="std::string"></a>std::string</h2><h3 id="std-string-and-std-wstring"><a href="#std-string-and-std-wstring" class="headerlink" title="std::string and std::wstring"></a>std::string and std::wstring</h3><p>The standard library contains many useful classes – but perhaps the most useful is <code>std::string</code>.</p>
+<p><strong>Note:</strong> C-style strings will be referred to as “C-style strings”, whereas std::string (and std::wstring) will be referred to simply as “strings”.</p>
+<p><strong>Motivation for a string class</strong></p>
+<p>In a previous lesson, we covered C-style strings, which uses char arrays to store a string of characters. If you’ve tried to do anything with C-style strings, you’ll very quickly come to the conclusion that they are a pain to work with, easy to mess up, and hard to debug.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> *strHello = <span class="keyword">new</span> <span class="type">char</span>[<span class="number">7</span>];</span><br><span class="line"><span class="built_in">strcpy</span>(strHello, <span class="string">&quot;Hello!&quot;</span>);</span><br><span class="line"><span class="keyword">delete</span>[] strHello;</span><br><span class="line"><span class="comment">// Don&#x27;t forget to use array delete instead of normal delete!</span></span><br></pre></td></tr></table></figure>
+
+<p>Fortunately, C++ and the standard library provide a much better way to deal with strings: the <code>std::string</code> and <code>std::wstring</code> classes. By making use of C++ concepts such as constructors, destructors, and operator overloading, std::string allows you to create and manipulate strings in an intuitive and safe manner! <strong>No more memory management</strong>, no more weird function names, and a much reduced potential for disaster.</p>
+<p>There are actually 3 different string classes in the string header. The first is a templated base class named <code>basic_string&lt;&gt;</code>:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> std &#123;</span><br><span class="line">  <span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">charT</span>, <span class="keyword">class</span> <span class="title class_">traits</span> = char_traits&lt;charT&gt;, <span class="keyword">class</span> Allocator = allocator&lt;charT&gt; &gt;</span><br><span class="line">    <span class="keyword">class</span> basic_string;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>You won’t be working with this class directly, so don’t worry about what traits or an Allocator is for the time being. The default values will suffice in almost every imaginable case.</p>
+<p>There are two flavors of <code>basic_string&lt;&gt;</code> provided by the standard library:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> std &#123;</span><br><span class="line">  <span class="keyword">typedef</span> basic_string&lt;<span class="type">char</span>&gt; string;</span><br><span class="line">  <span class="keyword">typedef</span> basic_string&lt;<span class="type">wchar_t</span>&gt; wstring;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>These are the two classes that you will actually use. <code>std::string</code> is used for <code>standard ascii</code> (utf-8) strings. <code>std::wstring</code> is used for <code>wide-character/unicode</code> (utf-16) strings. There is no built-in class for utf-32 strings (though you should be able to extend your own from basic_string&lt;&gt; if you need one).</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/owh0p.jpg"></p>
+<ul>
+<li><code>c_str</code>: Returns the contents of the string as a NULL-terminated C-style string</li>
+<li><code>copy()</code>: Copies contents (not NULL-terminated) to a character array</li>
+<li><code>data()</code>: Returns the contents of the string as a non-NULL-terminated character array</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://www.learncpp.com/cpp-tutorial/17-1-stdstring-and-stdwstring/">More</a></p>
+<h3 id="std-string-construction-and-destruction"><a href="#std-string-construction-and-destruction" class="headerlink" title="std::string construction and destruction"></a>std::string construction and destruction</h3><p><strong>Note:</strong> string::size_type resolves to <code>size_t</code>, which is the same unsigned integral type that is returned by the sizeof operator. Its actual size varies depending on environment. For purposes of this tutorial, envision it as an unsigned int.</p>
+<ul>
+<li><code>string()</code><ul>
+<li>This is the default constructor. It creates an empty string.<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::string sSource;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><code>string(const string&amp; strSource)</code><ul>
+<li>This is the copy constructor. This constructor creates a new string as a copy of <code>strSource</code>.<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">sSource</span><span class="params">(<span class="string">&quot;old string&quot;</span>)</span></span>;</span><br><span class="line"><span class="function">string <span class="title">sOutput</span><span class="params">(sSource)</span></span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><code>string::string(const string&amp; strSource, size_type unIndex)</code><br>string::string(const string&amp; strSource, size_type unIndex, size_type unLength)<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">sSource</span><span class="params">(<span class="string">&quot;old string&quot;</span>)</span></span>;</span><br><span class="line"><span class="function">string <span class="title">sOutput</span><span class="params">(sSource, <span class="number">3</span>)</span></span>;</span><br><span class="line">cout &lt;&lt; sOutput&lt;&lt; endl;</span><br><span class="line"><span class="function">string <span class="title">sOutput2</span><span class="params">(sSource, <span class="number">3</span>, <span class="number">4</span>)</span></span>;</span><br><span class="line">cout &lt;&lt; sOutput2 &lt;&lt; endl;</span><br></pre></td></tr></table></figure></li>
+<li><code>string::string(const char *szCString)</code><ul>
+<li>This constructor creates a new string from the <code>C-style string szCString</code>, up to but not including the NULL terminator.</li>
+<li>If the resulting size exceeds the maximum string length, the length_error exception will be thrown.</li>
+<li><strong>Warning:</strong> <code>szCString</code> must not be NULL.<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">const</span> <span class="type">char</span> *<span class="title">szSource</span><span class="params">(<span class="string">&quot;my string&quot;</span>)</span></span>;</span><br><span class="line"><span class="function">string <span class="title">sOutput</span><span class="params">(szSource)</span></span>;</span><br><span class="line">cout &lt;&lt; sOutput &lt;&lt; endl;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>more …</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://www.learncpp.com/cpp-tutorial/17-2-stdstring-construction-and-destruction/">More</a></p>
+<p><strong>Constructing strings from numbers</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">sFour</span><span class="params">(<span class="number">4</span>)</span></span>;</span><br><span class="line"><span class="comment">// c:vcprojectstest2test2test.cpp(10) : error C2664: &#x27;std::basic_string&lt;_Elem,_Traits,_Ax&gt;::basic_string(std::basic_string&lt;_Elem,_Traits,_Ax&gt;::_Has_debug_it)&#x27; : cannot convert parameter 1 from &#x27;int&#x27; to &#x27;std::basic_string&lt;_Elem,_Traits,_Ax&gt;::_Has_debug_it&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>The easiest way to convert numbers into strings is to involve the <code>std::ostringstream</code> class. std::ostringstream is already set up to accept input from a variety of sources, including characters, numbers, strings, etc. It is also capable of outputting strings (either via the extraction operator&gt;&gt;, or via the str() function).</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> std::string <span class="title">ToString</span><span class="params">(T tX)</span> </span>&#123;</span><br><span class="line">    std::ostringstream oStream;</span><br><span class="line">    oStream &lt;&lt; tX;</span><br><span class="line">    <span class="keyword">return</span> oStream.<span class="built_in">str</span>();</span><br><span class="line">    <span class="comment">// ToString(4);</span></span><br><span class="line">    <span class="comment">// ToString(&#x27;A&#x27;)</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Note that this solution <strong>omits any error checking</strong>. It is possible that inserting <code>tX</code> into oStream could fail. An appropriate response would be to throw an exception if the conversion fails.</p>
+<p><strong>Converting strings to numbers</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">bool</span> <span class="title">FromString</span><span class="params">(<span class="type">const</span> std::string&amp; sString, T &amp;tX)</span> </span>&#123;</span><br><span class="line">  <span class="function">std::istringstream <span class="title">iStream</span><span class="params">(sString)</span></span>;</span><br><span class="line">  <span class="keyword">return</span> (iStream &gt;&gt; tX) ? <span class="literal">true</span> : <span class="literal">false</span>;</span><br><span class="line">  <span class="comment">// extract value into tX, return success or not</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="type">double</span> dX;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">FromString</span>(<span class="string">&quot;3.4&quot;</span>, dX))</span><br><span class="line">    std::cout &lt;&lt; dX &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">FromString</span>(<span class="string">&quot;ABC&quot;</span>, dX))</span><br><span class="line">    std::cout &lt;&lt; dX &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Too many APIs! Just look them up when I need.</strong></p>
+<h2 id="Input-and-output-I-O"><a href="#Input-and-output-I-O" class="headerlink" title="Input and output (I&#x2F;O)"></a>Input and output (I&#x2F;O)</h2><h3 id="Input-and-output-I-O-streams"><a href="#Input-and-output-I-O-streams" class="headerlink" title="Input and output (I&#x2F;O) streams"></a>Input and output (I&#x2F;O) streams</h3><p><strong>The iostream library</strong></p>
+<p>When you include the iostream header, you gain access to a whole hierarchy of classes responsible for providing I&#x2F;O functionality (including one class that is actually named <code>iostream</code>). The class hierarchy for the non-file I&#x2F;O classes looks like this:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/mqh5w.jpg"></p>
+<p>The first thing you may notice about this hierarchy is that it uses multiple inheritance (that thing we told you to avoid if at all possible). However, the iostream library has been designed and extensively tested in order to avoid any of the typical multiple inheritance problems, so you can use it freely without worrying.</p>
+<p><strong>Streams</strong></p>
+<p>The second thing you may notice is that the word <code>stream</code> is used an awful lot. At its most basic, I&#x2F;O in C++ is implemented with streams. Abstractly, a <code>stream</code> is just a sequence of characters that can be accessed sequentially. Over time, a stream may produce or consume potentially unlimited amounts of data.</p>
+<p>Typically we deal with two different types of streams. Input streams are used to hold input from a data producer, such as a keyboard, a file, or a network.</p>
+<p>Conversely, output streams are used to hold output for a particular data consumer, such as a monitor, a file, or a printer. When writing data to an output device, the device may not be ready to accept that data yet.</p>
+<p>The nice thing about streams is the programmer only has to learn how to interact with the streams in order to read and write data to many different kinds of devices. (Abstract)</p>
+<p>The <code>istream</code> class is the primary class used when dealing with input streams. With input streams, the <code>extraction operator</code> (&gt;&gt;) is used to <code>remove values from the stream</code>. This makes sense: when the user presses a key on the keyboard, the key code is placed in an input stream. Your program then extracts the value from the stream so it can be used.</p>
+<p>The <code>ostream</code> class is the primary class used when dealing with output streams. With output streams, the <code>insertion operator</code> (&lt;&lt;) is used to <code>put values in the stream</code>. This also makes sense: you insert your values into the stream, and the data consumer (eg. monitor) uses them.</p>
+<p><strong>Standard streams in C++</strong></p>
+<p>A <code>standard stream</code> is a pre-connected stream provided to a computer program by its environment. C++ comes with four predefined standard stream objects that have already been set up for your use. The first three, you have seen before:</p>
+<ul>
+<li><code>cin</code> – an istream_withassign class tied to the standard input (typically the keyboard)</li>
+<li><code>cout</code> – an ostream_withassign class tied to the standard output (typically the monitor)</li>
+<li><code>cerr</code> – an ostream_withassign class tied to the standard error (typically the monitor), providing unbuffered output</li>
+<li><code>clog</code> – an ostream_withassign class tied to the standard error (typically the monitor), providing buffered output</li>
+</ul>
+<p><code>Unbuffered output</code> is typically handled immediately, whereas buffered output is typically stored and written out as a block. Because clog isn’t used very often, it is often omitted from the list of standard streams.</p>
+<h3 id="Input-with-istream"><a href="#Input-with-istream" class="headerlink" title="Input with istream"></a>Input with istream</h3><p>When reading strings, one common problem with the extraction operator is how to keep the input from overflowing your buffer. Given the following example:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> buf[<span class="number">10</span>];</span><br><span class="line">cin &gt;&gt; buf;</span><br></pre></td></tr></table></figure>
+
+<p>what happens if the user enters 18 characters? The buffer overflows, and bad stuff happens. Generally speaking, it’s a bad idea to make any assumption about how many characters your user will enter.</p>
+<p>One way to handle this problem is through use of manipulators. A <code>manipulator</code> is an object that is used to modify a stream when applied with the extraction (&gt;&gt;) or insertion (&lt;&lt;) operators. One manipulator you have already worked with extensively is <code>endl</code>, which both prints a newline character and flushes any buffered output. C++ provides a manipulator known as <code>setw</code> (in the iomanip.h header) that can be used to limit the number of characters read in from a stream. To use setw(), simply provide the maximum number of characters to read as a parameter, and insert it into your input statement like such:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iomanip.h&gt;</span></span></span><br><span class="line"><span class="type">char</span> buf[<span class="number">10</span>];</span><br><span class="line">cin &gt;&gt; <span class="built_in">setw</span>(<span class="number">10</span>) &gt;&gt; buf;</span><br></pre></td></tr></table></figure>
+
+<p>This program will now only read the first 9 characters out of the stream (<code>leaving room for a terminator</code>). Any remaining characters will be left in the stream until the next extraction.</p>
+<p><strong>Extraction and whitespace</strong></p>
+<p>The one thing that we have omitted to mention so far is that the extraction operator works with “formatted” data – that is, it skips whitespace (blanks, tabs, and newlines).</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> ch;</span><br><span class="line"><span class="keyword">while</span> (cin &gt;&gt; ch)</span><br><span class="line">  cout &lt;&lt; ch;</span><br></pre></td></tr></table></figure>
+
+<p>When the user inputs the following:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hello my name is Alex</span><br></pre></td></tr></table></figure>
+
+<p>The extraction operator skips the spaces and the newline. Consequently, the output is:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HellomynameisAlex</span><br></pre></td></tr></table></figure>
+
+<p>Oftentimes, you’ll want to get user input but not discard whitespace. To do this, the istream class provides many functions that can be used for this purpose.</p>
+<p>One of the most useful is the <code>get()</code> function, which simply gets a character from the input stream. Here’s the same program as above using get():</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> ch;</span><br><span class="line"><span class="keyword">while</span> (cin.<span class="built_in">get</span>(ch))</span><br><span class="line">  cout &lt;&lt; ch;</span><br></pre></td></tr></table></figure>
+
+<p>One important thing to note about get() is that it does not read in a newline character! This can cause some unexpected results:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> strBuf[<span class="number">11</span>];</span><br><span class="line"><span class="comment">// Read up to 10 characters</span></span><br><span class="line">cin.<span class="built_in">get</span>(strBuf, <span class="number">11</span>);</span><br><span class="line">cout &lt;&lt; strBuf &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Read up to 10 more characters</span></span><br><span class="line">cin.<span class="built_in">get</span>(strBuf, <span class="number">11</span>);</span><br><span class="line">cout &lt;&lt; strBuf &lt;&lt; endl;</span><br><span class="line"><span class="comment">// Input: Hello!</span></span><br><span class="line"><span class="comment">// Output: Hello!</span></span><br><span class="line"><span class="comment">// and terminate!</span></span><br></pre></td></tr></table></figure>
+
+<p>Why didn’t it ask for 10 more characters? The answer is because the first get() read up to the <code>newline</code> and then stopped. The second get() saw there was still input in the cin stream and tried to read it. But <code>the first character was the newline, so it stopped immediately</code>.</p>
+<p>Consequently, there is another function called <code>getline()</code> that works exactly like <code>get()</code> but reads the newline as well.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> strBuf[<span class="number">11</span>];</span><br><span class="line"><span class="comment">// Read up to 10 characters</span></span><br><span class="line">cin.<span class="built_in">getline</span>(strBuf, <span class="number">11</span>);</span><br><span class="line">cout &lt;&lt; strBuf &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Read up to 10 more characters</span></span><br><span class="line">cin.<span class="built_in">getline</span>(strBuf, <span class="number">11</span>);</span><br><span class="line">cout &lt;&lt; strBuf &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+
+<p>If you need to know how many character were extracted by the <code>last call</code> of getline(), use <code>gcount()</code>:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> strBuf[<span class="number">100</span>];</span><br><span class="line">cin.<span class="built_in">getline</span>(strBuf, <span class="number">100</span>);</span><br><span class="line">cout &lt;&lt; strBuf &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; cin.<span class="built_in">gcount</span>() &lt;&lt; <span class="string">&quot; characters were read&quot;</span> &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+
+<p>Version for std::string</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::string strBuf;</span><br><span class="line"><span class="built_in">getline</span>(cin, strBuf);</span><br><span class="line">std::cout &lt;&lt; strBuf &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>A few more useful istream functions</strong></p>
+<p>There are a few more useful input functions that you might want to make use of:</p>
+<ul>
+<li><code>ignore()</code> discards the first character in the stream.<br>ignore(int nCount) discards the first nCount characters.</li>
+<li><code>peek()</code> allows you to read a character from the stream without removing it from the stream.</li>
+<li><code>unget()</code> returns the last character read back into the stream so it can be read again by the next call.</li>
+<li><code>putback(char ch)</code> allows you to put a character of your choice <code>back into the stream</code> to be read by the next call.</li>
+</ul>
+<h3 id="Output-with-ostream-and-ios"><a href="#Output-with-ostream-and-ios" class="headerlink" title="Output with ostream and ios"></a>Output with ostream and ios</h3><p><strong>The insertion operator</strong></p>
+<p>The insertion operator (&lt;&lt;) is used to put information into an output stream. C++ has predefined insertion operations for all of the built-in data types, and you’ve already seen how you can <code>overload the insertion operator</code> for your own classes.</p>
+<p><strong>Formatting</strong></p>
+<p>There are two ways to change the formatting options: flags, and manipulators. You can think of <code>flags</code> as boolean variables that can be turned on and off. <code>Manipulators</code> are objects placed in a stream that affect the way things are input and output.</p>
+<p>To switch a flag on, use the <code>setf()</code> function, with the appropriate flag as a parameter. For example, by default, C++ does not print a + sign in front of positive numbers. However, by using the <code>std::showpos</code> flag, we can change this behavior:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">std::cout.<span class="built_in">setf</span>(std::showpos);</span><br><span class="line">std::cout &lt;&lt; <span class="number">27</span> &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"><span class="comment">// output: +27</span></span><br><span class="line"></span><br><span class="line">std::cout.<span class="built_in">setf</span>(std::showpos | std::uppercase); <span class="comment">// turn on the std::showpos and std::uppercase flag</span></span><br><span class="line">std::cout &lt;&lt; <span class="number">27</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">std::cout.<span class="built_in">unsetf</span>(std::showpos); <span class="comment">// turn off the std::showpos flag</span></span><br></pre></td></tr></table></figure>
+
+<p>There’s one other bit of trickiness when using setf() that needs to be mentioned. Many flags belong to groups, called format groups. A <code>format group</code> is a group of flags that perform similar (sometimes mutually exclusive) formatting options. For example, a format group named “basefield” contains the flags “oct”, “dec”, and “hex”, which controls the base of integral values. By default, the “dec” flag is set. Consequently, if we do this:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::cout.<span class="built_in">setf</span>(std::hex); <span class="comment">// try to turn on hex output</span></span><br><span class="line">std::cout &lt;&lt; <span class="number">27</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line"><span class="comment">// output: 27</span></span><br></pre></td></tr></table></figure>
+
+<p>It didn’t work! The reason why is because setf() only turns flags on – <strong>it isn’t smart enough to turn mutually exclusive flags off.</strong> Consequently, when we turned std::hex on, std::dec was still on, and std::dec apparently takes precedence. There are two ways to get around this problem.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">std::cout.<span class="built_in">unsetf</span>(std::dec); <span class="comment">// turn off decimal output</span></span><br><span class="line">std::cout.<span class="built_in">setf</span>(std::hex); <span class="comment">// turn on hexadecimal output</span></span><br><span class="line">std::cout &lt;&lt; <span class="number">27</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line"><span class="comment">// output: 0x1B</span></span><br></pre></td></tr></table></figure>
+
+<p>The second way is to use a different form of setf() that takes two parameters: the first parameter is the flag to set, and the second is the formatting group it belongs to. When using this form of setf(), all of the flags belonging to the group are turned off, and only the flag passed in is turned on. For example:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Turn on std::hex as the only std::basefield flag</span></span><br><span class="line">std::cout.<span class="built_in">setf</span>(std::hex, std::basefield);</span><br><span class="line">std::cout &lt;&lt; <span class="number">27</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line"><span class="comment">// output: 0x1B</span></span><br></pre></td></tr></table></figure>
+
+<p>Using <code>setf()</code> and <code>unsetf()</code> tends to be awkward, so C++ provides a second way to change the formatting options: <code>manipulators</code>. <strong>The nice thing about manipulators is that they are smart enough to turn on and off the appropriate flags.</strong> Here is an example of using some manipulators to change the base:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::cout &lt;&lt; std::hex &lt;&lt; <span class="number">27</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>; <span class="comment">// print 27 in hex</span></span><br><span class="line">std::cout &lt;&lt; <span class="number">28</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>; <span class="comment">// we&#x27;re still in hex</span></span><br><span class="line">std::cout &lt;&lt; std::dec &lt;&lt; <span class="number">29</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>; <span class="comment">// back to decimal</span></span><br></pre></td></tr></table></figure>
+
+<p>Other useful formatters:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">std::cout &lt;&lt; <span class="literal">true</span> &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; <span class="literal">false</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">std::cout.<span class="built_in">setf</span>(std::boolalpha);</span><br><span class="line">std::cout &lt;&lt; <span class="literal">true</span> &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; <span class="literal">false</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">std::cout &lt;&lt; noboolalpha &lt;&lt; <span class="literal">true</span> &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; <span class="literal">false</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">std::cout &lt;&lt; boolalpha &lt;&lt; <span class="literal">true</span> &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; <span class="literal">false</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Precision, notation, and decimal points</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// fixed - demical notaiton</span></span><br><span class="line"><span class="comment">// scientific - scientific notation</span></span><br><span class="line"><span class="comment">// showpoint - decimal + trailing 0&#x27;s</span></span><br><span class="line"><span class="comment">// noshowpoint - no decimal point and trailing 0&#x27;s</span></span><br><span class="line">std::cout &lt;&lt; std::fixed &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">std::cout &lt;&lt; std::<span class="built_in">setprecision</span>(<span class="number">3</span>) &lt;&lt; <span class="number">123.456</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">std::cout &lt;&lt; std::<span class="built_in">setprecision</span>(<span class="number">4</span>) &lt;&lt; <span class="number">123.456</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">std::cout &lt;&lt; std::<span class="built_in">setprecision</span>(<span class="number">5</span>) &lt;&lt; <span class="number">123.456</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">std::cout &lt;&lt; std::<span class="built_in">setprecision</span>(<span class="number">6</span>) &lt;&lt; <span class="number">123.456</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">std::cout &lt;&lt; std::<span class="built_in">setprecision</span>(<span class="number">7</span>) &lt;&lt; <span class="number">123.456</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line"> </span><br><span class="line">std::cout &lt;&lt; std::scientific &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">std::cout &lt;&lt; std::<span class="built_in">setprecision</span>(<span class="number">3</span>) &lt;&lt; <span class="number">123.456</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">std::cout &lt;&lt; std::<span class="built_in">setprecision</span>(<span class="number">4</span>) &lt;&lt; <span class="number">123.456</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">std::cout &lt;&lt; std::<span class="built_in">setprecision</span>(<span class="number">5</span>) &lt;&lt; <span class="number">123.456</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">std::cout &lt;&lt; std::<span class="built_in">setprecision</span>(<span class="number">6</span>) &lt;&lt; <span class="number">123.456</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">std::cout &lt;&lt; std::<span class="built_in">setprecision</span>(<span class="number">7</span>) &lt;&lt; <span class="number">123.456</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>If neither fixed nor scientific are being used, precision determines how many <code>significant digits</code> should be displayed. Again, if the precision is less than the number of significant digits, the number will be rounded.</p>
+<p><strong>Width, fill characters, and justification</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">std::cout &lt;&lt; <span class="number">-12345</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>; <span class="comment">// print default value with no field width</span></span><br><span class="line">std::cout &lt;&lt; std::<span class="built_in">setw</span>(<span class="number">10</span>) &lt;&lt; <span class="number">-12345</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>; <span class="comment">// print default with field width</span></span><br><span class="line">std::cout &lt;&lt; std::<span class="built_in">setw</span>(<span class="number">10</span>) &lt;&lt; left &lt;&lt; <span class="number">-12345</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>; <span class="comment">// print left justified</span></span><br><span class="line">std::cout &lt;&lt; std::<span class="built_in">setw</span>(<span class="number">10</span>) &lt;&lt; right &lt;&lt; <span class="number">-12345</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>; <span class="comment">// print right justified</span></span><br><span class="line">std::cout &lt;&lt; std::<span class="built_in">setw</span>(<span class="number">10</span>) &lt;&lt; internal &lt;&lt; <span class="number">-12345</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>; <span class="comment">// print internally justified</span></span><br></pre></td></tr></table></figure>
+
+<p>One thing to note is that setw() and width() <strong>only affect the next output statement</strong>. They are not persistent like some other flags&#x2F;manipulators.</p>
+<h3 id="Stream-classes-for-strings"><a href="#Stream-classes-for-strings" class="headerlink" title="Stream classes for strings"></a>Stream classes for strings</h3><p>So far, all of the I&#x2F;O examples you have seen have been writing to cout or reading from cin. However, there is another set of classes called the stream classes for strings that allow you to use the familiar insertions (&lt;&lt;) and extraction (&gt;&gt;) operators to work with strings. Like istream and ostream, the string streams provide a buffer to hold data. However, unlike cin and cout, these streams are not connected to an I&#x2F;O channel (such as a keyboard, monitor, etc…). <strong>One of the primary uses of string streams is to buffer output for display at a later time, or to process input line-by-line.</strong></p>
+<p>There are six stream classes for strings: </p>
+<ul>
+<li><code>istringstream</code> (derived from istream)</li>
+<li><code>ostringstream</code> (derived from ostream)</li>
+<li><code>stringstream</code> (derived from iostream) are used for reading and writing normal characters width strings. </li>
+<li><code>wistringstream</code>, <code>wostringstream</code>, and <code>wstringstream</code> are used for reading and writing wide character strings. To use the stringstreams, you need to #include the <code>sstream</code> header.</li>
+</ul>
+<p>There are two ways to get data into a stringstream:</p>
+<p>It Can be used in conversion.</p>
+<p>Use the <code>insertion (&lt;&lt;) operator</code>:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">stringstream os;</span><br><span class="line">os &lt;&lt; <span class="string">&quot;en garde!&quot;</span> &lt;&lt; endl; <span class="comment">// insert &quot;en garde!&quot; into the stringstream</span></span><br></pre></td></tr></table></figure>
+
+<p>Use the <code>str(string) function</code> to set the value of the buffer:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">stringstream os;</span><br><span class="line">os.<span class="built_in">str</span>(<span class="string">&quot;en garde!&quot;</span>); <span class="comment">// set the stringstream buffer to &quot;en garde!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>There are similarly two ways to get data out of a stringstream:</p>
+<p>Use the str() function to retrieve the results of the buffer:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">stringstream os;</span><br><span class="line">os &lt;&lt; <span class="string">&quot;12345 67.89&quot;</span> &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; os.<span class="built_in">str</span>();</span><br></pre></td></tr></table></figure>
+
+<p>Use the extraction (&gt;&gt;) operator.</p>
+<p><strong>Conversion between strings and numbers</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">stringstream os;</span><br><span class="line"> </span><br><span class="line"><span class="type">int</span> nValue = <span class="number">12345</span>;</span><br><span class="line"><span class="type">double</span> dValue = <span class="number">67.89</span>;</span><br><span class="line">os &lt;&lt; nValue &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; dValue;</span><br><span class="line"> </span><br><span class="line">string strValue1, strValue2;</span><br><span class="line">os &gt;&gt; strValue1 &gt;&gt; strValue2;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Clearing a stringstream for reuse</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">os.<span class="built_in">str</span>(<span class="string">&quot;&quot;</span>); <span class="comment">// erase the buffer</span></span><br><span class="line">os.<span class="built_in">str</span>(std::<span class="built_in">string</span>()); <span class="comment">// erase the buffer</span></span><br><span class="line">os.<span class="built_in">clear</span>();  <span class="comment">// but it resets any error flags that may have been set and returns the stream back to the ok state</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+<h3 id="Stream-states-and-input-validation"><a href="#Stream-states-and-input-validation" class="headerlink" title="Stream states and input validation"></a>Stream states and input validation</h3><p><strong>Stream states</strong></p>
+<p>The ios_base class contains several state flags that are used to signal various conditions that may occur when using streams:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/uvbbe.jpg"></p>
+<p>Although these flags live in ios_base, because ios is derived from ios_base and ios takes less typing than ios_base, they are generally accessed through ios (eg. as std::ios::failbit).</p>
+<p>ios also provides a number of member functions in order to conveniently access these states:</p>
+<ul>
+<li>good()</li>
+<li>bad()</li>
+<li>eof()</li>
+<li>fail()</li>
+<li>clear(): clear all flags and restore the stream to goodbit state</li>
+</ul>
+<p>The most commonly dealt with bit is the <code>failbit</code>, which is set when the user enters invalid input. For example, consider the following program:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cout &lt;&lt; <span class="string">&quot;Enter your age: &quot;</span>;</span><br><span class="line"><span class="type">int</span> nAge;</span><br><span class="line">cin &gt;&gt; nAge;</span><br><span class="line"><span class="keyword">if</span> (cin.<span class="built_in">failbit</span>()) &#123;</span><br><span class="line">  <span class="comment">// fail</span></span><br><span class="line">  cin.<span class="built_in">clear</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Note that this program is expecting the user to enter an integer. However, if the user enters non-numeric data, such as “Alex”, cin will be unable to extract anything to nAge, and the failbit will be set.</p>
+<p>If an error occurs and a stream is set to anything other than goodbit, further stream operations on that stream will be ignored. This condition can be cleared by calling the <code>clear()</code> function.</p>
+<p><strong>Input validation</strong></p>
+<p>Input validation is the process of checking whether the user input meets some set of criteria. Input validation can generally be broken down into two types: string and numeric.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ehyd5.jpg"></p>
+<p><strong>Numeric validation</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> nAge</span></span><br><span class="line"><span class="function"><span class="title">while</span> <span class="params">(<span class="number">1</span>)</span> </span>&#123;</span><br><span class="line">  std::cout &lt;&lt; Enter your age:  &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">  std::cin &gt;&gt; nAge;</span><br><span class="line">  <span class="keyword">if</span> (cin.<span class="built_in">fail</span>()) &#123;</span><br><span class="line">    cin.<span class="built_in">clear</span>();</span><br><span class="line">    cin.<span class="built_in">ignore</span>(<span class="number">32767</span>, <span class="string">&#x27;\n&#x27;</span>);</span><br><span class="line">    <span class="keyword">continue</span>; <span class="comment">// try again</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Numeric validation as a string</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> nAge;</span><br><span class="line"><span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;Enter your age: &quot;</span> &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">  std::string strAge;</span><br><span class="line">  std::cin &gt;&gt; strAge;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// check to make sure each character is a digit</span></span><br><span class="line">  <span class="type">bool</span> bValid = <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> nIndex=<span class="number">0</span>; nIndex &lt; strAge.<span class="built_in">length</span>(); ++nIndex)</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">isdigit</span>(strAge[nIndex])) &#123;</span><br><span class="line">      bValid = <span class="literal">false</span>;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="keyword">if</span> (!bValid) &#123;</span><br><span class="line">    <span class="keyword">continue</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

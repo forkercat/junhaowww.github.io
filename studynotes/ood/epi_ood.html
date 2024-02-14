@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: EPI (Chapter 22) A design pattern is a general repeatable solution to a commonly occurring problem. In the context of object-oriented programming, design patterns address both reuse and m">
+<meta property="og:type" content="website">
+<meta property="og:title" content="EPI | Object-Oriented Design (Common Design Patterns)">
+<meta property="og:url" content="https://junhaow.com/studynotes/ood/epi_ood.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: EPI (Chapter 22) A design pattern is a general repeatable solution to a commonly occurring problem. In the context of object-oriented programming, design patterns address both reuse and m">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qed0p.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/34m31.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.204Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.204Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qed0p.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>EPI | Object-Oriented Design (Common Design Patterns)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: EPI (Chapter 22)</p>
+<p>A design pattern is a general <code>repeatable solution</code> to a <strong>commonly occurring problem</strong>. In the context of object-oriented programming, design patterns address both <code>reuse</code> and <code>maintainability</code>. In essence, design patterns make some parts of a system <strong>vary independently</strong> from the other parts.</p>
+<h2 id="Template-Method-vs-Strategy"><a href="#Template-Method-vs-Strategy" class="headerlink" title="Template Method vs. Strategy"></a>Template Method vs. Strategy</h2><p>Both of them are <code>behavioral patterns</code> that make algorithms reusable. They differ in the following key way:</p>
+<ul>
+<li>In the template method, a skeleton algorithm is provided in a <code>superclass</code>. Subclasses can override methods to specialize th algorithm. (<strong>Inheritance</strong>)<ul>
+<li>E.g.: Quicksort. Two of the key steps in quicksort are pivot selection and partitioning. Quicksort is a good example of a <code>template method</code> pattern since subclasses can implement thier own pivot selection algorithm, etc.</li>
+</ul>
+</li>
+<li>The strategy pattern is typically applied when a family of algorithms implements a common <code>interface</code>. Such algorithms can be selected by clients. (<strong>Interface</strong>)<ul>
+<li>E.g.: Comparator in sorting. It makes the comparison operation used by the sorting algorithm an argument.</li>
+</ul>
+</li>
+</ul>
+<p>Some other differences: In the template method pattern, the superclass algorithm may have <code>&quot;hook&quot;</code> (calls to placeholder methods that can be overridden by subclasses to provide additional functionality). Sometimes, a hook is not implemented forcing the subclasses the subclasses to implement that functionality; sometimes it offers a “no-operation” or some baseline functionality. There is no analog to a hook in a strategy pattern.</p>
+<h2 id="Observer-Pattern-Push-vs-Pull"><a href="#Observer-Pattern-Push-vs-Pull" class="headerlink" title="Observer Pattern (Push vs. Pull)"></a>Observer Pattern (Push vs. Pull)</h2><p>The observer pattern defines a <code>one-to-many</code> dependency between objects so that one object changes state all its dependents are notified and updated automatically.</p>
+<p><strong>Note:</strong> This is the <code>push observer</code> pattern.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qed0p.png"></p>
+<p>The <code>observed object</code> must implement:</p>
+<ul>
+<li>Register an observer</li>
+<li>Remove an observer</li>
+<li>Notify all currently registered observers</li>
+</ul>
+<p>The <code>observer object</code> must implement:</p>
+<ul>
+<li>Update the observer (or notify).</li>
+</ul>
+<p>For example, instead of having the clients poll the service, the service (observed object) provides clients with register and remove capabilities. As soon as its (server) state changes, the service <strong>enumerates through registered observers, calling each observer’s update method</strong>. (in an active way)</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/34m31.png"></p>
+<p>There is another way to update data: <strong>Observers pull the information they need from the observed object.</strong></p>
+<p>With the pull design, it is the observer’s job to retrieve that information from the subject.</p>
+<p><strong>Push Design:</strong> It leaves all of the information transfer in the subject’s control. This design seems <code>more object-oriented</code>, because the subject is pushing its own data out, rather than making its data accessible for the observers to pull. It is somewhat <code>simpler</code> and <code>safer</code> in that the subject always knows when the data is being pushed out. No synchronization problem.</p>
+<p><strong>Pull Design:</strong> It places a heavier load on the observers, but it also allows them to query the subject <code>only when they need</code>. One important consideration is that by the time the observer retrieves the information from the subject, the <code>data could have changed</code> (it is a positive or negative result). This design also requires that the subject <code>makes its data public</code> for the observers. It would likely work better when the observers are running with varied frequency and it suits them best to get the data they need on demand.</p>
+<h2 id="Singleton-Flyweights"><a href="#Singleton-Flyweights" class="headerlink" title="Singleton &amp; Flyweights"></a>Singleton &amp; Flyweights</h2><p><strong>Singleton Pattern</strong> <code>ensures</code> a class has only one instance, and provides a global point of access to it.</p>
+<ul>
+<li>E.g.: Logger. There may be many clients who want to listen to the logged data. (or database connection, server configurations)</li>
+</ul>
+<p><strong>Flyweight Pattern:</strong> <code>minimizes</code> memory use by sharing as much data as possible with other similar objects.</p>
+<ul>
+<li>E.g.: String interning (a method of storing only one copy of each distinct string value). Interning strings makes some string processing tasks more time with space efficiency when the string is created or interned. The distinct values are usually stored in a hash table. Since multiple clients may refer to the same flyweight object, it should be immutable for safety.</li>
+</ul>
+<p><strong>Similarity:</strong> Both keep a single copy of an object.</p>
+<p><strong>Differences:</strong></p>
+<ul>
+<li>Singletons are used to ensure all clients <code>see the same object</code>. Flyweights are used to <code>save memory</code>.</li>
+<li>A singleton is used when there is a <code>single shared object</code>. A flyweight is used where there is a <code>family of shared objects</code> (objects describing character fonts, or nodes shared across multiple BSTs).</li>
+<li>Singleton objects are usually <code>mutable</code>. Flyweight objects are <code>immutable</code>.</li>
+<li>The singleton pattern is a <code>creational pattern</code>, whereas the flyweight is a <code>structural pattern</code>.</li>
+</ul>
+<p>In summary, a singleton is like a <strong>global variable</strong>, whereas a flyweight is like a <strong>pointer to a canonical representation</strong>.</p>
+<p>Sometimes, a singleton object is used to create flyweights.</p>
+<h2 id="Class-Object-Adapters"><a href="#Class-Object-Adapters" class="headerlink" title="Class &amp; Object Adapters"></a>Class &amp; Object Adapters</h2><p>The adapter pattern allows the interface of an <code>existing class</code> to be used from another interface (other classes), often without modifying their source code.</p>
+<p>There are two ways to build an adapter: <code>subclassing</code> (class adapter) and <code>composition</code> (object adapter).</p>
+<p>The <code>class adapter</code> inherits both the interface that is expected and the one that is pre-existing, while the <code>object adapter</code> contains an instance of the class it wraps and the adapter makes calls to the instance of the wrapped object.</p>
+<h2 id="Creational-Patterns-Builder-and-Factory"><a href="#Creational-Patterns-Builder-and-Factory" class="headerlink" title="Creational Patterns (Builder and Factory)"></a>Creational Patterns (Builder and Factory)</h2><p>Creational Patterns: <code>builder</code>, <code>static factory</code>, <code>factory method</code>, and <code>abstract factory</code>.</p>
+<p><strong>Builder Pattern:</strong> The idea is to build a complex object in <code>phases</code>. It avoids mutability and inconsistent state by using an mutable inner class that has a build method that returns the desired object. Its key benefits are that it breaks down the construction process, and can give names to steps. Compared to a constructor, it deals far better with optional parameters and when the parameter list is very long.</p>
+<p><strong>Static Factory:</strong> It is a function for construction of objects. The function’s name can make what it’s doing much clearer compared to a call to a constructor. The function is not obliged to create a new object. It can return a flyweight or a subtype that’s more optimized. For example, the method <code>Integer.valueOf(&quot;123&quot;)</code> is a static factory. It caches values in the range $[-128, 127]$ that are already exist to save memory and reduce construction time.</p>
+<p><strong>Factory Method:</strong> It defines <code>interface</code> for creating an object, but let subclasses decide which class to instantiate. Drawback: Make subclassing challenging.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MazeGame is an abstract class!</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">MazeGame</span> &#123;</span><br><span class="line">  <span class="comment">// Note the use of the template method pattern - subclasses</span></span><br><span class="line">  <span class="comment">// implement MakeRoom() as appropriate for the type of room being created.</span></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">MazeGame</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">Room</span> <span class="variable">room1</span> <span class="operator">=</span> makeRoom();</span><br><span class="line">    <span class="type">Room</span> <span class="variable">room2</span> <span class="operator">=</span> makeRoom();</span><br><span class="line">    room1.connect(room2);</span><br><span class="line">    <span class="built_in">this</span>.addRoom(room1);</span><br><span class="line">    <span class="built_in">this</span>.addRoom(room2);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Implementing classes provide this method.</span></span><br><span class="line">  <span class="keyword">abstract</span> <span class="keyword">protected</span> Room <span class="title function_">makeRoom</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Use the factory to create regular and magic games.</span></span><br><span class="line"><span class="type">MazeGame</span> <span class="variable">regularGame</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RegularGame</span>();</span><br><span class="line"><span class="type">MazeGame</span> <span class="variable">magicGame</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MagicMazeGame</span>();</span><br></pre></td></tr></table></figure>
+
+<p><strong>Abstract Factory:</strong> It provides an interface for creating families of related objects without specifying their concrete classes. For example, a class <code>DocumentCreator</code> could provide interfaces to create a number of products, such as <code>createLetter()</code> and <code>createResume()</code>. Concrete implementations of this class could choose to implement these products in different ways. Client code gets a <code>DocumentCreator</code> object and calls its factory methods.</p>
+<h2 id="Libraries-and-Design-Patterns"><a href="#Libraries-and-Design-Patterns" class="headerlink" title="Libraries and Design Patterns"></a>Libraries and Design Patterns</h2><p><strong>Question:</strong> Why is there no library of design patterns so a developer do not have to write code every time they want to use them?</p>
+<ul>
+<li><strong>Reason #1:</strong> Patterns cannot be cleanly abstracted from the objects and the processes they are applicable to. Libraries provide the implementations of algorithms, while design patterns provide a higher level understanding of how to structure classes and objects to solve specific types of problems.</li>
+<li><strong>Reason #2:</strong> It’s often necessary to use combinations of different design patterns. For example, <code>MVC</code>, which is commonly used in UI design, consists of the Observer, Strategy, and Composite patterns.s</li>
+</ul>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

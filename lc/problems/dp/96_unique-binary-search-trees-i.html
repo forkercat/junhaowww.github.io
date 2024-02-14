@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode EPI 15.9Difficulty: Medium My Post: Summary of All Solutions in Java with Explanations Problem Given $n$, how many structurally unique BST’s (binary search trees) that store valu">
+<meta property="og:type" content="website">
+<meta property="og:title" content="96. Unique Binary Search Trees I">
+<meta property="og:url" content="https://junhaow.com/lc/problems/dp/96_unique-binary-search-trees-i.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode EPI 15.9Difficulty: Medium My Post: Summary of All Solutions in Java with Explanations Problem Given $n$, how many structurally unique BST’s (binary search trees) that store valu">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.123Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.123Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>96. Unique Binary Search Trees I</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/unique-binary-search-trees/">LeetCode</a> <span class="gray">EPI 15.9</span><br>Difficulty: <span class="orange">Medium</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/unique-binary-search-trees/discuss/409987">Summary of All Solutions in Java with Explanations</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given $n$, how many structurally unique BST’s (binary search trees) that store values <code>1 ... n</code>?</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="number">3</span></span><br><span class="line">Output: <span class="number">5</span></span><br><span class="line">Explanation:</span><br><span class="line"><span class="type">Given</span> <span class="variable">n</span> <span class="operator">=</span> <span class="number">3</span>, there are a total of <span class="number">5</span> unique BST<span class="string">&#x27;s:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">   1         3     3      2      1</span></span><br><span class="line"><span class="string">    \       /     /      / \      \</span></span><br><span class="line"><span class="string">     3     2     1      1   3      2</span></span><br><span class="line"><span class="string">    /     /       \                 \</span></span><br><span class="line"><span class="string">   2     1         2                 3</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="DP-Recursion"><a href="#DP-Recursion" class="headerlink" title="DP (Recursion)"></a>DP (Recursion)</h3><p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/unique-binary-search-trees/solution/">LeetCode Solution</a></p>
+<p>Given a sequence $1, 2, \ldots, n$, we enumerate each number <code>i</code> in the sequence and take it as the root to form binary trees.</p>
+<p>We define two functions:</p>
+<ul>
+<li>$G(n)$: the number of unique BST for a sequence of length <code>n</code> (number of nodes).</li>
+<li>$F(i, n)$: the number of unique BST, where the number <code>i</code> (<code>1 &lt;= i &lt;= n</code>) is the root.</li>
+</ul>
+<p>We construct $G(n)$ by the sum of $F(i, n)$:</p>
+<p>$$G(n) &#x3D; \sum^n_{i&#x3D;1}F(i, n) &#x3D; F(1, n) + F(2, n) + \ldots + F(n, n)$$</p>
+<p>Notice that when we select <code>i</code> as a root i.e. $F(i, n)$, we have <code>i - 1</code> nodes which can be used to form a left subtree; similarly we have <code>n - i</code> nodes to form a right subtree. </p>
+<p>$$F(i,n) &#x3D; G(i - 1) \times G(n - i)$$</p>
+<p>Thus, $F(i, n)$ can be calculated by the product of the number of unique BST with <code>i - 1</code> nodes and the number of unique BST with <code>n - i</code> nodes. <strong>Uniqueness is guaranteed by the sizes of the left subtree and the right subtree.</strong></p>
+<p>Particularly, consider two base cases when <code>i = 1</code> and <code>i = 2</code>:</p>
+<ul>
+<li><code>i = 1</code>: $F(1, n) &#x3D; G(0) \times G(n - 1)$. The empty left subtree is still a subtree, so $G(0) &#x3D; 1$.</li>
+<li><code>i = 2</code>: $F(2, n) &#x3D; G(1) \times G(n - 2)$. With one node we can only construct one unique left subtree, so $G(1) &#x3D; 1$.</li>
+</ul>
+<p>Finally, we have the recurrence:</p>
+<p>$$G(n) &#x3D; \sum^n_{i&#x3D;1}F(i,n) &#x3D; \sum^n_{i&#x3D;1} G(i - 1) \times G(n - i)$$<br>$$\text{where}\ \  G(0)&#x3D;1, G(1)&#x3D;1$$</p>
+<p>Here is the code without memoization.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// numTress(n) is G(n)</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">numTrees</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (n == <span class="number">0</span> || n == <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">    sum += numTrees(i - <span class="number">1</span>) * numTrees(n - i);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Here is the recurrence tree:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">                               G(<span class="number">4</span>)</span><br><span class="line">                     /      |        |        \</span><br><span class="line">             G(<span class="number">0</span>)G(<span class="number">3</span>)     G(<span class="number">1</span>)G(<span class="number">2</span>)  G(<span class="number">2</span>)G(<span class="number">1</span>)   G(<span class="number">3</span>)G(<span class="number">0</span>)        <span class="comment">// 4</span></span><br><span class="line">            /    |    \</span><br><span class="line">    G(<span class="number">0</span>)G(<span class="number">2</span>)  G(<span class="number">1</span>)G(<span class="number">1</span>)  G(<span class="number">2</span>)G(<span class="number">0</span>)                               <span class="comment">// 4 x 3</span></span><br><span class="line">    /     \</span><br><span class="line">G(<span class="number">0</span>)G(<span class="number">1</span>)  G(<span class="number">1</span>)G(<span class="number">0</span>) <span class="comment">// base case                                // 4 x 3 x 2</span></span><br></pre></td></tr></table></figure>
+
+<p>$C(N) &#x3D; N \times N!$</p>
+<p><strong>Time:</strong> It is at most bounded by $O(N \times N!)$. A tighter bound would be Catalan number times $N$ since we’ve done $N$ times, which is $N \times G_N &#x3D; O(N\times\frac{4^N}{N^{3&#x2F;2}}) &#x3D; O(\frac{4^N}{N^{1&#x2F;2}})$.<br><strong>Space:</strong> $O(N)$</p>
+<p>Examining the recurrence carefully, we find that there are repeated calculations.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">G(<span class="number">3</span>) = G(<span class="number">0</span>) x <span class="title function_">G</span><span class="params">(<span class="number">2</span>)</span>  <span class="comment">// i = 1</span></span><br><span class="line">     = G(<span class="number">1</span>) x <span class="title function_">G</span><span class="params">(<span class="number">1</span>)</span>  <span class="comment">// i = 2</span></span><br><span class="line">     = G(<span class="number">2</span>) x <span class="title function_">G</span><span class="params">(<span class="number">0</span>)</span>  <span class="comment">// i = 3</span></span><br><span class="line"></span><br><span class="line">G(<span class="number">4</span>) = G(<span class="number">0</span>) x <span class="title function_">G</span><span class="params">(<span class="number">3</span>)</span>  <span class="comment">// i = 1</span></span><br><span class="line">     = G(<span class="number">1</span>) x <span class="title function_">G</span><span class="params">(<span class="number">2</span>)</span>  <span class="comment">// i = 2</span></span><br><span class="line">     = G(<span class="number">2</span>) x <span class="title function_">G</span><span class="params">(<span class="number">1</span>)</span>  <span class="comment">// i = 3</span></span><br><span class="line">     = G(<span class="number">3</span>) x <span class="title function_">G</span><span class="params">(<span class="number">0</span>)</span>  <span class="comment">// i = 4</span></span><br></pre></td></tr></table></figure>
+
+<p>Therefore, we can use a <code>hash map</code> or an <code>integer array</code> to store calculated $G(n)$. Here is the hash map version.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">numTrees</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (n == <span class="number">0</span> || n == <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!map.containsKey(i - <span class="number">1</span>)) &#123;</span><br><span class="line">      map.put(i - <span class="number">1</span>, numTrees(i - <span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!map.containsKey(n - i)) &#123;</span><br><span class="line">      map.put(n - i, numTrees(n - i));</span><br><span class="line">    &#125;</span><br><span class="line">    sum += map.get(i - <span class="number">1</span>) * map.get(n - i);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Here is the recurrence tree:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">                               G(<span class="number">4</span>)</span><br><span class="line">                     /      |        |        \</span><br><span class="line">             G(<span class="number">0</span>)G(<span class="number">3</span>)     G(<span class="number">1</span>)G(<span class="number">2</span>)  G(<span class="number">2</span>)G(<span class="number">1</span>)   G(<span class="number">3</span>)G(<span class="number">0</span>)</span><br><span class="line">            /    |    \</span><br><span class="line">    G(<span class="number">0</span>)G(<span class="number">2</span>)  G(<span class="number">1</span>)G(<span class="number">1</span>)  G(<span class="number">2</span>)G(<span class="number">0</span>)</span><br><span class="line">    /     \</span><br><span class="line">G(<span class="number">0</span>)G(<span class="number">1</span>)  G(<span class="number">1</span>)G(<span class="number">0</span>) <span class="comment">// base case</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong> Without memoization, the time complexity is upper bounded by $O(N \times N!)$.</p>
+<p>By calculating the leftmost nodes, we have $G(0), G(1), \ldots, G(N)$, which takes $O(N)$ time. Besides, we have to do product computations at each level, which takes $2 + 3 + 4 + \ldots + N &#x3D; O(N^2)$ time in total.</p>
+<p><strong>Time:</strong> $O(N^2)$<br><strong>Space:</strong> $O(N)$ because of call stacks.</p>
+<h3 id="DP-Iteration"><a href="#DP-Iteration" class="headerlink" title="DP (Iteration)"></a>DP (Iteration)</h3><p>By observation, we can construct our solution by a bottom-up approach.</p>
+<p>The recurrence formula: $G(n) &#x3D; \sum^n_i G(i - 1) \times G(n - i)$</p>
+<p>For example, $G(4) &#x3D; G(0) \times G(3) + G(1) \times G(2) + G(2) \times G(1) + G(3) \times G(0)$</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">G(<span class="number">0</span>) G(<span class="number">1</span>)</span><br><span class="line"><span class="comment">// With these initially two base-case values, we can calculate G(2)</span></span><br><span class="line">G(<span class="number">0</span>) G(<span class="number">1</span>) G(<span class="number">2</span>)</span><br><span class="line"><span class="comment">// With these three values we have G(3)</span></span><br><span class="line">G(<span class="number">0</span>) G(<span class="number">1</span>) G(<span class="number">2</span>) G(<span class="number">3</span>)</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong> Notice that it is <code>G[i - j]</code> instead of <code>G[n - j]</code> and it is <code>j &lt;= i</code> instead of <code>j &lt;= n</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">numTrees</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="type">int</span>[] G = <span class="keyword">new</span> <span class="title class_">int</span>[n + <span class="number">1</span>];</span><br><span class="line">  G[<span class="number">0</span>] = <span class="number">1</span>; G[<span class="number">1</span>] = <span class="number">1</span>; <span class="comment">// init</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">2</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &lt;= i; ++j) &#123; <span class="comment">// sum</span></span><br><span class="line">      G[i] += G[j - <span class="number">1</span>] * G[i - j];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> G[n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^2)$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="Mathematical-Deduction"><a href="#Mathematical-Deduction" class="headerlink" title="Mathematical Deduction"></a>Mathematical Deduction</h3><p>The sequence of $G(n)$ function results is known as <code>Catelan number</code> $C_n$.</p>
+<p>$$C_0 &#x3D; 1,\ \ \ C_{n+1} &#x3D; \frac{2(2n+1)}{n+2}C_n$$</p>
+<p><strong>Note:</strong> Use <code>long</code> type.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C = <span class="number">2</span> * (<span class="number">2</span> * i + <span class="number">1</span>) / (i + <span class="number">2</span>) * C;</span><br></pre></td></tr></table></figure>
+
+
+<p>If we put <code>C</code> at the end of the statement, the result is not correct. <strong>Do all multiplications first!</strong> For example, when <code>i = 2</code> and <code>C_2 = 2</code>, we would have:</p>
+<ul>
+<li><code>C = 2 * (2 * 2 + 1) / (2 + 2) * C_2 = 2 * (5) / 4 * 2 = 10 / 4 * 2 = 4</code></li>
+<li>instead of <code>C = 2 * 10 / 4 = 5</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">numTrees</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="type">long</span> <span class="variable">C</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123; <span class="comment">// i stops at n - 1</span></span><br><span class="line">    C = C * <span class="number">2</span> * (<span class="number">2</span> * i + <span class="number">1</span>) / (i + <span class="number">2</span>); <span class="comment">// calculate C_i+1</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> (<span class="type">int</span>) C;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

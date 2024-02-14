@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium Problem The string &quot;PAYPALISHIRING&quot; is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fix">
+<meta property="og:type" content="website">
+<meta property="og:title" content="6. ZigZag Conversion">
+<meta property="og:url" content="https://junhaow.com/lc/problems/string/uncategorized/6_zigzag-conversion.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium Problem The string &quot;PAYPALISHIRING&quot; is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fix">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.142Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.141Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>6. ZigZag Conversion</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/zigzag-conversion/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>The string <code>&quot;PAYPALISHIRING&quot;</code> is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">P   A   H   N</span><br><span class="line">A P L S I I G</span><br><span class="line">Y   I   R</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>And then read line by line: <code>&quot;PAHNAPLSIIGYIR&quot;</code></p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Input: s = <span class="string">&quot;PAYPALISHIRING&quot;</span>, numRows = <span class="number">3</span></span><br><span class="line">Output: <span class="string">&quot;PAHNAPLSIIGYIR&quot;</span></span><br><span class="line"></span><br><span class="line">Input: s = <span class="string">&quot;PAYPALISHIRING&quot;</span>, numRows = <span class="number">4</span></span><br><span class="line">Output: <span class="string">&quot;PINALSIGYAHRPI&quot;</span></span><br><span class="line">Explanation:</span><br><span class="line"></span><br><span class="line">P     I    N</span><br><span class="line">A   L S  I G</span><br><span class="line">Y A   H R</span><br><span class="line">P     I</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="ZigZag-Simulation"><a href="#ZigZag-Simulation" class="headerlink" title="ZigZag Simulation"></a>ZigZag Simulation</h3><p>Use extra <code>numRows</code> buckets to simulate the ZigZag process.</p>
+<p><strong>Note:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">convert</span><span class="params">(String s, <span class="type">int</span> numRows)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (numRows == <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> s;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">  <span class="comment">// buckets</span></span><br><span class="line">  List&lt;StringBuilder&gt; sbList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; numRows; ++i) &#123;</span><br><span class="line">    sbList.add(<span class="keyword">new</span> <span class="title class_">StringBuilder</span>());</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// simulation</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">row</span> <span class="operator">=</span> <span class="number">0</span>, idx = <span class="number">0</span>;</span><br><span class="line">  <span class="type">boolean</span> <span class="variable">goingDown</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">while</span> (idx &lt; n) &#123;</span><br><span class="line">    sbList.get(row).append(s.charAt(idx));</span><br><span class="line">    <span class="comment">// update</span></span><br><span class="line">    <span class="keyword">if</span> (goingDown) row += <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span>           row -= <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// out-of-bound</span></span><br><span class="line">    <span class="keyword">if</span> (row &gt; numRows - <span class="number">1</span>) &#123;</span><br><span class="line">      goingDown = <span class="literal">false</span>;</span><br><span class="line">      row = (numRows - <span class="number">1</span>) - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (row &lt; <span class="number">0</span>) &#123;</span><br><span class="line">      goingDown = <span class="literal">true</span>;</span><br><span class="line">      row = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    count += <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// concatenate</span></span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">result</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  <span class="keyword">for</span> (StringBuilder sb : sbList) &#123;</span><br><span class="line">    result.append(sb);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="Visit-by-Row"><a href="#Visit-by-Row" class="headerlink" title="Visit by Row"></a>Visit by Row</h3><p>By observation, consider the following cases:</p>
+<ul>
+<li>Characters in row <code>0</code>.</li>
+<li>Characters in row <code>numRows - 1</code>.</li>
+<li>Characters in inner rows.</li>
+</ul>
+<p>Just analyze the examples below and find the rules for indexing. The index for inner rows is tricky and a bit complex. Try to think how to make the current row number contribute.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Input: s = <span class="string">&quot;PAYPALISHIRING&quot;</span>, numRows = <span class="number">3</span></span><br><span class="line">Output: <span class="string">&quot;PAHNAPLSIIGYIR&quot;</span></span><br><span class="line"></span><br><span class="line">Input: s = <span class="string">&quot;PAYPALISHIRING&quot;</span>, numRows = <span class="number">4</span></span><br><span class="line">Output: <span class="string">&quot;PINALSIGYAHRPI&quot;</span></span><br><span class="line">Explanation:</span><br><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span> <span class="number">10</span> <span class="number">11</span> <span class="number">12</span> <span class="number">13</span></span><br><span class="line">P A Y P A L I S H I R  I  N  <span class="type">G</span></span><br><span class="line"></span><br><span class="line"><span class="variable">row</span> <span class="operator">=</span> <span class="number">3</span>, offset = <span class="number">2</span> * <span class="number">3</span> - <span class="number">2</span> = <span class="number">4</span></span><br><span class="line"><span class="number">0</span>   <span class="number">4</span>   <span class="number">8</span>   <span class="number">12</span></span><br><span class="line">P   A   H   N    <span class="comment">// i = 0</span></span><br><span class="line"><span class="number">1</span> <span class="number">3</span> <span class="number">5</span> <span class="number">7</span> <span class="number">9</span> <span class="number">11</span> <span class="number">13</span></span><br><span class="line">A P L S I I G    <span class="comment">// i = 1</span></span><br><span class="line"><span class="number">2</span>   <span class="number">6</span>   <span class="number">10</span></span><br><span class="line">Y   I   R        <span class="comment">// i = 2</span></span><br><span class="line"></span><br><span class="line">row = <span class="number">4</span>, offset = <span class="number">2</span> * <span class="number">4</span> - <span class="number">2</span> = <span class="number">6</span></span><br><span class="line"><span class="number">0</span>     <span class="number">6</span>     <span class="number">12</span></span><br><span class="line">P     I     N  <span class="comment">// i = 0</span></span><br><span class="line"><span class="number">1</span>   <span class="number">5</span> <span class="number">7</span>  <span class="number">11</span> <span class="number">13</span></span><br><span class="line">A   L S   I G  <span class="comment">// i = 1</span></span><br><span class="line"><span class="number">2</span> <span class="number">4</span>   <span class="number">8</span> <span class="number">10</span></span><br><span class="line">Y A   H R      <span class="comment">// i = 2</span></span><br><span class="line"><span class="number">3</span>     <span class="number">9</span></span><br><span class="line">P     I        <span class="comment">// i = 3</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong> Be careful of the corner case <code>numRows == 1</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">convert</span><span class="params">(String s, <span class="type">int</span> numRows)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (numRows == <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> s;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  <span class="type">int</span> <span class="variable">offset</span> <span class="operator">=</span> <span class="number">2</span> * numRows - <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; numRows; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; i + j &lt; n; j += offset) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">idx</span> <span class="operator">=</span> i + j;  <span class="comment">// i + offset, i + offset * 2, i + offset * 3</span></span><br><span class="line">      sb.append(s.charAt(idx));</span><br><span class="line">      <span class="type">int</span> <span class="variable">innerIdx</span> <span class="operator">=</span> idx + offset - <span class="number">2</span> * i;</span><br><span class="line">      <span class="keyword">if</span> (i != <span class="number">0</span> &amp;&amp; i != numRows - <span class="number">1</span> &amp;&amp; innerIdx &lt; n) &#123; <span class="comment">// consider inner row</span></span><br><span class="line">        sb.append(s.charAt(innerIdx));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> sb.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

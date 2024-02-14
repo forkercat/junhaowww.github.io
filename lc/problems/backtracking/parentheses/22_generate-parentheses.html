@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode EPI 15.7Difficulty: Medium My Post: Java B-F &amp; Backtracking Solutions with Detailed Explanations and Comments (easy-understand) Problem Given n pairs of parentheses, write a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="22. Generate Parentheses">
+<meta property="og:url" content="https://junhaow.com/lc/problems/backtracking/parentheses/22_generate-parentheses.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode EPI 15.7Difficulty: Medium My Post: Java B-F &amp; Backtracking Solutions with Detailed Explanations and Comments (easy-understand) Problem Given n pairs of parentheses, write a">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.111Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.111Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>22. Generate Parentheses</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/generate-parentheses/">LeetCode</a> <span class="gray">EPI 15.7</span><br>Difficulty: <span class="orange">Medium</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/generate-parentheses/discuss/391460">Java B-F &amp; Backtracking Solutions with Detailed Explanations and Comments (easy-understand)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given <code>n</code> pairs of parentheses, write a function to generate all combinations of well-formed parentheses.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">For example, <span class="type">given</span> <span class="variable">n</span> <span class="operator">=</span> <span class="number">3</span>, a solution set is: [</span><br><span class="line">  <span class="string">&quot;((()))&quot;</span>,</span><br><span class="line">  <span class="string">&quot;(()())&quot;</span>,</span><br><span class="line">  <span class="string">&quot;(())()&quot;</span>,</span><br><span class="line">  <span class="string">&quot;()(())&quot;</span>,</span><br><span class="line">  <span class="string">&quot;()()()&quot;</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p>It is actually a backtracking method without pruning.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;String&gt; <span class="title function_">generateParenthesis</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  List&lt;String&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  generate(n, <span class="number">0</span>, sb, result);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">generate</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> d, StringBuilder sb, List&lt;String&gt; result)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (d &gt;= n * <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> sb.toString();</span><br><span class="line">    <span class="keyword">if</span> (isValidString(s, n)) &#123; <span class="comment">// O(N)</span></span><br><span class="line">      result.add(s);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  sb.append(<span class="string">&quot;(&quot;</span>);</span><br><span class="line">  generate(n, d + <span class="number">1</span>, sb, result);</span><br><span class="line">  sb.setLength(sb.length() - <span class="number">1</span>);</span><br><span class="line">  </span><br><span class="line">  sb.append(<span class="string">&quot;)&quot;</span>);</span><br><span class="line">  generate(n, d + <span class="number">1</span>, sb, result);</span><br><span class="line">  sb.setLength(sb.length() - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isValidString</span><span class="params">(String str, <span class="type">int</span> n)</span> &#123; <span class="comment">// validity</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">L</span> <span class="operator">=</span> n, R = n;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">char</span> ch : str.toCharArray()) &#123;</span><br><span class="line">    <span class="keyword">if</span> (ch == <span class="string">&#x27;(&#x27;</span>) L -= <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span>           R -= <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// check</span></span><br><span class="line">    <span class="keyword">if</span> (L &lt; <span class="number">0</span> || R &lt; <span class="number">0</span> || L &gt; R) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N \times 2^{2N})$<br><strong>Space:</strong> $O(N \times 2^{2N})$</p>
+<h3 id="Backtracking"><a href="#Backtracking" class="headerlink" title="Backtracking"></a>Backtracking</h3><p>Based on the previous brute-force solution, we actually add some code of <code>pruning</code>, which cuts unnecessary recursive calls in backtracking.</p>
+<p>The <strong>core idea</strong> is that we allow <code>L</code> is <code>temporarily</code> greater than <code>R</code> because we can append more <code>)</code> to satisfy <code>L == R</code> in the future.</p>
+<p><strong>However</strong>, we don’t allow <code>L &lt; R</code> at any time to occur, e.g. <code>())</code> (L &#x3D; 1, R &#x3D; 2), <code>)</code> (L &#x3D; 0, R &#x3D; 1). The reason is that it is impossible that these strings would develop to any valid strings in the future. So we should stop trying right away.</p>
+<p>Therefore, pruning is based on this idea, so during backtracking we should not allow:</p>
+<ul>
+<li><code>L &gt; n</code> or <code>R &gt; n</code></li>
+<li><code>L &lt; R</code></li>
+</ul>
+<p><code>L</code> and <code>R</code> are the numbers of <code>(</code> and <code>)</code>.</p>
+<p>Then we can append these conditions in the base-case section (check out the first version below).</p>
+<p><strong>In an opposite perspective</strong>, we allow the following situations to occur:</p>
+<ul>
+<li><code>L &lt;= n</code> and <code>R &lt;= n</code></li>
+<li><code>L &gt;= R</code></li>
+</ul>
+<p>In other words, when adding <code>(</code> we should guarantee that <code>L &lt; n</code>; when adding <code>)</code> we should guarantee that <code>R &lt; n</code> and <code>L &gt; R</code>.</p>
+<p>Then we can append these conditions before doing recursive calls (check out the second version below).</p>
+<p><strong>First version:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;String&gt; <span class="title function_">generateParenthesis</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  List&lt;String&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  backtrack(<span class="number">0</span>, <span class="number">0</span>, n, sb, result);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// L: # of &quot;(&quot;</span></span><br><span class="line"><span class="comment">// R: # of &quot;)&quot;</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">backtrack</span><span class="params">(<span class="type">int</span> L, <span class="type">int</span> R, <span class="type">int</span> n, StringBuilder sb, List&lt;String&gt; result)</span> &#123;</span><br><span class="line">  <span class="comment">// base case</span></span><br><span class="line">  <span class="keyword">if</span> (L &gt; n || R &gt; n || L &lt; R) &#123; <span class="comment">// the third case: &quot;())&quot;</span></span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (L == n &amp;&amp; R == n) &#123;</span><br><span class="line">    result.add(sb.toString());</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// select &quot;(&quot;</span></span><br><span class="line">  sb.append(<span class="string">&#x27;(&#x27;</span>);</span><br><span class="line">  backtrack(L + <span class="number">1</span>, R, n, sb, result);</span><br><span class="line">  sb.setLength(sb.length() - <span class="number">1</span>);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// select &quot;)&quot;</span></span><br><span class="line">  sb.append(<span class="string">&#x27;)&#x27;</span>);</span><br><span class="line">  backtrack(L, R + <span class="number">1</span>, n, sb, result);</span><br><span class="line">  sb.setLength(sb.length() - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Second version:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">backtrack</span><span class="params">(<span class="type">int</span> L, <span class="type">int</span> R, <span class="type">int</span> n, StringBuilder sb, List&lt;String&gt; result)</span> &#123;</span><br><span class="line">  <span class="comment">// base case</span></span><br><span class="line">  <span class="keyword">if</span> (L == n &amp;&amp; R == n) &#123; <span class="comment">// add to the result</span></span><br><span class="line">    result.add(sb.toString());</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// we allow L &gt; R (temporarily), but don&#x27;t allow L &lt; R at any time.</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// select &quot;(&quot;</span></span><br><span class="line">  <span class="keyword">if</span> (L &lt; n) &#123; <span class="comment">// consider when we can add &quot;(&quot;</span></span><br><span class="line">    sb.append(<span class="string">&#x27;(&#x27;</span>);</span><br><span class="line">    backtrack(L + <span class="number">1</span>, R, n, sb, result);</span><br><span class="line">    sb.setLength(sb.length() - <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// select &quot;)&quot;</span></span><br><span class="line">  <span class="keyword">if</span> (R &lt; n &amp;&amp; L &gt; R) &#123; <span class="comment">// consider when we can add &quot;)&quot;</span></span><br><span class="line">    sb.append(<span class="string">&#x27;)&#x27;</span>);</span><br><span class="line">    backtrack(L, R + <span class="number">1</span>, n, sb, result);</span><br><span class="line">    sb.setLength(sb.length() - <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Time:</strong> $O(\frac{4^N}{\sqrt{n}})$<br><strong>Space:</strong> $O(\frac{4^N}{\sqrt{n}})$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

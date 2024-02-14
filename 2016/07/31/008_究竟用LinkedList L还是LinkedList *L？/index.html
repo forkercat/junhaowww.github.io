@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="C 语言的学习总是遇到各种问题，而且很多问题几乎离不开指针这鬼玩意。在学习数据结构与算法之蜜汁 C 语言版的时候，我也是被 LinkedList 这个东西弄得心累啊！ 毕竟后面发现严蔚敏版的教材的代码应该是遵循 C++ 风格（我还没学过），里面充斥着LinkedList &amp;L这种写法。然后，每次将代码 copy 到编辑器后，一编译就泪流满面。事实上，LinkedList &amp;L是 C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="究竟用 LinkedList L 还是 LinkedList *L？">
+<meta property="og:url" content="https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="C 语言的学习总是遇到各种问题，而且很多问题几乎离不开指针这鬼玩意。在学习数据结构与算法之蜜汁 C 语言版的时候，我也是被 LinkedList 这个东西弄得心累啊！ 毕竟后面发现严蔚敏版的教材的代码应该是遵循 C++ 风格（我还没学过），里面充斥着LinkedList &amp;L这种写法。然后，每次将代码 copy 到编辑器后，一编译就泪流满面。事实上，LinkedList &amp;L是 C">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-07-31T22:26:20.000Z">
+<meta property="article:modified_time" content="2024-02-13T15:39:01.989Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="C">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>究竟用 LinkedList L 还是 LinkedList *L？</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Posts</a></li><!--
+     --><!--
+       --><li><a href="/studynotes/">Notes</a></li><!--
+     --><!--
+       --><li><a href="/lc/">Leetcode</a></li><!--
+     --><!--
+       --><li><a href="/games/">Games</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">Me</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2016/08/01/011_%E3%80%8A%E5%A4%A7%E5%AD%A6%E4%B9%8B%E8%B7%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2016/07/14/016_%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%8E%A5%E8%A7%A6%E5%88%B0%E7%A5%9E%E5%A5%87%E7%9A%84%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/&text=究竟用 LinkedList L 还是 LinkedList *L？"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/&title=究竟用 LinkedList L 还是 LinkedList *L？"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/&is_video=false&description=究竟用 LinkedList L 还是 LinkedList *L？"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=究竟用 LinkedList L 还是 LinkedList *L？&body=Check out this article: https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/&title=究竟用 LinkedList L 还是 LinkedList *L？"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/&title=究竟用 LinkedList L 还是 LinkedList *L？"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/&title=究竟用 LinkedList L 还是 LinkedList *L？"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/&title=究竟用 LinkedList L 还是 LinkedList *L？"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/&name=究竟用 LinkedList L 还是 LinkedList *L？&description=&lt;p&gt;C 语言的学习总是遇到各种问题，而且很多问题几乎离不开指针这鬼玩意。在学习数据结构与算法之蜜汁 C 语言版的时候，我也是被 LinkedList 这个东西弄得心累啊！&lt;/p&gt;
+&lt;p&gt;毕竟后面发现严蔚敏版的教材的代码应该是遵循 C++ 风格（我还没学过），里面充斥着&lt;code&gt;LinkedList &amp;amp;L&lt;/code&gt;这种写法。然后，每次将代码 copy 到编辑器后，一编译就泪流满面。事实上，&lt;code&gt;LinkedList &amp;amp;L&lt;/code&gt;是 C++ 的一种引用语法。&lt;/p&gt;
+&lt;p&gt;其实在参数中究竟用哪一种不重要，关键是知道&lt;strong&gt;自己在做什么（换句话说就是为什么要用它）？&lt;/strong&gt;&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/&t=究竟用 LinkedList L 还是 LinkedList *L？"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        究竟用 LinkedList L 还是 LinkedList *L？
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Junhao Wang</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2016-07-31T22:26:20.000Z" class="dt-published" itemprop="datePublished">2016-07-31</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/C/">C</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/C/" rel="tag">C</a>, <a class="p-category" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>C 语言的学习总是遇到各种问题，而且很多问题几乎离不开指针这鬼玩意。在学习数据结构与算法之蜜汁 C 语言版的时候，我也是被 LinkedList 这个东西弄得心累啊！</p>
+<p>毕竟后面发现严蔚敏版的教材的代码应该是遵循 C++ 风格（我还没学过），里面充斥着<code>LinkedList &amp;L</code>这种写法。然后，每次将代码 copy 到编辑器后，一编译就泪流满面。事实上，<code>LinkedList &amp;L</code>是 C++ 的一种引用语法。</p>
+<p>其实在参数中究竟用哪一种不重要，关键是知道<strong>自己在做什么（换句话说就是为什么要用它）？</strong></p>
+<span id="more"></span>
+
+<p>接下来有必要先说一下链表的数据结构：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">int</span> ElemType;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">  ElemType data;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125; Node, *LinkedList;</span><br></pre></td></tr></table></figure>
+
+<p>如上，需要注意的地方是 LinkedList 的身份是什么。在这里，<code>*LinkedList</code>等同于<code>struct Node</code>，换句话说，<code>LinkedList</code>等同于<code>struct Node *</code>，它是一个指向结构体<code>Node</code>的指针！接着，我们要清楚，<code>LinkedList *L</code>就是指向结构体<code>Node</code>的指针的指针了！</p>
+<ul>
+<li><p>对于<code>LinkedList L</code>: L 是指向定义的 Node 结构体的指针，可以用<code>-&gt;</code>运算符来访问结构体成员，即<code>L-&gt;data</code>，而<code>*L</code>就是个 Node 型的结构体了，可以用点运算符访问该结构体成员，即<code>(*L).data</code>。</p>
+</li>
+<li><p>对于<code>LinkedList *L</code>: L 是指向定义的 Node 结构体指针的指针，所以<code>*L</code>是指向 Node 结构体的指针，可以用<code>-&gt;</code>运算符来访问结构体成员，即<code>(*L)-&gt;data</code>，当然，<code>**L</code>就是 Node 型结构体了，所以可以用点运算符来访问结构体成员，即<code>(**L).data</code>。</p>
+</li>
+</ul>
+<p>在链表操作中，我们常常要用链表变量作为函数的参数。这时，用<code>LinkedList L</code>还是<code>LinkedList *L</code>就很值得考虑深究了，一个用不好，函数就会出现逻辑错误。</p>
+<p><strong>其准则是：</strong>如果函数会改变指针 L 的值，而你希望函数结束调用后保存 L 的值，那你就要用<code>LinkedList *L</code>。这样，向函数传递的就是指针的地址，结束调用后，自然就可以去改变指针的值；而如果函数只会修改指针所指向的内容，而不会更改指针的值，那么用<code>LinkedList L</code>就行了。</p>
+<p>这里大家可能有点懵，我觉得关键在于<strong>理解C语言函数参数传递的原理！本质是值传递</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">6</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">getReturn</span><span class="params">(<span class="type">int</span> a)</span> &#123;</span><br><span class="line">  a = <span class="number">10</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>函数外部是得不到 a 变化为 10 的结果的，<strong>因为 a 在传进函数的时候被复制了一次，虽然两个 a 的内容相同，但是它们已经是两个不同的变量了！</strong>为了得到这个结果你需要使用：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">6</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">getReturn</span><span class="params">(<span class="type">int</span> *a)</span> &#123;</span><br><span class="line">  *a = <span class="number">10</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// getReturn(&amp;a);</span></span><br></pre></td></tr></table></figure>
+
+<p>最后，结合具体实例来进一步理解下如上所有内容：</p>
+<p><strong>重点：</strong>当传进的变量的<code>值</code>被改变时需要用指针。</p>
+<ol>
+<li><p>初始化链表 InitList</p>
+<p> <code>malloc</code>返回一个地址。</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 想想如果用 InitList(LinkedList L) 会怎么样？</span></span><br><span class="line"><span class="comment">// void InitList(LinkedList L) &#123;</span></span><br><span class="line"><span class="comment">//   L = (LinkedList) malloc(sizeof(Node));</span></span><br><span class="line"><span class="comment">//   L-&gt;next = NULL;</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line"><span class="comment">// L 在传进去的时候已经被复制了一遍，已不是函数外面那个指针变量。</span></span><br><span class="line"><span class="comment">// 所以改变它的值不会改变外面那个指针变量的指</span></span><br><span class="line"><span class="comment">// 这种情况只适用于结构体已经在外面被初始化，并且通过 InitList 改变它的值</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">InitList</span><span class="params">(LinkedList *L)</span> &#123;</span><br><span class="line">  *L = (LinkedList) <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Node));</span><br><span class="line">  (*L)-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 函数调用完毕后，L 会指向一个空的链表，即会改变指针的值，所以要用<code>LinkedList *L</code>。</p>
+</li>
+<li><p>清空链表 ClearList</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 传进去的是头结点</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">ClearList</span><span class="params">(LinkedList L)</span> &#123;</span><br><span class="line">  LinkedList p;</span><br><span class="line">  <span class="keyword">while</span>(p = L-&gt;next)</span><br><span class="line">    <span class="built_in">free</span>(p);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 函数调用完后不会改变指针 L 的值，只会改变指针 L 所指向的内容（即<code>L-&gt;next</code>的值），所以可以用<code>LinkedList L</code>。</p>
+</li>
+<li><p>销毁链表 DestroyList</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 头结点也需要被回收</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">DestroyList</span><span class="params">(LinkedList *L)</span> &#123;</span><br><span class="line">  LinkedList p;</span><br><span class="line">  <span class="keyword">while</span>(p = (*L)-&gt;next)</span><br><span class="line">    <span class="built_in">free</span>(p);</span><br><span class="line">  <span class="built_in">free</span>(*L);</span><br><span class="line">  *L = <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 释放链表 L 申请的内存，使 L 的值重新变为 NULL，所以会改变 L 的值，得用<code>LinkedList *L</code>。</p>
+</li>
+</ol>
+<p>最后，大家可能会遇到这个问题，what about <code>Insert</code>？这个是一个值得深思的问题呵呵！目前，我觉得在带有头结点上使用<code>LinkedList L</code>也是可以的。在没有头结点的时候，如果还是使用<code>LinkedList L</code>就可能有问题，因为我们可能会在第一个结点前插入新结点呢！所以，我也是一脸懵逼啊，可能大伙们都在遵循<strong>潜在规则</strong>吗？</p>
+<p><strong>潜在规则：</strong>访问用<code>LinkedList L</code>，修改用<code>LinkedList *L</code>。</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Posts</a></li>
+        
+          <li><a href="/studynotes/">Notes</a></li>
+        
+          <li><a href="/lc/">Leetcode</a></li>
+        
+          <li><a href="/games/">Games</a></li>
+        
+          <li><a href="/links/">Links</a></li>
+        
+          <li><a href="/about/">Me</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/&text=究竟用 LinkedList L 还是 LinkedList *L？"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/&title=究竟用 LinkedList L 还是 LinkedList *L？"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/&is_video=false&description=究竟用 LinkedList L 还是 LinkedList *L？"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=究竟用 LinkedList L 还是 LinkedList *L？&body=Check out this article: https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/&title=究竟用 LinkedList L 还是 LinkedList *L？"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/&title=究竟用 LinkedList L 还是 LinkedList *L？"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/&title=究竟用 LinkedList L 还是 LinkedList *L？"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/&title=究竟用 LinkedList L 还是 LinkedList *L？"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/&name=究竟用 LinkedList L 还是 LinkedList *L？&description=&lt;p&gt;C 语言的学习总是遇到各种问题，而且很多问题几乎离不开指针这鬼玩意。在学习数据结构与算法之蜜汁 C 语言版的时候，我也是被 LinkedList 这个东西弄得心累啊！&lt;/p&gt;
+&lt;p&gt;毕竟后面发现严蔚敏版的教材的代码应该是遵循 C++ 风格（我还没学过），里面充斥着&lt;code&gt;LinkedList &amp;amp;L&lt;/code&gt;这种写法。然后，每次将代码 copy 到编辑器后，一编译就泪流满面。事实上，&lt;code&gt;LinkedList &amp;amp;L&lt;/code&gt;是 C++ 的一种引用语法。&lt;/p&gt;
+&lt;p&gt;其实在参数中究竟用哪一种不重要，关键是知道&lt;strong&gt;自己在做什么（换句话说就是为什么要用它）？&lt;/strong&gt;&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2016/07/31/008_%E7%A9%B6%E7%AB%9F%E7%94%A8LinkedList%20L%E8%BF%98%E6%98%AFLinkedList%20*L%EF%BC%9F/&t=究竟用 LinkedList L 还是 LinkedList *L？"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

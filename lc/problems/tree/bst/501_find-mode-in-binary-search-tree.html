@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Easy Problem Given a binary search tree (BST) with duplicates, find all the mode(s) (the most frequently occurred element) in the given BST.  Assume a BST is defined a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="501. Find Mode in Binary Search Tree">
+<meta property="og:url" content="https://junhaow.com/lc/problems/tree/bst/501_find-mode-in-binary-search-tree.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Easy Problem Given a binary search tree (BST) with duplicates, find all the mode(s) (the most frequently occurred element) in the given BST.  Assume a BST is defined a">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.143Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.143Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>501. Find Mode in Binary Search Tree</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/find-mode-in-binary-search-tree/">LeetCode</a><br>Difficulty: <span class="green">Easy</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a binary search tree (BST) with duplicates, find all the <code>mode(s)</code> (the most frequently occurred element) in the given BST.</p>
+</blockquote>
+<p>Assume a BST is defined as follows:</p>
+<ul>
+<li>The left subtree of a node contains only nodes with keys <code>less than or equal to</code> the node’s key.</li>
+<li>The right subtree of a node contains only nodes with keys <code>greater than or equal to</code> the node’s key.</li>
+<li>Both the left and right subtrees must also be binary search trees.</li>
+</ul>
+<p><strong>Note:</strong> If a tree has more than one mode, you can return them in any order.</p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Given BST: [<span class="number">1</span>,<span class="literal">null</span>,<span class="number">2</span>,<span class="number">2</span>]</span><br><span class="line">   <span class="number">1</span></span><br><span class="line">    \</span><br><span class="line">     <span class="number">2</span></span><br><span class="line">    /</span><br><span class="line">   <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> Could you do that without using any extra space? (Assume that the implicit stack space incurred due to recursion does not count).</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p><strong>Methods:</strong></p>
+<ol>
+<li><p>Hash Map</p>
+<ul>
+<li>In the inorder traversal, we do the counting work and use a hash map to store the values. In the meanwhile, we calculate the <code>maxCount</code>.</li>
+<li>Iterate the map and add those keys that satisfy the requirement.</li>
+<li>Convert <code>List&lt;Integer&gt;</code> to <code>int[]</code> in a for-loop.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="variable">maxCount</span> <span class="operator">=</span> Integer.MIN_VALUE;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] findMode(TreeNode root) &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[] &#123;&#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  inorder(root, map);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// count</span></span><br><span class="line">  List&lt;Integer&gt; resultList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> key : map.keySet()) &#123;</span><br><span class="line">    <span class="keyword">if</span> (map.get(key) == maxCount) &#123;</span><br><span class="line">      resultList.add(key);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// result - convert from List&lt;Integer&gt; to int[] is very annoying, but it is the only to do so.</span></span><br><span class="line">  <span class="type">int</span>[] result = <span class="keyword">new</span> <span class="title class_">int</span>[resultList.size()];</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; result.length; ++i) &#123;</span><br><span class="line">    result[i] = resultList.get(i);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">inorder</span><span class="params">(TreeNode root, Map&lt;Integer, Integer&gt; map)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  inorder(root.left, map);</span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> count;</span><br><span class="line">  <span class="keyword">if</span> (map.containsKey(root.val)) &#123;</span><br><span class="line">    count = map.get(root.val) + <span class="number">1</span>;</span><br><span class="line">    map.put(root.val, count);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    count = <span class="number">1</span>;</span><br><span class="line">    map.put(root.val, count);</span><br><span class="line">  &#125;</span><br><span class="line">  maxCount = Math.max(maxCount, count);</span><br><span class="line">  </span><br><span class="line">  inorder(root.right, map);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</li>
+</ul>
+</li>
+<li><p>Get Max First</p>
+<ul>
+<li>In the first traversal, calculate the <code>maxCount</code>, later we can add those integers to the list directly in the second traversal.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">Integer</span> <span class="variable">preVal</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="variable">maxCount</span> <span class="operator">=</span> Integer.MIN_VALUE;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] findMode(TreeNode root) &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[] &#123;&#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  List&lt;Integer&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  preVal = <span class="literal">null</span>; getMax(root);</span><br><span class="line">  preVal = <span class="literal">null</span>; getResult(root, result);</span><br><span class="line">  <span class="comment">// convert to int[]</span></span><br><span class="line">  <span class="type">int</span>[] ret = <span class="keyword">new</span> <span class="title class_">int</span>[result.size()];</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; ret.length; ++i) &#123;</span><br><span class="line">    ret[i] = result.get(i);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">getMax</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  getMax(root.left);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (preVal != <span class="literal">null</span> &amp;&amp; preVal == root.val) &#123; <span class="comment">// same</span></span><br><span class="line">    count += <span class="number">1</span>;</span><br><span class="line">    maxCount = Math.max(maxCount, count);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">// not same</span></span><br><span class="line">    count = <span class="number">1</span>;</span><br><span class="line">    preVal = root.val;</span><br><span class="line">    maxCount = Math.max(maxCount, count);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  getMax(root.right);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">getResult</span><span class="params">(TreeNode root, List&lt;Integer&gt; result)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  getResult(root.left, result);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (preVal != <span class="literal">null</span> &amp;&amp; preVal == root.val) &#123; <span class="comment">// same</span></span><br><span class="line">    count += <span class="number">1</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">// not same</span></span><br><span class="line">    count = <span class="number">1</span>;</span><br><span class="line">    preVal = root.val;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (count == maxCount) &#123;</span><br><span class="line">    result.add(root.val);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  getResult(root.right, result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</li>
+</ul>
+</li>
+</ol>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

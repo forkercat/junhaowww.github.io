@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: 125. Valid Palindrome &amp; 680. Valid Palindrome II EPI 6.5Difficulty: Easy My Post: Java Solutions to Valid Palindrome I &amp; II with Explanation (SubPalindrome, Iteration &amp; Recurs">
+<meta property="og:type" content="website">
+<meta property="og:title" content="125. Valid Palindrome I &amp; II">
+<meta property="og:url" content="https://junhaow.com/lc/problems/string/palindrome/125_valid-palindrome.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: 125. Valid Palindrome &amp; 680. Valid Palindrome II EPI 6.5Difficulty: Easy My Post: Java Solutions to Valid Palindrome I &amp; II with Explanation (SubPalindrome, Iteration &amp; Recurs">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.138Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.138Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>125. Valid Palindrome I &amp; II</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/valid-palindrome/">125. Valid Palindrome</a> &amp; <a target="_blank" rel="noopener" href="https://leetcode.com/problems/valid-palindrome-ii/">680. Valid Palindrome II</a> <span class="gray">EPI 6.5</span><br>Difficulty: <span class="green">Easy</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/valid-palindrome-ii/discuss/391809">Java Solutions to Valid Palindrome I &amp; II with Explanation (SubPalindrome, Iteration &amp; Recursion)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.</p>
+</blockquote>
+<p><strong>Note:</strong> For the purpose of this problem, we define empty string as valid palindrome.</p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="string">&quot;aba&quot;</span></span><br><span class="line">Output: True</span><br><span class="line"></span><br><span class="line">Input: <span class="string">&quot;race a car&quot;</span></span><br><span class="line">Output: <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> Do not use extra space. Also, check out Valid Palindrome II section.</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p>The basic idea is based on the following code:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isPalindrome</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n / <span class="number">2</span>; ++i) &#123; <span class="comment">// n / 2 is right-leaning</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> n - i - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (s.charAt(i) != s.charAt(j)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Since the input has some non-alphanumeric characters, we have to do some preprocessing.</p>
+<ul>
+<li>Remove invalid characters (<code>Character.isLetterOrDigit(ch)</code>).</li>
+<li>Convert all letters to lower cases (use <code>s.toLowerCase()</code>).</li>
+<li>Reversing is optional (it also incurs extra space usage).</li>
+</ul>
+<p><strong>Note:</strong></p>
+<ul>
+<li>Since the StringBuilder is resizable, the condition in while-loop is <code>idx &lt; sb.length()</code> instead of <code>idx &lt; n</code>.</li>
+<li>Remember to update the length <code>n</code> after preprocessing.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isPalindrome</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>(s.toLowerCase()); <span class="comment">// for later comparisons</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">idx</span> <span class="operator">=</span> <span class="number">0</span>;  </span><br><span class="line">  <span class="comment">// remove non-letter character</span></span><br><span class="line">  <span class="keyword">while</span> (idx &lt; sb.length()) &#123;</span><br><span class="line">    <span class="type">char</span> <span class="variable">ch</span> <span class="operator">=</span> sb.charAt(idx);</span><br><span class="line">    <span class="keyword">if</span> (Character.isLetterOrDigit(ch)) &#123; <span class="comment">// letter or digit</span></span><br><span class="line">      idx += <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// not letter</span></span><br><span class="line">      sb.deleteCharAt(idx);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> sb.length(); <span class="comment">// update length</span></span><br><span class="line">  <span class="comment">// check</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n / <span class="number">2</span>; ++i) &#123; <span class="comment">// right-leaning</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> n - i - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (sb.charAt(i) != sb.charAt(j)) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="Two-Pointers"><a href="#Two-Pointers" class="headerlink" title="Two Pointers"></a>Two Pointers</h3><p>We use two indices (pointers) to traverse the string, one forwards, the other backwards, skipping nonalphanumeric characters, performing case-insensitive comparison on the alphanumeric characters. We return false as soon as there is a mismatch. If the indices cross, we have a verified palindrome string.</p>
+<p><strong>Note:</strong> Remember to update <code>lo</code> and <code>hi</code> at the end of each iteration.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isPalindrome</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">lo</span> <span class="operator">=</span> <span class="number">0</span>, hi = s.length() - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (lo &lt; hi) &#123; <span class="comment">// if lo &gt;= hi, stops!</span></span><br><span class="line">    <span class="comment">// i stops at a letter, or lo == hi</span></span><br><span class="line">    <span class="keyword">while</span> (lo &lt; hi &amp;&amp; !isValid(s.charAt(lo))) lo += <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// j stops at a letter, or lo == hi</span></span><br><span class="line">    <span class="keyword">while</span> (lo &lt; hi &amp;&amp; !isValid(s.charAt(hi))) hi -= <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// check</span></span><br><span class="line">    <span class="keyword">if</span> (lo &lt; hi) &#123; <span class="comment">// ensure in-bound &amp; letter comparison (because they don&#x27;t meet yet)</span></span><br><span class="line">      <span class="keyword">if</span> (isCharDiff(s.charAt(lo), s.charAt(hi))) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    lo += <span class="number">1</span>; hi -= <span class="number">1</span>; <span class="comment">// update, remember to move (otherwise it caseus infinite loop)</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isValid</span><span class="params">(<span class="type">char</span> ch)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> Character.isLetterOrDigit(ch);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isCharDiff</span><span class="params">(<span class="type">char</span> ch1, <span class="type">char</span> ch2)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> Character.toLowerCase(ch1) != Character.toLowerCase(ch2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+<h2 id="Valid-Palindrome-II"><a href="#Valid-Palindrome-II" class="headerlink" title="Valid Palindrome II"></a>Valid Palindrome II</h2><blockquote>
+<p>Given a non-empty string <code>s</code>, you may delete <strong>at most one character</strong>. Judge whether you can make it a palindrome. In other words, we allow one mismatch.</p>
+</blockquote>
+<p><strong>Note:</strong> The string will only contain lowercase characters a-z. The maximum length of the string is 50000.</p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="string">&quot;aba&quot;</span></span><br><span class="line">Output: True</span><br><span class="line"></span><br><span class="line">Input: <span class="string">&quot;abca&quot;</span></span><br><span class="line">Output: True (delete <span class="string">&quot;c&quot;</span>)</span><br><span class="line"></span><br><span class="line">Input: <span class="string">&quot;abbbca&quot;</span></span><br><span class="line">Output: True (delete <span class="string">&quot;c&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Brute-Force-1"><a href="#Brute-Force-1" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p>Delete each character and then test palindromicity.</p>
+<p><strong>Time:</strong> $O(N^2)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="SubPalindrome-Iteration"><a href="#SubPalindrome-Iteration" class="headerlink" title="SubPalindrome (Iteration)"></a>SubPalindrome (Iteration)</h3><p>When detecting the first mismatch we should consider two cases:</p>
+<ul>
+<li><strong>Case 1:</strong> Delete the character on the left, and move on.</li>
+<li><strong>Case 2:</strong> Delete the character on the right, and move on.</li>
+</ul>
+<p>Then we get rid of the characters we have checked before, and only focus on those <strong>substrings</strong> in two cases. If the first case fails, we will try the second case. If it also fails, return <code>false</code>.</p>
+<p>Notice that when a mismatch is detected in for-loop, every future work would be done within the current iteration.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Example: [a b b b c a]</span><br><span class="line">i = left, j = right</span><br><span class="line">[a b b b c a]</span><br><span class="line"> i         j</span><br><span class="line">[a b b b c a]</span><br><span class="line">   i     j     &lt;-- mismatch</span><br><span class="line"></span><br><span class="line">Case <span class="number">1</span>:</span><br><span class="line">[a b b b c a]</span><br><span class="line">     i   j     &lt;-- now we focus on a substring [b b c] --&gt; fail in <span class="keyword">case</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line">Case <span class="number">2</span>:</span><br><span class="line">[a b b b c a]</span><br><span class="line">   i   j       &lt;-- now we focus on a substring [b b b] --&gt; succeed in <span class="keyword">case</span> <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>Show me the code:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// &quot;abbbca&quot;</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">validPalindrome</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n / <span class="number">2</span>; ++i) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> i, right = n - i - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (s.charAt(left) != s.charAt(right)) &#123; <span class="comment">// give a last chance</span></span><br><span class="line">      <span class="comment">// delete char at left</span></span><br><span class="line">      <span class="keyword">if</span> (validSubPalindrome(s, left + <span class="number">1</span>, right)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">      <span class="comment">// delete char at right</span></span><br><span class="line">      <span class="keyword">return</span> validSubPalindrome(s, left, right - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">validSubPalindrome</span><span class="params">(String s, <span class="type">int</span> lo, <span class="type">int</span> hi)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> hi - lo + <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n / <span class="number">2</span>; ++i) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> lo + i, right = hi - i;</span><br><span class="line">    <span class="keyword">if</span> (s.charAt(left) != s.charAt(right)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$ since there are at most $\sim 2N$ operations.<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="SubPalindrome-Recursion"><a href="#SubPalindrome-Recursion" class="headerlink" title="SubPalindrome (Recursion)"></a>SubPalindrome (Recursion)</h3><p>Based on the idea above, we can write a recursive version.</p>
+<p><strong>Note:</strong> You have to pass down a <code>used</code> variable to indicate if the remedy has been used.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">validPalindrome</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> validSubPalindrome(s, <span class="number">0</span>, s.length() - <span class="number">1</span>, <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">validSubPalindrome</span><span class="params">(String s, <span class="type">int</span> lo, <span class="type">int</span> hi, <span class="type">boolean</span> used)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (lo &gt;= hi) &#123; <span class="comment">// base case</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (s.charAt(lo) != s.charAt(hi)) &#123; <span class="comment">// equal</span></span><br><span class="line">    <span class="keyword">if</span> (used == <span class="literal">false</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (validSubPalindrome(s, lo + <span class="number">1</span>, hi, <span class="literal">true</span>)) <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">// test left deletion</span></span><br><span class="line">      <span class="keyword">return</span> validSubPalindrome(s, lo, hi - <span class="number">1</span>, <span class="literal">true</span>); <span class="comment">// test right deletion</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> validSubPalindrome(s, lo + <span class="number">1</span>, hi - <span class="number">1</span>, used);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

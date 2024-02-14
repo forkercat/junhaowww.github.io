@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Easy My Post: Java Solution Bitwise Simulation (Illustrate with Examples) Problem Calculate the sum of two integers $a$ and $b$, but you are not allowed to use the ope">
+<meta property="og:type" content="website">
+<meta property="og:title" content="371. Sum of Two Integers">
+<meta property="og:url" content="https://junhaow.com/lc/problems/bitwise/371_sum-of-two-integers.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Easy My Post: Java Solution Bitwise Simulation (Illustrate with Examples) Problem Calculate the sum of two integers $a$ and $b$, but you are not allowed to use the ope">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.119Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.119Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>371. Sum of Two Integers</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/sum-of-two-integers/">LeetCode</a><br>Difficulty: <span class="green">Easy</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/sum-of-two-integers/discuss/407201">Java Solution Bitwise Simulation (Illustrate with Examples)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Calculate the sum of two integers $a$ and $b$, but you are <strong>not allowed</strong> to use the operator <code>+</code> and <code>-</code>.</p>
+</blockquote>
+<p><strong>Note:</strong> Be careful of the negative cases.</p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input: a = <span class="number">1</span>, b = <span class="number">2</span></span><br><span class="line">Output: <span class="number">3</span></span><br><span class="line"></span><br><span class="line">Input: a = -<span class="number">2</span>, b = <span class="number">3</span></span><br><span class="line">Output: <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Simulation"><a href="#Simulation" class="headerlink" title="Simulation"></a>Simulation</h3><p>We can apply the idea in Add Two Numbers, although this oe is tricky. Let’s analyze each line of code to see why it is written that way.</p>
+<p><strong>Negative Cases:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (a != <span class="number">0</span> || b != <span class="number">0</span> || carry &gt; <span class="number">0</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (i &gt;= <span class="number">32</span>) <span class="keyword">break</span>;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Notice that we apply the same method for negative numbers too, but we must not process the bits that are out of 32-bit range (<code>if (i &gt;= 32) break;</code>).</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Example: (say <span class="number">8</span>-bit range to simplify)</span><br><span class="line">a  <span class="number">1111</span> <span class="number">1111</span>  -<span class="number">1</span></span><br><span class="line">b  <span class="number">1111</span> <span class="number">1111</span>  -<span class="number">1</span></span><br><span class="line">   <span class="number">1111</span> <span class="number">1110</span>  -<span class="number">2</span> the result should be -<span class="number">2</span></span><br><span class="line">If we did not stop when #bits &gt; <span class="number">8</span>, we would have:</span><br><span class="line">  <span class="number">10000</span> <span class="number">0000</span>  Unfortunately, it is <span class="number">1</span> instead of <span class="number">0.</span></span><br><span class="line">  Thus, it would have made the result to be -<span class="number">1.</span></span><br></pre></td></tr></table></figure>
+
+<p>Also, the condition is <code>a != 0 || b != 0</code> rather than <code>a &gt; 0 || b &gt; 0</code> because we don’t expect to stop for negative numbers.</p>
+<p><strong>How to Store Result?</strong></p>
+<p>Since each time we process one rightmost bit, by using an index <code>i</code> we remember its corresponding position in the result.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Example: (say <span class="number">3</span>-bit range to simplify)</span><br><span class="line">a  <span class="number">0</span> <span class="number">0</span> <span class="number">1</span></span><br><span class="line">b  <span class="number">1</span> <span class="number">0</span> <span class="number">1</span></span><br><span class="line">       <span class="number">0</span>  (other bits are <span class="number">0</span>)</span><br><span class="line">     <span class="number">1</span></span><br><span class="line">   <span class="number">1</span>      combine each by left-shifting and ^ operation</span><br><span class="line">   <span class="number">1</span> <span class="number">1</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>How to Calculate the Carry?</strong></p>
+<p>It is not obvious. We think there should be a better approach. Here is mine.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// For simplicity, a is the current bit of a, ...</span></span><br><span class="line">a b c    <span class="keyword">new</span> <span class="title class_">carry</span></span><br><span class="line"><span class="number">1</span> <span class="number">0</span> <span class="number">1</span> -&gt; <span class="number">1</span>  <span class="comment">// a ^ b = 1</span></span><br><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">1</span> -&gt; <span class="number">1</span></span><br><span class="line"><span class="number">1</span> <span class="number">1</span> <span class="number">0</span> -&gt; <span class="number">1</span>  <span class="comment">// a &amp; b = 1</span></span><br><span class="line"><span class="number">1</span> <span class="number">1</span> <span class="number">1</span> -&gt; <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>We want to express the idea that if there are at least two one-bits among <code>a</code>, <code>b</code> and <code>c</code>. By the last two rows, we know that:</p>
+<ul>
+<li>If <code>a &amp; b</code> is $1$ (<code>1 1</code> case), the new carry must be $1$ no matter what <code>c</code> value is.</li>
+<li>If <code>a | b</code> is $1$ (<code>1 0</code> or <code>0 1</code> case), the new carry can be $1$ only if <code>c</code> is also $1$.</li>
+</ul>
+<p>Translating into code, we have:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// carry = (a &amp; 1) &amp; (b &amp; 1); // when a = 1, b = 1</span></span><br><span class="line"><span class="comment">// It is buggy, because it does not consider carry.</span></span><br><span class="line"><span class="type">int</span> <span class="variable">abAND</span> <span class="operator">=</span> (a &amp; <span class="number">1</span>) &amp; (b &amp; <span class="number">1</span>);</span><br><span class="line"><span class="type">int</span> <span class="variable">abOR</span> <span class="operator">=</span> (a &amp; <span class="number">1</span>) | (b &amp; <span class="number">1</span>);</span><br><span class="line"><span class="keyword">if</span> (abAND == <span class="number">1</span> || (abOR == <span class="number">1</span> &amp;&amp; carry == <span class="number">1</span>)) carry = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">else</span> carry = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Here is the complete code:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getSum</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">carry</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (a != <span class="number">0</span> || b != <span class="number">0</span> || carry &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (i &gt;= <span class="number">32</span>) <span class="keyword">break</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> (a &amp; <span class="number">1</span>) ^ (b &amp; <span class="number">1</span>) ^ carry;</span><br><span class="line">    <span class="type">int</span> <span class="variable">abAND</span> <span class="operator">=</span> (a &amp; <span class="number">1</span>) &amp; (b &amp; <span class="number">1</span>);</span><br><span class="line">    <span class="type">int</span> <span class="variable">abOR</span> <span class="operator">=</span> (a &amp; <span class="number">1</span>) | (b &amp; <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (abAND == <span class="number">1</span> || (abOR == <span class="number">1</span> &amp;&amp; carry == <span class="number">1</span>)) carry = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span> carry = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// update</span></span><br><span class="line">    result ^= (sum &lt;&lt; i);</span><br><span class="line">    a = a &gt;&gt;&gt; <span class="number">1</span>; <span class="comment">// logical right shift</span></span><br><span class="line">    b = b &gt;&gt;&gt; <span class="number">1</span>;</span><br><span class="line">    ++i;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(1)$ since it takes at most 32 iterations.<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Recursion-clever"><a href="#Recursion-clever" class="headerlink" title="Recursion (clever)"></a>Recursion (clever)</h3><p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/sum-of-two-integers/discuss/167728">详细思路和代码(Detail explanation and code)</a> by KevinYao7167</p>
+<p>The basic idea is to create two parts (bits that don’t create carry and bits that create carry) and recursively construct the result.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getSum</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">noCarryBits</span> <span class="operator">=</span> a ^ b;  <span class="comment">// where 1 ^ 0, 0 ^ 1, and 0 ^ 0</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">carryBits</span> <span class="operator">=</span> a &amp; b;    <span class="comment">// where 1 ^ 1</span></span><br><span class="line">  <span class="keyword">if</span> (carryBits == <span class="number">0</span>) &#123; <span class="comment">// no carry created</span></span><br><span class="line">    <span class="keyword">return</span> noCarryBits;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> getSum(noCarryBits, carryBits &lt;&lt; <span class="number">1</span>); <span class="comment">// think about it</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(1)$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

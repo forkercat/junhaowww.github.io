@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Shortest PathsBFS vs. DFS for Path Finding Possible consideration:  Correctness. Do both work for all graphs? Output Quality. Does one give better results? BFS is a 2-for-1 deal, not only do you ge">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CS 61B | Part 10 | Shortest Paths (SP), Minimum Spanning Trees (MST)">
+<meta property="og:url" content="https://junhaow.com/studynotes/cs61b/cs61b%20p10.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Shortest PathsBFS vs. DFS for Path Finding Possible consideration:  Correctness. Do both work for all graphs? Output Quality. Does one give better results? BFS is a 2-for-1 deal, not only do you ge">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8ynp1.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/r3box.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/b9p65.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5752u.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xdqe0.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4acp6.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/k45sh.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/euahp.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ulin8.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/mr33w.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/teaoh.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/hbzkr.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/f4kuj.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8rccj.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/t1qg6.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/x3gcv.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ltdy8.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/szb3o.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4ag7t.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/nm9vf.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qtukx.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dgwl6.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4eafa.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7vipi.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ovfl8.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8f0tf.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/obskk.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zqw6z.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sobp5.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/x2juj.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zo3si.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7gc30.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/o717t.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/y0oct.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/72her.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/65nzr.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/nv3yv.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/i7rt4.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wbwah.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5131b.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2cslz.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5se3o.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/r87gs.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/n7fcg.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/f71df.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3et47.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qnmbl.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/mqs31.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/r05gv.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/66gqr.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/lm07k.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yvcns.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/n6mp3.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/s88hc.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/h047l.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sava0.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/e7ylj.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dwt6x.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wxac6.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.189Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.188Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8ynp1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CS 61B | Part 10 | Shortest Paths (SP), Minimum Spanning Trees (MST)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+
+<h2 id="Shortest-Paths"><a href="#Shortest-Paths" class="headerlink" title="Shortest Paths"></a>Shortest Paths</h2><p><strong>BFS vs. DFS for Path Finding</strong></p>
+<p>Possible consideration:</p>
+<ul>
+<li><code>Correctness</code>. Do both work for all graphs?</li>
+<li><code>Output Quality</code>. Does one give better results?<ul>
+<li>BFS is a 2-for-1 deal, not only do you get paths, but your paths are also guaranteed to be shortest.</li>
+</ul>
+</li>
+<li><code>Time Efficiency</code>. Is one more efficient than the other?<ul>
+<li>Should be very similar. Both consider all edges twice.</li>
+</ul>
+</li>
+</ul>
+<p>What about space efficiency?</p>
+<ul>
+<li>DFS is worse for <code>spindly</code> graphs.<ul>
+<li>Call stack gets very deep. Need $\Theta(V)$ memory to remember recursive calls.</li>
+</ul>
+</li>
+<li>BFS is worse for absurdly <code>bushy</code> graphs.<ul>
+<li>Queue gets very large. In worst case, queue will require $\Theta(V)$ memory. For example, one vertex connects with the rest of 1,000,000 vertices.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Note:</strong> In our implementation, we have to spend $\Theta(V)$ memory anyway to track <code>distTo</code> and <code>edgeTo</code> arrays. But we can optimize by storing in a map.</p>
+<p>But BFS has a problem. It returns a path with shortest number of edges.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8ynp1.png" alt="Breadth First Search for Mapping Applications"></p>
+<h3 id="By-Eyes"><a href="#By-Eyes" class="headerlink" title="By Eyes"></a>By Eyes</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/r3box.png" alt="Single Source Single Target Shortest Paths"></p>
+<p><strong>Observation:</strong> Solution will always be a <code>path</code> with no cycles (assuming non-negative weights).</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/b9p65.png" alt="Single Source Shortest Paths"></p>
+<p><strong>Observation:</strong> Solution will always be a <code>tree</code> (a union of all the shortest paths to all vertices).</p>
+<p><strong>Note:</strong> All still hold for <code>undirected graphs</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5752u.png" alt="SPT Edge Count"></p>
+<p>The number of edges in the tree is always $V - 1$.</p>
+<p>$D_{in}$ is always equal to $1$.</p>
+<h3 id="Bad-Algorithms"><a href="#Bad-Algorithms" class="headerlink" title="Bad Algorithms"></a>Bad Algorithms</h3><p>Bad Algorithm #1:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xdqe0.png" alt="Bad Algorithm #1"></p>
+<p>In <code>dfs(C)</code>, we don’t update the edge <code>C-&gt;B</code> anymore.</p>
+<p>Bad Algorithm #2:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4acp6.png" alt="Bad Algorithm #2"></p>
+<p>Why? We’ve updated B, but not updated the value $7$ in D.</p>
+<p>We can go back to B and <code>dfs(B)</code> again, but it’s slower.</p>
+<p>The problem lies in the fact that we visit B first and then C. If we visit C first, the problem no long exists.</p>
+<h3 id="Dijkstra’s-Algorithm"><a href="#Dijkstra’s-Algorithm" class="headerlink" title="Dijkstra’s Algorithm"></a>Dijkstra’s Algorithm</h3><h4 id="Basic-Idea"><a href="#Basic-Idea" class="headerlink" title="Basic Idea"></a>Basic Idea</h4><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/k45sh.png"></p>
+<p><strong>Error:</strong> Should not be <code>dfs()</code>.</p>
+<p><strong>You should write it by hands and by yourself!</strong></p>
+<p>Dijkstra’s Algorithm: Perform a <code>best first search</code> (closest first).</p>
+<p>We use a <code>Fringe</code> (Priority Queue) to keep track of which vertex is closest to the source.</p>
+<h4 id="Walkthrough"><a href="#Walkthrough" class="headerlink" title="Walkthrough"></a>Walkthrough</h4><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/euahp.png"></p>
+<p>Demo: <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1_bw2z1ggUkquPdhl7gwdVBoTaoJmaZdpkV6MoAgxlJc/pub?start=false&loop=false&delayms=3000&slide=id.g771336078_0_180">link</a></p>
+<p><strong>You should write it by hands and by yourself!</strong></p>
+<p>Every time we start looking more vertices from the vertex that is closest to the source. This is the reason why we use the priority queue <code>Fringe</code> to keep track of the vertex we want.</p>
+<p>When doing <code>dequeue()</code>, we can assure that the path from the source to this vertex is already the shortest! Why?</p>
+<p>There is a premise that weights could not be negative. Therefore, it is impossible that a future path that is back to, for example vertex 2, must be at least greater than $1$.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ulin8.png" alt="About to dequeue the vertex 1"></p>
+<p><strong>Note:</strong> Also, notice that when dequeueing vertex 1, there is no potential shortest path from vertex 2 to vertex 1 (we have checked). If there was, I would have updated the value of vertex 1.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/mr33w.png" alt="After dequeueing the vertex 1"></p>
+<p>After dequeueing vertex 1, we examine vertex 2, 3, 4. As for vertex 2, do we need to update its value? No! We don’t even go to it. Because we’ve already said <code>distTo[2]</code> has been finalized (vertex 2 has been dequeued before). No more potential update for vertex 2. (only for non-negative weights)</p>
+<p>Finally, we have:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/teaoh.png" alt="Done"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/hbzkr.jpg" alt="My Drawing Process"></p>
+<h4 id="Key-Properties"><a href="#Key-Properties" class="headerlink" title="Key Properties"></a>Key Properties</h4><p><strong>One-sentence Idea:</strong></p>
+<p>Visit vertices in <code>order of best-known distance</code> from source. On visit, <code>relax</code> every edge from the visited vertex to unvisited vertices.</p>
+<p>Key Invariants:</p>
+<ul>
+<li><code>edgeTo[v]</code> is the best known predecessor of $v$.</li>
+<li><code>distTo[v]</code> is the best known total distance from source to $v$.</li>
+<li><code>PQ</code> contains all <code>unvisited</code> vertices in order of <code>distTo[]</code>.</li>
+</ul>
+<p>Important properties:</p>
+<ul>
+<li>Always visits vertices in order of <code>total distance</code> from the source.</li>
+<li>Relaxation always fails on edges to visited vertices (white, not in the queue).<ul>
+<li>Because it always makes that worse.</li>
+</ul>
+</li>
+</ul>
+<p>Guaranteed Optimality:</p>
+<blockquote>
+<p>The Idea of “Suppose that it isn’t the case.”<br>The Idea of “Proof by Induction.”</p>
+</blockquote>
+<p>Dijkstra’s is guaranteed to be optimal so long as there are no negative edges.</p>
+<ul>
+<li>Proof relies on the property that relaxation always fails on edges to visited vertices.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/f4kuj.png" alt="For Visualization"></p>
+<p><strong>Premise:</strong> Assume all edges have non-negative weights.</p>
+<p><strong>Proof by Induction:</strong> Relaxation always fails on edges to visited vertices.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8rccj.png"></p>
+<p>So, if $w$ is a negative number, this property no longer holds because <code>distTo[p] + w</code> might be less than <code>distTo[v1]</code>. Relaxation of already visited vertices can succeed as follows.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/t1qg6.png" alt="Negative Edge Example"></p>
+<p><strong>Try this out:</strong></p>
+<p>Suppose that your graph has negative edges, but all the negative edges only go out of the source vertex $s$ that you were passed in. Does Dijkstra’s work? Why &#x2F; Why not?</p>
+<p>Still work. When the 1-level vertex is dequeued, the shortest distance is finalized, although it has a negative value. Since later weights are all non-negative, it’s impossibly necessary to relax the node.</p>
+<p><strong>How to deal with negative weights?</strong></p>
+<ul>
+<li>No cycles. BFS the tree to relax.</li>
+<li>Cycles exist. Bellman-ford: For every vertex, relax all the edges. &#x3D;&gt; $O(V)$</li>
+</ul>
+<p><strong>Short-circuiting</strong></p>
+<p>One nice consequence of this fact is <code>short-circuiting</code>. Suppose that you wanted to take, like, the cities of the world on a graph, and find the shortest path from Berkeley to Oakland. Running <code>dijkstra(Berkeley)</code> will mean that you can’t actually stop this powerful beast of an algorithm. Once Oakland is popped off the priority queue in the algorithm, we can just stop. So sometimes dijkstra’s takes in not only a source, but also a target.</p>
+<h4 id="Pseudocode"><a href="#Pseudocode" class="headerlink" title="Pseudocode"></a>Pseudocode</h4><p><strong>Note:</strong> In the version in class, we did not use an explicit <code>mark</code>. Instead, we tossed everything in the PQ, and we effectively considered a vertex marked if it had been removed from the PQ.</p>
+<p>Dijkstra’s:</p>
+<ul>
+<li>PQ.add(source, 0)</li>
+<li>For other vertices $v$, PQ.add(v, Infinity)</li>
+<li>While PQ is not empty:<ul>
+<li>p &#x3D; PQ.removeSmallest()</li>
+<li>Relax all edges from $p$</li>
+</ul>
+</li>
+</ul>
+<p>Relaxing an edge $p$ -&gt; $q$ with weight $w$:</p>
+<ul>
+<li>If $q$ is popped (i.e., $q$ is not in PQ):<ul>
+<li>continue</li>
+</ul>
+</li>
+<li>If distTo[p] + w &lt; distTo[q]:<ul>
+<li>distTo[q] &#x3D; distTo[p] + w</li>
+<li>edgeTo[q] &#x3D; p</li>
+<li>PQ.changePriority(q, distTo[q])    &#x2F;&#x2F; O(log V)</li>
+</ul>
+</li>
+</ul>
+<h4 id="Runtime-Analysis"><a href="#Runtime-Analysis" class="headerlink" title="Runtime Analysis"></a>Runtime Analysis</h4><p>Priority Queue operation count, assuming binary heap based PQ:</p>
+<ul>
+<li><code>add</code>: $V$ times, each costing $O(\log{V})$ time.</li>
+<li><code>removeSmallest</code>: $V$ times, each costing $O(\log{V})$ time.</li>
+<li><code>changePriority</code>: $E$ times, each costing $O(\log{V})$ time. (in other words, $E$ times relaxing in the worst case)</li>
+</ul>
+<p>So the overall runtime is $O(V\log{V} + V\log{V} + E\log{V}) &#x3D; O((V + E)\log{V})$.</p>
+<p>Assuming $E &gt; V$, this is just $O(E\log{V})$ for a connected graph.</p>
+<h3 id="A-Algorithm"><a href="#A-Algorithm" class="headerlink" title="A* Algorithm"></a>A* Algorithm</h3><p>The Problem with Dijkstra’s:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/x3gcv.png"></p>
+<p>It’ll end up traversing nodes in <code>closest concentric circle</code> order.</p>
+<p>We have only a <code>single target</code> in mind, so we need a different algorithm.</p>
+<p>Simple Idea:</p>
+<ul>
+<li>Visit vertices in order of <code>d(Denver, v)</code> + <code>h(v, goal)</code>, where <code>h(v, goal)</code> is an estimate of the distance from $v$ to our goal NYC.</li>
+<li>In other words, look at some location $v$ if:<ul>
+<li>We already know the fastest way to reach $v$.</li>
+<li>AND we suspect that $v$ is also the fastest way to NYC taking into account the time to get to $v$.</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ltdy8.png"></p>
+<p>Example: Henderson is farther than Englewood, but probably overall better for getting to NYC.</p>
+<p>A* Demo: <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/177bRUTdCa60fjExdr9eO04NHm0MRfPtCzvEup1iMccM/edit#slide=id.g771336078_0_180">link</a></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/szb3o.png" alt="Go to vertex 1 or 2"></p>
+<p>This time we go to <code>vertex 1</code> instead of 2 because $2 + 3 &lt; 1 + 15$.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4ag7t.png" alt="Go to vertex 2 or 3 or 4"></p>
+<p>Then we go to <code>vertex 4</code> because $4 + 1 &#x3D; 5$ is minimum (vertex 2: $1 + 15 &#x3D; 16$, vertex 3: $13 + 2 &#x3D; 15$).</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/nm9vf.png"></p>
+<p>Finally, go to <code>vertex 6</code>. Go over the last operations (check vertex 3 and 5) and then dequeue it.</p>
+<p>Observations:</p>
+<ul>
+<li>Not every vertex got visited.</li>
+<li>Result is not a shortest paths tree for vertex 0, since path to vertex 3 is suboptimal! But it’s OK because we only care about the path to vertex 6, our goal.</li>
+</ul>
+<p>Impact of Heuristic Quality:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qtukx.png"></p>
+<p>For our version of A* to give the correct answer, our A* heuristic must be:</p>
+<ul>
+<li><code>Admissible</code>: $h(v, NYC) \leq$ true distance from $v$ to $NYC$.<ul>
+<li>Never overestimates.</li>
+</ul>
+</li>
+<li><code>Consistent</code>: For each neighbor of $w$:<ul>
+<li>$h(v, NYC) &lt;&#x3D; dist(v, w) + h(w, NYC)$</li>
+<li>Where $dist(v,w)$ is the weight of the edge from $v$ to $w$.</li>
+</ul>
+</li>
+</ul>
+<p>Simply know that <code>choice of heuristic matters</code>, and that if you make a <code>bad choice, A* can give the wrong answer</code>.</p>
+<h3 id="Floyd-Warshall"><a href="#Floyd-Warshall" class="headerlink" title="Floyd-Warshall"></a>Floyd-Warshall</h3><p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=4NQ3HnhyNfQ">Floyd-Warshall All Pairs Shortest Path Algorithm (APSP) | Graph Theory</a></p>
+<p>Main Idea: Gradually build up all intermediate routes between nodes $i$ and $j$ to find the optimal path.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dgwl6.png"></p>
+<p>The goal of Floyd-Warshall is to eventually consider going through <code>all possible intermediate</code> nodes on paths of different lengths.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4eafa.png"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7vipi.png"></p>
+<p>In the beginning the optimal solution from $i$ to $j$ is simply the distance in the adjacency matrix.</p>
+<p>$$dp[k][i][j] &#x3D; m[i][j],\ \text{if}\ k &#x3D; 0$$</p>
+<p>otherwise:</p>
+<p>$$dp[k][i][j] &#x3D; min(dp[k -1][i][j], dp[k-1][i][k] + dp[k-1][k][j])$$</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ovfl8.png" alt="Visually it looks like"></p>
+<p>In terms of memory usage, it is possible to compute the solution for k in-place saving us a dimension of memory and reducing the space complexity to $O(V^2)$.</p>
+<p>The new recurrence relation is:</p>
+<p>$$d[i][j] &#x3D; m[i][j], \ \text{if}\ k &#x3D; 0$$</p>
+<p>otherwise:</p>
+<p>$$dp[i][j] &#x3D; min(dp[i][j], dp[i][k] + dp[k][j])$$</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8f0tf.png"></p>
+<h2 id="Ex-Guide"><a href="#Ex-Guide" class="headerlink" title="Ex (Guide)"></a>Ex (Guide)</h2><h3 id="C-level"><a href="#C-level" class="headerlink" title="C level"></a>C level</h3><h4 id="Ex-1-pathTo"><a href="#Ex-1-pathTo" class="headerlink" title="Ex 1 (pathTo)"></a>Ex 1 (pathTo)</h4><p>Implement <code>public Iterable&lt;int&gt; pathTo(int w)</code> method that returns an Iterable of vertices along the path:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">int</span>[] edgeTo;</span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span>[] distTo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">distTo</span><span class="params">(<span class="type">int</span> w)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> distTo[w];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> Iterable&lt;Integer&gt; <span class="title function_">pathTo</span><span class="params">(<span class="type">int</span> w)</span> &#123;</span><br><span class="line">  List&lt;Integer&gt; path = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">  pathTo(w, path);</span><br><span class="line">  <span class="keyword">return</span> path;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// edgeTo[0] = 0</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">pathTo</span><span class="params">(<span class="type">int</span> w, List&lt;Integer&gt; path)</span> &#123;</span><br><span class="line">  path.addFirst(w);</span><br><span class="line">  <span class="keyword">if</span> (w == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  pathTo(edgeTo[w], path);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Ex-2-SP-Practice"><a href="#Ex-2-SP-Practice" class="headerlink" title="Ex 2 (SP Practice)"></a>Ex 2 (SP Practice)</h4><p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spring15/cos226/exams/fin-f09.pdf">Problem 4</a> from Princeton’s Fall 2009 final.</p>
+<p>Very trick. Need to be very careful when handling with the last nodes.</p>
+<h4 id="Ex-3-Add-A-Constant"><a href="#Ex-3-Add-A-Constant" class="headerlink" title="Ex 3 (Add A Constant)"></a>Ex 3 (Add A Constant)</h4><p>True or false: Adding a positive constant $k$ to every edge weight does not change the solution to the single-source shortest-paths problem.</p>
+<p>False. Adding a constant to all the edge weights when calculating shortest paths means we start favoring paths that use fewer edges. As a concrete example:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/obskk.png"></p>
+<p>Start from $s$.</p>
+<h4 id="Ex-4-Multiply-A-Constant"><a href="#Ex-4-Multiply-A-Constant" class="headerlink" title="Ex 4 (Multiply A Constant)"></a>Ex 4 (Multiply A Constant)</h4><p>True or false: Multiplying a positive constant to every edge weight does not change the solution to the single-source shortest-paths problem.</p>
+<p>True. No accretion effect.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zqw6z.png"></p>
+<h4 id="Ex-5-A-Practice"><a href="#Ex-5-A-Practice" class="headerlink" title="Ex 5 (A* Practice)"></a>Ex 5 (A* Practice)</h4><p><a target="_blank" rel="noopener" href="https://tbp.berkeley.edu/exams/4911/download/">Problem 9</a> from my Spring 2015 final.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sobp5.jpg"></p>
+<p>We see <code>h(C) = 20</code>, but the actual cost to $G$ is $4$, so the heuristic is not admissible, and A* is not guaranteed to return the correct SP (A-B-C-F-G).</p>
+<p>So SP to $G$ (A*): A-B-H-G.</p>
+<h3 id="B-level"><a href="#B-level" class="headerlink" title="B level"></a>B level</h3><h4 id="Ex-1-Deduction"><a href="#Ex-1-Deduction" class="headerlink" title="Ex 1 (Deduction)"></a>Ex 1 (Deduction)</h4><blockquote>
+<p>Great problem.</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spring15/cos226/exams/fin-f11.pdf">Problem 4</a> from Princeton’s Fall 2011 final. Note that when the exam says to “relax a vertex”, that mean to relax all of a vertex’s edges.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/x2juj.png"></p>
+<p>After vertex 2 has been deleted from the PQ, the source to vertex 2 is finalized. According to <code>distTo[2]</code> and <code>edgeTo[2]</code>, the distance is $6$ and the vertex pointing to vertex 2 is <code>vertex 5</code>.</p>
+<p>According to <code>distTo[3] = 0</code>, the vertex 3 is the source.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zo3si.jpg"></p>
+<h4 id="Ex-2-S-T-subsets"><a href="#Ex-2-S-T-subsets" class="headerlink" title="Ex 2 (S-T subsets)"></a>Ex 2 (S-T subsets)</h4><p>Adapted from Algorithms 4.4.25: Given a digraph with positive edge weights, and two distinguished subsets of vertices $S$ and $T$, <code>find a shortest path</code> from any vertex in $S$ to any vertex in $T$. Your algorithm should run in time proportional to $E\log{V}$, in the worst case.</p>
+<p>Find two sources first? Or MST? Not sure.</p>
+<h3 id="A-level"><a href="#A-level" class="headerlink" title="A level"></a>A level</h3><h4 id="Ex-1-Transportation"><a href="#Ex-1-Transportation" class="headerlink" title="Ex 1 (Transportation)"></a>Ex 1 (Transportation)</h4><p><a target="_blank" rel="noopener" href="http://www.kartikkapur.com/documents/DataStructureDesign.pdf#page=2">Problem 6</a> from Kartik’s Algorithm Worksheet</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7gc30.png"></p>
+<p>Mark the previous transportation and don’t use the same one when going out.</p>
+<h4 id="Ex-2-Worst-case"><a href="#Ex-2-Worst-case" class="headerlink" title="Ex 2 (Worst-case)"></a>Ex 2 (Worst-case)</h4><p>Describe a family of graphs with $V$ vertices and $E$ edges for which the worst-case running time of Dijkstra’s algorithm is achieved.</p>
+<p>In worst case, graph will be a <code>complete graph</code> i.e. total edges $E$ would be equal to $\frac{V(V-1)}{2}$ where $V$ is the number of vertices.</p>
+<h4 id="Ex-3-Iterative-DFS"><a href="#Ex-3-Iterative-DFS" class="headerlink" title="Ex 3 (Iterative DFS)"></a>Ex 3 (Iterative DFS)</h4><p>Iterative DFS: <a target="_blank" rel="noopener" href="http://datastructur.es/sp16/materials/discussion/discussion11.pdf">Problem 6</a> from this semester’s discussion worksheet provides a flawed implementation of DFS.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/o717t.png"></p>
+<p>The error is the timing of marking vertices.</p>
+<p>Since several copies of a vertex might be in the stack at the same time, we need to check if it is marked before visiting it and its neighbors.</p>
+<p>It may visit a vertex twice. For example:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/y0oct.png" alt="Error Example"></p>
+<p>Vertex C is visited <code>twice</code>.</p>
+<p>What if we add <code>if not marked</code> after popping a vertex? </p>
+<p>More erroneous! Since we marked nodes (like B and C) when looping them from A, we can’t visit B later because it has been marked.</p>
+<p>Correct version:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Using a stack</span></span><br><span class="line">Initialize the fringe, an empty stack;</span><br><span class="line">  push the starting vertex on the fringe;</span><br><span class="line">  <span class="keyword">while</span> fringe is not empty:</span><br><span class="line">    pop a vertex off the fringe;</span><br><span class="line">    <span class="keyword">if</span> vertex is not marked: <span class="comment">// since the fringe may contain same nodes</span></span><br><span class="line">      mark the vertex; <span class="comment">// mark here</span></span><br><span class="line">      visit the vertex;</span><br><span class="line">      <span class="keyword">for</span> each neighbor of vertex:</span><br><span class="line">        <span class="keyword">if</span> the neighbor is not marked:</span><br><span class="line">          push the neighbor to fringe.</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="A-level-1"><a href="#A-level-1" class="headerlink" title="A+ level"></a>A+ level</h3><h4 id="Ex-1-Monotonic"><a href="#Ex-1-Monotonic" class="headerlink" title="Ex 1 (Monotonic)"></a>Ex 1 (Monotonic)</h4><p>Adapted from Algorithms 4.4.34. Give an algorithm to solve the following problem: Given a weighted digraph, find a monotonic shortest path from s to every other vertex. A path is monotonic if the weight of every edge on the path is either strictly increasing or strictly decreasing. The path should be simple (no repeated vertices).</p>
+<p>DFS and stop when it is not strictly increasing or decreasing.</p>
+<h4 id="Ex-2-Maximal-Increase"><a href="#Ex-2-Maximal-Increase" class="headerlink" title="Ex 2 (Maximal Increase)"></a>Ex 2 (Maximal Increase)</h4><p>Adapted from Algorithms 4.4.37. Develop an algorithm for finding an edge whose removal causes maximal increase in the shortest-paths length from one given vertex to another given vertex in a given edge-weighted digraph.</p>
+<p>For each edge $e$ in the shortest path to destination vertex $t$, calculate the increase if $e$ is not used.</p>
+<h3 id="A-level-2"><a href="#A-level-2" class="headerlink" title="A++ level"></a>A++ level</h3><h4 id="Ex-1-K-th-Shortest-Paths"><a href="#Ex-1-K-th-Shortest-Paths" class="headerlink" title="Ex 1 (K-th Shortest Paths)"></a>Ex 1 (K-th Shortest Paths)</h4><p>Idea: Based on the graph with the $m$-th shortest paths, calculate the $m + 1$-th shortest paths.</p>
+<p>Assume $G(V,E)$ be the graph.</p>
+<p>As for the second shortest paths, an easy approach would be first calculating the shortest path. Let $E’$ be the set of edges belong to this path. For each edge $e$ in $E’$ calculate the shortest path for $G(V, E - e)$.</p>
+<h2 id="Minimum-Spanning-Trees"><a href="#Minimum-Spanning-Trees" class="headerlink" title="Minimum Spanning Trees"></a>Minimum Spanning Trees</h2><h3 id="Warm-up-Problem"><a href="#Warm-up-Problem" class="headerlink" title="Warm-up Problem"></a>Warm-up Problem</h3><p><strong>Problem:</strong></p>
+<p>Given an undirected graph, determine if it contains any <code>cycles</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/72her.png"></p>
+<p><strong>Approach 1:</strong> Do <code>DFS</code> from vertex 0 or an arbitrary vertex.</p>
+<ul>
+<li>Keep going until you see a marked vertex.</li>
+<li>Potential danger:<ul>
+<li>1 looks back at 0 and sees marked.</li>
+<li>Solution: Just don’t count the node you came from.</li>
+</ul>
+</li>
+</ul>
+<p>Worst case runtime: $O(V + E)$. With some cleverness, can give a tighter bound of $O(V)$.</p>
+<p><strong>Approach 2:</strong> Use a <code>WeightedQuickUnionUF</code> object.</p>
+<ul>
+<li>For <code>each edge</code>, check if the two vertices are connected.</li>
+<li>If not, union them.</li>
+<li>If so, there is a cycle.</li>
+</ul>
+<p>Worst case runtime: $O(V + E\log{V})$ if we have path compression.</p>
+<p><strong>Extra problem:</strong> (From Discussion 11)</p>
+<p>Provide an algorithm that finds the <code>shortest cycle</code> (in terms of the number of edges used) in a directed graph in $O(EV)$ time and $O(E)$ space, assuming $E &gt; V$.</p>
+<p>The key idea here is that the shortest cycle involving a particular source vertex $s$ is just the shortest path to a vertex $v$ that has an edge to $s$. We can run BFS on $s$ to find the shortest path to every vertex in the graph. If a vertex $v$ has an edge back to $s$, the length of the cycle involving $s$ and $v$ is one plus <code>distTo(v)</code>.</p>
+<p>It takes $O(E + V)$ time because it uses BFS and a linear pass through the vertices. Finally, we run BFS on each vertex, so it results in an $V O(E + V) &#x3D; O(EV + V^2)$.</p>
+<p>Since $E &gt; V$, this is still $O(EV)$, because $O(EV + V^2) \leq O(EV + EV) \sim O(EV)$.</p>
+<h3 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h3><p>Given an <code>undirected</code> graph, a <code>spanning tree</code> $T$ is a subgraph of $G$, where $T$:</p>
+<ul>
+<li>Is <code>connected</code>.</li>
+<li>Is <code>acyclic</code>. (First two properties make it a tree)</li>
+<li>Includes <code>all vertices</code>. (Spanning)</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/65nzr.jpg" alt="Example: A Spanning Tree"></p>
+<p>A <code>minimum spanning tree</code> is a spanning tree of <code>minimum total weight</code>. For example, Directly connecting buildings by power lines.</p>
+<p><strong>Applications:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/nv3yv.png"></p>
+<h3 id="MST-vs-SPT"><a href="#MST-vs-SPT" class="headerlink" title="MST vs. SPT"></a>MST vs. SPT</h3><p>Let’s first compare the <code>MST</code> and <code>SPT</code>.</p>
+<p>Is the MST for this graph also a shortest paths tree? If so, using which node as the starting node for this SPT?</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/i7rt4.png" alt="The answer is B"></p>
+<p>A shortest path tree <code>depends on the start vertex</code> because it tells you how to get from a source to EVERYTHING.</p>
+<p>However, there is no source in MST (<code>global property</code>), although sometimes the MST happens to be an SPT for a specific vertex.</p>
+<p>So, we may think of a potential algorithm:</p>
+<ul>
+<li>Find the good vertex.</li>
+<li>Run Dijkstra’s.</li>
+</ul>
+<p><strong>But, see this example!!!</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wbwah.png"></p>
+<p>Given a valid MST for the graph below, is there a node whose SPT is also the MST?</p>
+<p>It turns out one of the MSTs is as follows:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5131b.png" alt="An MST"></p>
+<p>So, again, is there <code>a node</code> whose SPT is also the MST?</p>
+<p>Consider the bottom-left and middle nodes.</p>
+<p>If we consider the bottom-left node, we have:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2cslz.png" alt="Source: Bottom-left node"></p>
+<p>No. The MST must include <code>only two</code> of the 2-weight edges, but the SPT always includes <code>at least three</code> of the 2-weight edges. (at least 4 when the source is the middle node).</p>
+<h3 id="Cut-Property"><a href="#Cut-Property" class="headerlink" title="Cut Property"></a>Cut Property</h3><p><code>Cut</code>: A cut is an assignment of a graph’s nodes to two non-empty sets. A <code>crossing edge</code> is an edge which connects a node from one set to a node from the other set.</p>
+<p><code>Cut property</code>: Given any cut, minimum weight crossing edge is in the MST.</p>
+<p>For example, find the minimum weight crossing edge to connect the nodes from two sets:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5se3o.png" alt="Cut Property in Action"></p>
+<p><strong>Proof:</strong></p>
+<p>Suppose that the <code>minimum crossing edge</code> $e$ were not in the MST.</p>
+<ul>
+<li>Adding $e$ to the MST creates a cycle.</li>
+<li>Some other edge $f$ must also be a crossing edge connecting white and gray nodes.</li>
+<li>Removing $f$ and adding $e$ is a lower weight spanning tree.</li>
+<li>Contradiction (We assume the tree containing $f$ is MST)!</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/r87gs.png" alt="Proof Example"></p>
+<h3 id="Prim’s-Algorithm"><a href="#Prim’s-Algorithm" class="headerlink" title="Prim’s Algorithm"></a>Prim’s Algorithm</h3><p><strong>Generic MST Finding Algorithm:</strong></p>
+<p>Starting no edges in the MST:</p>
+<ul>
+<li>Find a cut that has no crossing edges in the MST.</li>
+<li>Add smallest crossing edge to the MST.</li>
+<li>Repeat until <code>V - 1</code> edges.</li>
+</ul>
+<p>This should work, but need some way of finding a cut with no crossing edges! Random isn’t a very good idea.</p>
+<h4 id="Conceptual-Idea"><a href="#Conceptual-Idea" class="headerlink" title="Conceptual Idea"></a>Conceptual Idea</h4><p>Start from some arbitrary start node:</p>
+<ul>
+<li>Repeatedly add shortest edge (mark black) that has one node inside the MST under construction.</li>
+<li>Repeat until $V - 1$ edges.</li>
+</ul>
+<p>Demo: <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1NFLbVeCuhhaZAM1z3s9zIYGGnhT4M4PWwAc-TLmCJjc/edit#slide=id.g9a60b2f52_0_0">link</a></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/n7fcg.png" alt="MST under construction"></p>
+<p>Why does Prim’s work? Special case of generic algorithm.</p>
+<p>Prim’s algorithm works because at all stages of the algorithm, if we take all the nodes that are part of our MST under construction <code>as one set</code>, and all other nodes as a second set, then this algorithm always adds the lightest edge that crosses this cut, which is necessarily part of the final MST by the Cut property.</p>
+<ul>
+<li>Suppose we add edge $e$ &#x3D; $v$ -&gt; $w$.</li>
+<li><code>Side 1</code> of cut is all vertices connected to our starting vertex (the MST under construction), while <code>side 2</code> is all the others.</li>
+<li>No crossing edge is <code>black</code> (all connected edges on <code>side 1</code>).</li>
+<li>No crossing edge has lower weight (consider in increasing order).</li>
+</ul>
+<p><strong>Note:</strong> Sometimes the MST is not unique.</p>
+<p><strong>Visualization of Prim’s vs. Dijkstra’s:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/f71df.png"></p>
+<h4 id="Realistic-Implementation"><a href="#Realistic-Implementation" class="headerlink" title="Realistic Implementation"></a>Realistic Implementation</h4><p>The natural implementation of the conceptual version of Prim’s algorithm is <code>highly inefficient</code>, e.g iterating all purple edges.</p>
+<p>We can use some cleverness and a <code>PQ</code> to speed things up. The <code>PQ</code> stores the distance between the current MST and the set of the rest vertices</p>
+<p>Demo: <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1GPizbySYMsUhnXSXKvbqV4UhPCvrt750MiqPPgU-eCY/edit#slide=id.g9a60b2f52_0_0">link</a></p>
+<blockquote>
+<p>Very interesting.</p>
+</blockquote>
+<p><strong>Note:</strong> Vertex removal in this implementation of Prim’s is equivalent to edge addition in the conceptual version of Prim’s.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3et47.png" alt="No need to consider 2-weight edge since we&#39;ve examined"></p>
+<p><strong>Prim’s vs. Dijkstra’s</strong></p>
+<p>Prim’s and Dijkstra’s algorithms are exactly the same.</p>
+<p>Distance:</p>
+<ul>
+<li>Dijkstra’s: Distance from the <code>source</code>.<ul>
+<li>Visit vertices in order of distance from the source.</li>
+<li>Consider an edge better based on distance to source.</li>
+</ul>
+</li>
+<li>Prim’s: Distance from the <code>tree</code>.<ul>
+<li>Visit vertices in order of distance from the MST under construction.</li>
+<li>Consider an edge better based on distance to tree.</li>
+</ul>
+</li>
+</ul>
+<h4 id="Pseudocode-1"><a href="#Pseudocode-1" class="headerlink" title="Pseudocode"></a>Pseudocode</h4><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qnmbl.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PrimMST</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">PrimMST</span><span class="params">(EdgeWeightedGraph G)</span> &#123;</span><br><span class="line">    edgeTo = <span class="keyword">new</span> <span class="title class_">Edge</span>[G.V()];</span><br><span class="line">    distTo = <span class="keyword">new</span> <span class="title class_">double</span>[G.V()];</span><br><span class="line">    marked = <span class="keyword">new</span> <span class="title class_">boolean</span>[G.V()];</span><br><span class="line">    fringe = <span class="keyword">new</span> <span class="title class_">SpecialPQ</span>&lt;Double&gt;(G.V());</span><br><span class="line"></span><br><span class="line">    distTo[s] = <span class="number">0.0</span>;</span><br><span class="line">    setDistancesToInfinityExceptS(s); <span class="comment">// O(V)</span></span><br><span class="line">    insertAllVertices(fringe); <span class="comment">// O(VlogV)</span></span><br><span class="line">    <span class="comment">// Fringe is ordered by distTo</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Get vertices in order of distance from the tree */</span></span><br><span class="line">    <span class="keyword">while</span> (!fringe.isEmpty()) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">v</span> <span class="operator">=</span> fringe.delMin();</span><br><span class="line">      marked[v] = <span class="literal">true</span>; <span class="comment">// v is popped and is the closest (add to MST)</span></span><br><span class="line">      scan(G, v); <span class="comment">// Consider all outgoing edges of v</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">scan</span><span class="params">(EdgeWeightGraph G, v)</span> &#123;</span><br><span class="line">  <span class="keyword">for</span> (Edge e : G.adj(v)) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">w</span> <span class="operator">=</span> e.other(v);</span><br><span class="line">    <span class="keyword">if</span> (marked[w]) <span class="keyword">continue</span>; <span class="comment">// the vertex is in the MST</span></span><br><span class="line">    <span class="keyword">if</span> (e.weight() &lt; distTo[w]) &#123;</span><br><span class="line">      distTo[w] = e.weight();</span><br><span class="line">      edgeTo[w] = e;</span><br><span class="line">      pq.decreasePriority(w, distTo[w]); <span class="comment">// O(logV)</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Runtime-Analysis-1"><a href="#Runtime-Analysis-1" class="headerlink" title="Runtime Analysis"></a>Runtime Analysis</h4><p>Same as Dijkstra’s runtime.</p>
+<p>What is the runtime of Prim’s algorithm?</p>
+<p>Assume all PQ operations take $O(\log{V})$ time.</p>
+<p>PQ operation count, assuming binary heap based PQ:</p>
+<ul>
+<li><code>Insertion</code>: $V$, each costing $O(\log{V})$ time.</li>
+<li><code>Delete-min</code>: $V$, each costing $O(\log{V})$ time.</li>
+<li><code>Decrease priority</code>: $E$, each costing $O(\log{V})$ time.</li>
+</ul>
+<p>Overall runtime: $O(V\log{V} + V\log{V} + E\log{V}) &#x3D; O((V + E)\log{V})$.</p>
+<p>Assuming $E &gt; V$, this is just $O(E\log{V})$.</p>
+<h3 id="Kruskal’s-Algorithm"><a href="#Kruskal’s-Algorithm" class="headerlink" title="Kruskal’s Algorithm"></a>Kruskal’s Algorithm</h3><h4 id="Conceptual-Idea-1"><a href="#Conceptual-Idea-1" class="headerlink" title="Conceptual Idea"></a>Conceptual Idea</h4><p><strong>Neat property:</strong> Relatively easy and intuitive.</p>
+<p>Initially mark all edges gray.</p>
+<ul>
+<li>Consider edges in increasing order of weight.</li>
+<li>Add edge to MST (mark black) unless doing so creates a cycle.</li>
+<li>Repeat until $V-1$ edges.</li>
+</ul>
+<p>Why does it work? Special case of generic MST algorithm.</p>
+<p>For every time you consider the smallest-weight edge, there’s some cut for which the cut property proves that the addition of that edge will actually be valid.</p>
+<p>Consider <code>side 1</code> of cut is all vertices connected to $v$, <code>side 2</code> is everything else.</p>
+<p><strong>Note:</strong> It’s not fully connected at all time, unlike the invariant of Prim’s Algorithm.</p>
+<p>Demo: <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1RhRSYs9Jbc335P24p7vR-6PLXZUl-1EmeDtqieL9ad8/edit#slide=id.g9a60b2f52_0_0">link</a></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/mqs31.png"></p>
+<h4 id="Realistic-Implementation-1"><a href="#Realistic-Implementation-1" class="headerlink" title="Realistic Implementation"></a>Realistic Implementation</h4><p>Insert all edges into PQ. Repeat: remove smallest weight edge. Add to MST if no cycle created.</p>
+<ul>
+<li>Use a <code>PQ</code> (fringe) to store all edges.</li>
+<li>Use a <code>WQU</code> (Weighted Quick Union with Path Compression) to see if cycle is created (using <code>isConnected(v, w)</code>).</li>
+<li>Use a <code>MST</code> to store the tree.</li>
+</ul>
+<p>Demo: <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1KpNiR7aLIEG9sm7HgX29nvf3yLD8_vdQEPa0ktQfuYc/edit#slide=id.g9a60b2f52_0_0">link</a></p>
+<h4 id="Prim’s-vs-Kruskal’s"><a href="#Prim’s-vs-Kruskal’s" class="headerlink" title="Prim’s vs. Kruskal’s"></a>Prim’s vs. Kruskal’s</h4><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/r05gv.png"></p>
+<p>Guarantee the same weight.</p>
+<h4 id="Pseudocode-2"><a href="#Pseudocode-2" class="headerlink" title="Pseudocode"></a>Pseudocode</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">KruskalMST</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> List&lt;Edge&gt; mst = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">KruskalMST</span><span class="params">(EdgeWeightedGraph G)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (Edge e : G.edges()) &#123; <span class="comment">// E times</span></span><br><span class="line">      pq.insert(e); <span class="comment">// O(logE)</span></span><br><span class="line">    &#125; <span class="comment">// If we have a pre-sorted list</span></span><br><span class="line">      <span class="comment">// If using bottom-up heapification =&gt; O(E)</span></span><br><span class="line">    <span class="type">WeightedQuickUnionPC</span> <span class="variable">uf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">WeightedQuickUnionPC</span>(G.V());</span><br><span class="line"></span><br><span class="line">    <span class="comment">// In case of disconnected components</span></span><br><span class="line">    <span class="comment">// Assume E &gt; V</span></span><br><span class="line">    <span class="keyword">while</span> (!pq.isEmpty() &amp;&amp; mst.size() &lt; G.V() - <span class="number">1</span>) &#123; <span class="comment">// E times</span></span><br><span class="line">      <span class="type">Edge</span> <span class="variable">e</span> <span class="operator">=</span> pq.delMin(); <span class="comment">// O(logE)</span></span><br><span class="line">      <span class="type">int</span> <span class="variable">v</span> <span class="operator">=</span> e.from();</span><br><span class="line">      <span class="type">int</span> <span class="variable">w</span> <span class="operator">=</span> e.to();</span><br><span class="line">      <span class="keyword">if</span> (!uf.isConnected(v, w)) &#123; <span class="comment">// O(log*V) for E times</span></span><br><span class="line">        uf.union(v, w); <span class="comment">// O(log*V) but only for V times</span></span><br><span class="line">        mst.add(e); <span class="comment">// O(1)</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Insert + delMin + isConnected + union + add</span></span><br><span class="line">  <span class="comment">// O(ElogE + ElogE + Elog*V + Vlog*V + V)</span></span><br><span class="line">  <span class="comment">// = O(ElogE + Elog*V + Vlog*V + V)</span></span><br><span class="line">  <span class="comment">// = O(ElogE)</span></span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">  <span class="comment">// If using a pre-sorted list: (no need to use PQ)</span></span><br><span class="line">  <span class="comment">// Sorting takes O(ElogE)</span></span><br><span class="line">  <span class="comment">// O(E + E + Elog*V + Vlog*V + V)</span></span><br><span class="line">  <span class="comment">// = O(Elog*V)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Runtime-Analysis-2"><a href="#Runtime-Analysis-2" class="headerlink" title="Runtime Analysis"></a>Runtime Analysis</h4><p>See the pseudocode for details.</p>
+<p>Note: $\log^{*}{V}$ is the iterative logarithm which is less than 5.</p>
+<ul>
+<li>Assume all PQ operations take $O(\log{V})$ time.</li>
+<li>Assume all WQU operations take $O(\log^{*}{V})$ time.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/66gqr.png"></p>
+<p>Note: If we use a pre-sorted list of edges (instead of PQ), then we can simple iterate through the list in $O(E)$ time. So overall runtime is <code>O(E + Vlog* V + Elog* V)</code> &#x3D; $O(E\log^{*}{V})$.</p>
+<p>So far, the runtime summary:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/lm07k.png" alt="Shortest Paths and MST Algorithms Summary"></p>
+<p>We can see Prim’s is a little bit faster than Kruskal’s, but it is negligible. Kruskal is little bit easier to implement.</p>
+<p>Question: Can we do better than $O(E\log^{*}{V})$?</p>
+<p><strong>State of the Art Compare-Based MST Algorithms:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yvcns.png"></p>
+<h2 id="Ex-Guide-1"><a href="#Ex-Guide-1" class="headerlink" title="Ex (Guide)"></a>Ex (Guide)</h2><h3 id="C-level-1"><a href="#C-level-1" class="headerlink" title="C level"></a>C level</h3><h4 id="Ex-1-Directed"><a href="#Ex-1-Directed" class="headerlink" title="Ex 1 (Directed)"></a>Ex 1 (Directed)</h4><p>Would Kruskal or Prim’s algorithm work on a directed graph?</p>
+<p><a target="_blank" rel="noopener" href="https://www.quora.com/Can-Prims-and-Kruskals-algorithm-be-used-on-a-directed-graph-to-generate-a-Minimal-Spanning-Tree">Can Prim’s and Kruskal’s algorithm be used on a directed graph to generate a Minimal Spanning Tree?</a></p>
+<p>No. Prim’s and Kruskal’s algorithm works only for <code>undirected graphs</code>. For <code>directed graphs</code>, the equivalent notion of a spanning tree is spanning <code>arborescence</code>. A minimum weight spanning arborescence can be found using <code>Edmonds&#39; algorithm</code>.</p>
+<h4 id="Ex-2-Add-Constant"><a href="#Ex-2-Add-Constant" class="headerlink" title="Ex 2 (Add Constant)"></a>Ex 2 (Add Constant)</h4><p>True or false: Adding a constant to every edge weight does not change the solution to the MST problem (assume unique edge weights).</p>
+<p>True. Consider <code>Kruskal&#39;s Algorithm</code>. The order of the list is still the same.</p>
+<h4 id="Ex-3-Multiply-Constant"><a href="#Ex-3-Multiply-Constant" class="headerlink" title="Ex 3 (Multiply Constant)"></a>Ex 3 (Multiply Constant)</h4><p>True or false: Multiplying all edges weights with a constant does not change the solution to the MST problem (assume unique edge weights).</p>
+<p>False. Consider the constant is $0$ or negative numbers.</p>
+<h4 id="Ex-4-Other-True-False"><a href="#Ex-4-Other-True-False" class="headerlink" title="Ex 4 (Other True&#x2F;False)"></a>Ex 4 (Other True&#x2F;False)</h4><p>True or false: It is possible that the only Shortest Path Tree is the only Minimum Spanning Tree.</p>
+<p>True. A list.</p>
+<p>True or false: Prim’s Algorithm and Kruskal’s Algorithm will always return the same result.</p>
+<p>False. Only the total weight is guaranteed.</p>
+<h3 id="B-level-1"><a href="#B-level-1" class="headerlink" title="B level"></a>B level</h3><h4 id="Ex-1-Remain-MST"><a href="#Ex-1-Remain-MST" class="headerlink" title="Ex 1 (Remain MST?)"></a>Ex 1 (Remain MST?)</h4><p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/fall13/cos226/exams/fin-f09.pdf#page=5">Problem 3</a> from Princeton’s Fall 2009 final (part d is pretty hard).</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/n6mp3.png"></p>
+<p>(d) Find the path (only one) between $x$ and $y$ in $T$, which takes $O(V)$ time using DFS because there are only $V-1$ edges in $T$. If $w$ is greater than or equal to the current weight of <code>every</code> edge, $T$ remains an MST.</p>
+<ul>
+<li>If otherwise, that is, <code>any</code> edge on the path has weight greater than $w$, we can decrease the weight of $T$ by swapping the <code>largest weight edge</code> on the path with $x-y$. Thus, $T$ does not remain an MST.<ul>
+<li>This one is confusing. I think it depends on where the largest edge is (see the edges in green).</li>
+<li>I think T does not remain an MST. But if we swap the largest path in the <code>cycle</code> with $x-y$, it generates a new valid MST.</li>
+</ul>
+</li>
+<li>If $w$ is greater than or equal to the weight of every edge on the path, then the cycle property asserts that $x-y$ is not in some MST (<strong>because it is the largest weight edge on the cycle consisting of the path from $x$ to $y$ pluse the edge $x-y$</strong>). Thus, $T$ remains an MST.</li>
+</ul>
+<h4 id="Ex-2-x-y-z"><a href="#Ex-2-x-y-z" class="headerlink" title="Ex 2 (x-y-z)"></a>Ex 2 (x-y-z)</h4><p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/fall13/cos226/exams/fin-f12.pdf#page=5">Problem 4</a> from Princeton’s Fall 2012 final.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/s88hc.png"></p>
+<h4 id="Ex-3-Belong"><a href="#Ex-3-Belong" class="headerlink" title="Ex 3 (Belong?)"></a>Ex 3 (Belong?)</h4><p>Adapted from Algorithms 4.3.12. Suppose that a graph has distinct edge weights. </p>
+<ul>
+<li>Does its <code>shortest</code> edge have to belong to the MST? Can its <code>longest</code> edge belong to the MST? </li>
+<li>Does a min-weight edge on every cycle have to belong to the MST?</li>
+</ul>
+<p>Prove your answer to each question or give a counterexample.</p>
+<p>Its <code>shortest</code> edge has to belong to the MST! Consider using Kruskal’s Algorithm to build the MST. We always add the shortest edge first and in every case the first shortest path will not incur a cycle since there is no path in the MST at first.</p>
+<p>It <code>longest</code> edge can belong to the MST, e.g number of edges $E &#x3D; V - 1$.</p>
+<h4 id="Ex-4-Closer"><a href="#Ex-4-Closer" class="headerlink" title="Ex 4 (Closer?)"></a>Ex 4 (Closer?)</h4><p>Adapted from Algorithms 4.3.20. True or false: At any point during the execution of Kruskal’s algorithm, each vertex is closer to <code>some vertex</code> in its subtree than to any vertex not in its subtree. Prove your answer.</p>
+<p>True. Since it is <code>some vertex</code>, it is true. The edges connecting these vertices to that point have always been added to the MST before any vertex (e.g vertex 3) not in its subtree.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/h047l.png"></p>
+<h4 id="Ex-5-Any-Two-Components"><a href="#Ex-5-Any-Two-Components" class="headerlink" title="Ex 5 (Any Two Components)"></a>Ex 5 (Any Two Components)</h4><p>True or False: Given <code>any two components</code> that are generated as Kruskal’s algorithm is running (but before it has completed), the smallest edge connecting those two components is part of the MST.</p>
+<p>False. </p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sava0.png"></p>
+<h4 id="Ex-6-Total-Weight"><a href="#Ex-6-Total-Weight" class="headerlink" title="Ex 6 (Total Weight)"></a>Ex 6 (Total Weight)</h4><p><a target="_blank" rel="noopener" href="http://datastructur.es/sp15/materials/exams/fin-f14.pdf#page=13">Problem 11</a> from my Fall 2014 final.</p>
+<p>Assume that all edge weights are unique, and may be negative, zero, or positive.</p>
+<p>True or False: The total weight of an MST of an undirected graph is always less than or equal to the total weight of any shortest-path tree for that graph.</p>
+<p>True. Since a shortest path is one of the spanning trees which contains all vertices of a connected graph, its total weight must be less than an MST.</p>
+<h4 id="Ex-7-x-y-z"><a href="#Ex-7-x-y-z" class="headerlink" title="Ex 7 (x-y-z)"></a>Ex 7 (x-y-z)</h4><p><a target="_blank" rel="noopener" href="http://datastructur.es/sp15/materials/exams/fin-f14.pdf#page=15">Problem 13</a> from my Fall 2014 final.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/e7ylj.png"></p>
+<h4 id="Ex-8-Product-MST"><a href="#Ex-8-Product-MST" class="headerlink" title="Ex 8 (Product MST)"></a>Ex 8 (Product MST)</h4><p>How would you find the Minimum Spanning Tree where you calculate the weight based off the product of the edges rather than the sum. You may assume that edge weights are &gt; 1.</p>
+<p>We can still use the two algorithms. But we need to change the weight of each edge to log value first.</p>
+<p>$$\log{(w_1 \times w_2 \times \dots \times w_{E})} &#x3D; \log{w_1} + \log{w_2} + \dots + \log{w_E} $$</p>
+<h3 id="A-level-3"><a href="#A-level-3" class="headerlink" title="A level"></a>A level</h3><h4 id="Ex-1-Critical-Edge"><a href="#Ex-1-Critical-Edge" class="headerlink" title="Ex 1 (Critical Edge)"></a>Ex 1 (Critical Edge)</h4><p>Adapted from Textbook 4.3.26: An MST edge whose deletion from the graph would cause the MST weight to increase is called a <code>critical edge</code>. Show how to find all critical edges in a graph in time proportional to $E\log{E}$.</p>
+<p>Note: This question assumes that edge weights are not necessarily distinct (otherwise all edges in the MST are critical).</p>
+<p>For each edge $x-y$ in the MST, temporarily remove vertex $x$ or $y$ from the <code>WQU</code>. If $x$ are $y$ are still connected, it means there is a cycle such that $x-y$ can be replaced.</p>
+<p>For each the edges of $x$ or $y$, if there is any edge with the same weight as the edge in the MST, it is not critical. It check $2E$ times in the worst case.</p>
+<h2 id="Ex-Examprep-10"><a href="#Ex-Examprep-10" class="headerlink" title="Ex (Examprep 10)"></a>Ex (Examprep 10)</h2><h3 id="Ex-1-Distinct-Weights-in-SP"><a href="#Ex-1-Distinct-Weights-in-SP" class="headerlink" title="Ex 1 (Distinct Weights in SP)"></a>Ex 1 (Distinct Weights in SP)</h3><p>True or False: If all edges have distinct weights, the shortest path between any two vertices is unique.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dwt6x.png"></p>
+<h3 id="Ex-2-Faster-SP-Algorithm"><a href="#Ex-2-Faster-SP-Algorithm" class="headerlink" title="Ex 2 (Faster SP Algorithm)"></a>Ex 2 (Faster SP Algorithm)</h3><p>Design an efficient algorithm for the following problem: Given a weighted, undirected, and connected graph $G$, where the weights of every edge in $G$ are all integers between $1$ and $10$, adn a starting vertex $s$ in $G$, find the distance from $s$ to every other vertex in the graph (where the distance between two vertices is defined as the weight of the shortest path connecting them).</p>
+<p>You algorithm must run asymptotically faster than Dijkstra’s. </p>
+<ul>
+<li><p>$\Theta(|V| + |E|)$. Convert $x$-weight edge to $x-1$ vertices with 1-weight edges connecting them. Then use BFS to get the shortest path.<br><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wxac6.png"></p>
+</li>
+<li><p>Modify the PQ to return minimum values faster. Create 11 buckets with linked lists and each edge of a specific weight corresponds to a particular bucket.</p>
+</li>
+</ul>
+<p>Reference: <a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/dials-algorithm-optimized-dijkstra-for-small-range-weights/">Dial’s Algorithm</a></p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

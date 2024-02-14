@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Interface and abstract class are similar that I was sometimes confused about their differences, or didn’t know when I should use each. There are a lot of posts about their differences in terms of usag">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Understand Interface and Abstract Class in Java">
+<meta property="og:url" content="https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Interface and abstract class are similar that I was sometimes confused about their differences, or didn’t know when I should use each. There are a lot of posts about their differences in terms of usag">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/f8pqi.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ap3pq.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/06diu.png">
+<meta property="article:published_time" content="2019-11-13T06:01:00.000Z">
+<meta property="article:modified_time" content="2024-02-13T15:50:18.173Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Interface">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/f8pqi.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Understand Interface and Abstract Class in Java</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Posts</a></li><!--
+     --><!--
+       --><li><a href="/studynotes/">Notes</a></li><!--
+     --><!--
+       --><li><a href="/lc/">Leetcode</a></li><!--
+     --><!--
+       --><li><a href="/games/">Games</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">Me</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2021/03/06/050_Stylized-Sky-grass-in-Unity/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/&text=Understand Interface and Abstract Class in Java"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/&title=Understand Interface and Abstract Class in Java"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/&is_video=false&description=Understand Interface and Abstract Class in Java"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Understand Interface and Abstract Class in Java&body=Check out this article: https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/&title=Understand Interface and Abstract Class in Java"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/&title=Understand Interface and Abstract Class in Java"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/&title=Understand Interface and Abstract Class in Java"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/&title=Understand Interface and Abstract Class in Java"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/&name=Understand Interface and Abstract Class in Java&description=&lt;p&gt;&lt;code&gt;Interface&lt;/code&gt; and &lt;code&gt;abstract class&lt;/code&gt; are similar that I was sometimes confused about their differences, or didn’t know when I should use each. There are a lot of posts about their differences in terms of usage details, but many of them do not cover differences in design. I looked up on the internet and summarized some key points I learned.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/f8pqi.jpg&#34; alt=&#34;Java Interfaces vs. Abstract Classes, by Jakob Jenkov&#34;&gt;&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/&t=Understand Interface and Abstract Class in Java"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Design-Aspect"><span class="toc-number">1.</span> <span class="toc-text">Design Aspect</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Usage-Aspect"><span class="toc-number">2.</span> <span class="toc-text">Usage Aspect</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Default-Method-in-Java-8"><span class="toc-number">3.</span> <span class="toc-text">Default Method in Java 8</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Understand Interface and Abstract Class in Java
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Junhao Wang</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-11-13T06:01:00.000Z" class="dt-published" itemprop="datePublished">2019-11-12</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Java/">Java</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Interface/" rel="tag">Interface</a>, <a class="p-category" href="/tags/Java/" rel="tag">Java</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><code>Interface</code> and <code>abstract class</code> are similar that I was sometimes confused about their differences, or didn’t know when I should use each. There are a lot of posts about their differences in terms of usage details, but many of them do not cover differences in design. I looked up on the internet and summarized some key points I learned.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/f8pqi.jpg" alt="Java Interfaces vs. Abstract Classes, by Jakob Jenkov"></p>
+<span id="more"></span>
+
+<p>Reference:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/20149818">接口和抽象类有什么区别？</a></li>
+<li>Java 廖雪峰基础教程</li>
+<li><a target="_blank" rel="noopener" href="https://www.junhaow.com/studynotes/cs61b/cs61b%20p2.html">CS 61B | Part 2</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.softwaretestinghelp.com/core-java-interview-questions/">Top 50+ Core Java Interview Questions And Answers</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/41166418">Java 8接口有default method后是不是可以放弃抽象类了？</a></li>
+</ul>
+<h2 id="Design-Aspect"><a href="#Design-Aspect" class="headerlink" title="Design Aspect"></a>Design Aspect</h2><p><strong>First</strong>, we should explore why language designers have created these two things (understand their purposes). In essence, <code>actions</code> are abstracted by interfaces, while <code>roots of classes</code> are abstracted by abstract classes. By saying roots of classes, they refer to the essence or origin of those classes.</p>
+<p>For example, in terms of eating, we can define an interface <code>IEat</code> that abstracts all kinds of eat actions (eat by forks, eat by hands). It is reasonable that a class can implement multiple interfaces, say a man can have multiple ways of eating. As for abstract classes, <code>Man</code> and <code>Woman</code> classes can be abstracted by a <code>Human</code> abstract class. We cannot instantiate a <code>Human</code> class since it is abstract, but we can do that for its concrete subclasses. A class inherits from only one abstract class. We don’t allow a <code>Man</code> subclassing from a <code>Human</code> class and an <code>Animal</code> class at the same time, which is irrational.</p>
+<p><strong>Second</strong>, we see how they are applied in Java class design.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ap3pq.png" alt="List Hierarchy"></p>
+<p><code>Iterable</code>, <code>Collection</code>, <code>List</code> are interfaces. From this illustration, we can say that:</p>
+<ul>
+<li><strong>Idea #1:</strong> Interfaces represent levels of abstraction.</li>
+<li><strong>Idea #2:</strong> Abstract classes are used to put publicly shared logic.</li>
+<li><strong>Idea #3:</strong> Abstraction levels: <code>Interface</code> &gt; <code>Abstract Class</code> &gt; <code>Implementation Class</code></li>
+</ul>
+<p>Then, let’s have a look at the more complex illustration in CS 61B lecture notes.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/06diu.png" alt="The Whole Shebang, CS 61B"></p>
+<p>In fact, <code>ArrayList</code>, <code>AbstractList</code>, <code>AbstractCollection</code> all implement <code>List</code> interface. I temporarily don’t know why it is designed that way.</p>
+<p>The takeaway of this part is to understand the three ideas above, understanding that the major role of interfaces is to define levels of abstraction.</p>
+<h2 id="Usage-Aspect"><a href="#Usage-Aspect" class="headerlink" title="Usage Aspect"></a>Usage Aspect</h2><p><strong>Similarity:</strong></p>
+<ol>
+<li>Both of them cannot be instantiated. Only their concrete subclasses can be done in this way.</li>
+<li>In an interface, default modifiers for methods are <code>public</code>, <code>abstract</code>.</li>
+<li>Both require implementations of all abstract methods. In a subclass inheriting from an abstract class, if abstract methods are not implemented, the subclass should also be defined as an abstract class. Also, all abstract methods cannot be <code>static</code> and <code>private</code>.</li>
+</ol>
+<p><strong>Differences:</strong></p>
+<ol>
+<li>A class can implement <code>multiple interfaces</code>, while it can only inherit from <code>one abstract class</code>.</li>
+<li>An interface only allows method <code>declaration</code>, while an abstract class allows both <code>declaration</code> and <code>implementation</code>. So, we can say that <strong>interfaces are for design and abstract classes are for refactoring</strong>. <span class="purple">Marked</span></li>
+<li>An abstract class can have no abstract methods. <span class="purple">weird</span></li>
+<li>An interface allows <code>static final member variables</code> (constants), but instance variables. An abstract class can have <code>instance variables</code>.</li>
+<li>An interface doesn’t have any <code>constructor</code>, while an abstract class have a <code>default constructor</code> and it is called whenever the concrete subclass is instantiated.</li>
+</ol>
+<h2 id="Default-Method-in-Java-8"><a href="#Default-Method-in-Java-8" class="headerlink" title="Default Method in Java 8"></a>Default Method in Java 8</h2><p>In Java 8, an interface has default methods in which we can write implementation logic. The purpose of adding this new feature is that adding new methods does not require us to modify the code in the class that implements this interface (no re-compilation).</p>
+<p>For example, in Java SE 7, there is no <code>sort()</code> in <code>List</code>; and in Java SE 8, <code>sort()</code> is added in <code>List</code>. If we had a class <code>MyList</code> implements <code>List</code> in the pass and <code>sort()</code> in Java SE 8 is not a default method, we need to implement <code>sort()</code> in <code>MyList</code> and re-compile the source file. With the help of default methods, the default implementation is provided. <code>MyList</code> won’t be changed.</p>
+<p>Also, we notice that although we have default methods in Java 8, they cannot replace abstract classes because they don’t have states (instance variables).</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Posts</a></li>
+        
+          <li><a href="/studynotes/">Notes</a></li>
+        
+          <li><a href="/lc/">Leetcode</a></li>
+        
+          <li><a href="/games/">Games</a></li>
+        
+          <li><a href="/links/">Links</a></li>
+        
+          <li><a href="/about/">Me</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Design-Aspect"><span class="toc-number">1.</span> <span class="toc-text">Design Aspect</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Usage-Aspect"><span class="toc-number">2.</span> <span class="toc-text">Usage Aspect</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Default-Method-in-Java-8"><span class="toc-number">3.</span> <span class="toc-text">Default Method in Java 8</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/&text=Understand Interface and Abstract Class in Java"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/&title=Understand Interface and Abstract Class in Java"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/&is_video=false&description=Understand Interface and Abstract Class in Java"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Understand Interface and Abstract Class in Java&body=Check out this article: https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/&title=Understand Interface and Abstract Class in Java"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/&title=Understand Interface and Abstract Class in Java"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/&title=Understand Interface and Abstract Class in Java"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/&title=Understand Interface and Abstract Class in Java"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/&name=Understand Interface and Abstract Class in Java&description=&lt;p&gt;&lt;code&gt;Interface&lt;/code&gt; and &lt;code&gt;abstract class&lt;/code&gt; are similar that I was sometimes confused about their differences, or didn’t know when I should use each. There are a lot of posts about their differences in terms of usage details, but many of them do not cover differences in design. I looked up on the internet and summarized some key points I learned.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/f8pqi.jpg&#34; alt=&#34;Java Interfaces vs. Abstract Classes, by Jakob Jenkov&#34;&gt;&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/&t=Understand Interface and Abstract Class in Java"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

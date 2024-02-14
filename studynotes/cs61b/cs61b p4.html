@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="ADTsAn Abstract Data Type (ADT) is defined only by its operations (behaviors), not by its implementation.  Note: Swap the removed item with the the last item, and remove the last item. It makes remo">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CS 61B | Part 4 | ADTs, Set, Map, Binary Search Tree (BST)">
+<meta property="og:url" content="https://junhaow.com/studynotes/cs61b/cs61b%20p4.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="ADTsAn Abstract Data Type (ADT) is defined only by its operations (behaviors), not by its implementation.  Note: Swap the removed item with the the last item, and remove the last item. It makes remo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6hmqq.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qltjx.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/999yd.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7ornu.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/m0vzh.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/93oj3.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4zd3j.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wpk09.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/47pdq.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/huju2.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dy8jc.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/e9h9a.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.196Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.196Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6hmqq.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CS 61B | Part 4 | ADTs, Set, Map, Binary Search Tree (BST)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<h2 id="ADTs"><a href="#ADTs" class="headerlink" title="ADTs"></a>ADTs</h2><p>An <code>Abstract Data Type</code> (ADT) is defined only by its operations (behaviors), not by its implementation.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6hmqq.jpg"></p>
+<p>Note: Swap the removed item with the the last item, and remove the last item. It makes <code>remove()</code> faster.</p>
+<p>Among the most important interfaces in the java.util library are those that extend the Collection interface:</p>
+<ul>
+<li>Lists of things</li>
+<li>Sets of things</li>
+<li>Mappings between items<ul>
+<li>Maps also known as associative arrays, associative lists (in Lisp), symbol tables, dictionaries (in Python).</li>
+</ul>
+</li>
+</ul>
+<h2 id="BST"><a href="#BST" class="headerlink" title="BST"></a>BST</h2><p>Binary Search Trees</p>
+<h3 id="Basics-of-Tree"><a href="#Basics-of-Tree" class="headerlink" title="Basics of Tree"></a>Basics of Tree</h3><p>A tree consists of:</p>
+<ul>
+<li>A set of <code>nodes</code> (keys &amp; values).</li>
+<li>A set of <code>edges</code> that connect nodes.<ul>
+<li>Constraint: There is exactly one path (may contain several edges) between any two nodes. No cycle.</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qltjx.jpg" alt="Examples"></p>
+<p>In a rooted tree, we call one node the root.</p>
+<ul>
+<li>Every node except the root has exactly one <code>parent</code>.</li>
+<li>A node with no child is called a <code>leaf</code>.</li>
+<li>Binary Tree: Every node has either 0, 1, or 2 children (subtrees).</li>
+</ul>
+<h3 id="Definition-BST"><a href="#Definition-BST" class="headerlink" title="Definition (BST)"></a>Definition (BST)</h3><blockquote>
+<p>The BST is one of the most important ideas that you’ll ever learn in all of computer science.</p>
+</blockquote>
+<p>Can think of the BST as representing a <code>Set</code> (keys) or even a <code>Map</code> (keys and values).</p>
+<p>A linked list is great, but it takes a long time to search for an item, even if the list is sorted! If the item is at the end of the list, that would take linear time.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/999yd.jpg" alt="OrderedLinkedList&lt;Character&gt;"></p>
+<p>Fundamental Problem: Slow search, even though it’s in order.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7ornu.jpg" alt="Recursive Transformation"></p>
+<p><strong>Definition:</strong> A binary search tree is a rooted binary tree with the <code>BST property</code>.</p>
+<ul>
+<li>Every key in the <code>left</code> subtree is <code>less</code> than X’s key.</li>
+<li>Every key in the <code>right</code> subtree is <code>greater</code> than X’s key.</li>
+</ul>
+<h3 id="Ordering"><a href="#Ordering" class="headerlink" title="Ordering"></a>Ordering</h3><p>Ordering must be <code>complete</code>, <code>transitive</code>, and <code>antisymmetric</code>. Given keys $p$ and $q$:</p>
+<ul>
+<li>Exactly one of $p \prec q$ and $q \prec p$ is true (not both).</li>
+<li>$p \prec q$ and $q \prec r$ imply $p \prec r$. (transitive)</li>
+</ul>
+<p>An example of <code>not complete</code>: Family tree. Compared to your parents, you are “less than”; but compared to your cousins, there is no answer and it’s not a complete thing (in different branches).</p>
+<p>One consequence of these rules: <strong>No duplicate keys allowed</strong>!</p>
+<p>It keeps things simple. Most real world implementations follow this rule.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">BST</span>&lt;Key&gt; &#123;</span><br><span class="line">  <span class="keyword">private</span> Key key;</span><br><span class="line">  <span class="keyword">private</span> BST left;</span><br><span class="line">  <span class="keyword">private</span> BST right;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">BST</span><span class="params">(Key key, BST left, BST right)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.key = key;</span><br><span class="line">    <span class="built_in">this</span>.left = left;</span><br><span class="line">    <span class="built_in">this</span>.right = right;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">BST</span><span class="params">(Key key)</span> &#123; <span class="built_in">this</span>.key = key; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>For a BST that is <code>bushy</code> (short and fat), we can search in $O(\log N)$ time where $N$ is the number of nodes.</li>
+<li>For a BST that is <code>spindly</code> (tall and skinny), our search will take $O(N)$ time.</li>
+</ul>
+<h3 id="Operations"><a href="#Operations" class="headerlink" title="Operations"></a>Operations</h3><p>algs4: <a target="_blank" rel="noopener" href="https://github.com/junhaowww/algs4/blob/master/ch3-searching/src/BST.java">BST.java</a></p>
+<h4 id="BST-Class"><a href="#BST-Class" class="headerlink" title="BST Class"></a>BST Class</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BST</span>&lt;Key <span class="keyword">extends</span> <span class="title class_">Comparable</span>&lt;Key&gt;, Value&gt; &#123;</span><br><span class="line">  <span class="keyword">private</span> Node root;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">Node</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> Key key;</span><br><span class="line">    <span class="keyword">private</span> Value val;</span><br><span class="line">    <span class="keyword">private</span> Node left, right;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> n;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">Node</span><span class="params">(Key key, Value val, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.key = key;</span><br><span class="line">    <span class="built_in">this</span>.val = val;</span><br><span class="line">    <span class="built_in">this</span>.n = n;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** size */</span></span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">size</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> size(root)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="type">int</span> <span class="title function_">size</span><span class="params">(Node x)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> x.n;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** isEmpty */</span></span><br><span class="line">  <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isEmpty</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> size(root) == <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Search-Get"><a href="#Search-Get" class="headerlink" title="Search&#x2F;Get"></a>Search&#x2F;Get</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** get */</span></span><br><span class="line"><span class="keyword">public</span> Value <span class="title function_">get</span><span class="params">(Key key)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> get(root, key);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Value <span class="title function_">get</span><span class="params">(Node x, Key key)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> key.compareTo(x.key);</span><br><span class="line">  <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> get(x.left, key);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> get(x.right, key);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> x.val;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Iterative version:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** get */</span></span><br><span class="line"><span class="keyword">public</span> Value <span class="title function_">getIter</span><span class="params">(Key key)</span> &#123;</span><br><span class="line">  <span class="type">Node</span> <span class="variable">x</span> <span class="operator">=</span> root;</span><br><span class="line">  <span class="keyword">while</span> (x != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> key.compareTo(x.key);</span><br><span class="line">    <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>) &#123; <span class="comment">// left</span></span><br><span class="line">      x = x.left;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) &#123; <span class="comment">// right</span></span><br><span class="line">      x = x.right;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// found</span></span><br><span class="line">      <span class="keyword">return</span> x.val;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">null</span>; <span class="comment">// not found</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* exist - return boolean */</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">exist</span><span class="params">(Key k)</span> &#123;</span><br><span class="line">  <span class="type">Node</span> <span class="variable">x</span> <span class="operator">=</span> root;</span><br><span class="line">  <span class="keyword">while</span> (x != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> k.compareTo(x.key);</span><br><span class="line">    <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>) &#123; <span class="comment">// left</span></span><br><span class="line">      x = x.left;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) &#123; <span class="comment">// right</span></span><br><span class="line">      x = x.right;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// equal</span></span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> x != <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Insert-Put"><a href="#Insert-Put" class="headerlink" title="Insert&#x2F;Put"></a>Insert&#x2F;Put</h4><p>Search for key:</p>
+<ul>
+<li>If found, do nothing</li>
+<li>If not found:<ul>
+<li>Create new node</li>
+<li>Set appropriate link</li>
+</ul>
+</li>
+</ul>
+<p>We <code>always</code> insert at a leaf node!</p>
+<p>Do not write code like:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (T.left == <span class="literal">null</span>)       T.left = <span class="keyword">new</span> <span class="title class_">BST</span>(key);</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (T.right == <span class="literal">null</span>) T.right = <span class="keyword">new</span> <span class="title class_">BST</span>(key);</span><br></pre></td></tr></table></figure>
+
+<p>Recursive version (+ size):</p>
+<p>If we need to change the BST, write a helper function that return s a Node object.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">put</span><span class="params">(Key key, Value val)</span> &#123;</span><br><span class="line">  root = put(root, key, val);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Node <span class="title function_">put</span><span class="params">(Node x, Key key, value val)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Node</span>(key, val, <span class="number">1</span>);</span><br><span class="line">  <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> key.compareTo(x.key);</span><br><span class="line">  <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>) &#123; <span class="comment">// left</span></span><br><span class="line">    x.left = put(x.left, key, val);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) &#123; <span class="comment">// right</span></span><br><span class="line">    x.right = put(x.right, key, val);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">// equal</span></span><br><span class="line">    x.val = val; <span class="comment">// just update</span></span><br><span class="line">  &#125;</span><br><span class="line">  x.n = size(x.left) + size(x.right) + <span class="number">1</span>; <span class="comment">// size can handle null case</span></span><br><span class="line">  <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>My Code (not good):</p>
+<blockquote>
+<p>Haha! This is the first time I write <code>insert</code>!</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">insert</span><span class="params">(BST T, Key sk)</span> &#123;</span><br><span class="line">  <span class="type">Key</span> <span class="variable">found</span> <span class="operator">=</span> find(T, sk);</span><br><span class="line">  <span class="keyword">if</span> (found == <span class="literal">null</span>) &#123; <span class="comment">/* not exist */</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> comp(sk, T.key);</span><br><span class="line">      <span class="keyword">if</span> (result &lt; <span class="number">0</span>) &#123; <span class="comment">/* left */</span></span><br><span class="line">        <span class="keyword">if</span> (T.left == <span class="literal">null</span>) &#123;</span><br><span class="line">          T.left = <span class="keyword">new</span> <span class="title class_">BST</span>(sk);</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          T = T.left;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123; <span class="comment">/* right (impossible to be equal) */</span></span><br><span class="line">        <span class="keyword">if</span> (T.right == <span class="literal">null</span>) &#123;</span><br><span class="line">          T.right = <span class="keyword">new</span> <span class="title class_">BST</span>(sk);</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          T = T.right;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="comment">/* if exist, do nothing */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Iterative version (no size):</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">putIter</span><span class="params">(Key key, Value val)</span> &#123;</span><br><span class="line">  <span class="type">Node</span> <span class="variable">x</span> <span class="operator">=</span> root;</span><br><span class="line">  <span class="keyword">while</span> (x != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> key.compareTo(x.key);</span><br><span class="line">    <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>) &#123; <span class="comment">// left</span></span><br><span class="line">      <span class="keyword">if</span> (x.left != <span class="literal">null</span>) x = x.left;</span><br><span class="line">      <span class="keyword">else</span> &#123; x.left = <span class="keyword">new</span> <span class="title class_">Node</span>(key, val, <span class="number">1</span>); <span class="keyword">return</span>; &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) &#123; <span class="comment">// right</span></span><br><span class="line">      <span class="keyword">if</span> (x.right != <span class="literal">null</span>) x = x.right;</span><br><span class="line">      <span class="keyword">else</span> &#123; x.right = <span class="keyword">new</span> <span class="title class_">Node</span>(key, val, <span class="number">1</span>); <span class="keyword">return</span>; &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      x.val = val; <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// optional</span></span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoSuchElementException</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Delete"><a href="#Delete" class="headerlink" title="Delete"></a>Delete</h4><p>Consider the following three cases of node $x$:</p>
+<ul>
+<li><p><strong>Case 1: No children</strong></p>
+<p>Just sever the parent’s link, and the deleted node will be garbage collected.</p>
+<p>In code, this means <code>return null</code>.</p>
+</li>
+<li><p><strong>Case 2: Has 1 child</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/m0vzh.jpg" alt="Case 2: Deleting from a BST: Key with one Child"></p>
+<p>We can use recursion to avoid pointer backup.</p>
+<p>What about deleting the root?</p>
+</li>
+<li><p><strong>Case 3: Has 2 children</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/93oj3.jpg" alt="Case 3: Deleting from a BST: Deleting with two Children (Hibbard)"></p>
+<p>No. Moving “bag” is not a good idea.</p>
+<p>We can choose either <code>predecessor &quot;cat&quot;</code> or <code>successor &quot;elf&quot;</code>.</p>
+<p>In other words, <code>cat</code> is the largest node in the left tree; <code>elf</code> is the smallest node in the right tree.</p>
+<p>Delete <code>cat</code> or <code>elf</code>, and stick new copy in the root position: This deletion guaranteed to be either case 1 or 2 (no two children). Why?</p>
+<ul>
+<li>Reason: Predecessor or successor has only one child or no children.</li>
+</ul>
+<p>This method is known as <code>Hibbard deletion</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4zd3j.jpg"></p>
+<p>For example, delete <code>dog</code> and move <code>elf</code> to the root; since we need to delete <code>elf</code> either, <code>eyes</code> will be the left child of <code>flat</code> (case 1).</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//      dog</span></span><br><span class="line"><span class="comment">//     /   \</span></span><br><span class="line"><span class="comment">//   bag   flat</span></span><br><span class="line"><span class="comment">//   /  \</span></span><br><span class="line"><span class="comment">//  alf  cat</span></span><br><span class="line"><span class="comment">//  /    /</span></span><br><span class="line"><span class="comment">// abc  ?</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** delete */</span></span><br><span class="line"><span class="keyword">public</span> Node <span class="title function_">delete</span><span class="params">(Node x, Key key)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">null</span>; <span class="comment">// reach the leaf</span></span><br><span class="line"></span><br><span class="line">  <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> key.compareTo(x.key);</span><br><span class="line">  <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    x.left = delete(x.left, key);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    x.right = delete(x.right, key);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">// found the key</span></span><br><span class="line">    <span class="keyword">if</span> (x.right == <span class="literal">null</span>) <span class="keyword">return</span> x.left;</span><br><span class="line">    <span class="keyword">if</span> (x.left == <span class="literal">null</span>) <span class="keyword">return</span> x.right;</span><br><span class="line">    <span class="type">Node</span> <span class="variable">pre</span> <span class="operator">=</span> pred(x); <span class="comment">// find the predecessor</span></span><br><span class="line">    delete(x, pre.key); <span class="comment">// delete the predecessor (important! because pre may have a child)</span></span><br><span class="line">    pre.left = x.left;</span><br><span class="line">    pre.right = x.right;</span><br><span class="line">    x = pre;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  x.n = size(x.left) + size(x.right) + <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Node <span class="title function_">pred</span><span class="params">(Node x)</span> &#123;</span><br><span class="line">  <span class="type">Node</span> <span class="variable">p</span> <span class="operator">=</span> x.left;</span><br><span class="line">  <span class="keyword">while</span> (p.right != <span class="literal">null</span>) &#123;</span><br><span class="line">    p = p.right;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Or using <code>min</code> and <code>deleteMin</code> in algs4:</p>
+<ul>
+<li><pre><code>[BST.java](https://github.com/junhaowww/algs4/blob/master/ch3-searching/src/BST.java)
+</code></pre>
+</li>
+</ul>
+<h4 id="DeleteMin"><a href="#DeleteMin" class="headerlink" title="DeleteMin"></a>DeleteMin</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">deleteMin</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (isEmpty()) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoSuchElementException</span>();</span><br><span class="line">  root = deleteMin(root);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Node <span class="title function_">deleteMin</span><span class="params">(Node x)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x.left == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> x.right;</span><br><span class="line">  &#125;</span><br><span class="line">  x.left = deleteMin(x.left);</span><br><span class="line">  x.n = size(x.left) + size(x.right) + <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h4 id="Floor"><a href="#Floor" class="headerlink" title="Floor"></a>Floor</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** floor */</span></span><br><span class="line"><span class="comment">// return key&#x27;s previous key</span></span><br><span class="line"><span class="keyword">public</span> Key <span class="title function_">floor</span><span class="params">(Key key)</span> &#123;</span><br><span class="line">  <span class="type">Node</span> <span class="variable">x</span> <span class="operator">=</span> floor(root, key);</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoSuchElementException</span>();</span><br><span class="line">  <span class="keyword">return</span> x.key;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Node <span class="title function_">floor</span><span class="params">(Node x, Key key)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> key.compareTo(x.key);</span><br><span class="line">  <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>) &#123; <span class="comment">// left</span></span><br><span class="line">    <span class="comment">// It gotta be in the left, but I don&#x27;t care the detail</span></span><br><span class="line">    <span class="keyword">return</span> floor(x.left, key);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) &#123; <span class="comment">// right</span></span><br><span class="line">    <span class="comment">//    4</span></span><br><span class="line">    <span class="comment">//   / \</span></span><br><span class="line">    <span class="comment">//  3   5</span></span><br><span class="line">    <span class="comment">//     / \     // Note: 4 is a potential candidate</span></span><br><span class="line">    <span class="comment">//   4.5  6    // key = 5 / 4.3 / 4.5 / 4.7 / 6 / 5.5 / 8</span></span><br><span class="line">    <span class="comment">//             //       5 / 4   / 4.5 / 4.5 / 6 / 5   / 6</span></span><br><span class="line">    <span class="type">Node</span> <span class="variable">ret</span> <span class="operator">=</span> floor(x.right, key);</span><br><span class="line">    <span class="keyword">if</span> (ret == <span class="literal">null</span>) <span class="keyword">return</span> x;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> ret;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">// equal</span></span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Select"><a href="#Select" class="headerlink" title="Select"></a>Select</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//    4</span></span><br><span class="line"><span class="comment">//   / \</span></span><br><span class="line"><span class="comment">//  3   5   // 5&#x27;s rank is not 2</span></span><br><span class="line"><span class="comment">//     / \  </span></span><br><span class="line"><span class="comment">//   4.5  6  </span></span><br><span class="line"><span class="keyword">public</span> Key <span class="title function_">select</span><span class="params">(<span class="type">int</span> k)</span> &#123;  <span class="comment">// key 0 ~ size - 1</span></span><br><span class="line">  <span class="keyword">if</span> (k &lt; <span class="number">0</span> || k &gt;= size()) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>();</span><br><span class="line">  <span class="type">Node</span> <span class="variable">x</span> <span class="operator">=</span> select(root, k);</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoSuchElementException</span>();</span><br><span class="line">  <span class="keyword">return</span> x.key;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// k starts from 0 =&gt; conditions look better</span></span><br><span class="line"><span class="keyword">private</span> Node <span class="title function_">select</span><span class="params">(Node x, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">t</span> <span class="operator">=</span> size(x.left);</span><br><span class="line">  <span class="keyword">if</span> (k &lt; t) &#123; <span class="comment">// left</span></span><br><span class="line">    <span class="keyword">return</span> select(x.left, k);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (k == t) &#123; <span class="comment">// middle</span></span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">// right: k &gt; t</span></span><br><span class="line">    <span class="keyword">return</span> select(x.right, k - t - <span class="number">1</span>); <span class="comment">// a new subtree</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h4 id="Rank"><a href="#Rank" class="headerlink" title="Rank"></a>Rank</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//    4</span></span><br><span class="line"><span class="comment">//   / \</span></span><br><span class="line"><span class="comment">//  3   5   // 5&#x27;s rank is not 2</span></span><br><span class="line"><span class="comment">//     / \  </span></span><br><span class="line"><span class="comment">//   4.5  6  </span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">rank</span><span class="params">(Key key)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (key == <span class="literal">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>();</span><br><span class="line">  <span class="keyword">return</span> rank(root, key);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">rank</span><span class="params">(Node x, Key key)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> key.compareTo(x.key);</span><br><span class="line">  <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>) &#123; <span class="comment">// left</span></span><br><span class="line">    <span class="keyword">return</span> rank(x.left, key);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) &#123; <span class="comment">// right</span></span><br><span class="line">    <span class="keyword">return</span> size(x.left) + rank(x.right, key);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">// found</span></span><br><span class="line">    <span class="keyword">return</span> size(x.left);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Range-Searching"><a href="#Range-Searching" class="headerlink" title="Range Searching"></a>Range Searching</h4><p>Note: Consider each subtree as $x$.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Range searching</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> Iterable&lt;Key&gt; <span class="title function_">keys</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> keys(min(), max());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> Iterable&lt;Key&gt; <span class="title function_">keys</span><span class="params">(Key lo, Key hi)</span> &#123;</span><br><span class="line">  Queue&lt;Key&gt; queue = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">  keys(root, queue, lo, hi);</span><br><span class="line">  <span class="keyword">return</span> queue;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">keys</span><span class="params">(Node x, Queue&lt;Key&gt; queue, Key lo, Key hi)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">return</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">cmplo</span> <span class="operator">=</span> lo.compareTo(x.key);</span><br><span class="line">  <span class="type">int</span> <span class="variable">cmphi</span> <span class="operator">=</span> hi.compareTo(x.key);</span><br><span class="line">  <span class="keyword">if</span> (cmplo &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    keys(x.left, queue, lo, hi);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (cmplo &lt;= <span class="number">0</span> &amp;&amp; cmphi &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">    queue.offer(x.key);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (cmphi &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    keys(x.right, queue, lo, hi);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+<h2 id="Lab-7-BSTMap"><a href="#Lab-7-BSTMap" class="headerlink" title="Lab 7 (BSTMap)"></a>Lab 7 (BSTMap)</h2><p><code>Lab 7</code>: <a target="_blank" rel="noopener" href="https://github.com/junhaowww/cs61b-sp18/tree/master/lab7">BSTMap.java &amp; Map61B.java</a><br><code>Algs</code>: <a target="_blank" rel="noopener" href="https://algs4.cs.princeton.edu/32bst/BST.java.html">BST.java</a></p>
+<p><code>numberOfNodes(BSTMap b)</code>$\sim \Theta(n)$ (<code>b</code> has $n$ nodes)</p>
+<p><code>z</code> is a positive integer.</p>
+<p>What is the running time (in Big O notation) of <code>mystery(b, z)</code>?</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Key <span class="title function_">mystery</span><span class="params">(BSTMap b, <span class="type">int</span> z)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (z &gt; numberOfNodes(b) || z &lt;= <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">if</span> (numberOfNodes(b.left) == z-<span class="number">1</span>) <span class="comment">// size(b.left) + 1 == z</span></span><br><span class="line">    <span class="keyword">return</span> b.root.key;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (numberOfNodes(b.left) &gt; z)</span><br><span class="line">    <span class="keyword">return</span> mystery(b.left, z);</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> mystery(b.right, z - numberOfNodes(b.left) - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Time: $O(\log{N})$ where $N$ is the number of nodes in $b$.</p>
+<h2 id="Ex-Discussion-Guide"><a href="#Ex-Discussion-Guide" class="headerlink" title="Ex (Discussion &amp; Guide)"></a>Ex (Discussion &amp; Guide)</h2><h3 id="C-Level"><a href="#C-Level" class="headerlink" title="C Level"></a>C Level</h3><h4 id="Ex-1-Orderings"><a href="#Ex-1-Orderings" class="headerlink" title="Ex 1 (Orderings)"></a>Ex 1 (Orderings)</h4><p>Give two orderings of the keys <code>A X C S E R H</code> that, when inserted into an empty BST, yield the best case height. Draw the tree.</p>
+<p>In order: A <code>C</code> E <code>H</code> R <code>S</code> X</p>
+<p>H - C - S - …<br>H - S - C - …</p>
+<h3 id="B-Level"><a href="#B-Level" class="headerlink" title="B Level"></a>B Level</h3><h4 id="Ex-1-Valid-Sequence"><a href="#Ex-1-Valid-Sequence" class="headerlink" title="Ex 1 (Valid Sequence)"></a>Ex 1 (Valid Sequence)</h4><p>Suppose that a certain BST has keys that are integers between 1 and 10, and we search for 5. Which sequence(s) of keys below are possible during the search for 5?</p>
+<p>Each time one level, no backward.</p>
+<p>a. 10, 9, 8, 7, 6, 5 (o)<br>b. 4, 10, 8, 7, 5 (o)<br>c. 1, 10, 2, 9, 3, 8, 4, 7, 6, 5 (o) a chain<br>d. 2, 7, 3, 8, 4, 5 (x) 8 &gt; 7<br>e. 1, 2, 10, 4, 8, 5 (o)</p>
+<h4 id="Ex-2-Commutative"><a href="#Ex-2-Commutative" class="headerlink" title="Ex 2 (Commutative)"></a>Ex 2 (Commutative)</h4><p>Is the delete operation <code>commutative</code>? In other words, if we delete $x$, then $y$, do we always get the same tree as if we delete $y$, then $x$?</p>
+<p>Maybe yes! Couldn’t think of any case. Me reviewing: Couldn’t find it again.</p>
+<h4 id="Ex-3-Children"><a href="#Ex-3-Children" class="headerlink" title="Ex 3 (#Children)"></a>Ex 3 (#Children)</h4><p><a target="_blank" rel="noopener" href="https://d1b10bmlvqabco.cloudfront.net/attach/hx9h4t96ea8qv/h32s1vxe6mb5o0/i7vkubmrxjn0/fa14_mt2.pdf">Problem 1</a> from the Fall 2014 midterm #2.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wpk09.png"></p>
+<ul>
+<li>Either 0 or 2 not-null children (complete tree) - $O(\log N)$</li>
+<li>Either 0 or 2 children - $O(N)$</li>
+<li>Either 0 or 1 child - $O(N)$</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/47pdq.png"></p>
+<h3 id="A-Level"><a href="#A-Level" class="headerlink" title="A+ Level"></a>A+ Level</h3><h4 id="Ex-1-Merge"><a href="#Ex-1-Merge" class="headerlink" title="Ex 1 (Merge)"></a>Ex 1 (Merge)</h4><p><a target="_blank" rel="noopener" href="http://inst.eecs.berkeley.edu/~cs61b/fa14/samples/2009/test2.pdf">Problem 3</a> from the Fall 2009 midterm.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/huju2.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* The operation is [destructive], and creates no new nodes.</span></span><br><span class="line"><span class="comment"> * In the [worst] case, it takes time [linear] in the total number</span></span><br><span class="line"><span class="comment"> * of items in T and L */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> IntTree <span class="title function_">mergeRight</span><span class="params">(IntTree T, IntTree L)</span> &#123;</span><br><span class="line">  T.left = mergeRight2(T.left, Integer.MAX_VALUE, L);</span><br><span class="line">  <span class="comment">/* Why Integer.MAX_VALUE? Consider node 26 (always going right in T;</span></span><br><span class="line"><span class="comment">   * there is no actual succ boundary) */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Assuming T is a BST, and L is the sentinel of a right-leaning BST,</span></span><br><span class="line"><span class="comment"> * return the result of inserting all items of L that are &lt;= succ in T, </span></span><br><span class="line"><span class="comment"> * removing them from L. */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> IntTree <span class="title function_">mergeRight2</span><span class="params">(IntTree T, <span class="type">int</span> succ, IntTree L)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (L.left == <span class="literal">null</span>) &#123; <span class="keyword">return</span> T; &#125; <span class="comment">/* Done */</span></span><br><span class="line">  <span class="keyword">if</span> (T == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (L.left.data &lt;= succ) &#123; <span class="comment">/* succ is the boundary */</span></span><br><span class="line">      <span class="type">IntTree</span> <span class="variable">p</span> <span class="operator">=</span> L.left;</span><br><span class="line">      L.left = L.left.right; <span class="comment">/* Delete node */</span></span><br><span class="line">      <span class="comment">/* continue inserting nodes from L, if possible */</span></span><br><span class="line">      p.right = mergeRight2(<span class="literal">null</span>, succ, L); <span class="comment">/* Why p.right? Because L is right-leaning */</span></span><br><span class="line">      <span class="keyword">return</span> p;  <span class="comment">/* connect to T */</span></span><br><span class="line">      <span class="comment">// Why won&#x27;t do it in one loop (recursive structure for the code below)</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">/* T != null */</span></span><br><span class="line">    <span class="comment">/* If go left, succ will be T.data; </span></span><br><span class="line"><span class="comment">     * if go right, succ will be the previous succ (not changing) */</span></span><br><span class="line">    <span class="keyword">if</span> (L.left.data &lt;= T.data) &#123;</span><br><span class="line">      T.left = mergeRight2(T.left, T.data, L);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      T.right = mergeRight2(T.right, succ, L); <span class="comment">/* for node 11: succ is 12 */</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> T;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>I think the worst case is $O(L \log{T})$</p>
+<h4 id="Ex-2-Is-Valid-BST"><a href="#Ex-2-Is-Valid-BST" class="headerlink" title="Ex 2 (Is Valid BST?)"></a>Ex 2 (Is Valid BST?)</h4><p>From Discussion 7, Spring 2019.</p>
+<p>Buggy version:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span> &#123;</span><br><span class="line">  <span class="type">int</span> val;</span><br><span class="line">  TreeNode left;</span><br><span class="line">  TreeNode right;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">buggyIsBST</span><span class="params">(TreeNode T)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (T == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (T.left != <span class="literal">null</span> &amp;&amp; T.left.val &gt; T.val) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (T.right != <span class="literal">null</span> &amp;&amp; T.right.val &lt; T.val) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> buggyIsBST(T.left) &amp;&amp; buggyIsBST(T.right);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The code just looks at two levels.</p>
+<p>Example:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//       5</span><br><span class="line">//     /   \</span><br><span class="line">//    3     8</span><br><span class="line">//   / \   / \</span><br><span class="line">//  1   6 7   9   (6 is larger than 5)</span><br></pre></td></tr></table></figure>
+
+<p>Bug-free version:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">isBST</span><span class="params">(TreeNode T)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> isBSTHelper(T, Integer.MIN_VALUE , Integer.MAX_VALUE);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">isBSTHelper</span><span class="params">(TreeNode T, <span class="type">int</span> prev, <span class="type">int</span> next)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (T == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (T.val &lt; prev || T.val &gt; next) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// go left  =&gt; update MAX restraint (next)</span></span><br><span class="line">    <span class="comment">// go right =&gt; update MIN restraint (prev)</span></span><br><span class="line">    <span class="keyword">return</span> isBSTHelper(T.left, prev, T.val) &amp;&amp; isBSTHelper(T.right, T.val, next);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Challenge-Lab-7"><a href="#Challenge-Lab-7" class="headerlink" title="Challenge Lab 7"></a>Challenge Lab 7</h2><p>Challenge Lab 7: <a target="_blank" rel="noopener" href="https://sp19.datastructur.es/materials/clab/clab7/clab7">link</a><br>Code: <a target="_blank" rel="noopener" href="https://github.com/junhaowww/cs61b-sp18/tree/master/clab7">link</a></p>
+<p>The <code>Internal Path Length</code> of a BST is defined as the <code>average depth</code> times the <code>number of nodes</code>. Or equivalently, it is the sum of the lengths of the paths to every node. The internal and external path lengths are related by:</p>
+<p>$$E &#x3D; I + 2n$$</p>
+<p>where $n$ is the number of internal nodes.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dy8jc.jpg" alt="Internal &amp; External Path Length"></p>
+<p>Implementation of OIPL:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/e9h9a.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns the internal path length for an optimum binary search tree of</span></span><br><span class="line"><span class="comment"> * size N. Examples:</span></span><br><span class="line"><span class="comment"> * N = 1, OIPL: 0</span></span><br><span class="line"><span class="comment"> * N = 2, OIPL: 1</span></span><br><span class="line"><span class="comment"> * N = 3, OIPL: 2</span></span><br><span class="line"><span class="comment"> * N = 4, OIPL: 4</span></span><br><span class="line"><span class="comment"> * N = 5, OIPL: 6</span></span><br><span class="line"><span class="comment"> * N = 6, OIPL: 8</span></span><br><span class="line"><span class="comment"> * N = 7, OIPL: 10</span></span><br><span class="line"><span class="comment"> * N = 8, OIPL: 13</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">optimalIPL</span><span class="params">(<span class="type">int</span> N)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (N == <span class="number">1</span> || N == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">plus</span> <span class="operator">=</span> (<span class="type">int</span>) log(<span class="number">2</span>, N);</span><br><span class="line">  <span class="keyword">return</span> plus + optimalIPL(N - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">double</span> <span class="title function_">log</span><span class="params">(<span class="type">int</span> base, <span class="type">int</span> x)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> Math.log(x) / Math.log(base);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://sp19.datastructur.es/materials/clab/clab7/clab7">Research Problem about Average Depth</a></p>
+<p>Randomly picking between successor and predecessor will result in 88% of the starting depth. Nobody knows why this happens.</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

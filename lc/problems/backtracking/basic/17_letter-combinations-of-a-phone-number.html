@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode EPI 15.2Difficulty: Medium My Post: Java Solution Backtracking with Comments Problem Given a string containing digits from 2-9 inclusive, return all possible letter combinations">
+<meta property="og:type" content="website">
+<meta property="og:title" content="17. Letter Combinations of a Phone Number">
+<meta property="og:url" content="https://junhaow.com/lc/problems/backtracking/basic/17_letter-combinations-of-a-phone-number.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode EPI 15.2Difficulty: Medium My Post: Java Solution Backtracking with Comments Problem Given a string containing digits from 2-9 inclusive, return all possible letter combinations">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.108Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.108Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>17. Letter Combinations of a Phone Number</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/letter-combinations-of-a-phone-number/">LeetCode</a> <span class="gray">EPI 15.2</span><br>Difficulty: <span class="orange">Medium</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/letter-combinations-of-a-phone-number/discuss/388838/Java-Solution-Backtracking-with-Comments">Java Solution Backtracking with Comments</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a string containing digits from <code>2-9</code> inclusive, return all possible letter combinations that the number could represent.</p>
+</blockquote>
+<blockquote>
+<p>A mapping of digit to letters (just like on the telephone buttons) is given below. Note that $1$ does not map to any letters.</p>
+</blockquote>
+<p><strong>Note:</strong> Although the above answer is in lexicographical order, your answer could be in any order you want.</p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="string">&quot;23&quot;</span></span><br><span class="line">Output:</span><br><span class="line">[<span class="string">&quot;ad&quot;</span>, <span class="string">&quot;ae&quot;</span>, <span class="string">&quot;af&quot;</span>, <span class="string">&quot;bd&quot;</span>, <span class="string">&quot;be&quot;</span>, <span class="string">&quot;bf&quot;</span>, <span class="string">&quot;cd&quot;</span>, <span class="string">&quot;ce&quot;</span>, <span class="string">&quot;cf&quot;</span>].</span><br><span class="line"></span><br><span class="line">Input: <span class="string">&quot;223&quot;</span></span><br><span class="line">Output:</span><br><span class="line">[<span class="string">&quot;aad&quot;</span>,<span class="string">&quot;aae&quot;</span>,<span class="string">&quot;aaf&quot;</span>,<span class="string">&quot;abd&quot;</span>,<span class="string">&quot;abe&quot;</span>,<span class="string">&quot;abf&quot;</span>,<span class="string">&quot;acd&quot;</span>,<span class="string">&quot;ace&quot;</span>,<span class="string">&quot;acf&quot;</span>,<span class="string">&quot;bad&quot;</span>,<span class="string">&quot;bae&quot;</span>,<span class="string">&quot;baf&quot;</span>,<span class="string">&quot;bbd&quot;</span>,<span class="string">&quot;bbe&quot;</span>,<span class="string">&quot;bbf&quot;</span>,<span class="string">&quot;bcd&quot;</span>,<span class="string">&quot;bce&quot;</span>,<span class="string">&quot;bcf&quot;</span>,<span class="string">&quot;cad&quot;</span>,<span class="string">&quot;cae&quot;</span>,<span class="string">&quot;caf&quot;</span>,<span class="string">&quot;cbd&quot;</span>,<span class="string">&quot;cbe&quot;</span>,<span class="string">&quot;cbf&quot;</span>,<span class="string">&quot;ccd&quot;</span>,<span class="string">&quot;cce&quot;</span>,<span class="string">&quot;ccf&quot;</span>]</span><br><span class="line">Extra <span class="title function_">Output</span> <span class="params">(no duplicate combinations)</span>:</span><br><span class="line">[<span class="string">&quot;aad&quot;</span>,<span class="string">&quot;aae&quot;</span>,<span class="string">&quot;aaf&quot;</span>,<span class="string">&quot;abd&quot;</span>,<span class="string">&quot;abe&quot;</span>,<span class="string">&quot;abf&quot;</span>,<span class="string">&quot;acd&quot;</span>,<span class="string">&quot;ace&quot;</span>,<span class="string">&quot;acf&quot;</span>,<span class="string">&quot;bbd&quot;</span>,<span class="string">&quot;bbe&quot;</span>,<span class="string">&quot;bbf&quot;</span>,<span class="string">&quot;bcd&quot;</span>,<span class="string">&quot;bce&quot;</span>,<span class="string">&quot;bcf&quot;</span>,<span class="string">&quot;ccd&quot;</span>,<span class="string">&quot;cce&quot;</span>,<span class="string">&quot;ccf&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> Consider no duplicate combinations.</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Backtracking"><a href="#Backtracking" class="headerlink" title="Backtracking"></a>Backtracking</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a simple mapping</span></span><br><span class="line">String[] numToLetters = <span class="keyword">new</span> <span class="title class_">String</span>[] &#123; <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="string">&quot;abc&quot;</span>, <span class="string">&quot;def&quot;</span>, <span class="string">&quot;ghi&quot;</span>, <span class="string">&quot;jkl&quot;</span>, <span class="string">&quot;mno&quot;</span>, <span class="string">&quot;pqrs&quot;</span>, <span class="string">&quot;tuv&quot;</span>, <span class="string">&quot;wxyz&quot;</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> List&lt;String&gt; <span class="title function_">letterCombinations</span><span class="params">(String digits)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (digits.length() == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(); <span class="comment">// when input = &quot;&quot;, returns [] instead of [&quot;&quot;]</span></span><br><span class="line">  &#125;</span><br><span class="line">  List&lt;String&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  combine(<span class="number">0</span>, digits, sb, result);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">combine</span><span class="params">(<span class="type">int</span> d, String digits, StringBuilder sb, List&lt;String&gt; result)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (d &gt;= digits.length()) &#123; <span class="comment">// base case</span></span><br><span class="line">    result.add(sb.toString());</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="type">String</span> <span class="variable">selection</span> <span class="operator">=</span> numToLetters[digits.charAt(d) - <span class="string">&#x27;0&#x27;</span>];</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; selection.length(); ++i) &#123;</span><br><span class="line">    <span class="type">char</span> <span class="variable">ch</span> <span class="operator">=</span> selection.charAt(i); <span class="comment">// letter</span></span><br><span class="line">    sb.append(ch);                 <span class="comment">// add</span></span><br><span class="line">    combine(d + <span class="number">1</span>, digits, sb, result); <span class="comment">// dfs</span></span><br><span class="line">    sb.setLength(sb.length() - <span class="number">1</span>); <span class="comment">// remove</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N \times 4^N)$ including string construction with $O(N)$ time at most.<br><strong>Space:</strong> $O(N \times 4^N)$</p>
+<h3 id="No-Duplicate-Combinations"><a href="#No-Duplicate-Combinations" class="headerlink" title="No Duplicate Combinations"></a>No Duplicate Combinations</h3><p>Use the idea of start index in Subsets II. This time we does not pass down the information of whether we pick or do not pick, but the start index as a more general approach.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Does not allow duplicate combinations</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> List&lt;String&gt; <span class="title function_">letterCombinations</span><span class="params">(String digits)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (digits.length() == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(); <span class="comment">// when input = &quot;&quot;, returns [] instead of [&quot;&quot;]</span></span><br><span class="line">  &#125;</span><br><span class="line">  List&lt;String&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  combine(<span class="number">0</span>, <span class="number">0</span>, digits, sb, result);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">combine</span><span class="params">(<span class="type">int</span> d, <span class="type">int</span> startIdx, String digits, StringBuilder sb, List&lt;String&gt; result)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (d &gt;= digits.length()) &#123; <span class="comment">// base case</span></span><br><span class="line">    result.add(sb.toString());</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="type">String</span> <span class="variable">selection</span> <span class="operator">=</span> numToLetters[digits.charAt(d) - <span class="string">&#x27;0&#x27;</span>];</span><br><span class="line">  startIdx = (d &gt; <span class="number">0</span> &amp;&amp; digits.charAt(d - <span class="number">1</span>) == digits.charAt(d)) ? startIdx : <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> startIdx; i &lt; selection.length(); ++i) &#123;</span><br><span class="line">    <span class="type">char</span> <span class="variable">ch</span> <span class="operator">=</span> selection.charAt(i); <span class="comment">// letter</span></span><br><span class="line">    sb.append(ch);                 <span class="comment">// add</span></span><br><span class="line">    combine(d + <span class="number">1</span>, i, digits, sb, result); <span class="comment">// dfs</span></span><br><span class="line">    sb.setLength(sb.length() - <span class="number">1</span>); <span class="comment">// remove</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N \times 4^N)$<br><strong>Space:</strong> $O(N \times 4^N)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

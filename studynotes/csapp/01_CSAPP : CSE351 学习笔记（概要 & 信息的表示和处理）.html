@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="概要 C 语言是「古怪的、有缺陷的，但同时也是一个巨大的成功」。Why？  与 Unix 操作系统关系密切。 C 语言小而简单。 C 语言是为实践目的设计的。   编译系统的流程 系统的硬件组成 总线贯穿整个系统的是一组电子管道，称作总线，它携带信息字节并负责在各个部件间传递。通常总线被设计成传送定长的字节块，也就是字（word）。字中的字长数是一个基本的系统参数，各个系统不同。现在的大多数机">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CSAPP &#x2F; CSE 351 学习笔记（概要 &amp; 信息的表示和处理）">
+<meta property="og:url" content="https://junhaow.com/studynotes/csapp/01_CSAPP%20:%20CSE351%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E6%A6%82%E8%A6%81%20&%20%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86%EF%BC%89.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="概要 C 语言是「古怪的、有缺陷的，但同时也是一个巨大的成功」。Why？  与 Unix 操作系统关系密切。 C 语言小而简单。 C 语言是为实践目的设计的。   编译系统的流程 系统的硬件组成 总线贯穿整个系统的是一组电子管道，称作总线，它携带信息字节并负责在各个部件间传递。通常总线被设计成传送定长的字节块，也就是字（word）。字中的字长数是一个基本的系统参数，各个系统不同。现在的大多数机">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/g4n1k.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/e2hs8.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8m0zz.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5tpq2.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/aawkv.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/937zd.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yvecy.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/mfgde.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ge6ok.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2fu58.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/abmox.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5c5ct.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bwwhg.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.199Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.199Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/g4n1k.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CSAPP / CSE 351 学习笔记（概要 &amp; 信息的表示和处理）</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><blockquote>
+<p>C 语言是「古怪的、有缺陷的，但同时也是一个巨大的成功」。Why？</p>
+<ol>
+<li>与 Unix 操作系统关系密切。</li>
+<li>C 语言小而简单。</li>
+<li>C 语言是为实践目的设计的。</li>
+</ol>
+</blockquote>
+<h3 id="编译系统的流程"><a href="#编译系统的流程" class="headerlink" title="编译系统的流程"></a>编译系统的流程</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/g4n1k.jpg" alt="编译系统（CSAPP 1-3）"></p>
+<h3 id="系统的硬件组成"><a href="#系统的硬件组成" class="headerlink" title="系统的硬件组成"></a>系统的硬件组成</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/e2hs8.jpg" alt="一个典型系统的硬件组成 &amp; 从键盘上读取 hello 命令（CSAPP 1-5）"></p>
+<h4 id="总线"><a href="#总线" class="headerlink" title="总线"></a>总线</h4><p>贯穿整个系统的是一组<code>电子管道</code>，称作<code>总线</code>，它携带信息字节并负责在各个部件间传递。通常总线被设计成传送定长的<code>字节块</code>，也就是<code>字</code>（word）。字中的字长数是一个基本的系统参数，各个系统不同。现在的大多数机器字长要么是 4 个字节（32位），要么是 8 个字节（64位）。</p>
+<h4 id="I-O-设备"><a href="#I-O-设备" class="headerlink" title="I&#x2F;O 设备"></a>I&#x2F;O 设备</h4><p>每个 I&#x2F;O 设备都通过一个控制器或适配器与 I&#x2F;O 总线相连。控制器与适配器之间的区别主要是它们不同的<code>封装方式</code>。控制器是 I&#x2F;O 设备本身或者系统的主印刷电路板（主板）上的芯片组；而适配器则是一块插在主板插槽上的卡。但是，它们的功能都是在 I&#x2F;O 总线和 I&#x2F;O 设备之间传递信息。</p>
+<h4 id="主存"><a href="#主存" class="headerlink" title="主存"></a>主存</h4><p>主存是由一组<code>动态随机存取存储器</code>（DRAM）芯片组成的硬件。</p>
+<h4 id="处理器"><a href="#处理器" class="headerlink" title="处理器"></a>处理器</h4><p>处理器是解释（或执行）存储在主存中指令的引擎。处理器的<code>核心</code>是一个大小为一个字的存储设备（或寄存器），称为<code>程序计数器（PC）</code>。在任何时刻，PC 都指向主存中的某条机器语言指令（即含有该条指令的地址）。</p>
+<p>从系统通电开始，直到系统断电，处理器一直在不断地执行程序计数器指向的指令，再更新程序计数器，使其指向下一条指令。处理器看上去是按照一个非常简单的指令执行模型来操作的，这个模型是由<code>指令集架构</code>决定的。（下一条指令不一定和内存中刚刚执行的指令相邻）</p>
+<p>CPU 在指令的要求下可能会执行这些操作：</p>
+<ul>
+<li><code>加载</code>：从主存复制一个字节或者一个字到寄存器。</li>
+<li><code>存储</code>：从寄存器复制一个字节或者一个字到主存的某个位置。</li>
+<li><code>操作</code>：把两个寄存器的内容复制到 ALU，ALU 对这两个字做算术运算，并把结果存放到一个寄存器中，以覆盖该寄存器中原来的内容。</li>
+<li><code>跳转</code>：从指令本身中抽取一个字，并将这个字复制到 PC 中，以覆盖 PC 中原来的值。</li>
+</ul>
+<h3 id="操作系统管理硬件"><a href="#操作系统管理硬件" class="headerlink" title="操作系统管理硬件"></a>操作系统管理硬件</h3><p>操作系统是应用程序和硬件之间插入的一层软件，所有应用程序对硬件的操作尝试都必须通过操作系统。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8m0zz.jpg" alt="计算机系统的分层视图（CSAPP 1-10）"></p>
+<p>操作系统有两个基本功能：</p>
+<ol>
+<li><code>防止</code>硬件被失控的应用程序<code>滥用</code></li>
+<li>向应用程序提供<code>简单一致的机制（接口）</code>来控制复杂而又通常不大相同的低级硬件设备</li>
+</ol>
+<p>操作系统通过几个基本的抽象概念（<code>进程</code>、<code>虚拟内存</code>和<code>文件</code>）来实现这两个功能。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5tpq2.jpg" alt="操作系统提供的抽象表示（CSAPP 1-11）"></p>
+<h4 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h4><p><code>进程</code>（Process）是操作系统对一个正在运行的程序的一种<code>抽象</code>。在一个系统上可以同时运行多个进程，而每个进程都好像在独占地使用硬件。并发运行，是说一个进程的指令和另一个进程的指令是交错执行的。操作系统实现这种交错执行的机制称为<code>上下文切换</code>（context switch）。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/aawkv.jpg" alt="进程的上下文切换（CSAPP 1-12）"></p>
+<p>操作系统保持跟踪进程运行所需的所有状态信息，这种<code>状态</code>，也就是<code>上下文</code>，比如包括 PC 和寄存器文件的当前值，以及主存的内容。从一个进程到另一个进程是由操作系统<code>内核</code>管理的。</p>
+<h4 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h4><p>每个进程看到的内存都是一致的，称为<code>虚拟地址空间</code> （virtual memory space）。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/937zd.jpg" alt="进程的虚拟地址空间（CSAPP 1-13）"></p>
+<p>虚拟内存的运作需要硬件和操作系统软件之间精密复杂的交互，包括对处理器生成每个地址的硬件翻译。<code>基本思想</code>是把一个进程虚拟内存的内容存储在磁盘上，然后用主存作为磁盘的高速缓存。</p>
+<h4 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h4><p>文件就是<code>字节序列</code>，仅此而已。设备可以看作是文件。</p>
+<h3 id="重要主题"><a href="#重要主题" class="headerlink" title="重要主题"></a>重要主题</h3><h4 id="Amdahl-定律"><a href="#Amdahl-定律" class="headerlink" title="Amdahl 定律"></a>Amdahl 定律</h4><p><strong>主要思想</strong>：当我们对系统的某个部分加速时，其对系统整体性能的影响取决于该部分的<code>重要性</code> $\alpha$ 和<code>加速程度</code> $k$。</p>
+<p><strong>主要观点</strong>：想要显著加速整个系统，必须提升全系统中相当大的部分的速度。</p>
+<p>原来的执行时间：</p>
+<p>$$T_{old} &#x3D; (1-\alpha)T_{old} + \alpha{T_{old}}$$</p>
+<p>总的执行时间 $T_{new}$：</p>
+<p>$$T_{new} &#x3D; (1-\alpha) T_{old} + \frac{\alpha T_{old}}{k} &#x3D; T_{old}[(1-\alpha) + \frac{\alpha}{k}]$$</p>
+<p>加速比 $S$：</p>
+<p>$$S &#x3D; \frac{T_{old}}{T_{new}}  &#x3D; \frac{1}{(1 - \alpha) + \frac{\alpha}{k}}$$</p>
+<h4 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h4><ul>
+<li><p><code>并发</code>（concurrency）是一个通用的概念，指一个同时具有多个活动的系统（各个进程的指令交错执行）。</p>
+</li>
+<li><p><code>并行</code>（parallelism）指的是用并发来使一个系统运行得更快。并行可以在计算机系统的多个抽象层次上运用。一般有三个层次：线程级并发、指令级并行、单指令多数据并行。</p>
+</li>
+</ul>
+<p><code>指令级并行</code>是指现代处理器可以同时执行多条指令的属性。</p>
+<p><code>超线程</code>，有时称为<code>同时多线程</code>（simultaneous multi-threading）是一项允许一个 CPU 执行多个控制流的技术。它涉及 CPU 某些硬件有多个备份，比如<code>程序计数器</code>和<code>寄存器文件</code>，而其它的硬件部分只有一份，比如浮点算术运算单元。</p>
+<p>三个周期的关系：</p>
+<ul>
+<li><code>指令周期</code>：<strong>读取</strong>并<strong>执行</strong>一条指令的时间。<ul>
+<li><code>CPU 周期</code>（机器周期）：从内存<strong>读取</strong>一条指令字的最短时间。<ul>
+<li><code>T 周期</code>（时钟周期）：是处理操作的基本单位，其倒数是 CPU 主频。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="计算机系统中抽象的重要性"><a href="#计算机系统中抽象的重要性" class="headerlink" title="计算机系统中抽象的重要性"></a>计算机系统中抽象的重要性</h4><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yvecy.jpg" alt="计算机系统提供的一些抽象（CSAPP 1-18）"></p>
+<p>虚拟机：通过<code>软件模拟</code>具有完整硬件系统功能的操作系统。</p>
+<h2 id="信息的表示和处理"><a href="#信息的表示和处理" class="headerlink" title="信息的表示和处理"></a>信息的表示和处理</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>Possible encoding methods of 52 cards:</p>
+<ul>
+<li>“one-hot” encoding: 52 bits</li>
+<li>“two-hot” encoding: 4 bits for suits, 13 bits for values</li>
+<li>binary encoding: 6 bits</li>
+<li>better binary encoding: 2 bits for suits, 4 bits for values</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SUIT_MASK = <span class="number">0x0030</span>  <span class="comment">// 0011 0000 get suit</span></span><br><span class="line">VALUE_MASK = <span class="number">0x0F</span>   <span class="comment">// 0000 1111 get value</span></span><br></pre></td></tr></table></figure>
+
+<p>最高有效位 MSB (most significant bit)，即对数值影响最大的一位，对应 LSB。</p>
+<p>三种最重要的数字表示（number representation）：</p>
+<ul>
+<li><code>无符号</code>（unsigned）编码：基于传统二进制表示法表示大于或者等于零的数字。</li>
+<li><code>补码</code>（two’s-complement）编码：表示有符号整数的最常见的方式。</li>
+<li><code>浮点数</code>（floating-point）编码：表示实数的科学记数法以 2 为基数的版本。</li>
+</ul>
+<p>其它术语：<code>反码</code>（Ones’ Complement）、<code>原码</code>（Sign-Magnitude，用于浮点数表示中）。</p>
+<p>C++ 编程语言建立在 C 语言基础之上，它们使用完全相同的数字表示和运算。另一方面，Java 语言创造了一套新的数字表示和运算标准。C 标准中的设计允许多种实现方式，而 Java 标准在数据的格式和编码上是非常精确具体的。</p>
+<p>在 Java 中，它要求采用补码表示，单字节数据类型称为<code>byte</code>，而不是<code>char</code>。这些非常具体的要求都是为了保证无论在什么机器上运行，Java 程序都能表现地完全一样。</p>
+<p>尽管 C 编译器维护着类型信息，但是它生成的实际机器级程序并不包含关于数据类型的信息（都是偏移量）。理解指针的重要性之一是机器级上的表示以及实现是基于指针的方式（地址 + 偏移量）。</p>
+<p>向前兼容（forward &#x2F; upward compatibility）：</p>
+<ul>
+<li>Windows 3.1 要能运行为 Windows 10 开发的程序</li>
+</ul>
+<p>向后兼容（backward &#x2F; downward compatibility）：</p>
+<ul>
+<li>Windows 10 要能运行为 Windows 3.1 开发的程序</li>
+<li>大多数 64 位机器可以运行 32 位机器编译的程序</li>
+</ul>
+<p>小端法（little endian）：<code>最低</code>有效字节在最前面（低地址）的方式。<br>大端法（big endian）：<code>最高</code>有效字节在最前面的方式。</p>
+<ul>
+<li>大多数 Intel 兼容机都只用小端模式。</li>
+<li>IBM 和 Oracle 的大多数机器则是按照大端模式操作（除了使用 Intel 处理器的机器）。</li>
+<li>许多比较新的微处理器是<code>双端法</code>（big-endian），一旦选择特定的操作系统就可以确定下来，如 Android 和 iOS 运行于小端模式。</li>
+</ul>
+<p>该术语出自 Jonathan Swift 的《格利弗游记》（Gulliver’s Travels），其中交战的两个派别无法就应该从哪一端打开一个半熟的鸡蛋达成一致。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/mfgde.jpg" alt="CSAPP p29"></p>
+<p>C 语言的强制类型转换不会改变真实的指针，而只是告诉编译器<code>以新的数据类型来看待被指向的数据</code>。</p>
+<p>二进制代码很少能在不同机器和操作系统组合之间移植，所以要抽象。</p>
+<p>C 语言标准并没有要求用补码形式来表示有符号整数，但是几乎所有的机器都是这么做的。</p>
+<p>在 C 头文件 limits.h 中，使用了这样的写法：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> INT_MAX 2147483647</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INT_MIN (-INT_MAX - 1)) <span class="comment">// 为什么不直接写成一个数呢？</span></span></span><br></pre></td></tr></table></figure>
+
+<p>补码表示的<code>不对称性</code>和 C 语言的转换规则之间奇怪的交互，迫使我们使用这种不寻常的方式来写。这是一个好的习惯。</p>
+<p><strong>乘法 &#x2F; 除法运算：</strong></p>
+<p>以往，在大多数机器上，整数乘法指令相当慢，需要 10 个或者更多的时钟周期，然而其他整数运算（例如加法、减法、位级运算和移位）只需要 1 个时钟周期。即使在 Intel Core i7 Haswell 上，其整数乘法也需要 3 个时钟周期。因此，编译器使用了一项重要的优化，试着用移位和加法运算的组合来代替乘以常熟因子的乘法。</p>
+<p>由于整数乘法比移位和加法的代价要大得多，许多 C 语言编译器试图以移位、加法和减法的组合来消除很多整数乘以常数的情况。例如，<code>x * 14</code>会变成<code>(x&lt;&lt;3) + (x&lt;&lt;2) + (x&lt;&lt;1)</code>。</p>
+<p>在大多数机器上，整数除法比整数乘法更慢——需要 30 个或者更多的时钟周期。除以 2 的幂也可以用移位运算来实现，只不过我们用的是右移，而不是左移。无符号和补码数分别使用<code>逻辑移位</code>和<code>算术移位</code>来达到目的。</p>
+<h3 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h3><h4 id="二进制小数"><a href="#二进制小数" class="headerlink" title="二进制小数"></a>二进制小数</h4><p>一个图说明二进制小数表示法（$b_m b_{m-1}\cdots b_1 b_0\ .\ b_{-1} b_{-2} \cdots b_{-n-1} b_{-n}$）：</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ge6ok.jpg" alt="小数的二进制表示（CSAPP 2-31）"></p>
+<p>注意，形如 $0.11\cdots 1_2$ 的数表示的是刚好小于 1 的数。例如，$0.111111_2$ 表示 $\frac{63}{64}$。小数的二进制表示只能表示够被写成 $x \times 2^y$ 的数，如数 $\frac{1}{5}$ 不可以被精确表示。</p>
+<h4 id="IEEE-浮点数表示"><a href="#IEEE-浮点数表示" class="headerlink" title="IEEE 浮点数表示"></a>IEEE 浮点数表示</h4><p>IEEE 浮点标准用 $V &#x3D; (-1)^s \times M \times 2^E$ 的形式来表示一个数：</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2fu58.jpg"></p>
+<ul>
+<li><code>符号</code>（sign）：决定这个数的符号，而对于数值为 0 的符号位将会通过特殊情况处理。</li>
+<li><code>尾数</code>（significand）：M 是一个二进制小数，它的范围是 $1 \sim 2-\epsilon$，或者是 $0 \sim 1-\epsilon$。</li>
+<li><code>阶码</code>（exponent）：E 的作用是对浮点数加权，这个权重是 2 的 E 次幂（可能是负数）。</li>
+</ul>
+<p>将浮点数的位表示划分为三个字段，分别对这些值进行编码：</p>
+<ul>
+<li>一个单独的符号位 s 直接编码符号 s。</li>
+<li>k 位的阶码字段 $exp &#x3D; e_{k-1}\cdots e_1 e_0$ 编码阶码 E。</li>
+<li>n 位小数字段 $frac &#x3D; f_{n-1} \cdots f_1 f_0$ 编码尾数 M，但是编码出来的值也依赖于阶码字段的值是否等于 0。</li>
+</ul>
+<p>给定位表示，根据<code>exp</code>的值，被编码的值可以分成三种不同的情况（最后一种情况有两个变种）：</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/abmox.jpg" alt="单精度浮点数数值的分类（CSAPP 2-33）"></p>
+<p><strong>情况 1：规格化的值（Normalized）</strong></p>
+<p>在这种情况下，阶码字段被解释为以<code>偏置（biased）</code>形式表示的有符号整数。也就是说，阶码的值是 $E&#x3D;e-Bias$，其中 e 是无符号整数，对应具体的位表示，而 Bias 是一个等于 $2^{k-1} - 1$（单精度是 127，双精度是 1023）的<code>偏置值</code>，由此分别产生范围是<code>-126 ~ +127</code>和<code>-1022 ~ +1023</code>的整数。</p>
+<p>小数字段 frac 被解释为描述小数值 $f$，其中 $0 \leq f &lt; 1$，而实际的尾数定义为 $M &#x3D; 1+f$。有时，这种方式也叫做<code>隐含的以 1 开头的表示</code>（implied leading 1），以表示 $1.f_{n-1}f_{n-2}\cdots f_0$ 的数字，其范围在原来的基础上加 1。</p>
+<p><strong>情况 2：非规格化的值（Denormalized）</strong></p>
+<p>阶码位全为 0。在这种情况下，阶码值是 $E&#x3D;1-Bias$（使用 1 是因为可以提供一种从非规格化值平滑转换到规格化值的方法，可以补偿非规格化数的尾数没有隐含的开头的 1），而尾数的值是 $M&#x3D;f$，也就是小数字段的值，不好隐含的 1。</p>
+<p>非规格化有两个用途：</p>
+<ul>
+<li>首先，它们提供了一种表示数值 0 的方法，但存在<code>+0.0</code>和<code>-0.0</code>两种情况，其在某些方面被认为是不同的。</li>
+<li>其次，它还可以表示那些非常接近于 0.0 的数。它们提供了一种属性，称为<code>逐渐溢出</code>（gradual underflow），其中，可能的数值分布均匀地接近于 0.0。</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5c5ct.jpg" alt="CSAPP 2-34"></p>
+<p><strong>情况 3：特殊值</strong></p>
+<p>阶码位全为 1。当小数域全为 0 时，得到的值表示无穷，当 s &#x3D; 0 时是正无穷，s &#x3D; 1 时是负无穷。当我们把两个非常大的数相乘，或者除以 0 时，无穷能够表示溢出的结果。当小数域为非 0 时，结果值被称为<code>NaN</code>，即不是一个数的英文缩写，如计算 $\sqrt{-1}$、$\infty-\infty$。在某些应用中，表示未初始化的数据时，它们也很有用处。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">12345 (10) = 11000000111001 (2)</span><br><span class="line">// normalized</span><br><span class="line">1.1000000111001 (2) x 2^13</span><br><span class="line">// 实际上后h还要补 10 个 0，得到 M</span><br><span class="line">E = exp - Bias -&gt; exp = E + Bias = 13 + 127 = 140 = 10001100 (2)</span><br></pre></td></tr></table></figure>
+
+<h4 id="舍入（Rounding）"><a href="#舍入（Rounding）" class="headerlink" title="舍入（Rounding）"></a>舍入（Rounding）</h4><p>一个关键的问题是如何在两个可能值的中间确定<code>舍入方向</code>。IEEE 浮点格式定义了四种不同的<code>舍入方式</code>。默认的方法是找到最接近的匹配，而其他三种方法可用于计算上界和下界。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bwwhg.jpg" alt="四种舍入方式（CSAPP 2-37）"></p>
+<ul>
+<li><code>向偶舍入</code>（也被称为<code>向最接近的值舍入</code>，round-to-nearest）：将数字向上或者向下舍入，使得结果的最低有效数字是偶数，如 1.5 和 2.5 都舍入成 2。</li>
+<li><code>向零舍入</code>：把正数向下舍入，把负数向上舍入。</li>
+</ul>
+<p>始终向一个方向舍入会在计算这些值的平均数中引入统计偏差，最后得到的平均值可能会比本身的平均值略高或者略低一些。<code>向偶舍入</code>在大多数现实情况中避免了这种统计偏差。</p>
+<h4 id="浮点运算"><a href="#浮点运算" class="headerlink" title="浮点运算"></a>浮点运算</h4><p>IEEE 标准中指定浮点运算行为方法的一个优势在于，它可以独立于任何具体的硬件或者软件实现，因此，我们只需要检查它的抽象数学属性是否正确即可。</p>
+<p>浮点加法不具有<code>结合性</code>，这是缺少的最重要的群属性。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x = a + b + c;</span><br><span class="line">y = b + c + d;</span><br></pre></td></tr></table></figure>
+
+<p>编译器可能试图通过产生下列代码来省去一个浮点加法：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">t = b + c;</span><br><span class="line">x = a + t;</span><br><span class="line">y = t + d;</span><br></pre></td></tr></table></figure>
+
+<p>然而，对于 x 来说，这个计算可能会产生与原始值不同的值，因为它使用了加法运算的不同的结合方式。不幸的是，编译器无法知道在效率和忠实于原始程序的确切行为之间，使用者愿意做出什么样的选择。结果是，编译器倾向于保守，避免任何对功能产生影响的优化，即使是很轻微的影响。</p>
+<p>此外，浮点运算还缺少<code>分配性</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">3.14</span> + <span class="number">1e10</span>) - <span class="number">1e10</span> != <span class="number">3.14</span> + (<span class="number">1e10</span> - <span class="number">1e10</span>);</span><br><span class="line"><span class="number">1e20</span> * (<span class="number">1e20</span> - <span class="number">1e20</span>) != </span><br><span class="line">(<span class="number">1e20</span> * <span class="number">1e20</span>) - (<span class="number">1e20</span> * <span class="number">1e20</span>) = <span class="number">0</span></span><br><span class="line"><span class="comment">// 无穷大 - 无穷大</span></span><br></pre></td></tr></table></figure>
+
+<p>C 语言标准不要求机器使用 IEEE 浮点，所以没有标准的方法来改变舍入方式或者得到诸如 -0、正无穷、负无穷 或者 NaN 之类的特殊值。</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

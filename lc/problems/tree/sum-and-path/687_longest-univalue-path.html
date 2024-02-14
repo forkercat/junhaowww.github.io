@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Easy Problem Given a binary tree, find the length of the longest path where each node in the path has the same value. This path may or may not pass through the root.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="687. Longest Univalue Path">
+<meta property="og:url" content="https://junhaow.com/lc/problems/tree/sum-and-path/687_longest-univalue-path.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Easy Problem Given a binary tree, find the length of the longest path where each node in the path has the same value. This path may or may not pass through the root.">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.151Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.150Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>687. Longest Univalue Path</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-univalue-path/">LeetCode</a><br>Difficulty: <span class="green">Easy</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a binary tree, find the length of the longest path where each node in the path has the same value. This path may or may not pass through the root.</p>
+</blockquote>
+<blockquote>
+<p>The length of path between two nodes is represented by the number of edges between them.</p>
+</blockquote>
+<p><strong>Note:</strong> The given binary tree has not more than 10000 nodes. The height of the tree is not more than 1000.</p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">    <span class="number">5</span></span><br><span class="line">   / \</span><br><span class="line">  <span class="number">4</span>   <span class="number">5</span></span><br><span class="line"> / \   \</span><br><span class="line"><span class="number">1</span>   <span class="number">1</span>   <span class="number">5</span></span><br><span class="line">Output: <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">    <span class="number">1</span></span><br><span class="line">   / \</span><br><span class="line">  <span class="number">4</span>   <span class="number">5</span></span><br><span class="line"> / \   \</span><br><span class="line"><span class="number">4</span>   <span class="number">4</span>   <span class="number">5</span></span><br><span class="line">Output: <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p>Note that the following <code>0-1-2-3</code> is not a path (degree should be less than or equal to 2). In other words, a path can only be a list.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    <span class="number">0</span></span><br><span class="line">   /</span><br><span class="line">  <span class="number">1</span></span><br><span class="line"> / \</span><br><span class="line"><span class="number">2</span>   <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Methods:</strong></p>
+<ol>
+<li>Recursion<ul>
+<li>We need a <code>lengthHelper</code> to return the max value on one side. Plus the root’s size $1$ only if a child has the same value as the root does, or $2$ if both children satisfy this constraint.</li>
+<li><strong>Time:</strong> $O(N)$</li>
+<li><strong>Space:</strong> $O(h)$</li>
+</ul>
+</li>
+</ol>
+<p>Check out the improved code below directly. Bad code is just a record of my first attempt.</p>
+<p><strong>Bad Code:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> Integer.MIN_VALUE;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">longestUnivaluePath</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  result = Integer.MIN_VALUE;</span><br><span class="line">  sameLength(root);</span><br><span class="line">  <span class="keyword">return</span> result - <span class="number">1</span>;  <span class="comment">// #link = #node - 1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">lengthHelper</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// should go in depth first</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">leftMax</span> <span class="operator">=</span> sameLength(root.left);</span><br><span class="line">  <span class="type">int</span> <span class="variable">rightMax</span> <span class="operator">=</span> sameLength(root.right);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// only on one side</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">maxOnOneSide</span> <span class="operator">=</span> <span class="number">1</span>; <span class="comment">// the root + one max side. At least only the root satisfies</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">maxOnBothSides</span> <span class="operator">=</span> <span class="number">1</span>;    <span class="comment">// the root + both max sides</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// left</span></span><br><span class="line">  <span class="keyword">if</span> (root.left != <span class="literal">null</span> &amp;&amp; root.left.val == root.val) &#123;</span><br><span class="line">    maxOnOneSide += leftMax;</span><br><span class="line">    maxOnBothSides += leftMax;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// right</span></span><br><span class="line">  <span class="keyword">if</span> (root.right != <span class="literal">null</span> &amp;&amp; root.right.val == root.val) &#123;</span><br><span class="line">    maxOnOneSide = Math.max(maxOnOneSide, <span class="number">1</span> + rightMax);</span><br><span class="line">    maxOnBothSides += rightMax;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// update the global result</span></span><br><span class="line">  result = Math.max(maxLength, maxOnBothSides);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> maxOnOneSide;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Improved code:</strong></p>
+<ul>
+<li>I first compute the length as the number of nodes in the path and I will subtract one at the end.</li>
+<li>Since this problem is a <code>counting problem</code>, we can initialize <code>result</code> as <code>0</code> instead of <code>Integer.MIN_VALUE</code>. However, in this case, we want the final result subtracted by one, so we can initialize it with <code>1</code>.<ul>
+<li><code>root == null</code> returns <code>0</code>.</li>
+<li><code>size == 1</code> return <code>0</code>.</li>
+</ul>
+</li>
+<li><code>recursive call</code> must be put in advance, since we need to go depth to update the global max property.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">int</span> result;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">longestUnivaluePath</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  result = <span class="number">1</span>;</span><br><span class="line">  lengthHelper(root);</span><br><span class="line">  <span class="keyword">return</span> result - <span class="number">1</span>;  <span class="comment">// #link = #node - 1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">lengthHelper</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> <span class="variable">L</span> <span class="operator">=</span> lengthHelper(root.left);</span><br><span class="line">  <span class="type">int</span> <span class="variable">R</span> <span class="operator">=</span> lengthHelper(root.right);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// We need to check if left and right are OKAY with the root.</span></span><br><span class="line">  <span class="comment">// If not, keep it as 0. =&gt; clean code</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">validLeft</span> <span class="operator">=</span> <span class="number">0</span>, validRight = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (root.left != <span class="literal">null</span> &amp;&amp; root.left.val == root.val) &#123;</span><br><span class="line">    validLeft = L;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (root.right != <span class="literal">null</span> &amp;&amp; root.right.val == root.val) &#123;</span><br><span class="line">    validRight = R;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// crossing the root / or not crossing the root</span></span><br><span class="line">  <span class="built_in">this</span>.result = Math.max(<span class="built_in">this</span>.result, validLeft + validRight + <span class="number">1</span>);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span> + Math.max(validLeft, validRight); <span class="comment">// must includes root + one path (maybe 0)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

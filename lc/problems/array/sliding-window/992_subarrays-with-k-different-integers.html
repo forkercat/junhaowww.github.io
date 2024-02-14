@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Hard Problem Given an array A of positive integers, call a (contiguous, not necessarily distinct) subarray of A good if the number of different integers in that subarr">
+<meta property="og:type" content="website">
+<meta property="og:title" content="992. Subarrays with K Different Integers">
+<meta property="og:url" content="https://junhaow.com/lc/problems/array/sliding-window/992_subarrays-with-k-different-integers.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Hard Problem Given an array A of positive integers, call a (contiguous, not necessarily distinct) subarray of A good if the number of different integers in that subarr">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ssv46.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.103Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.103Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ssv46.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>992. Subarrays with K Different Integers</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/subarrays-with-k-different-integers/">LeetCode</a><br>Difficulty: <span class="red">Hard</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given an array <code>A</code> of <strong>positive</strong> integers, call a (contiguous, not necessarily distinct) subarray of <code>A</code> good if the number of different integers in that subarray is <strong>exactly</strong> <code>K</code>.</p>
+</blockquote>
+<blockquote>
+<p>(For example, <code>[1,2,3,1,2]</code> has 3 different integers: 1, 2, and 3.)</p>
+</blockquote>
+<blockquote>
+<p>Return the number of good subarrays of <code>A</code>.</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>The resulting subarrays is not required to be distinct.</li>
+<li><code>1 &lt;= A.length &lt;= 20000</code></li>
+<li><code>1 &lt;= A[i] &lt;= A.length</code></li>
+<li><code>11 &lt;= K &lt;= A.length</code></li>
+</ul>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Input: A = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], K = <span class="number">2</span></span><br><span class="line">Output: <span class="number">7</span></span><br><span class="line">Explanation: Subarrays formed with exactly <span class="number">2</span> different integers: [<span class="number">1</span>,<span class="number">2</span>], [<span class="number">2</span>,<span class="number">1</span>], [<span class="number">1</span>,<span class="number">2</span>], [<span class="number">2</span>,<span class="number">3</span>], [<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>], [<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>], [<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>].</span><br><span class="line"></span><br><span class="line">Input: A = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>], K = <span class="number">3</span></span><br><span class="line">Output: <span class="number">3</span></span><br><span class="line">Explanation: Subarrays formed with exactly <span class="number">3</span> different integers: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>], [<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>], [<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>].</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p>For each subarray ($\sim N^2$ in total), check if there are <code>K</code> distinct elements.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">subarraysWithKDistinct</span><span class="params">(<span class="type">int</span>[] A, <span class="type">int</span> K)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> A.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i; j &lt; n; ++j) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">subLen</span> <span class="operator">=</span> j - i + <span class="number">1</span>;</span><br><span class="line">      <span class="keyword">if</span> (subLen &lt; K) <span class="keyword">continue</span>; <span class="comment">// length does not respect</span></span><br><span class="line">      Set&lt;Integer&gt; set = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">t</span> <span class="operator">=</span> i; t &lt;= j; ++t) &#123; <span class="comment">// for each element in subarray</span></span><br><span class="line">        set.add(A[t]);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (set.size() == K) ++count;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^3)$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="Hash-Set"><a href="#Hash-Set" class="headerlink" title="Hash Set"></a>Hash Set</h3><p>For each element <code>A[i]</code> as the starting element of a subarray, we can use a hash set to control the current number of elements. Specifically, we first keep adding elements to the set until its size reaches <code>K</code> or there are no more elements that could be added.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">subarraysWithKDistinct</span><span class="params">(<span class="type">int</span>[] A, <span class="type">int</span> K)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> A.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    Set&lt;Integer&gt; set = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">    <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i;</span><br><span class="line">    <span class="keyword">while</span> (j &lt; n &amp;&amp; set.size() &lt; K) &#123;</span><br><span class="line">      set.add(A[j]);</span><br><span class="line">      ++j;</span><br><span class="line">    &#125; <span class="comment">// set&#x27;s size equals K or j &gt;= n</span></span><br><span class="line">    <span class="keyword">if</span> (set.size() == K) &#123;</span><br><span class="line">      ++count;</span><br><span class="line">      <span class="keyword">while</span> (j &lt; n) &#123; <span class="comment">// keep adding to the set</span></span><br><span class="line">        set.add(A[j]);</span><br><span class="line">        <span class="keyword">if</span> (set.size() == K) &#123;</span><br><span class="line">          ++count;</span><br><span class="line">          ++j;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^2)$<br><strong>Space:</strong> $O(K)$ since the size of the set is limited by $K$.</p>
+<h3 id="Sliding-Window"><a href="#Sliding-Window" class="headerlink" title="Sliding Window"></a>Sliding Window</h3><p>The idea is to calculate the number of subarrays with at most <code>K</code> distinct characters and with at most <code>K - 1</code> distinct characters and then do subtraction.</p>
+<p>Example of calculating the count of at most <code>K = 3</code> in <code>[1, 2, 1, 3, 4]</code>:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ssv46.jpg"></p>
+<p>Notice why <code>count += end - start + 1</code> works here.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">subarraysWithKDistinct</span><span class="params">(<span class="type">int</span>[] A, <span class="type">int</span> K)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> A.length;</span><br><span class="line">  <span class="keyword">return</span> subarraysWithAtMostKDistinct(A, K) - subarraysWithAtMostKDistinct(A, K - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">subarraysWithAtMostKDistinct</span><span class="params">(<span class="type">int</span>[] A , <span class="type">int</span> K)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> A.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;(); <span class="comment">// count the elements</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">start</span> <span class="operator">=</span> <span class="number">0</span>, end = <span class="number">0</span>; end &lt; n; ++end) &#123;</span><br><span class="line">    map.put(A[end], map.getOrDefault(A[end], <span class="number">0</span>) + <span class="number">1</span>); <span class="comment">// add one</span></span><br><span class="line">    <span class="comment">// size exceeds</span></span><br><span class="line">    <span class="keyword">while</span> (map.size() &gt; K) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> map.get(A[start]);</span><br><span class="line">      map.put(A[start], c - <span class="number">1</span>); <span class="comment">// minus one</span></span><br><span class="line">      <span class="keyword">if</span> (c - <span class="number">1</span> == <span class="number">0</span>) &#123;</span><br><span class="line">        map.remove(A[start]);</span><br><span class="line">      &#125;</span><br><span class="line">      ++start;</span><br><span class="line">    &#125;</span><br><span class="line">    count += end - start + <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Or in one-pass:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">subarraysWithKDistinct</span><span class="params">(<span class="type">int</span>[] A, <span class="type">int</span> K)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> A.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  Map&lt;Integer, Integer&gt; window1 = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  Map&lt;Integer, Integer&gt; window2 = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">start1</span> <span class="operator">=</span> <span class="number">0</span>, start2 = <span class="number">0</span>, end = <span class="number">0</span>; end &lt; n; ++end) &#123;</span><br><span class="line">    window1.put(A[end], window1.getOrDefault(A[end], <span class="number">0</span>) + <span class="number">1</span>); <span class="comment">// add one</span></span><br><span class="line">    window2.put(A[end], window2.getOrDefault(A[end], <span class="number">0</span>) + <span class="number">1</span>); <span class="comment">// add one</span></span><br><span class="line">    <span class="comment">// size exceeds</span></span><br><span class="line">    <span class="keyword">while</span> (window1.size() &gt; K) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> window1.get(A[start1]);</span><br><span class="line">      window1.put(A[start1], c - <span class="number">1</span>);</span><br><span class="line">      <span class="keyword">if</span> (c - <span class="number">1</span> == <span class="number">0</span>) &#123;</span><br><span class="line">        window1.remove(A[start1]);</span><br><span class="line">      &#125;</span><br><span class="line">      ++start1;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (window2.size() &gt; K - <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> window2.get(A[start2]);</span><br><span class="line">      window2.put(A[start2], c - <span class="number">1</span>);</span><br><span class="line">      <span class="keyword">if</span> (c - <span class="number">1</span> == <span class="number">0</span>) &#123;</span><br><span class="line">        window2.remove(A[start2]);</span><br><span class="line">      &#125;</span><br><span class="line">      ++start2;</span><br><span class="line">    &#125;</span><br><span class="line">    count += start2 - start1;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(K)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

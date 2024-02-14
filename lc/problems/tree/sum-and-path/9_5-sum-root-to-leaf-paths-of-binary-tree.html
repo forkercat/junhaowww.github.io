@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: EPI 9.5 Problem Consider a binary tree in which each node contains a binary digit. A root-to-leaf path can be associated with a binary number (the MSB is at the root). Design an algorithm">
+<meta property="og:type" content="website">
+<meta property="og:title" content="EPI 9.5 | Sum Root-To-Leaf Paths of Binary Tree (Binary Data)">
+<meta property="og:url" content="https://junhaow.com/lc/problems/tree/sum-and-path/9_5-sum-root-to-leaf-paths-of-binary-tree.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: EPI 9.5 Problem Consider a binary tree in which each node contains a binary digit. A root-to-leaf path can be associated with a binary number (the MSB is at the root). Design an algorithm">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sz3py.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.151Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.151Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sz3py.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>EPI 9.5 | Sum Root-To-Leaf Paths of Binary Tree (Binary Data)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <span class="gray">EPI 9.5</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Consider a binary tree in which each node contains a <code>binary digit</code>. A root-to-leaf path can be associated with a binary number (the MSB is at the root). Design an algorithm to compute the sum of the binary numbers represented by the root-to-leaf paths.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Input: [<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]</span><br><span class="line">    <span class="number">1</span></span><br><span class="line">   / \</span><br><span class="line">  <span class="number">0</span>   <span class="number">1</span></span><br><span class="line"> / \</span><br><span class="line"><span class="number">1</span>   <span class="number">1</span></span><br><span class="line">Output: <span class="number">13</span> = (<span class="number">101</span>) + (<span class="number">101</span>) + (<span class="number">11</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p><strong>Methods:</strong></p>
+<ol>
+<li>Brute-Force<ul>
+<li>Compute the <code>leaves</code> and store in a list.</li>
+<li>Store the <code>child-parent mapping</code> in a hash table.</li>
+<li>For each leaf in the list, we traverse from the leaf to the root, and sum up digits to get a value of each path.</li>
+<li>Sum those values to obtain the result.</li>
+<li><strong>Time:</strong> $O(N + Lh)$ where $L$ is the number of leaf-to-root paths (#leaves).<ul>
+<li>$O(N)$: Traverse the whole tree to store leaves and child-parent mapping.</li>
+<li>$O(Lh)$: Compute the sum.</li>
+</ul>
+</li>
+<li><strong>Space:</strong> $O(N)$</li>
+</ul>
+</li>
+<li>One-Pass<ul>
+<li>Paths share nodes and it is not necessary to repeat computations for shared nodes.</li>
+<li>Pass down the <code>result</code> as an argument to the leaf node and then return the result.</li>
+<li>In a decimal perspective, we double the result, equivalent to left shirting by one.</li>
+<li><strong>Time:</strong> $O(N)$</li>
+<li><strong>Space:</strong> $O(h)$</li>
+</ul>
+</li>
+</ol>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p><strong>Note:</strong></p>
+<ul>
+<li>Learn using <code>preorder</code> or <code>inorder</code> traversal to set up child-parent mapping.</li>
+<li><strong>This code fails! See details below.</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> HashMap&lt;BinaryTreeNode&lt;Integer&gt;, BinaryTreeNode&lt;Integer&gt;&gt; map;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> ArrayList&lt;BinaryTreeNode&lt;Integer&gt;&gt; leaves;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">sumRootToLeaf</span><span class="params">(BinaryTreeNode&lt;Integer&gt; tree)</span> &#123;</span><br><span class="line">  map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  leaves = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  findParentsAndLeaves(tree, <span class="literal">null</span>); <span class="comment">// root&#x27;s parent is null</span></span><br><span class="line"></span><br><span class="line">  <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>; <span class="comment">// sum up</span></span><br><span class="line">  <span class="keyword">for</span> (BinaryTreeNode&lt;Integer&gt; leaf : leaves) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">val</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    BinaryTreeNode&lt;Integer&gt; p = leaf;</span><br><span class="line">    <span class="type">int</span> k; <span class="comment">// bit offset</span></span><br><span class="line">    <span class="keyword">for</span> (k = <span class="number">0</span>, p = leaf; p != <span class="literal">null</span>; ++k, p = map.get(p)) &#123;</span><br><span class="line">      val = val + (p.data &lt;&lt; k);</span><br><span class="line">    &#125;</span><br><span class="line">    sum += val;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Preorder traversal</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">findParentsAndLeaves</span><span class="params">(BinaryTreeNode&lt;Integer&gt; tree,  BinaryTreeNode&lt;Integer&gt; parent)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (tree == <span class="literal">null</span>) <span class="keyword">return</span>;</span><br><span class="line">  <span class="comment">// store leaves</span></span><br><span class="line">  <span class="keyword">if</span> (tree.left == <span class="literal">null</span> &amp;&amp; tree.right == <span class="literal">null</span>) leaves.add(tree);</span><br><span class="line">  <span class="comment">// map child-parent</span></span><br><span class="line">  map.put(tree, parent);</span><br><span class="line"></span><br><span class="line">  findParentsAndLeaves(tree.left, tree);</span><br><span class="line">  findParentsAndLeaves(tree.right, tree);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Why it fails?</strong></p>
+<p>Since it failed the first test case, I tried to come up with some simple test cases and located the bug. It was strange that it could pass some cases but could not pass the other. For example, it could not pass the following test case:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Input: [<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]</span><br><span class="line">    <span class="number">1</span>              b1</span><br><span class="line">   / \            / \</span><br><span class="line">  <span class="number">0</span>   <span class="number">1</span>    &lt;=&gt;   b2  b3</span><br><span class="line"> / \            / \</span><br><span class="line"><span class="number">1</span>   <span class="number">1</span>          b4  b5</span><br><span class="line">Output: <span class="number">13</span> = (<span class="number">101</span>) + (<span class="number">101</span>) + (<span class="number">11</span>)</span><br></pre></td></tr></table></figure>
+
+<p>After a whole examination on the code, I believed the bug should be in the method <code>findParentsAndLeaves</code>. As for this case, <code>map.put(tree, parent)</code> did not correctly set the mapping from <code>b4</code> to <code>b2</code>. However, if I changed the data values of all nodes from <code>[1,0,1,1,1]</code> to <code>[1,2,3,4,5]</code>, it worked as expected.</p>
+<p>So I started doubting that the problem might be related to the <code>hashCode</code> method in the class <code>BinaryTreeNode</code>. The testing code for the hash code is as follows:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">BinaryTreeNode&lt;Integer&gt; b1 = <span class="keyword">new</span> <span class="title class_">BinaryTreeNode</span>&lt;&gt;(<span class="number">1</span>);</span><br><span class="line">BinaryTreeNode&lt;Integer&gt; b2 = <span class="keyword">new</span> <span class="title class_">BinaryTreeNode</span>&lt;&gt;(<span class="number">0</span>);</span><br><span class="line">BinaryTreeNode&lt;Integer&gt; b3 = <span class="keyword">new</span> <span class="title class_">BinaryTreeNode</span>&lt;&gt;(<span class="number">1</span>);</span><br><span class="line">BinaryTreeNode&lt;Integer&gt; b4 = <span class="keyword">new</span> <span class="title class_">BinaryTreeNode</span>&lt;&gt;(<span class="number">1</span>);</span><br><span class="line">BinaryTreeNode&lt;Integer&gt; b5 = <span class="keyword">new</span> <span class="title class_">BinaryTreeNode</span>&lt;&gt;(<span class="number">1</span>);</span><br><span class="line">b1.left = b2; b1.right = b3;</span><br><span class="line">b2.left = b4; b2.right = b5;</span><br><span class="line">System.out.println(b1.hashCode()); <span class="comment">// 31491009</span></span><br><span class="line">System.out.println(b2.hashCode()); <span class="comment">// 1013855</span></span><br><span class="line">System.out.println(b3.hashCode()); <span class="comment">// 30752</span></span><br><span class="line">System.out.println(b4.hashCode()); <span class="comment">// 30752   &lt;======= The problem is here</span></span><br><span class="line">System.out.println(b5.hashCode()); <span class="comment">// 30752</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>The hash code values of some nodes are the same!</strong> Then I checked out the <code>hashCode</code> method in the <code>BinaryTreeNode</code> class:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> Objects.hash(data, left, right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sz3py.png"></p>
+<p>This is reason why the hash code values were equal. Without hesitation, I uncommented it and let it calculate the hash code by the address of an object.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(b1.hashCode()); <span class="comment">// 1802598046</span></span><br><span class="line">System.out.println(b2.hashCode()); <span class="comment">// 659748578</span></span><br><span class="line">System.out.println(b3.hashCode()); <span class="comment">// 240650537    =&gt; Work well!</span></span><br><span class="line">System.out.println(b4.hashCode()); <span class="comment">// 483422889</span></span><br><span class="line">System.out.println(b5.hashCode()); <span class="comment">// 2088051243</span></span><br></pre></td></tr></table></figure>
+
+<p>Finally, I reran the test and it passed…</p>
+<p>The <strong>takeaway</strong> of this 1-hour debugging journey is that if nodes in a binary tree are not unique, be careful of using mapping. Since it is not a <code>BstNode</code>, I think the test’s writer should not override the <code>hashCode</code> method in <code>BinaryTreeNode</code>.</p>
+<h3 id="One-Pass"><a href="#One-Pass" class="headerlink" title="One-Pass"></a>One-Pass</h3><p><strong>Note:</strong></p>
+<ul>
+<li>Be careful of the corner cases, they are very annoying.<ul>
+<li>It should return the result immediately when it hits a leaf node.</li>
+<li>Otherwise, it will return <code>x + y = 0</code> instead of the <code>result</code>.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">sumRootToLeaf</span><span class="params">(BinaryTreeNode&lt;Integer&gt; tree)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (tree == <span class="literal">null</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">return</span> sum(tree, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">sum</span><span class="params">(BinaryTreeNode&lt;Integer&gt; node, <span class="type">int</span> result)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (node == <span class="literal">null</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  result = (result &lt;&lt; <span class="number">1</span>) + node.data;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (node.left == <span class="literal">null</span> &amp;&amp; node.right == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> sum(node.left, result);</span><br><span class="line">  <span class="type">int</span> <span class="variable">y</span> <span class="operator">=</span> sum(node.right, result);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

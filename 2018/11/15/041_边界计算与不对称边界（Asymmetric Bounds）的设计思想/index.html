@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="如果一个数组有 10 个元素，那么这个数组下标的允许取值范围是什么？   对于 Fortran 语言，数组的下标取值缺省从 1 开始，且允许编程者另外指定数组下标的起始值。 对于 Algol 和 Pascal 语言，数组下标没有缺省的起始值，编程者必须明确指定每个数组的上下界。 对于标准的 Basic 语言，声明一个拥有 10 个元素的数组，实际上编译器分配了 11 个元素空间，下标范围从 0">
+<meta property="og:type" content="article">
+<meta property="og:title" content="边界计算与不对称边界（Asymmetric Bounds）的设计思想">
+<meta property="og:url" content="https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="如果一个数组有 10 个元素，那么这个数组下标的允许取值范围是什么？   对于 Fortran 语言，数组的下标取值缺省从 1 开始，且允许编程者另外指定数组下标的起始值。 对于 Algol 和 Pascal 语言，数组下标没有缺省的起始值，编程者必须明确指定每个数组的上下界。 对于标准的 Basic 语言，声明一个拥有 10 个元素的数组，实际上编译器分配了 11 个元素空间，下标范围从 0">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/z6pdt.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5ayv9.jpg">
+<meta property="article:published_time" content="2018-11-16T07:51:21.000Z">
+<meta property="article:modified_time" content="2024-02-13T16:09:47.689Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="C Traps and Pitfalls">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/z6pdt.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>边界计算与不对称边界（Asymmetric Bounds）的设计思想</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Posts</a></li><!--
+     --><!--
+       --><li><a href="/studynotes/">Notes</a></li><!--
+     --><!--
+       --><li><a href="/lc/">Leetcode</a></li><!--
+     --><!--
+       --><li><a href="/games/">Games</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">Me</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/12/23/042_%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E9%AB%98%E6%95%88%E5%9C%B0%E4%BD%BF%E7%94%A8%20MacBook/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/10/22/040_%E5%A6%82%E4%BD%95%E8%AE%B0%E4%BD%8F%20C%20%E8%AF%AD%E8%A8%80%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%9F/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/&text=边界计算与不对称边界（Asymmetric Bounds）的设计思想"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/&title=边界计算与不对称边界（Asymmetric Bounds）的设计思想"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/&is_video=false&description=边界计算与不对称边界（Asymmetric Bounds）的设计思想"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=边界计算与不对称边界（Asymmetric Bounds）的设计思想&body=Check out this article: https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/&title=边界计算与不对称边界（Asymmetric Bounds）的设计思想"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/&title=边界计算与不对称边界（Asymmetric Bounds）的设计思想"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/&title=边界计算与不对称边界（Asymmetric Bounds）的设计思想"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/&title=边界计算与不对称边界（Asymmetric Bounds）的设计思想"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/&name=边界计算与不对称边界（Asymmetric Bounds）的设计思想&description=&lt;blockquote&gt;
+&lt;p&gt;如果一个数组有 10 个元素，那么这个数组下标的允许取值范围是什么？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;对于 Fortran 语言，数组的下标取值缺省从 1 开始，且允许编程者另外指定数组下标的起始值。&lt;/li&gt;
+&lt;li&gt;对于 Algol 和 Pascal 语言，数组下标没有缺省的起始值，编程者必须明确指定每个数组的上下界。&lt;/li&gt;
+&lt;li&gt;对于标准的 Basic 语言，声明一个拥有 10 个元素的数组，实际上编译器分配了 11 个元素空间，下标范围从 0 到 10。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在 C 语言中，一个拥有 n 个元素的数组，却不存在下标为 n 的元素，它的元素的下标范围是从 0 到 n - 1。&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; i, a[&lt;span class=&#34;number&#34;&gt;10&lt;/span&gt;];&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;for&lt;/span&gt; (i = &lt;span class=&#34;number&#34;&gt;1&lt;/span&gt;; i &amp;lt;= &lt;span class=&#34;number&#34;&gt;10&lt;/span&gt;; ++i) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  a[i] = &lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/&t=边界计算与不对称边界（Asymmetric Bounds）的设计思想"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        边界计算与不对称边界（Asymmetric Bounds）的设计思想
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Junhao Wang</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-11-16T07:51:21.000Z" class="dt-published" itemprop="datePublished">2018-11-15</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/C/">C</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/C/" rel="tag">C</a>, <a class="p-category" href="/tags/C-Traps-and-Pitfalls/" rel="tag">C Traps and Pitfalls</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <blockquote>
+<p>如果一个数组有 10 个元素，那么这个数组下标的允许取值范围是什么？</p>
+</blockquote>
+<ul>
+<li>对于 Fortran 语言，数组的下标取值缺省从 1 开始，且允许编程者另外指定数组下标的起始值。</li>
+<li>对于 Algol 和 Pascal 语言，数组下标没有缺省的起始值，编程者必须明确指定每个数组的上下界。</li>
+<li>对于标准的 Basic 语言，声明一个拥有 10 个元素的数组，实际上编译器分配了 11 个元素空间，下标范围从 0 到 10。</li>
+</ul>
+<p>在 C 语言中，一个拥有 n 个元素的数组，却不存在下标为 n 的元素，它的元素的下标范围是从 0 到 n - 1。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> i, a[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">1</span>; i &lt;= <span class="number">10</span>; ++i) &#123;</span><br><span class="line">  a[i] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>这段代码的本意是将数组 a 中所有的元素赋值为 0。但代码中的 a[10] 将数组 a 之后的一个字（word）的内存被设置为 0。如果用来编译这段程序的编译器按照内存地址递减的方式来给变量分配内存，那么内存中数组之后的一个字实际上是分配给了整型变量 i。此时，本来循环计数器 i 的值为 10，<code>a[10] = 0</code> 使得 i 的值变成 0，这就陷入了一个死循环。</p>
+<p>尽管 C 语言的数组会让新手感到困惑，但这种特别的设计正是其最大优势所在。在常见的程序错误中，最难于发现的一类是 <code>栏杆错误</code>，也被称为 <code>差一错误</code>（off-by-one error）。</p>
+<blockquote>
+<p>《C 专家编程》：C 语言的许多其他特性是<strong>为了方便编译器设计者而建立的。</strong>数组下标为什么从 0 开始而不是 1，因为编译器的设计者选择从 0 开始。<strong>偏移量的概念在他们心中已是根深蒂固</strong>。</p>
+</blockquote>
+<blockquote>
+<p>100 英尺长的围栏每隔 10 英尺需要一根支撑用的栏杆，一共需要多少根栏杆呢？</p>
+</blockquote>
+<p>如果不加思考，给出的回答很可能是 10，而正确答案是 11，这就是 <code>栏杆错误</code>。它经常发生在循环中的越界问题中，比如 if 中的表达式应该用小于还是小于等于？</p>
+<p>通常，解决这类问题可以参考以下两个原则：</p>
+<ol>
+<li>将问题简化，考虑最简单情况下的特例，然后将结果进一步外推。</li>
+<li>仔细计算边界。</li>
+</ol>
+<p>比如，在写遍历、插入、删除链表中元素的代码时，我们可以先考虑没有元素、只有一个元素、两个元素的情况。若代码满足这几种简单的情况，通常可以满足所有情况。</p>
+<p>再比如，假定整数 x 满足边界条件 <code>x &gt;= 16</code> 且 <code>x &lt;= 37</code>，那么此范围内 x 的可能取值有多少个？千万不要因为 37 - 16 &#x3D; 21，就直接认为是 21 个。正确的思路是这样的：</p>
+<ul>
+<li>右值 - 左值 &#x3D; NUM，还要加一还是减一，或是不变？</li>
+<li>举出简单的情况：<code>x &gt;= 16</code> 且 <code>x &lt;= 16</code>、<code>x &gt;= 16</code> 且 <code>x &lt;= 17</code>。</li>
+<li>计算后，前者：NUM &#x3D; 0，实际是 1；后者：NUM &#x3D; 1，实际是 2。</li>
+<li>外推：个数 &#x3D; NUM + 1，有 22 个数。</li>
+</ul>
+<p>为了避免这种情况的发生，我们一般用一个 <code>下界点</code> 和一个 <code>上界点</code> 来表示一个数值范围，其中 <code>下界点</code> 包括在取值范围之中，而 <code>上界点</code> 不在取值范围内。在上例中，范围应该表示为 <code>x &gt;= 16</code> 且 <code>x &lt; 38</code>。</p>
+<p>这种不对称的表达方式也许从数学上而言并不优美，但是对于程序员来说，这种设计有着令人吃惊的简化效果：</p>
+<ol>
+<li>取值范围的大小就是下界与上界之差。38 - 16 刚好等于 22，恰恰是不对称边界所包括的元素个数。</li>
+<li>如果取值范围为空，那么下界等于上界，范围内个数为 0。</li>
+<li>即使取值范围为空，上界也永远不可能小于下界。</li>
+</ol>
+<p>C 数组下标从 0 开始就是运用了这种不对称边界的设计，此时数组的上界就是数组元素的个数。因此，本文开头的代码段应该改写成：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> i, a[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i) &#123; <span class="comment">// 而不是写成 i &lt;= 9</span></span><br><span class="line">  a[i] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另一种考虑不对称边界的方式是，把上界视作序列中第一个<strong>即将被占用</strong>的元素，而把下界视作序列中第一个<strong>即将被释放</strong>的元素，如图所示。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/z6pdt.jpg" alt="不对称边界示意图"></p>
+<p>这种看待问题的方式对于处理各种不同类型的缓冲区特别有用。例如，某函数的功能是将长度无规律的输入数据送到缓冲区，每当这款内存被填满时，就将缓冲区的内容写出。缓冲区的声明如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> N 1024</span></span><br><span class="line"><span class="type">static</span> <span class="type">char</span> buffer[N];</span><br></pre></td></tr></table></figure>
+<p>再设置一个指针变量，指向缓冲区的当前位置：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">char</span> *bufptr;</span><br></pre></td></tr></table></figure>
+<p>我们是让指针 bufptr 始终指向缓冲区中最后一个已占有的字符，还是让它指向缓冲区中之后第一个未被占用的字符？若考虑「不对称边界」的设计思想，后一种选择更为贴切。</p>
+<p>按照「不对称边界」的思想，我们可以这样写：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*bufptr++ = c;  <span class="comment">// 先进行 ++ 运算，所以递增的是 bufptr 本身的值</span></span><br></pre></td></tr></table></figure>
+<p>这个语句把输入字符 c 放到缓冲区中，然后指针 bufptr 递增 1，又指向缓冲区中下一个未被占用的字符。等价于：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">*bufptr = c;</span><br><span class="line">bufptr++;</span><br></pre></td></tr></table></figure>
+
+<p>根据前面所说的第二条效果，当指针 bufptr 与 &amp;buffer[0]（或 buffer）相等时，缓冲区存放的内容为空，因此初始化时缓冲区为空可以这样写：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bufptr = &amp;buffer[<span class="number">0</span>]; <span class="comment">// 或者 buffer</span></span><br></pre></td></tr></table></figure>
+
+<p>任何时候缓冲区中以存放的字符数都是 bufptr - buffer（字符类型占 1 个字节），因此我们可以通过将这个表达式与 N 进行比较，来判断缓冲区是否已满。当填满时，bufptr - buffer 就等于 N。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5ayv9.jpg" alt="缓冲区示意图（灵魂画手）"></p>
+<p>现在，我们写一下 bufwrite 函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// p 指向要写入的字符串的第一个字符，n 是字符个数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">bufwrite</span><span class="params">(<span class="type">char</span> *p, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">while</span> (--n &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (bufptr == &amp;buffer[N]) <span class="comment">// 相当于 bufptr - buffer == N</span></span><br><span class="line">      flushbuffer(); <span class="comment">// 将缓冲区的数据写出，并重置指针 bufptr</span></span><br><span class="line">    *bufptr++ = *p++;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>--n &gt;= 0</code> 是迭代 n 次的一种写法。为了验证这一点，我们可以考察最简单的特例，即 n &#x3D; 1（还记得前面说的原则吗？）。此外，<code>--n &gt;= 0</code> 的效果与 <code>n-- &gt; 0</code> 一样，一般前者更快（后者需要保存 n 的值，然后做递减，最后用保存的值做比较）。</p>
+<p>值得注意的是，在 bufptr 与 &amp;buffer[N] 的比较中，buffer[N] 这个元素根本不存在，而我们仍然使用 <code>if (bufptr == &amp;buffer[N])</code> 代替了 <code>bufptr &gt; &amp;buffer[N - 1]</code> 的写法，原因在于我们要坚持「不对称边界」的原则：我们要比较指针 bufptr 与 缓冲区后一个字符的地址（即上界），而 &amp;buffer[N] 就是这个地址。</p>
+<p>在此，我们并不需要引用一个不存在的元素，而只需要引用这个元素的地址。我们需要保证不对该引用解引，而且在 C 语言中这个地址是的确存在的（ANSI C 标准明确允许这种用法）。</p>
+<p>最后，改进程序，使得它可以一次移动 k 个字符：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">memcpy</span><span class="params">(<span class="type">char</span> *dest, <span class="type">const</span> <span class="type">char</span> *source, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="keyword">while</span> (--k &gt;= <span class="number">0</span>)</span><br><span class="line">    *dest++ = *source++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">bufwrite</span><span class="params">(<span class="type">char</span> *p, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">while</span> (n &gt; <span class="number">0</span>) &#123; <span class="comment">// 先比较，所以用 &gt;</span></span><br><span class="line">    <span class="type">int</span> k, rem;</span><br><span class="line">    <span class="keyword">if</span> (bufptr == &amp;buffer[N])</span><br><span class="line">      flushbuffer();</span><br><span class="line">    rem = N - (bufptr - buffer); <span class="comment">// rem 剩余可分配的字符个数</span></span><br><span class="line">    k = n &gt; rem ? rem : n; <span class="comment">// n 是需要分配的字符数，若条件满足，下一次肯定要 flushbuffer()</span></span><br><span class="line">    <span class="built_in">memcpy</span>(bufptr, p, k);</span><br><span class="line">    bufptr += k;</span><br><span class="line">    p += k;</span><br><span class="line">    n -= k;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解释见注释。</p>
+<p>以上就是不对称边界的两种应用方式。</p>
+<p>参考：《C 陷阱与缺陷，C Traps and Pitfalls》P45（边界计算与不对称边界）</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Posts</a></li>
+        
+          <li><a href="/studynotes/">Notes</a></li>
+        
+          <li><a href="/lc/">Leetcode</a></li>
+        
+          <li><a href="/games/">Games</a></li>
+        
+          <li><a href="/links/">Links</a></li>
+        
+          <li><a href="/about/">Me</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/&text=边界计算与不对称边界（Asymmetric Bounds）的设计思想"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/&title=边界计算与不对称边界（Asymmetric Bounds）的设计思想"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/&is_video=false&description=边界计算与不对称边界（Asymmetric Bounds）的设计思想"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=边界计算与不对称边界（Asymmetric Bounds）的设计思想&body=Check out this article: https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/&title=边界计算与不对称边界（Asymmetric Bounds）的设计思想"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/&title=边界计算与不对称边界（Asymmetric Bounds）的设计思想"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/&title=边界计算与不对称边界（Asymmetric Bounds）的设计思想"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/&title=边界计算与不对称边界（Asymmetric Bounds）的设计思想"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/&name=边界计算与不对称边界（Asymmetric Bounds）的设计思想&description=&lt;blockquote&gt;
+&lt;p&gt;如果一个数组有 10 个元素，那么这个数组下标的允许取值范围是什么？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;对于 Fortran 语言，数组的下标取值缺省从 1 开始，且允许编程者另外指定数组下标的起始值。&lt;/li&gt;
+&lt;li&gt;对于 Algol 和 Pascal 语言，数组下标没有缺省的起始值，编程者必须明确指定每个数组的上下界。&lt;/li&gt;
+&lt;li&gt;对于标准的 Basic 语言，声明一个拥有 10 个元素的数组，实际上编译器分配了 11 个元素空间，下标范围从 0 到 10。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在 C 语言中，一个拥有 n 个元素的数组，却不存在下标为 n 的元素，它的元素的下标范围是从 0 到 n - 1。&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; i, a[&lt;span class=&#34;number&#34;&gt;10&lt;/span&gt;];&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;for&lt;/span&gt; (i = &lt;span class=&#34;number&#34;&gt;1&lt;/span&gt;; i &amp;lt;= &lt;span class=&#34;number&#34;&gt;10&lt;/span&gt;; ++i) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  a[i] = &lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/11/15/041_%E8%BE%B9%E7%95%8C%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%B8%8D%E5%AF%B9%E7%A7%B0%E8%BE%B9%E7%95%8C%EF%BC%88Asymmetric%20Bounds%EF%BC%89%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/&t=边界计算与不对称边界（Asymmetric Bounds）的设计思想"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

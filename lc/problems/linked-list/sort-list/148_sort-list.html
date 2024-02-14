@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: MediumSlow&#x2F;Fast Pointers My Post: Java Mergesort for Sort List (Recursion &amp; Iteration) Problem Sort a linked list in $O(N\log{N})$ time using constant space c">
+<meta property="og:type" content="website">
+<meta property="og:title" content="148. Sort List">
+<meta property="og:url" content="https://junhaow.com/lc/problems/linked-list/sort-list/148_sort-list.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: MediumSlow&#x2F;Fast Pointers My Post: Java Mergesort for Sort List (Recursion &amp; Iteration) Problem Sort a linked list in $O(N\log{N})$ time using constant space c">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.130Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.130Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>148. Sort List</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/sort-list/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span><span class="blue">Slow&#x2F;Fast Pointers</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/sort-list/discuss/435412">Java Mergesort for Sort List (Recursion &amp; Iteration)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Sort a linked list in $O(N\log{N})$ time using constant space complexity.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="number">4</span>-&gt;<span class="number">2</span>-&gt;<span class="number">1</span>-&gt;<span class="number">3</span></span><br><span class="line">Output: <span class="number">1</span>-&gt;<span class="number">2</span>-&gt;<span class="number">3</span>-&gt;<span class="number">4</span></span><br><span class="line"></span><br><span class="line">Input: <span class="number">4</span>-&gt;<span class="number">2</span>-&gt;<span class="number">1</span>-&gt;<span class="number">3</span>-&gt;<span class="number">5</span></span><br><span class="line">Output: <span class="number">1</span>-&gt;<span class="number">2</span>-&gt;<span class="number">3</span>-&gt;<span class="number">4</span>-&gt;<span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Naive-Extra-Space"><a href="#Naive-Extra-Space" class="headerlink" title="Naive (Extra Space)"></a>Naive (Extra Space)</h3><p><strong>Note:</strong> Be careful of linked list generation.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">naiveSort</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">null</span> || head.next == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// toArray</span></span><br><span class="line">  List&lt;ListNode&gt; array = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="keyword">while</span> (p != <span class="literal">null</span>) &#123;</span><br><span class="line">    array.add(p);</span><br><span class="line">    p = p.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// sort</span></span><br><span class="line">  Comparator&lt;ListNode&gt; comp = (ListNode o1, ListNode o2) -&gt; (o1.val - o2.val);</span><br><span class="line">  array.sort(comp);</span><br><span class="line">  <span class="comment">// generate linked list</span></span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">dummy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(-<span class="number">1</span>);</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> dummy;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; array.size(); ++i) &#123;</span><br><span class="line">    prev.next = array.get(i);</span><br><span class="line">    prev = prev.next;</span><br><span class="line">  &#125;</span><br><span class="line">  prev.next = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N + N\log{N} + N) &#x3D; O(N\log{N})$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="Mergesort-Slow-Fast-Pointers"><a href="#Mergesort-Slow-Fast-Pointers" class="headerlink" title="Mergesort + Slow&#x2F;Fast Pointers"></a>Mergesort + Slow&#x2F;Fast Pointers</h3><h4 id="Recursion"><a href="#Recursion" class="headerlink" title="Recursion"></a>Recursion</h4><p><strong>Note:</strong></p>
+<ul>
+<li>It seems bad to use right-leaning <code>splitInHalf</code>, because you can’t split the list (set the previous node of <code>mid</code> to null).</li>
+<li>Since we need to set <code>mid.next</code> to null, we can do right <code>mergeSort</code> first. Clean code.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">sortList</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> mergesort(head);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> ListNode <span class="title function_">mergesort</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">null</span> || head.next == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">  &#125;</span><br><span class="line">  ListNode[] splitResult = splitInHalf(head); <span class="comment">// O(N)</span></span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">left</span> <span class="operator">=</span> mergesort(splitResult[<span class="number">0</span>]);</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">right</span> <span class="operator">=</span> mergesort(splitResult[<span class="number">1</span>]);</span><br><span class="line">  <span class="keyword">return</span> mergeList(left, right); <span class="comment">// O(N)</span></span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line"><span class="keyword">private</span> ListNode <span class="title function_">mergeList</span><span class="params">(ListNode head1, ListNode head2)</span> &#123;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">dummy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(-<span class="number">1</span>);</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> dummy;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">while</span> (head1 != <span class="literal">null</span> &amp;&amp; head2 != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (head1.val &lt; head2.val) &#123;</span><br><span class="line">      prev.next = head1;</span><br><span class="line">      head1 = head1.next;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      prev.next = head2;</span><br><span class="line">      head2 = head2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    prev = prev.next;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (head1 != <span class="literal">null</span>) prev.next = head1;</span><br><span class="line">  <span class="keyword">if</span> (head2 != <span class="literal">null</span>) prev.next = head2;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> ListNode[] splitInHalf(ListNode head) &#123;</span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>[] &#123; <span class="literal">null</span>, <span class="literal">null</span> &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// left-leaning</span></span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">slow</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">fast</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="keyword">while</span> (fast.next != <span class="literal">null</span> &amp;&amp; fast.next.next != <span class="literal">null</span>) &#123;</span><br><span class="line">    slow = slow.next;</span><br><span class="line">    fast = fast.next.next;</span><br><span class="line">  &#125;</span><br><span class="line">  ListNode[] result = <span class="keyword">new</span> <span class="title class_">ListNode</span>[] &#123; head, slow.next &#125;;</span><br><span class="line">  slow.next = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N\log{N})$<br><strong>Space:</strong> $O(\log{N})$</p>
+<h4 id="Iteration"><a href="#Iteration" class="headerlink" title="Iteration"></a>Iteration</h4><p>Each time we double <code>n</code>.</p>
+<ul>
+<li><code>split(head, n)</code> that splits input <code>head</code> into <code>[n nodes, the rest]</code>.<ul>
+<li>We need to handle a case that <code>n</code> is larger than the number of available nodes.</li>
+</ul>
+</li>
+<li><code>mergeList(n1, n2)</code> returns <code>[head, tail]</code> of the merged list.</li>
+</ul>
+<p><strong>Note:</strong> In each loop, <code>p</code> should be initialized with <code>dummy.next</code> rather than <code>head</code>, since <code>head</code> might be changing.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">sortList</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">null</span> || head.next == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> getLength(head);</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">dummy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(-<span class="number">1</span>);</span><br><span class="line">  dummy.next = head;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> <span class="number">1</span>; n &lt; len; n *= <span class="number">2</span>) &#123; <span class="comment">// splitting unit</span></span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> dummy.next; <span class="comment">// head may be changed!!!</span></span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> dummy;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="comment">// split</span></span><br><span class="line">      ListNode[] result = split(p, n);</span><br><span class="line">      <span class="type">ListNode</span> <span class="variable">left</span> <span class="operator">=</span> result[<span class="number">0</span>];</span><br><span class="line">      <span class="type">ListNode</span> <span class="variable">rest</span> <span class="operator">=</span> result[<span class="number">1</span>];</span><br><span class="line">      result = split(rest, n);</span><br><span class="line">      <span class="type">ListNode</span> <span class="variable">right</span> <span class="operator">=</span> result[<span class="number">0</span>];</span><br><span class="line">      rest = result[<span class="number">1</span>]; <span class="comment">// might be null</span></span><br><span class="line">      <span class="comment">// merge</span></span><br><span class="line">      result = mergeList(left, right);</span><br><span class="line">      prev.next = result[<span class="number">0</span>];</span><br><span class="line">      <span class="comment">// update</span></span><br><span class="line">      prev = result[<span class="number">1</span>];</span><br><span class="line">      p = rest;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Helper functions:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Splits into [n nodes, rest part]</span></span><br><span class="line"><span class="keyword">private</span> ListNode[] split(ListNode head, <span class="type">int</span> n) &#123;</span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">null</span> || head.next == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>[] &#123; head, <span class="literal">null</span> &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="keyword">while</span> (n &gt; <span class="number">1</span> &amp;&amp; p.next != <span class="literal">null</span>) &#123;</span><br><span class="line">    p = p.next;</span><br><span class="line">    --n;</span><br><span class="line">  &#125; <span class="comment">// p stops at the n-th node (so it should be n &gt; 1)</span></span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">rest</span> <span class="operator">=</span> p.next;</span><br><span class="line">  p.next = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>[] &#123; head, rest &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Returns [first node, last node] after merging</span></span><br><span class="line"><span class="keyword">private</span> ListNode[] mergeList(ListNode n1, ListNode n2) &#123; <span class="comment">// n1, n2 are sorted</span></span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">dummy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(-<span class="number">1</span>);</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> dummy;</span><br><span class="line">  <span class="keyword">while</span> (n1 != <span class="literal">null</span> &amp;&amp; n2 != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (n1.val &lt; n2.val) &#123;</span><br><span class="line">      prev.next = n1;</span><br><span class="line">      n1 = n1.next;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      prev.next = n2;</span><br><span class="line">      n2 = n2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    prev = prev.next;</span><br><span class="line">  &#125;</span><br><span class="line">  prev.next = (n1 != <span class="literal">null</span>) ? n1 : n2;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// reach the tail</span></span><br><span class="line">  <span class="keyword">while</span> (prev.next != <span class="literal">null</span>) prev = prev.next;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>[] &#123; dummy.next, prev &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Get Length</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">getLength</span><span class="params">(ListNode x)</span> &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Tips-for-Slow-Fast-Pointers"><a href="#Tips-for-Slow-Fast-Pointers" class="headerlink" title="Tips for Slow&#x2F;Fast Pointers"></a>Tips for Slow&#x2F;Fast Pointers</h4><p><strong>Note:</strong> Use two pointers to find the middle node in the list. But there are two cases: <code>left-leaning</code> and <code>right-leaning</code>.</p>
+<p>The difference lies in the <code>while condition</code>.</p>
+<ul>
+<li>Left-leaning: <code>while (fast.next != null &amp;&amp; fast.next.next != null)</code> <span class="purple">You can see this as a stricter constraint</span></li>
+<li>Right-leaning: <code>while (fast != null &amp;&amp; fast.next != null)</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Left-leaning</span></span><br><span class="line"><span class="comment">// 1  2  3  4  5</span></span><br><span class="line"><span class="comment">// s  s  s</span></span><br><span class="line"><span class="comment">// f     f     f</span></span><br><span class="line"><span class="comment">// ----------</span></span><br><span class="line"><span class="comment">// 1  2  3  4</span></span><br><span class="line"><span class="comment">// s  s</span></span><br><span class="line"><span class="comment">// f     f</span></span><br><span class="line"><span class="keyword">private</span> ListNode <span class="title function_">findMid</span><span class="params">(ListNode x)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span> || x.next == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">slow</span> <span class="operator">=</span> x; <span class="comment">// left-leaning</span></span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">fast</span> <span class="operator">=</span> x;</span><br><span class="line">  <span class="keyword">while</span> (fast.next != <span class="literal">null</span> &amp;&amp; fast.next.next != <span class="literal">null</span>) &#123; <span class="comment">// here is the different</span></span><br><span class="line">    slow = slow.next;</span><br><span class="line">    fast = fast.next.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> slow;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line"><span class="comment">// Right-leaning</span></span><br><span class="line"><span class="comment">// ----------</span></span><br><span class="line"><span class="comment">// 1  2  3  4  5</span></span><br><span class="line"><span class="comment">// s  s  s</span></span><br><span class="line"><span class="comment">// f     f     f</span></span><br><span class="line"><span class="comment">// ----------</span></span><br><span class="line"><span class="comment">// 1  2  3  4</span></span><br><span class="line"><span class="comment">// s  s  s</span></span><br><span class="line"><span class="comment">// f     f     f</span></span><br><span class="line"><span class="keyword">private</span> ListNode <span class="title function_">findMid</span><span class="params">(ListNode x)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span> || x.next == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">slow</span> <span class="operator">=</span> x; <span class="comment">// right-leaning</span></span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">fast</span> <span class="operator">=</span> x;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">while</span> (fast != <span class="literal">null</span> &amp;&amp; fast.next != <span class="literal">null</span>) &#123; <span class="comment">// here is the different</span></span><br><span class="line">    slow = slow.next;</span><br><span class="line">    fast = fast.next.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> slow;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

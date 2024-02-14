@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium Problem Given a reference of a node in a connected undirected graph, return a deep copy (clone) of the graph. Each node in the graph contains a val (int) and a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="133. Clone Graph">
+<meta property="og:url" content="https://junhaow.com/lc/problems/graph/133_clone-graph.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium Problem Given a reference of a node in a connected undirected graph, return a deep copy (clone) of the graph. Each node in the graph contains a val (int) and a">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bg1il.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.124Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.124Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bg1il.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>133. Clone Graph</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/clone-graph/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a reference of a node in a <code>connected undirected graph</code>, return a <strong>deep copy (clone)</strong> of the graph. Each node in the graph contains a val (<code>int</code>) and a list (<code>List[Node]</code>) of its neighbors.</p>
+</blockquote>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bg1il.jpg"></p>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>The number of nodes will be between <code>1</code> and <code>100</code>.</li>
+<li>The undirected graph is a <code>simple graph</code>, which means no repeated edges and no self-loops in the graph.</li>
+<li>Since the graph is undirected, if node <code>p</code> has node <code>q</code> as neighbor, then node <code>q</code> must have node <code>p</code> as neighbor too.</li>
+<li>You must return the <strong>copy of the given node</strong> as a reference to the cloned graph.</li>
+</ul>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="DFS-recursion"><a href="#DFS-recursion" class="headerlink" title="DFS (recursion)"></a>DFS (recursion)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Node <span class="title function_">cloneGraph</span><span class="params">(Node node)</span> &#123;</span><br><span class="line">  Map&lt;Node, Node&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;(); <span class="comment">// &lt;oldNode, newNode&gt;</span></span><br><span class="line">  dfs(node, map);</span><br><span class="line">  <span class="keyword">return</span> map.get(node);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">dfs</span><span class="params">(Node node, Map&lt;Node, Node&gt; map)</span> &#123;</span><br><span class="line">  dfsSetMap(node, <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;(), map);</span><br><span class="line">  dfsSetNeighbors(node, <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;(), map);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">dfsSetMap</span><span class="params">(Node node, Set&lt;Node&gt; marked, Map&lt;Node, Node&gt; map)</span> &#123;</span><br><span class="line">  <span class="comment">// visit</span></span><br><span class="line">  marked.add(node);</span><br><span class="line">  <span class="type">Node</span> <span class="variable">newNode</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Node</span>(node.val, <span class="literal">null</span>); <span class="comment">// copy</span></span><br><span class="line">  map.put(node, newNode);</span><br><span class="line">  <span class="comment">// neighbors</span></span><br><span class="line">  <span class="keyword">for</span> (Node n : node.neighbors) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!marked.contains(n)) &#123;</span><br><span class="line">      dfsSetMap(n, marked, map);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">dfsSetNeighbors</span><span class="params">(Node node, Set&lt;Node&gt; marked, Map&lt;Node, Node&gt; map)</span> &#123;</span><br><span class="line">  <span class="comment">// visit</span></span><br><span class="line">  marked.add(node);</span><br><span class="line">  List&lt;Node&gt; newList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (Node n : node.neighbors) newList.add(map.get(n));</span><br><span class="line">  map.get(node).neighbors = newList;</span><br><span class="line">  <span class="comment">// neighbors</span></span><br><span class="line">  <span class="keyword">for</span> (Node n : node.neighbors) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!marked.contains(n)) &#123;</span><br><span class="line">      dfsSetNeighbors(n, marked, map);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Optimization:</strong> We can combine <code>dfsSetMap</code> and <code>dfsSetNeighbors</code> to get clean code!</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">dfs</span><span class="params">(Node node, Map&lt;Node, Node&gt; map)</span> &#123;</span><br><span class="line">  dfsCopy(node, <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;(), map);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">dfsCopy</span><span class="params">(Node node, Set&lt;Node&gt; marked, Map&lt;Node, Node&gt; map)</span> &#123;</span><br><span class="line">  <span class="comment">// visit</span></span><br><span class="line">  marked.add(node);</span><br><span class="line">  <span class="type">Node</span> <span class="variable">newNode</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Node</span>(node.val, <span class="literal">null</span>); <span class="comment">// copy</span></span><br><span class="line">  map.put(node, newNode);</span><br><span class="line">  <span class="comment">// visit neighbors</span></span><br><span class="line">  <span class="keyword">for</span> (Node n : node.neighbors) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!marked.contains(n)) &#123;</span><br><span class="line">      dfsCopy(n, marked, map);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// set neighbors</span></span><br><span class="line">  List&lt;Node&gt; newList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (Node n : node.neighbors) newList.add(map.get(n));</span><br><span class="line">  map.get(node).neighbors = newList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Time:</strong> $O(V + E)$<br><strong>Space:</strong> $O(V)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

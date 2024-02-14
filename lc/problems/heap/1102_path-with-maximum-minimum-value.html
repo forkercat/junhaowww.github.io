@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium Problem Given a matrix of integers A with R rows and C columns, find the maximum score of a path starting at [0, 0] and ending at [R-1, C-1].   The score of a p">
+<meta property="og:type" content="website">
+<meta property="og:title" content="1102. Path With Maximum Minimum Value">
+<meta property="og:url" content="https://junhaow.com/lc/problems/heap/1102_path-with-maximum-minimum-value.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium Problem Given a matrix of integers A with R rows and C columns, find the maximum score of a path starting at [0, 0] and ending at [R-1, C-1].   The score of a p">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rmjso.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.126Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.125Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rmjso.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>1102. Path With Maximum Minimum Value</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/path-with-maximum-minimum-value/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a matrix of integers A with <code>R</code> rows and <code>C</code> columns, find the <strong>maximum score</strong> of a path starting at <code>[0, 0]</code> and ending at <code>[R-1, C-1]</code>.</p>
+</blockquote>
+<blockquote>
+<p>The score of a path is the <strong>minimum value</strong> in that path. For example, the value of the path <code>8 → 4 → 5 → 9</code> is <code>4</code>.</p>
+</blockquote>
+<blockquote>
+<p>A path moves some number of times from one visited cell to any neighbouring unvisited cell in one of the <code>4</code> cardinal directions (north, east, west, south).</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>1 &lt;&#x3D; <code>R</code>, <code>C</code> &lt;&#x3D; 100</li>
+<li>0 &lt;&#x3D; <code>A[i][j]</code> &lt;&#x3D; 10^9</li>
+</ul>
+<p><strong>Example:</strong> </p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rmjso.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Input: [[<span class="number">5</span>,<span class="number">4</span>,<span class="number">5</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">6</span>],[<span class="number">7</span>,<span class="number">4</span>,<span class="number">6</span>]]</span><br><span class="line">Output: <span class="number">4</span></span><br><span class="line"></span><br><span class="line">Input: [[<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>]]</span><br><span class="line">Output: <span class="number">2</span></span><br><span class="line"></span><br><span class="line">Input: [[<span class="number">3</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">0</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">7</span>],[<span class="number">8</span>,<span class="number">8</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">7</span>],[<span class="number">3</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">8</span>],[<span class="number">4</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">4</span>,<span class="number">6</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">3</span>]]</span><br><span class="line">Output: <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Backtracking"><a href="#Backtracking" class="headerlink" title="Backtracking"></a>Backtracking</h3><p>Here is the code of backtracking <code>Time Limit Exceeded</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maximumMinimumPath</span><span class="params">(<span class="type">int</span>[][] A)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (A == <span class="literal">null</span> || A.length == <span class="number">0</span> || A[<span class="number">0</span>] == <span class="literal">null</span> || A[<span class="number">0</span>].length == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">row</span> <span class="operator">=</span> A.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">col</span> <span class="operator">=</span> A[<span class="number">0</span>].length;</span><br><span class="line">  <span class="type">boolean</span>[][] visited = <span class="keyword">new</span> <span class="title class_">boolean</span>[row][col];</span><br><span class="line">  <span class="keyword">return</span> backtracking(<span class="number">0</span>, <span class="number">0</span>, Integer.MAX_VALUE, visited, A);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">backtracking</span><span class="params">(<span class="type">int</span> r, <span class="type">int</span> c, <span class="type">int</span> score, <span class="type">boolean</span>[][] visited, <span class="type">int</span>[][] A)</span> &#123;</span><br><span class="line">  <span class="comment">// Assume A has at least one element</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">row</span> <span class="operator">=</span> A.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">col</span> <span class="operator">=</span> A[<span class="number">0</span>].length;</span><br><span class="line">  <span class="keyword">if</span> (r == row - <span class="number">1</span> &amp;&amp; c == col - <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> Math.min(A[r][c], score);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// consider current value</span></span><br><span class="line">  score = Math.min(A[r][c], score);</span><br><span class="line">  visited[r][c] = <span class="literal">true</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 4 directions</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">up</span> <span class="operator">=</span> Integer.MIN_VALUE;</span><br><span class="line">  <span class="keyword">if</span> (r - <span class="number">1</span> &gt;= <span class="number">0</span> &amp;&amp; !visited[r - <span class="number">1</span>][c]) &#123; <span class="comment">// up</span></span><br><span class="line">    up = backtracking(r - <span class="number">1</span>, c, score, visited, A);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">down</span> <span class="operator">=</span> Integer.MIN_VALUE;</span><br><span class="line">  <span class="keyword">if</span> (r + <span class="number">1</span> &lt;= row - <span class="number">1</span> &amp;&amp; !visited[r + <span class="number">1</span>][c]) &#123;</span><br><span class="line">    down = backtracking(r + <span class="number">1</span>, c, score, visited, A);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> Integer.MIN_VALUE;</span><br><span class="line">  <span class="keyword">if</span> (c - <span class="number">1</span> &gt;= <span class="number">0</span> &amp;&amp; !visited[r][c - <span class="number">1</span>]) &#123;</span><br><span class="line">    left = backtracking(r, c - <span class="number">1</span>, score, visited, A);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">right</span> <span class="operator">=</span> Integer.MIN_VALUE;</span><br><span class="line">  <span class="keyword">if</span> (c + <span class="number">1</span> &lt;= col - <span class="number">1</span> &amp;&amp; !visited[r][c + <span class="number">1</span>]) &#123;</span><br><span class="line">    right = backtracking(r, c + <span class="number">1</span>, score, visited, A);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// reset</span></span><br><span class="line">  visited[r][c] = <span class="literal">false</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> <span class="variable">m1</span> <span class="operator">=</span> Math.max(up, down);</span><br><span class="line">  <span class="type">int</span> <span class="variable">m2</span> <span class="operator">=</span> Math.max(left, right);</span><br><span class="line">  <span class="keyword">return</span> Math.max(m1, m2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(4^{RC})$<br><strong>Space:</strong> $O(RC)$</p>
+<h3 id="Priority-Queue"><a href="#Priority-Queue" class="headerlink" title="Priority Queue"></a>Priority Queue</h3><p>Use a max heap. Consider the following example.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">6</span>  <span class="number">8</span>  <span class="number">5</span></span><br><span class="line"><span class="number">7</span>  <span class="number">2</span>  <span class="number">4</span></span><br><span class="line"><span class="number">7</span>  <span class="number">7</span>  <span class="number">6</span></span><br><span class="line"></span><br><span class="line">pq.add(<span class="number">6</span>)</span><br><span class="line">pq.remove() -&gt; <span class="number">6</span></span><br><span class="line">pq.add(<span class="number">8</span>, <span class="number">7</span>) <span class="comment">// add all 6&#x27;s unvisited neighbors 7 and 8</span></span><br><span class="line">pq.remove() -&gt; <span class="number">8</span></span><br><span class="line">pq.add(<span class="number">2</span>, <span class="number">5</span>) <span class="comment">// add all 8&#x27;s unvisited neighbors 2 and 5</span></span><br><span class="line">pq.remove() -&gt; <span class="number">7</span></span><br><span class="line">pq.add(<span class="number">7</span>)    <span class="comment">// add all 7&#x27;s unvisited neighbors 7</span></span><br><span class="line">...</span><br><span class="line">Result:</span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">7</span>  <span class="number">7</span>  <span class="number">6</span>  score = <span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+<p>Notice that in the above example it stops expanding at <code>5 -&gt; 4</code> since there is a better way to go.</p>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>Learn how to write the comparator.</li>
+<li>Learn how to manage four-direction traversal.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maximumMinimumPath</span><span class="params">(<span class="type">int</span>[][] A)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (A == <span class="literal">null</span> || A.length == <span class="number">0</span> || A[<span class="number">0</span>] == <span class="literal">null</span> || A[<span class="number">0</span>].length == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">row</span> <span class="operator">=</span> A.length, col = A[<span class="number">0</span>].length;</span><br><span class="line">  <span class="comment">// Comparator</span></span><br><span class="line">  PriorityQueue&lt;<span class="type">int</span>[]&gt; pq = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;((o1, o2) -&gt; &#123; <span class="comment">// max heap</span></span><br><span class="line">    <span class="keyword">return</span> A[o2[<span class="number">0</span>]][o2[<span class="number">1</span>]] - A[o1[<span class="number">0</span>]][o1[<span class="number">1</span>]];</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">// Init</span></span><br><span class="line">  <span class="type">int</span>[][] dir = <span class="keyword">new</span> <span class="title class_">int</span>[][] &#123; &#123;<span class="number">0</span>, <span class="number">1</span>&#125;, &#123;<span class="number">0</span>, -<span class="number">1</span>&#125;, &#123;<span class="number">1</span>, <span class="number">0</span>&#125;, &#123;-<span class="number">1</span>, <span class="number">0</span>&#125; &#125;;</span><br><span class="line">  <span class="type">boolean</span>[][] visited = <span class="keyword">new</span> <span class="title class_">boolean</span>[row][col];</span><br><span class="line">  <span class="type">int</span> <span class="variable">score</span> <span class="operator">=</span> Integer.MAX_VALUE; <span class="comment">// must be updated if A is not empty</span></span><br><span class="line">  pq.add(<span class="keyword">new</span> <span class="title class_">int</span>[] &#123; <span class="number">0</span>, <span class="number">0</span> &#125;);</span><br><span class="line">  <span class="comment">// PQ</span></span><br><span class="line">  <span class="keyword">while</span> (pq.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="type">int</span>[] p = pq.remove();</span><br><span class="line">    visited[p[<span class="number">0</span>]][p[<span class="number">1</span>]] = <span class="literal">true</span>;</span><br><span class="line">    score = Math.min(score, A[p[<span class="number">0</span>]][p[<span class="number">1</span>]]);</span><br><span class="line">    <span class="comment">// check if reach the end point</span></span><br><span class="line">    <span class="keyword">if</span> (p[<span class="number">0</span>] == row - <span class="number">1</span> &amp;&amp; p[<span class="number">1</span>] == col - <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 4 directions</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span>[] d : dir) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> p[<span class="number">0</span>] + d[<span class="number">0</span>];</span><br><span class="line">      <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> p[<span class="number">1</span>] + d[<span class="number">1</span>];</span><br><span class="line">      <span class="keyword">if</span> (r &gt;= <span class="number">0</span> &amp;&amp; r &lt;= row - <span class="number">1</span> &amp;&amp; c &gt;= <span class="number">0</span> &amp;&amp; c &lt;= col - <span class="number">1</span> &amp;&amp; !visited[r][c]) &#123;</span><br><span class="line">        pq.add(<span class="keyword">new</span> <span class="title class_">int</span>[] &#123; r, c &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> score;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(RC \log{(RC)})$<br><strong>Space:</strong> $O(RC)$</p>
+<h2 id="Two-Direction-Version"><a href="#Two-Direction-Version" class="headerlink" title="Two-Direction Version"></a>Two-Direction Version</h2><blockquote>
+<p>Given a matrix with <code>r</code> rows and <code>c</code> columns, find the maximum score of a path starting at <code>[0, 0]</code> and ending at <code>[r - 1, c - 1]</code>. The score of a path is the minimum value in that path. For example, the score of the path <code>8 → 4 → 5 → 9</code> is <code>4</code>.</p>
+</blockquote>
+<p><strong>Don’t include the first or final entry. You can only move either down or right at any point in time.</strong></p>
+<p>Playground: <a target="_blank" rel="noopener" href="https://leetcode.com/playground/sbkFjCbE">https://leetcode.com/playground/sbkFjCbE</a></p>
+<h3 id="DP"><a href="#DP" class="headerlink" title="DP"></a>DP</h3><p>Define: <code>dp[i][j]</code> is the max score from <code>[0][0]</code> to <code>[i][j]</code><br>Recurrence: <code>dp[i][j]</code> &#x3D; max( min(<code>dp[i-1][j]</code>, <code>grid[i][j]</code>), min(<code>dp[i][j-1])</code>, <code>grid[i][j]</code> )</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// &quot;static void main&quot; must be defined in a public class.</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">int</span>[][] grid1 = <span class="keyword">new</span> <span class="title class_">int</span>[][] &#123; &#123;<span class="number">5</span>, <span class="number">1</span>&#125;, &#123;<span class="number">4</span>, <span class="number">5</span>&#125; &#125;;                        <span class="comment">// 4</span></span><br><span class="line">    <span class="type">int</span>[][] grid2 = <span class="keyword">new</span> <span class="title class_">int</span>[][] &#123; &#123;<span class="number">5</span>, <span class="number">1</span>, <span class="number">7</span>&#125;, &#123;<span class="number">4</span>, <span class="number">8</span>, <span class="number">5</span>&#125; &#125;;                  <span class="comment">// 4</span></span><br><span class="line">    <span class="type">int</span>[][] grid3 = <span class="keyword">new</span> <span class="title class_">int</span>[][] &#123; &#123;<span class="number">1</span>, <span class="number">9</span>, <span class="number">9</span>&#125;, &#123;<span class="number">9</span>, <span class="number">9</span>, <span class="number">9</span>&#125;, &#123;<span class="number">9</span>, <span class="number">9</span>, <span class="number">9</span>&#125; &#125;;       <span class="comment">// 1</span></span><br><span class="line">    <span class="type">int</span>[][] grid4 = <span class="keyword">new</span> <span class="title class_">int</span>[][] &#123; &#123;<span class="number">10</span>, <span class="number">7</span>, <span class="number">3</span>&#125;, &#123;<span class="number">12</span>, <span class="number">11</span>, <span class="number">9</span>&#125;, &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">8</span>&#125; &#125;;    <span class="comment">// 8</span></span><br><span class="line">    <span class="type">int</span>[][] grid5 = <span class="keyword">new</span> <span class="title class_">int</span>[][] &#123; &#123;<span class="number">20</span>, <span class="number">20</span>, <span class="number">3</span>&#125;, &#123;<span class="number">20</span>, <span class="number">3</span>, <span class="number">20</span>&#125;, &#123;<span class="number">3</span>, <span class="number">20</span>, <span class="number">20</span>&#125; &#125;; <span class="comment">// 3</span></span><br><span class="line">    System.out.println(<span class="string">&quot;grid1: Expected: 4, Actual: &quot;</span> + maxScore2D(grid1));</span><br><span class="line">    System.out.println(<span class="string">&quot;grid2: Expected: 4, Actual: &quot;</span> + maxScore2D(grid2));</span><br><span class="line">    System.out.println(<span class="string">&quot;grid3: Expected: 1, Actual: &quot;</span> + maxScore2D(grid3));</span><br><span class="line">    System.out.println(<span class="string">&quot;grid4: Expected: 8, Actual: &quot;</span> + maxScore2D(grid4));</span><br><span class="line">    System.out.println(<span class="string">&quot;grid5: Expected: 3, Actual: &quot;</span> + maxScore2D(grid5));</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="DP-2D"><a href="#DP-2D" class="headerlink" title="DP (2D)"></a>DP (2D)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DP (2D)</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">maxScore2D</span><span class="params">(<span class="type">int</span>[][] grid)</span> &#123;</span><br><span class="line">  <span class="comment">// Assume there is at least one element</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> grid.length, c = grid[<span class="number">0</span>].length;</span><br><span class="line">  <span class="type">int</span>[][] dp = <span class="keyword">new</span> <span class="title class_">int</span>[r][c];</span><br><span class="line">  <span class="comment">// Init</span></span><br><span class="line">  dp[<span class="number">0</span>][<span class="number">0</span>] = Integer.MAX_VALUE; <span class="comment">// first entry is not considered</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; r; ++i) dp[i][<span class="number">0</span>] = Math.min(dp[i - <span class="number">1</span>][<span class="number">0</span>], grid[i][<span class="number">0</span>]);</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &lt; c; ++j) dp[<span class="number">0</span>][j] = Math.min(dp[<span class="number">0</span>][j - <span class="number">1</span>], grid[<span class="number">0</span>][j]);</span><br><span class="line">  <span class="comment">// DP</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; r; ++i) &#123; <span class="comment">// row by row</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &lt; c; ++j) &#123;</span><br><span class="line">      <span class="keyword">if</span> (i == r - <span class="number">1</span> &amp;&amp; j == c - <span class="number">1</span>) &#123;</span><br><span class="line">        dp[i][j] = Math.max(dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>]); <span class="comment">// last entry is not considered</span></span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">score1</span> <span class="operator">=</span> Math.min(dp[i][j - <span class="number">1</span>], grid[i][j]); <span class="comment">// left</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">score2</span> <span class="operator">=</span> Math.min(dp[i - <span class="number">1</span>][j], grid[i][j]); <span class="comment">// up</span></span><br><span class="line">        dp[i][j] = Math.max(score1, score2);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dp[r - <span class="number">1</span>][c - <span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(rc)$<br><strong>Space:</strong> $O(rc)$</p>
+<h4 id="DP-1D"><a href="#DP-1D" class="headerlink" title="DP (1D)"></a>DP (1D)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DP (One Row or Column)</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">maxScore1D</span><span class="params">(<span class="type">int</span>[][] grid)</span> &#123;</span><br><span class="line">  <span class="comment">// Assume there is at least one element</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> grid.length, c = grid[<span class="number">0</span>].length;</span><br><span class="line">  <span class="type">int</span>[] dp = <span class="keyword">new</span> <span class="title class_">int</span>[c];</span><br><span class="line">  <span class="comment">// Init</span></span><br><span class="line">  dp[<span class="number">0</span>] = Integer.MAX_VALUE; <span class="comment">// first entry is not considered</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &lt; c; ++j) dp[j] = Math.min(dp[j - <span class="number">1</span>], grid[<span class="number">0</span>][j]);</span><br><span class="line">  <span class="comment">// DP (for each row)</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; r; ++i) &#123;</span><br><span class="line">    <span class="comment">// update the first element in each row</span></span><br><span class="line">    dp[<span class="number">0</span>] = Math.min(dp[<span class="number">0</span>], grid[i][<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &lt; c; ++j) &#123;</span><br><span class="line">      <span class="keyword">if</span> (i == r - <span class="number">1</span> &amp;&amp; j == c - <span class="number">1</span>) &#123;</span><br><span class="line">        dp[j] = Math.max(dp[j - <span class="number">1</span>], dp[j]); <span class="comment">// last entry is not considered</span></span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">score1</span> <span class="operator">=</span> Math.min(dp[j - <span class="number">1</span>], grid[i][j]); <span class="comment">// left  dp[i][j-1]</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">score2</span> <span class="operator">=</span> Math.min(dp[j], grid[i][j]);     <span class="comment">// up    dp[i-1][j]</span></span><br><span class="line">        dp[j] = Math.max(score1, score2);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dp[c - <span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Time:</strong> $O(rc)$<br><strong>Space:</strong> $O(r)$ or $O(c)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

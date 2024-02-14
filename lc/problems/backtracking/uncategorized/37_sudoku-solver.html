@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Hard Problem Write a program to solve a Sudoku puzzle by filling the empty cells.  A sudoku solution must satisfy all of the following rules:  Each of the digits 1-9 m">
+<meta property="og:type" content="website">
+<meta property="og:title" content="37. Sudoku Solver">
+<meta property="og:url" content="https://junhaow.com/lc/problems/backtracking/uncategorized/37_sudoku-solver.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Hard Problem Write a program to solve a Sudoku puzzle by filling the empty cells.  A sudoku solution must satisfy all of the following rules:  Each of the digits 1-9 m">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jv24s.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/aodgr.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.113Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.113Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jv24s.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>37. Sudoku Solver</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/sudoku-solver/">LeetCode</a><br>Difficulty: <span class="red">Hard</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Write a program to solve a Sudoku puzzle by filling the empty cells.</p>
+</blockquote>
+<p>A sudoku solution must satisfy all of the following rules:</p>
+<ul>
+<li>Each of the digits <code>1-9</code> must occur exactly once in each row.</li>
+<li>Each of the digits <code>1-9</code> must occur exactly once in each column.</li>
+<li>Each of the the digits <code>1-9</code> must occur exactly once in each of the 9 <code>3x3</code> sub-boxes of the grid.</li>
+</ul>
+<blockquote>
+<p>Empty cells are indicated by the character <code>&#39;.&#39;</code>.</p>
+</blockquote>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jv24s.jpg"></p>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>The given board contain only digits <code>1-9</code> and the character <code>&#39;.&#39;</code>.</li>
+<li>You may assume that the given Sudoku puzzle will have a single unique solution.</li>
+<li>The given board size is always <code>9x9</code>.</li>
+</ul>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p>Each cell could be filled number from <code>1</code> to <code>9</code> and then check validity. There could be $9^81$ operations to do, where $81$ is the number of cells to fill.</p>
+<h3 id="Backtracking"><a href="#Backtracking" class="headerlink" title="Backtracking"></a>Backtracking</h3><p>From LeetCode solution section:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/aodgr.jpg"></p>
+<p>The basic idea is to do some pre-processing. We calculate many sets in advance to make operations in backtracking faster. In backtracking, we examine each empty position’s all possibilities, which could be calculated by set operations.</p>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>Set Operations (the modification):<ul>
+<li>Union: <code>A.addAll(B)</code></li>
+<li>Intersection: <code>A.retainAll(B)</code></li>
+<li>Difference: <code>A.removeAll(B)</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// You may assume that the given Sudoku puzzle will have a single unique solution.</span></span><br><span class="line">Set&lt;Integer&gt;[] rowSetArr;</span><br><span class="line">Set&lt;Integer&gt;[] colSetArr;</span><br><span class="line">Set&lt;Integer&gt;[] boxSetArr;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">solveSudoku</span><span class="params">(<span class="type">char</span>[][] board)</span> &#123;</span><br><span class="line">  initSets(board); <span class="comment">// init set</span></span><br><span class="line">  List&lt;<span class="type">int</span>[]&gt; steps = getSteps(board); <span class="comment">// get steps (get all position (i, j) where it is empty)</span></span><br><span class="line">  backtrack(<span class="number">0</span>, steps, board);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">backtrack</span><span class="params">(<span class="type">int</span> d, List&lt;<span class="type">int</span>[]&gt; steps, <span class="type">char</span>[][] board)</span> &#123;</span><br><span class="line">  <span class="comment">// Base case</span></span><br><span class="line">  <span class="keyword">if</span> (d == steps.size()) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">// when a result is found, return immediately</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Step (current empty position)</span></span><br><span class="line">  <span class="type">int</span>[] currStep = steps.get(d);</span><br><span class="line">  <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> currStep[<span class="number">0</span>], j = currStep[<span class="number">1</span>]; <span class="comment">// row and column</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">boxNum</span> <span class="operator">=</span> i / <span class="number">3</span> * <span class="number">3</span> + j / <span class="number">3</span>;</span><br><span class="line">  <span class="comment">// Set</span></span><br><span class="line">  Set&lt;Integer&gt; option = getOptionSet(i, j, boxNum);</span><br><span class="line">  <span class="keyword">if</span> (option.size() == <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">// no more option to choose (should backtrack now)</span></span><br><span class="line">  <span class="comment">// For each option (val)</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : option) &#123;</span><br><span class="line">    <span class="comment">// pick</span></span><br><span class="line">    board[i][j] = (<span class="type">char</span>) (<span class="string">&#x27;0&#x27;</span> + val); <span class="comment">// convert from int to char. Note: (char) is a must</span></span><br><span class="line">    rowSetArr[i].add(val);</span><br><span class="line">    colSetArr[j].add(val);</span><br><span class="line">    boxSetArr[boxNum].add(val);</span><br><span class="line">    <span class="keyword">if</span> (backtrack(d + <span class="number">1</span>, steps, board)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="comment">// restore</span></span><br><span class="line">    board[i][j] = <span class="string">&#x27;.&#x27;</span>;</span><br><span class="line">    rowSetArr[i].remove(val);</span><br><span class="line">    colSetArr[j].remove(val);</span><br><span class="line">    boxSetArr[boxNum].remove(val);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Set&lt;Integer&gt; <span class="title function_">getOptionSet</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> j, <span class="type">int</span> boxNum)</span> &#123;</span><br><span class="line">  <span class="comment">// whole set</span></span><br><span class="line">  Set&lt;Integer&gt; wholeSet = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">val</span> <span class="operator">=</span> <span class="number">1</span>; val &lt;= <span class="number">9</span>; ++val) wholeSet.add(val);</span><br><span class="line">  wholeSet.removeAll(rowSetArr[i]); <span class="comment">// equivalent to doing addAll (union) + removeAll (difference)</span></span><br><span class="line">  wholeSet.removeAll(colSetArr[j]);</span><br><span class="line">  wholeSet.removeAll(boxSetArr[boxNum]);</span><br><span class="line">  <span class="keyword">return</span> wholeSet;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">initSets</span><span class="params">(<span class="type">char</span>[][] board)</span> &#123;</span><br><span class="line">  <span class="comment">// row/col/box sets</span></span><br><span class="line">  rowSetArr = <span class="keyword">new</span> <span class="title class_">HashSet</span>[<span class="number">9</span>];</span><br><span class="line">  colSetArr = <span class="keyword">new</span> <span class="title class_">HashSet</span>[<span class="number">9</span>];</span><br><span class="line">  boxSetArr = <span class="keyword">new</span> <span class="title class_">HashSet</span>[<span class="number">9</span>];</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">9</span>; ++i) &#123;</span><br><span class="line">    rowSetArr[i] = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">    colSetArr[i] = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">    boxSetArr[i] = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">9</span>; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; <span class="number">9</span>; ++j) &#123;</span><br><span class="line">      <span class="type">char</span> <span class="variable">ch</span> <span class="operator">=</span> board[i][j];</span><br><span class="line">      <span class="keyword">if</span> (ch == <span class="string">&#x27;.&#x27;</span>) <span class="keyword">continue</span>;</span><br><span class="line">      rowSetArr[i].add(ch - <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">      colSetArr[j].add(ch - <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">      boxSetArr[i / <span class="number">3</span> * <span class="number">3</span> + j / <span class="number">3</span>].add(ch - <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> List&lt;<span class="type">int</span>[]&gt; getSteps(<span class="type">char</span>[][] board) &#123;</span><br><span class="line">  List&lt;<span class="type">int</span>[]&gt; steps = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">9</span>; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; <span class="number">9</span>; ++j) &#123;</span><br><span class="line">      <span class="type">char</span> <span class="variable">ch</span> <span class="operator">=</span> board[i][j];</span><br><span class="line">      <span class="keyword">if</span> (ch == <span class="string">&#x27;.&#x27;</span>) &#123;</span><br><span class="line">        steps.add(<span class="keyword">new</span> <span class="title class_">int</span>[] &#123; i, j &#125;); <span class="comment">// cannot specify length in this case</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> steps;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(1)$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium My Post: [Java] Recursion &amp; Iteration Solutions (DP, Clone, Memoization) Problem Given an integer $n$, generate all structurally unique BST’s (binary search">
+<meta property="og:type" content="website">
+<meta property="og:title" content="95. Unique Binary Search Trees II">
+<meta property="og:url" content="https://junhaow.com/lc/problems/dp/95_unique-binary-search-trees-ii.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium My Post: [Java] Recursion &amp; Iteration Solutions (DP, Clone, Memoization) Problem Given an integer $n$, generate all structurally unique BST’s (binary search">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sz3zr.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.123Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.123Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sz3zr.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>95. Unique Binary Search Trees II</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/unique-binary-search-trees-ii/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/unique-binary-search-trees-ii/discuss/410074">[Java] Recursion &amp; Iteration Solutions (DP, Clone, Memoization)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given an integer $n$, generate all structurally unique BST’s (binary search trees) that store values <code>1 ... n</code>.</p>
+</blockquote>
+<p><strong>Example:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="number">3</span></span><br><span class="line">Output:</span><br><span class="line">[</span><br><span class="line">  [<span class="number">1</span>,<span class="literal">null</span>,<span class="number">3</span>,<span class="number">2</span>],</span><br><span class="line">  [<span class="number">3</span>,<span class="number">2</span>,<span class="literal">null</span>,<span class="number">1</span>],</span><br><span class="line">  [<span class="number">3</span>,<span class="number">1</span>,<span class="literal">null</span>,<span class="literal">null</span>,<span class="number">2</span>],</span><br><span class="line">  [<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>],</span><br><span class="line">  [<span class="number">1</span>,<span class="literal">null</span>,<span class="number">2</span>,<span class="literal">null</span>,<span class="number">3</span>]</span><br><span class="line">]</span><br><span class="line">Explanation:</span><br><span class="line">The above output corresponds to the <span class="number">5</span> unique BST<span class="string">&#x27;s shown below:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">   1         3     3      2      1</span></span><br><span class="line"><span class="string">    \       /     /      / \      \</span></span><br><span class="line"><span class="string">     3     2     1      1   3      2</span></span><br><span class="line"><span class="string">    /     /       \                 \</span></span><br><span class="line"><span class="string">   2     1         2                 3</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Recursion"><a href="#Recursion" class="headerlink" title="Recursion"></a>Recursion</h3><p>If we directly apply the solution in <code>96. Unique Binary Search Trees</code>, we have an incorrect result. Consider the following example.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">n = <span class="number">5</span>, i = <span class="number">3</span></span><br><span class="line"><span class="number">2</span> left nodes:  [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line"><span class="number">2</span> right nodes: [<span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"></span><br><span class="line">n = <span class="number">10</span>, i = <span class="number">8</span></span><br><span class="line"><span class="number">7</span> left nodes:  [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>]</span><br><span class="line"><span class="number">2</span> right nodes: [<span class="number">9</span>, <span class="number">10</span>]</span><br></pre></td></tr></table></figure>
+
+<p>As you can see, although there are still 2 nodes in the right subtrees, the values are not the same. In the previous approach, it did not handle this situation.</p>
+<p>So rather than passing a parameter <code>n</code> (number of nodes), we now pass down two parameters <code>lo</code> and <code>hi</code> indicating the range of values of a tree.</p>
+<p>For example, <code>generateTrees(1, 5)</code> generate trees whose values range from <code>1</code> to <code>5</code>, and each of them has a chance to be the root, which also includes the information of number of nodes <code>n</code>. Say when the root is <code>3</code>, we calculate <code>generateTrees(1, 2)</code> and <code>generateTrees(4, 5)</code>.</p>
+<p><strong>Note:</strong> When <code>n == 0</code>, it returns <code>[]</code> instead of <code>[[null]]</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;TreeNode&gt; <span class="title function_">generateTrees</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (n == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> generateTrees(<span class="number">1</span>, n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> List&lt;TreeNode&gt; <span class="title function_">generateTrees</span><span class="params">(<span class="type">int</span> lo, <span class="type">int</span> hi)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> hi - lo + <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span> (n == <span class="number">0</span>) &#123;</span><br><span class="line">    List&lt;TreeNode&gt; L = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    L.add(<span class="literal">null</span>);</span><br><span class="line">    <span class="keyword">return</span> L;</span><br><span class="line">  &#125;</span><br><span class="line">  List&lt;TreeNode&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> lo; i &lt;= hi; ++i) &#123;</span><br><span class="line">    List&lt;TreeNode&gt; leftSubtrees = generateTrees(lo, i - <span class="number">1</span>);</span><br><span class="line">    List&lt;TreeNode&gt; rightSubtrees = generateTrees(i + <span class="number">1</span>, hi);</span><br><span class="line">    <span class="keyword">for</span> (TreeNode leftSub : leftSubtrees) &#123;</span><br><span class="line">      <span class="keyword">for</span> (TreeNode rightSub : rightSubtrees) &#123;</span><br><span class="line">        <span class="type">TreeNode</span> <span class="variable">newTree</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(i);</span><br><span class="line">        newTree.left = leftSub;</span><br><span class="line">        newTree.right = rightSub;</span><br><span class="line">        result.add(newTree);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> It is at most bounded by $O(N \times N!)$. A tighter bound would be Catalan number times $N$ since we’ve done $N$ times, which is $N \times G_N &#x3D; O(N\times\frac{4^N}{N^{3&#x2F;2}}) &#x3D; O(\frac{4^N}{N^{1&#x2F;2}})$.<br><strong>Space:</strong> $O(N \times G_N) &#x3D; O(\frac{4^N}{N^{1&#x2F;2}})$</p>
+<h3 id="DP-Clone"><a href="#DP-Clone" class="headerlink" title="DP (Clone)"></a>DP (Clone)</h3><p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.wang/leetCode-95-Unique-Binary-Search-TreesII.html">link</a></p>
+<p>Let’s denote <code>tree[i]</code> as the list of trees of size <code>i</code>. Think of <code>tree[i]</code> as our building blocks for a larger tree.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">Example: n = <span class="number">3</span></span><br><span class="line"></span><br><span class="line">tree[<span class="number">0</span>]:</span><br><span class="line"><span class="literal">null</span></span><br><span class="line"></span><br><span class="line">tree[<span class="number">1</span>]:</span><br><span class="line">[<span class="number">1</span>]</span><br><span class="line">[<span class="number">2</span>]</span><br><span class="line">[<span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">tree[<span class="number">2</span>]:</span><br><span class="line">[<span class="number">1</span> <span class="number">2</span>]</span><br><span class="line"><span class="number">1</span></span><br><span class="line"> \</span><br><span class="line">  <span class="number">2</span>      <span class="comment">// 2 structures</span></span><br><span class="line">  <span class="number">2</span></span><br><span class="line"> /</span><br><span class="line"><span class="number">1</span></span><br><span class="line">[<span class="number">2</span> <span class="number">3</span>]</span><br><span class="line"><span class="number">2</span></span><br><span class="line"> \</span><br><span class="line">  <span class="number">3</span></span><br><span class="line">  <span class="number">3</span></span><br><span class="line"> /</span><br><span class="line"><span class="number">2</span>        <span class="comment">// [1 3] is not possible</span></span><br><span class="line"></span><br><span class="line">tree[<span class="number">3</span>]:  <span class="comment">// (based on tree[1], tree[2])</span></span><br><span class="line">   <span class="number">3</span></span><br><span class="line">  /</span><br><span class="line">[<span class="number">1</span> <span class="number">2</span>]</span><br><span class="line">   <span class="number">1</span></span><br><span class="line">    \</span><br><span class="line">   [<span class="number">2</span> <span class="number">3</span>]</span><br><span class="line">   <span class="number">2</span></span><br><span class="line"> /  \</span><br><span class="line">[<span class="number">1</span>] [<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+<p>So we can compute all possible trees for <code>tree[1]</code>, <code>tree[2]</code>, …, then we can construct <code>tree[n]</code> by previous results.</p>
+<p>For a small <code>n = 3</code> , we notice that when we calculate <code>tree[2]</code> we want all possible combinations for <code>tree[2]</code> (<code>[1 2]</code>, <code>[2 3]</code>). <strong>Furthermore</strong>, if we have a large <code>n = 100</code>, we want all the combinations as follows <code>[1 2]</code>, <code>[2 3]</code>, <code>[3 4]</code>, …, <code>[99 100]</code> (each of them has two structures).</p>
+<p>Since these trees have the same two types of structures:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x       y</span><br><span class="line"> \     /</span><br><span class="line">  y   x</span><br></pre></td></tr></table></figure>
+
+<p>We can actually construct all the trees by <code>[1 2]</code> plus some constant, say <code>offset</code>. For example, <code>[5 6]</code> can be constructed as follows:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>    +<span class="number">4</span>    <span class="number">5</span></span><br><span class="line"> \          \</span><br><span class="line">  <span class="number">2</span>    +<span class="number">4</span>    <span class="number">6</span></span><br><span class="line">------------------</span><br><span class="line">  <span class="number">2</span>    +<span class="number">4</span>    <span class="number">6</span></span><br><span class="line"> /          /</span><br><span class="line"><span class="number">1</span>    +<span class="number">4</span>    <span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<p>Say the problem is <code>n = 100</code>. During the execution of the algorithm when <code>i = 98</code>, we want to get all possible trees for <code>i = 98</code> as the root. The size of the left subtree is <code>97</code> and the subtree is picked from <code>tree[97]</code>; the size of the right subtree is <code>2</code> and the subtree is picked from <code>tree[2]</code>.</p>
+<p>For the left subtree, we already have <code>tree[97]</code> computed as <code>[1 2 3 ... 97]</code>.</p>
+<p>For the right subtree, we want <code>[99 100]</code>, which can be computed by <code>[1 2]</code> plus <code>offset = 98</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>    +<span class="number">98</span>    <span class="number">99</span></span><br><span class="line"> \            \</span><br><span class="line">  <span class="number">2</span>    +<span class="number">98</span>    <span class="number">100</span></span><br><span class="line">------------------</span><br><span class="line">  <span class="number">2</span>    +<span class="number">98</span>    <span class="number">100</span></span><br><span class="line"> /            /</span><br><span class="line"><span class="number">1</span>    +<span class="number">98</span>     <span class="number">99</span></span><br></pre></td></tr></table></figure>
+
+<p>Therefore, given a tree <code>root</code>, we can generate a new tree by cloning with an <code>offset</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// adding offset to each node of a tree root</span></span><br><span class="line"><span class="keyword">private</span> TreeNode <span class="title function_">clone</span><span class="params">(TreeNode root, <span class="type">int</span> offset)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (n == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">node</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(root.val + offset);</span><br><span class="line">  node.left = clone(root.left, offset);</span><br><span class="line">  node.right = clone(root.right, offset);</span><br><span class="line">  <span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>For input <code>n</code>, the result we want is <code>tree[n]</code> (<code>[1 2 3 ... n]</code>). Here is the code for <code>generateTrees(n)</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;TreeNode&gt; <span class="title function_">generateTrees</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  List&lt;TreeNode&gt;[] tree = <span class="keyword">new</span> <span class="title class_">ArrayList</span>[n + <span class="number">1</span>];</span><br><span class="line">  tree[<span class="number">0</span>] = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">if</span> (n == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> tree[<span class="number">0</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  tree[<span class="number">0</span>].add(<span class="literal">null</span>);</span><br><span class="line">  <span class="comment">// Calculate all lengths</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> <span class="number">1</span>; len &lt;= n; ++len) &#123;</span><br><span class="line">    tree[len] = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(); <span class="comment">// contains all trees we construct</span></span><br><span class="line">    <span class="comment">// Consider each as the root</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt;= len; ++i) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">leftSize</span> <span class="operator">=</span> i - <span class="number">1</span>;</span><br><span class="line">      <span class="type">int</span> <span class="variable">rightSize</span> <span class="operator">=</span> len - i;</span><br><span class="line">      <span class="keyword">for</span> (TreeNode leftTree : tree[leftSize]) [</span><br><span class="line">        <span class="keyword">for</span> (TreeNode rightTree : tree[rightSize]) &#123;</span><br><span class="line">          <span class="type">TreeNode</span> <span class="variable">tree</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(i);</span><br><span class="line">          tree.left = leftTree;  <span class="comment">// left subtree requires no cloning</span></span><br><span class="line">          tree.right = clone(rightTree, i); <span class="comment">// add i as the offset</span></span><br><span class="line">          tree[len].add(tree);</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> tree[n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> <span class="purple">N&#x2F;A</span> (I don’t know T_T)<br><strong>Space:</strong> <span class="purple">N&#x2F;A</span> (I don’t know T_T)</p>
+<h3 id="DP-2D"><a href="#DP-2D" class="headerlink" title="DP (2D)"></a>DP (2D)</h3><p>Judge: <code>1ms</code>, faster than <code>99.95%</code>. I have nothing to say.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sz3zr.jpg"></p>
+<p>Here is the code I wrote:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;TreeNode&gt; <span class="title function_">generateTrees</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (n == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  &#125;</span><br><span class="line">  List&lt;TreeNode&gt;[][] g = <span class="keyword">new</span> <span class="title class_">ArrayList</span>[n + <span class="number">1</span>][n + <span class="number">1</span>];</span><br><span class="line">  <span class="comment">// init</span></span><br><span class="line">  List&lt;TreeNode&gt; nullList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(); nullList.add(<span class="literal">null</span>);</span><br><span class="line">  g[<span class="number">0</span>][<span class="number">0</span>] = nullList;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> <span class="number">1</span>; k &lt;= n; ++k) &#123; <span class="comment">// g(0, k)</span></span><br><span class="line">    g[<span class="number">0</span>][k] = nullList;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> <span class="number">1</span>; k &lt;= n; ++k) &#123; <span class="comment">// diagonal: one node (itself)</span></span><br><span class="line">    List&lt;TreeNode&gt; oneList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(); oneList.add(<span class="keyword">new</span> <span class="title class_">TreeNode</span>(k));</span><br><span class="line">    g[k][k] = oneList;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> <span class="number">1</span>; k &lt;= n; ++k) &#123; <span class="comment">// one node above diagonal: nullList</span></span><br><span class="line">    g[k][k - <span class="number">1</span>] = nullList;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// dp</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> n - <span class="number">1</span>; i &gt;= <span class="number">1</span>; --i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i + <span class="number">1</span>; j &lt;= n; ++j) &#123;</span><br><span class="line">      List&lt;TreeNode&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> i ; k &lt;= j; ++k) &#123; <span class="comment">// for each k as root [i, j]</span></span><br><span class="line">        List&lt;TreeNode&gt; leftList = (k - <span class="number">1</span> &lt;= n) ? g[i][k - <span class="number">1</span>] : nullList;</span><br><span class="line">        List&lt;TreeNode&gt; rightList = (k + <span class="number">1</span> &lt;= n) ? g[k + <span class="number">1</span>][j] : nullList;</span><br><span class="line">        <span class="keyword">for</span> (TreeNode left : leftList) &#123;</span><br><span class="line">          <span class="keyword">for</span> (TreeNode right: rightList) &#123;</span><br><span class="line">            <span class="type">TreeNode</span> <span class="variable">newTree</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(k);</span><br><span class="line">            newTree.left = left;</span><br><span class="line">            newTree.right = right;</span><br><span class="line">            result.add(newTree);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      g[i][j] = result;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> g[<span class="number">1</span>][n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> <span class="purple">N&#x2F;A</span> (I don’t know T_T)<br><strong>Space:</strong> <span class="purple">N&#x2F;A</span> (I don’t know T_T)</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

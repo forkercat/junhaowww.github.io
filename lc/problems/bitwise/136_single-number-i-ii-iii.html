@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: Problem I, Problem II, Problem III EPI 11.10Difficulty: Medium My Post: All-In-One Summary (Single Number I, II, III) Single Number I Given a non-empty array of integers, every element ap">
+<meta property="og:type" content="website">
+<meta property="og:title" content="136. Single Number I, II, III">
+<meta property="og:url" content="https://junhaow.com/lc/problems/bitwise/136_single-number-i-ii-iii.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: Problem I, Problem II, Problem III EPI 11.10Difficulty: Medium My Post: All-In-One Summary (Single Number I, II, III) Single Number I Given a non-empty array of integers, every element ap">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7ywr3.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.118Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.118Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7ywr3.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>136. Single Number I, II, III</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/single-number/">Problem I</a>, <a target="_blank" rel="noopener" href="https://leetcode.com/problems/single-number-ii/">Problem II</a>, <a target="_blank" rel="noopener" href="https://leetcode.com/problems/single-number-iii/">Problem III</a> <span class="gray">EPI 11.10</span><br>Difficulty: <span class="orange">Medium</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/single-number-iii/discuss/326622/all-in-one-summary-single-number-i-ii-iii">All-In-One Summary (Single Number I, II, III)</a></p>
+<h2 id="Single-Number-I"><a href="#Single-Number-I" class="headerlink" title="Single Number I"></a>Single Number I</h2><blockquote>
+<p>Given a <code>non-empty</code> array of integers, every element appears twice except for one. Find that single one.</p>
+</blockquote>
+<p><strong>Follow-up:</strong> Your algorithm should have a <code>linear runtime</code> complexity. Could you implement it <code>without using extra memory</code>?</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input: [<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>]</span><br><span class="line">Output: <span class="number">1</span></span><br><span class="line">Input: [<span class="number">4</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>]</span><br><span class="line">Output: <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Methods:</strong></p>
+<ol>
+<li>Brute-force</li>
+</ol>
+<ul>
+<li><code>Option 1</code>: Check each item with the rest of items.  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">singleNumber</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123; <span class="comment">// examining i</span></span><br><span class="line">    <span class="type">boolean</span> <span class="variable">isSingle</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; n; ++j) &#123;</span><br><span class="line">      <span class="keyword">if</span> (i == j) <span class="keyword">continue</span>; <span class="comment">// except itself</span></span><br><span class="line">      </span><br><span class="line">      <span class="keyword">if</span> (nums[i] == nums[j]) &#123; <span class="comment">// found duplicate numbers</span></span><br><span class="line">        isSingle = <span class="literal">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (isSingle) &#123;</span><br><span class="line">      <span class="keyword">return</span> nums[i];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong>Time:</strong> $O(N^2)$<br><strong>Space:</strong> $O(1)$</li>
+<li><code>Option 2</code>:<ul>
+<li>Iterate over all the elements in <code>nums</code>.</li>
+<li>If some number in <code>nums</code> is new to array, append it.</li>
+<li>If some number is already in the array, remove it.</li>
+<li><strong>Time:</strong> $O(N^2)$</li>
+<li><strong>Space:</strong> $O(N)$</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>Hash Table<ul>
+<li>For the <code>Option 2</code> above, we can optimize it by using a hash set since <code>add</code> and <code>remove</code> operations take only $O(1)$ time.</li>
+<li>The way to get the value in a set is to iterate it. <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// HashSet</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">singleNumber</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  Set&lt;Integer&gt; set = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">    <span class="keyword">if</span> (set.contains(val)) &#123;</span><br><span class="line">      set.remove(val);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      set.add(val);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;      </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : set) &#123;</span><br><span class="line">    <span class="keyword">return</span> val;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</li>
+</ul>
+</li>
+<li>Math<ul>
+<li>Use the following equation to solve the problem:</li>
+<li>$2 \times (a + b + c) - (a + a + b + b + c) &#x3D; c$<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">singleNumber</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  Set&lt;Integer&gt; set = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">    sum += val;</span><br><span class="line">    set.add(val);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">setSum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : set) &#123;</span><br><span class="line">    setSum += val;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">2</span> * setSum - sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</li>
+</ul>
+</li>
+<li>Bit Manipulation<ul>
+<li>If we take <code>XOR</code> of zero and some bit, it will return that bit:<ul>
+<li><code>a ^ 0 = a</code></li>
+</ul>
+</li>
+<li>If we take <code>XOR</code> of two same bits, it will return $0$:<ul>
+<li><code>a ^ a = 0</code></li>
+</ul>
+</li>
+<li>So we have: <code>a ^ b ^ a = (a ^ a) ^ b = b</code>.</li>
+<li>The numbers that occur twice will be reduced to zero.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">singleNumber</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">    a ^= val;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</li>
+</ul>
+</li>
+</ol>
+<h2 id="Single-Number-II"><a href="#Single-Number-II" class="headerlink" title="Single Number II"></a>Single Number II</h2><blockquote>
+<p>Given a <code>non-empty</code> array of integers, every element appears three times except for one. Find that single one.</p>
+</blockquote>
+<p><strong>Follow-up:</strong> Your algorithm should have a <code>linear runtime</code> complexity. Could you implement it <code>without using extra memory</code>?</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input: [<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>]</span><br><span class="line">Output: <span class="number">3</span></span><br><span class="line">Input: [<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">99</span>]</span><br><span class="line">Output: <span class="number">99</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Methods</strong></p>
+<ol>
+<li>Brute-force (same as Problem I)</li>
+<li>Hash Table<ul>
+<li>Use a hash map to count the number of occurrence.</li>
+<li><strong>Time:</strong> $O(N)$</li>
+<li><strong>Space:</strong> $O(N)$</li>
+</ul>
+</li>
+<li>Math (same as Problem I)<ul>
+<li>$3 \times (a + b + c) - (a + a + a + b + b + b + c) &#x3D; c$</li>
+</ul>
+</li>
+<li>Bit Manipulation (Generalized)<ul>
+<li>See details below.</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// k = 3 / 11 (m = 2), p = 1</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">singleNumber</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">x1</span> <span class="operator">=</span> <span class="number">0</span>, x2 = <span class="number">0</span>, mask = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">    x2 = x2 ^ (x1 &amp; val);</span><br><span class="line">    x1 = x1 ^ val;</span><br><span class="line">    mask = ~(x2 &amp; x1);</span><br><span class="line">    x2 = x2 &amp; mask;</span><br><span class="line">    x1 = x1 &amp; mask;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// p = 1, final state: x2 = 0, x1 = 1</span></span><br><span class="line">  <span class="keyword">return</span> x1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Generalized-Method"><a href="#Generalized-Method" class="headerlink" title="Generalized Method"></a>Generalized Method</h2><p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/single-number-ii/discuss/43295">Detailed explanation and generalization of the bitwise operation method for single numbers
+</a></p>
+<h3 id="Design-Counting-System"><a href="#Design-Counting-System" class="headerlink" title="Design Counting System"></a>Design Counting System</h3><h4 id="Update-A-State"><a href="#Update-A-State" class="headerlink" title="Update A State"></a>Update A State</h4><p>The problem can be generalized as follows:</p>
+<ul>
+<li>Given an array of integers, every element appears <code>k</code> (<code>k &gt; 1</code>) times except for one which appears <code>p</code> times (<code>p &gt;= 1, p % k != 0</code>). Find that single one.</li>
+</ul>
+<p>The idea is to design a way to count the number of 1-bit digits. If the number of 1-bit digits equals <code>k</code>, we restore the counting system to <code>0</code> and make it start over.</p>
+<p>To represent this counting system, we can use <code>m-bit</code> binary form <code>xm, ..., x2, x1</code>. Here are four properties of the counter:</p>
+<ul>
+<li>There is an initial state of the counter, say $0$.</li>
+<li>For each input, if we hit <code>0</code>, the counting bit <code>xi</code> should remain unchanged.</li>
+<li>Otherwise (hit <code>1</code>), the bit should increase by one.</li>
+<li>In order to cover <code>k</code> counts (states), we require <code>2^m &gt;= k</code>, which means we need <code>m</code> bits that satisfy <code>m &gt;= logk</code>.</li>
+</ul>
+<p>For example, if we need three states (<code>k = 3</code>), we can use <code>m = 2</code> bits to represent this.</p>
+<ul>
+<li>State 1: <code>x2 = 0, x1 = 0</code></li>
+<li>State 2: <code>x2 = 0, x1 = 1</code></li>
+<li>State 3: <code>x2 = 1, x1 = 0</code></li>
+</ul>
+<p>The key part is: how each bit changes as we are going through the array.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">         x3   x2   x1</span><br><span class="line">State <span class="number">1</span>:  <span class="number">0</span>    <span class="number">0</span>    <span class="number">0</span></span><br><span class="line">State <span class="number">2</span>:  <span class="number">0</span>    <span class="number">0</span>    <span class="number">1</span></span><br><span class="line">State <span class="number">3</span>:  <span class="number">0</span>    <span class="number">1</span>    <span class="number">0</span></span><br><span class="line">State <span class="number">4</span>:  <span class="number">0</span>    <span class="number">1</span>    <span class="number">1</span></span><br><span class="line">State <span class="number">5</span>:  <span class="number">1</span>    <span class="number">0</span>    <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>We can observe that:</p>
+<ul>
+<li>The <code>x1</code> column changes from 0 to 1 or from 0 to 1 successively, and if it encounter a <code>1</code>, it should change. So we can use bit-toggle operation <code>^= 1</code>.<ul>
+<li><code>x1 = x1 ^ val</code> (val could be <code>1</code> or <code>0</code>)</li>
+</ul>
+</li>
+<li>The <code>x2</code> column changes when <code>x1</code> changes from <code>0</code> to <code>1</code>. Thus we can express this as follows:<ul>
+<li><code>x2 = x2 ^ (x1 &amp; val)</code></li>
+</ul>
+</li>
+<li>The <code>x3</code> column then could be expressed similarly:<ul>
+<li><code>x3 = x3 ^ (x2 &amp; x1 &amp; val)</code></li>
+</ul>
+</li>
+<li>To generalize, <code>xm</code> could be expressed as follows:<ul>
+<li><code>xm = xm ^ (xm-1 &amp; ... &amp; x2 &amp; x1 &amp; val)</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="Reset-A-State"><a href="#Reset-A-State" class="headerlink" title="Reset A State"></a>Reset A State</h4><p>Also, we need to design a cutting mechanism to reset the counting if it hits one for <code>k</code> times. To this end, we apply bitwise <code>AND</code> to those <code>x</code> values with some <code>mask</code> to reset the bits.</p>
+<p>Specifically, we want a <code>mask</code> that will be <code>0</code> only when the count reaches <code>k</code> and be <code>1</code> for all other count cases.</p>
+<p>How do we achieve that?</p>
+<p>For example, check out the examples when <code>k = 2</code> and <code>k = 3</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">          x2   x1  +<span class="number">1</span>  <span class="type">x2</span>   <span class="variable">x1</span>  <span class="operator">=</span>&gt;  x2   x1</span><br><span class="line">State <span class="number">1</span>:   <span class="number">0</span>    <span class="number">0</span>       <span class="number">0</span>    <span class="number">1</span>  =&gt;   <span class="number">0</span>    <span class="number">1</span></span><br><span class="line">State <span class="number">2</span>:   <span class="number">0</span>    <span class="number">1</span>       <span class="number">1</span>    <span class="number">0</span>  =&gt;   <span class="number">0</span>    <span class="number">1</span></span><br><span class="line">k = <span class="number">2</span>:                  <span class="number">1</span>    <span class="number">0</span>  =&gt;   <span class="number">0</span>    <span class="number">0</span></span><br><span class="line"></span><br><span class="line">          x2   x1  +<span class="number">1</span>  <span class="type">x2</span>   <span class="variable">x1</span>  <span class="operator">=</span>&gt;  x2   x1</span><br><span class="line">State <span class="number">1</span>:   <span class="number">0</span>    <span class="number">0</span>       <span class="number">0</span>    <span class="number">1</span>  =&gt;   <span class="number">0</span>    <span class="number">1</span></span><br><span class="line">State <span class="number">2</span>:   <span class="number">0</span>    <span class="number">1</span>       <span class="number">1</span>    <span class="number">0</span>  =&gt;   <span class="number">0</span>    <span class="number">1</span></span><br><span class="line">State <span class="number">3</span>:   <span class="number">1</span>    <span class="number">0</span>       <span class="number">1</span>    <span class="number">1</span>  =&gt;   <span class="number">1</span>    <span class="number">0</span></span><br><span class="line">k = <span class="number">3</span>:                  <span class="number">1</span>    <span class="number">1</span>  =&gt;   <span class="number">0</span>    <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>When the bits of <code>x</code> are the same as <code>k</code>‘s, it should be reset.</p>
+<ul>
+<li>If the bit of <code>k</code> is <code>1</code>, the <code>mask</code> should be <code>~x</code>.</li>
+<li>If the bit of <code>k</code> is <code>0</code>, the <code>mask</code> should be <code>x</code>.</li>
+</ul>
+<p>Combining all of them together:</p>
+<ul>
+<li>The <code>mask</code> should be <code>~(ym &amp; ... &amp; y2 &amp; y1)</code>.<ul>
+<li>If <code>k = 1</code>, <code>y = x</code>.</li>
+<li>If <code>k = 0</code>, <code>y = ~x</code>.</li>
+</ul>
+</li>
+</ul>
+<p>Therefore, as for the examples above:</p>
+<ul>
+<li><code>k = 2 (1 0)</code>: the mask is <code>~(x2 &amp; ~x1)</code>.</li>
+<li><code>k = 3 (1 1)</code>: the mask is <code>~(x2 &amp; x1)</code>.</li>
+</ul>
+<p>One more example for <code>k = 5 (101)</code>, the mask is <code>~(x3 &amp; ~x2 &amp; x1)</code>.</p>
+<h4 id="Combination"><a href="#Combination" class="headerlink" title="Combination"></a>Combination</h4><p>To this point, we can write out the code for this counting system for <code>k = 3</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">x1</span> <span class="operator">=</span> <span class="number">0</span>, x2 = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">  <span class="comment">// update the state</span></span><br><span class="line">  x2 = x2 ^ (x1 &amp; val);</span><br><span class="line">  x1 = x1 ^ val;</span><br><span class="line">  <span class="comment">// mask</span></span><br><span class="line">  mask = ~(x2 &amp; x1);</span><br><span class="line">  x2 = x2 &amp; mask;</span><br><span class="line">  x1 = x1 &amp; mask;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Back-To-Problem"><a href="#Back-To-Problem" class="headerlink" title="Back To Problem"></a>Back To Problem</h3><p>It’s time to generalize our results from 1-bit number case to 32-bit integers. With the help of bitwise operations, we may be able to manage all the 32 bits (counters) collectively instead of using 32 32-bit integers.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7ywr3.jpg"></p>
+<p>The question is how to get the result from the <code>x</code> values in those counters. By now, we notice that the counters’ states are only contributed by the number we want. Let’s say the number appear $p$ times, so there should be $p$ <code>1</code> which have entered the counters. Since $p$ could be very large, we need to do <code>p&#39; = p % k</code> to know the exact numbers of <code>1</code>.</p>
+<p>Notice that if <code>p % k == 0</code>, this method is no longer effective for this problem.</p>
+<ul>
+<li><p>For example, if <code>k = 2 (1 0), p = 1 (0 1)</code>, the final state of <code>1</code>‘s corresponding counter’s state should be <code>x2 = 0, x1 = 1</code>. So we just need to return <code>x1</code> as our result.</p>
+</li>
+<li><p>For another example, if <code>k = 2 (1 0), p = 2 (1 0)</code>, the final state of <code>1</code>‘s corresponding counter’s state should be <code>x2 = 0, x1 = 0</code>. However, since it is also the same case of <code>0</code>, we cannot extract the bits that are <code>1</code>.</p>
+</li>
+<li><p>For another example , if <code>k = 4 (1 0 0), p = 3 (0 1 1)</code>, the final state of <code>1</code>‘s corresponding counter’s state should be <code>x3 = 0, x2 = 1, x1 = 1</code>. So, we just need to return <code>x2 | x1</code>, or <code>x2</code>, or <code>x1</code> as our results.</p>
+</li>
+</ul>
+<h2 id="Single-Number-III"><a href="#Single-Number-III" class="headerlink" title="Single Number III"></a>Single Number III</h2><blockquote>
+<p>Given an array of numbers <code>nums</code>, in which <code>exactly two elements</code> appear only once and all the other elements appear <code>exactly twice</code>. Find the two elements that appear only <code>once</code>.</p>
+</blockquote>
+<p><strong>Note:</strong> The order of the result is not important. So in the above example, <code>[5, 3]</code> is also correct.</p>
+<p><strong>Follow-up:</strong> Your algorithm should have a <code>linear runtime</code> complexity. Could you implement it <code>without using extra memory</code>?</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input:  [<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">5</span>]</span><br><span class="line">Output: [<span class="number">3</span>,<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>Methods</strong></p>
+<ol>
+<li>Brute-force (same as Problem I)<ul>
+<li>Use <code>stream()</code> to convert <code>List&lt;Integer&gt;</code> to <code>int[]</code>.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] singleNumber(<span class="type">int</span>[] nums) &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  List&lt;Integer&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123; <span class="comment">// examing i</span></span><br><span class="line">    <span class="type">boolean</span> <span class="variable">isSingle</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; n; ++j) &#123;</span><br><span class="line">      <span class="keyword">if</span> (i == j) <span class="keyword">continue</span>; <span class="comment">// except itself</span></span><br><span class="line">      </span><br><span class="line">      <span class="keyword">if</span> (nums[i] == nums[j]) &#123; <span class="comment">// found duplicate numbers</span></span><br><span class="line">        isSingle = <span class="literal">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (isSingle) &#123;</span><br><span class="line">      result.add(nums[i]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result.stream().filter(Objects::nonNull).mapToInt(Integer::intValue).toArray();</span><br><span class="line">  <span class="comment">// OR: return new int[] &#123; result.get(0), result.get(1) &#125;;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>Hash Table<ul>
+<li>Use a hash set.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] singleNumber(<span class="type">int</span>[] nums) &#123;</span><br><span class="line">  Set&lt;Integer&gt; set = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">    <span class="keyword">if</span> (set.contains(val)) &#123;</span><br><span class="line">      set.remove(val);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      set.add(val);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> set.stream().filter(Objects::nonNull).mapToInt(Integer::intValue).toArray();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</li>
+</ul>
+</li>
+<li>Math (not applicable)</li>
+<li>Bit Manipulation (<a target="_blank" rel="noopener" href="https://leetcode.com/problems/single-number-iii/discuss/68900">reference</a>)<ul>
+<li>This time we need one more trick. We need to put those distinct single numbers into two groups.</li>
+<li>Let <code>a</code> and <code>b</code> be the two unique numbers.</li>
+<li><strong>In the first pass</strong>, we use <code>^</code> to get the value <code>a ^ b</code>. With this value, we extract any bit which has value <code>1</code>. The bit values of <code>a</code> and <code>b</code> in this position must be different.</li>
+<li><strong>In the second pass</strong>, we separate numbers into two groups, one group with that bit set, and another group with that bit unset.<ul>
+<li>Notice that the size of each group could be different, but we have guaranteed that <code>a</code> and <code>b</code> are not in the same group, and other same numbers are in the same group (<code>since they both have that bit set or unset</code>).</li>
+</ul>
+</li>
+<li>Under this condition, we can extract <code>a</code> and <code>b</code> in each group by the method proposed in the Problem I.<br>  <strong>Time:</strong> $O(N)$<br>  <strong>Space:</strong> $O(1)$</li>
+</ul>
+</li>
+</ol>
+<p><strong>Note:</strong> Be careful of the precedence of <code>&amp;</code> and <code>&gt;</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] singleNumber(<span class="type">int</span>[] nums) &#123;</span><br><span class="line">  <span class="comment">// First Pass</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">abXor</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">    abXor ^= val;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Isolate one &quot;1&quot; bit in the abXor</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">mask</span> <span class="operator">=</span> abXor &amp; ~(abXor - <span class="number">1</span>);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Second Pass</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">0</span>, b = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">    <span class="keyword">if</span> ((val &amp; mask) &gt; <span class="number">0</span>) &#123; <span class="comment">// with that bit set</span></span><br><span class="line">      a = a ^ val;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// with that bit unset</span></span><br><span class="line">      b = b ^ val;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[] &#123; a, b &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

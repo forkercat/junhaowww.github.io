@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Easy My Post: [Java] Summary of Usages of split() and replace() vs. replaceAll() Problem Given a paragraph and a list of banned words, return the most frequent word th">
+<meta property="og:type" content="website">
+<meta property="og:title" content="819. Most Common Word">
+<meta property="og:url" content="https://junhaow.com/lc/problems/string/basic/819_most-common-word.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Easy My Post: [Java] Summary of Usages of split() and replace() vs. replaceAll() Problem Given a paragraph and a list of banned words, return the most frequent word th">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.137Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.137Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>819. Most Common Word</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/most-common-word/">LeetCode</a><br>Difficulty: <span class="green">Easy</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/most-common-word/discuss/411380">[Java] Summary of Usages of split() and replace() vs. replaceAll()</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a paragraph and a list of banned words, return the most frequent word that is not in the list of banned words.  <strong>It is guaranteed there is at least one word that isn’t banned, and that the answer is unique.</strong></p>
+</blockquote>
+<blockquote>
+<p>Words in the list of banned words are <strong>given in lowercase</strong>, and free of punctuation.  Words in the paragraph are not case sensitive. The answer is in <strong>lowercase</strong>.</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>1 &lt;&#x3D; <code>paragraph.length</code> &lt;&#x3D; 1000.</li>
+<li>0 &lt;&#x3D; <code>banned.length</code> &lt;&#x3D; 100.</li>
+<li>1 &lt;&#x3D; <code>banned[i].length</code> &lt;&#x3D; 10.</li>
+<li>The answer is unique, and written in lowercase (even if its occurrences in <code>paragraph</code> may have uppercase symbols, and even if it is a proper noun.)</li>
+<li>Paragraph only consists of <code>letters</code>, <code>spaces</code>, or the punctuation symbols <code>!?&#39;,;.</code>.</li>
+<li>There are no hyphens or hyphenated words.</li>
+<li>Words only consist of letters, never apostrophes or other punctuation symbols.</li>
+</ul>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="string">&quot;Bob hit a ball, the hit BALL flew far after it was hit.&quot;</span></span><br><span class="line">banned: [<span class="string">&quot;hit&quot;</span>]</span><br><span class="line">Output:  <span class="string">&quot;ball&quot;</span></span><br><span class="line"></span><br><span class="line">Input: <span class="string">&quot;a, a, a, a, b,b,b,c, c&quot;</span></span><br><span class="line">banned: [<span class="string">&quot;a&quot;</span>]</span><br><span class="line">Output: <span class="string">&quot;b&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Hash-Set-Hash-Map"><a href="#Hash-Set-Hash-Map" class="headerlink" title="Hash Set + Hash Map"></a>Hash Set + Hash Map</h3><p><strong>Note:</strong> <code>str.split(&quot;\\s+&quot;)</code> is equivalent to <code>str.split(&quot;\\s+&quot;, 0)</code>. It means split the string for as many times as possible, and remove empty result <code>&quot;&quot;</code>. So <code>trim()</code> is not necessary here.</p>
+<p>Original code:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">mostCommonWord</span><span class="params">(String paragraph, String[] banned)</span> &#123;</span><br><span class="line">  <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> preprocess(paragraph);</span><br><span class="line">  String[] words = str.split(<span class="string">&quot;\\s+&quot;</span>); <span class="comment">// split by one or more spaces</span></span><br><span class="line">  <span class="comment">// ban set</span></span><br><span class="line">  Set&lt;String&gt; banSet = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (String s : banned) banSet.add(s);</span><br><span class="line">  <span class="comment">// count map</span></span><br><span class="line">  Map&lt;String, Integer&gt; countMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  <span class="type">int</span> <span class="variable">maxCount</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (String s : words) &#123;</span><br><span class="line">    <span class="keyword">if</span> (banSet.contains(s)) <span class="keyword">continue</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> countMap.getOrDefault(s, <span class="number">0</span>) + <span class="number">1</span>;</span><br><span class="line">    maxCount = Math.max(maxCount, count);</span><br><span class="line">    countMap.put(s, count);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// find the string with maxCount</span></span><br><span class="line">  <span class="keyword">for</span> (String s : countMap.keySet()) &#123;</span><br><span class="line">    <span class="keyword">if</span> (countMap.get(s) == maxCount) &#123;</span><br><span class="line">      <span class="keyword">return</span> s;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Here is the <code>preprocess</code> function:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// &quot;a, a, a, a, b,b,b,c, c&quot;</span></span><br><span class="line"><span class="comment">// [&quot;a&quot;]</span></span><br><span class="line"><span class="comment">// Output: &quot;b&quot;</span></span><br><span class="line"><span class="keyword">private</span> String <span class="title function_">preprocess</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  s = s.replace(<span class="string">&quot;!&quot;</span>, <span class="string">&quot; &quot;</span>); <span class="comment">// for &quot;a,a,a,,a&quot;, we should replace by &quot; &quot; instead of &quot;&quot;</span></span><br><span class="line">  s = s.replace(<span class="string">&quot;?&quot;</span>, <span class="string">&quot; &quot;</span>);</span><br><span class="line">  s = s.replace(<span class="string">&quot;&#x27;&quot;</span>, <span class="string">&quot; &quot;</span>);</span><br><span class="line">  s = s.replace(<span class="string">&quot;,&quot;</span>, <span class="string">&quot; &quot;</span>);</span><br><span class="line">  s = s.replace(<span class="string">&quot;;&quot;</span>, <span class="string">&quot; &quot;</span>);</span><br><span class="line">  s = s.replace(<span class="string">&quot;.&quot;</span>, <span class="string">&quot; &quot;</span>);</span><br><span class="line">  s = s.trim();  <span class="comment">// should be put after all those replace()</span></span><br><span class="line">  s = s.toLowerCase();</span><br><span class="line">  <span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Or:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String <span class="title function_">preprocess</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  s = s.replaceAll(<span class="string">&quot;\\!|\\?|\\&#x27;|\\,|\\;|\\.&quot;</span>, <span class="string">&quot; &quot;</span>);</span><br><span class="line">  s = s.trim();  <span class="comment">// should be put after all those replace()</span></span><br><span class="line">  s = s.toLowerCase();</span><br><span class="line">  <span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>replace()</code> vs. <code>replaceAll()</code>:</strong></p>
+<ul>
+<li><code>replace(char oldChar, char newChar)</code></li>
+<li><code>replace(CharSequence target, CharSequence replacement)</code></li>
+<li><code>replaceAll(String regex, String replacement)</code></li>
+</ul>
+<p>Notice that they all replace all occurrences. <code>All</code> in the name of <code>replaceAll</code> doesn’t mean only it can replace all occurrences.</p>
+<p>A succinct version:</p>
+<ul>
+<li><code>\\w+</code> matches all <code>alphanumeric</code> characters and <code>_</code>.</li>
+<li><code>\\W+</code> matches all characters except <code>alphanumeric</code> characters and <code>_</code>.</li>
+<li>They are opposite.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String <span class="title function_">preprocess</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  s = s.replaceAll(<span class="string">&quot;\\W+&quot;</span>, <span class="string">&quot; &quot;</span>);</span><br><span class="line">  s = s.trim().toLowerCase();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>A more succinct version:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String[] words = s.toLowerCase().split(<span class="string">&quot;\\W+&quot;</span>); <span class="comment">// &quot;\\W+&quot; includes spaces</span></span><br></pre></td></tr></table></figure>
+
+<p>Rules about <code>split()</code>: <a href="http://junhaow.com/lc/problems/string/271_encode-and-decode-strings.html">271. Encode and Decode Strings</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;..&quot;</span>.split(<span class="string">&quot;\\W+&quot;</span>, -<span class="number">1</span>); <span class="comment">// [&quot;&quot;, &quot;&quot;]</span></span><br><span class="line"><span class="string">&quot;..&quot;</span>.split(<span class="string">&quot;\\W+&quot;</span>, <span class="number">0</span>);  <span class="comment">// []</span></span><br><span class="line"><span class="string">&quot;..&quot;</span>.split(<span class="string">&quot;\\W+&quot;</span>, <span class="number">1</span>);  <span class="comment">// [&quot;..&quot;]</span></span><br><span class="line"><span class="string">&quot;..&quot;</span>.split(<span class="string">&quot;\\W+&quot;</span>, <span class="number">2</span>);  <span class="comment">// [&quot;&quot;, &quot;&quot;]</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

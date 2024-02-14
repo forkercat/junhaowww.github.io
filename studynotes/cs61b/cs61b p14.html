@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="CompressionModel #1: Algorithms Operating on Bits  Model #2: Self-Extracting Bits Prefix Free CodesBy default, English text is usually represented by sequences of characters, each 8 bits long, e.g">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CS 61B | Part 14 | Compression, P &#x3D; NP?, Conclusions">
+<meta property="og:url" content="https://junhaow.com/studynotes/cs61b/cs61b%20p14.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="CompressionModel #1: Algorithms Operating on Bits  Model #2: Self-Extracting Bits Prefix Free CodesBy default, English text is usually represented by sequences of characters, each 8 bits long, e.g">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6e5wk.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rb4q2.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/502b0.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dxide.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3aex3.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wtis3.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2rn9y.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1q42j.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rfe1n.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jaawh.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/p9n9v.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/horpo.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sslbl.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/70up9.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yqz6z.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/if1io.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fpxlc.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bl697.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/411px.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9njtz.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/87wny.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6ql3i.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/p1ng2.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3d0xx.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ag8nj.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/12atd.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/m1hcg.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/iq5bk.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.195Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.195Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6e5wk.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CS 61B | Part 14 | Compression, P = NP?, Conclusions</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+
+
+<h2 id="Compression"><a href="#Compression" class="headerlink" title="Compression"></a>Compression</h2><p><strong>Model #1:</strong> Algorithms Operating on Bits</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6e5wk.png"></p>
+<p><strong>Model #2:</strong> Self-Extracting Bits</p>
+<h2 id="Prefix-Free-Codes"><a href="#Prefix-Free-Codes" class="headerlink" title="Prefix Free Codes"></a>Prefix Free Codes</h2><p>By default, English text is usually represented by sequences of characters, each 8 bits long, e.g. ‘d’ is <code>01100100</code>.</p>
+<table>
+<thead>
+<tr>
+<th align="center">word</th>
+<th align="center">binary</th>
+<th align="center">hexadecimal</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">dog</td>
+<td align="center">01100100 01101111 01100111</td>
+<td align="center">64 6f 67</td>
+</tr>
+</tbody></table>
+<p>Easy way to compress: Use fewer than 8 bits for each letter.</p>
+<ul>
+<li>Have to decide which bit sequences should go with which letters.</li>
+<li>More generally, we’d say which <code>codewords</code> go with which <code>symbols</code>.</li>
+</ul>
+<p><strong>Morse Code:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rb4q2.png" alt="Morse Code: Mapping Alphanumeric Symbols to Codewords"></p>
+<p><code>M</code> is prefix of <code>G</code>. We can see this in Morse Code Tree:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/502b0.png" alt="Morse Code Tree"></p>
+<p>Alternate Strategy: Avoid ambiguity by making code <code>prefix free</code>.</p>
+<ul>
+<li><p>Prefix-Free Example #1:</p>
+<p>A prefix-free code is one in which no codeword is a prefix of any other.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dxide.png" alt="Prefix-Free Example #1"></p>
+<p>Note: </p>
+<ul>
+<li><code>I ATE</code> could be decoded with no pauses.</li>
+<li>Characters are always leaves.</li>
+</ul>
+</li>
+<li><p>Prefix-Free Example #2:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3aex3.png" alt="Prefix-Free Example #2"></p>
+</li>
+</ul>
+<h2 id="Code-Calculation-Approach"><a href="#Code-Calculation-Approach" class="headerlink" title="Code Calculation Approach"></a>Code Calculation Approach</h2><p><strong>Observation:</strong> We can see that some prefix-free codes are better for some texts than others.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wtis3.png" alt="Some prefix-free codes are better for some texts"></p>
+<h3 id="Shannon-Fano-Codes"><a href="#Shannon-Fano-Codes" class="headerlink" title="Shannon-Fano Codes"></a>Shannon-Fano Codes</h3><ul>
+<li>Count <code>relative frequencies</code> of all characters in a text.</li>
+<li>Split into <code>left</code> and <code>right</code> halves of roughly equal frequency.</li>
+</ul>
+<p><code>我爸</code>在左边。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2rn9y.png"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1q42j.png"></p>
+<p><strong>Conclusion:</strong> Shannon-Fano coding is NOT optimal. Does a good job, but possible to find better codes.</p>
+<h3 id="Huffman-Coding"><a href="#Huffman-Coding" class="headerlink" title="Huffman Coding"></a>Huffman Coding</h3><p>Calculate relative frequencies $f$.</p>
+<ul>
+<li>Assign each symbol to a node with weight &#x3D; relative frequency $f$.</li>
+<li>Take the <code>two smallest</code> nodes and <code>merge</code> them into a super node with weight equal to <code>sum of weights</code>.</li>
+<li>Repeat until everything is part of a tree.</li>
+</ul>
+<p>Example:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rfe1n.png" alt="我爸是李刚 Huffman Coding Example"></p>
+<p>Efficiency:</p>
+<p>How many bits per symbol do we need to compress a file with the character frequencies listed below using the Huffman code that we created?</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jaawh.png" alt="Efficiency Assessment of Huffman Coding"></p>
+<p>Another Comparison Example:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/p9n9v.png" alt="32-bit Unicode vs. Huffman Code"></p>
+<p>But remember the <code>trade-off</code>: We can only represent the particular characters.</p>
+<p><strong>Huffman vs. Shannon-Fano:</strong></p>
+<p>Shannon-Fano code below results in an average of 2.31 bits per symbol, whereas Huffman is only 2.3 bits per symbol.</p>
+<p>Huffman coding is strictly better than Shannon-Fano coding. There is <code>no downside</code> to Huffman coding.</p>
+<h4 id="Data-Structures"><a href="#Data-Structures" class="headerlink" title="Data Structures"></a>Data Structures</h4><p><strong>Question #1:</strong> For encoding (bitstream to compressed bitstream), what is a natural data structure to use? Char are just integers, e.g. ‘A’ &#x3D; 65. Two approaches:</p>
+<ul>
+<li><code>Array of BitSequence[]</code>, to retrieve, can use character as index.</li>
+<li>How is this different from a <code>HashMap&lt;Character, BitSequence&gt;</code>? Lookup consists of:<ul>
+<li>Compute hashCode</li>
+<li>Mod by number of buckets</li>
+<li>Look in a linked list if collision happens</li>
+</ul>
+</li>
+</ul>
+<p>Compared to HashMaps, Arrays are faster, but use more memory if some characters in the alphabet are unused. </p>
+<p><strong>Question #2:</strong> For decoding (compressed bitstream back to bitstream), what is a natural data structure to use?</p>
+<p>Hint: Prefix Operations!</p>
+<p>Since we need to look up <code>longest matching prefix</code>, an operation that <code>Tries</code> excel at.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/horpo.png" alt="Just Reach The Leave Node"></p>
+<h4 id="Usage-In-Practice"><a href="#Usage-In-Practice" class="headerlink" title="Usage In Practice"></a>Usage In Practice</h4><p>Two possible philosophies for using Huffman Compression:</p>
+<ul>
+<li><strong>Philosophy 1:</strong> Build one corpus per input type.<ul>
+<li>For each input type, assemble huge numbers of sample inputs for that category. Use each <code>corpse</code> to create a standard code.<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java HuffmanEncodePh1 ENGLISH mobydick.txt</span><br><span class="line">java HuffmanEncodePh1 BITMAP horses.bmp</span><br></pre></td></tr></table></figure></li>
+<li>Con: Will result in suboptimal encoding.</li>
+</ul>
+</li>
+<li><strong>Philosophy 2:</strong> For every possible input file, create a <code>unique code</code> just for that file. Send the code along with the compressed file.<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java HuffmanEncodePh2 mobydick.txt</span><br><span class="line">java HuffmanEncodePh2 horses.bmp</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Require you to use extra space for the codeword table in the compressed bitstream.</li>
+</ul>
+</li>
+</ul>
+<p>In practice, Philosophy 2 is used in the real world.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sslbl.png" alt="Compression - Step 3"></p>
+<p>Note: In step 1, consider each b-bit symbol (e.g. 8-bit chunks, Unicode characters, etc.) of <code>X.txt</code>, counting occurrences of each of the $2^b$ possibilities, where $b$ is the size of each symbol in bits.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/70up9.png" alt="Compression - Step 4"></p>
+<p>Code (algs4): <a target="_blank" rel="noopener" href="https://algs4.cs.princeton.edu/55compression/Huffman.java.html">Huffman.java</a></p>
+<h2 id="Compression-Theory"><a href="#Compression-Theory" class="headerlink" title="Compression Theory"></a>Compression Theory</h2><p>There are many other approaches:</p>
+<ul>
+<li>Run-length encoding: Replace each character by itself concatenated with the number of occurrences.<ul>
+<li>Rough Idea: <code>XXXXXXXXXXYYYYXXXXX</code> -&gt; <code>X10Y4X5</code></li>
+</ul>
+</li>
+<li>LZW: Search for common repeated patterns in the input.</li>
+</ul>
+<p><strong>General Idea:</strong> Exploit redundancy and existing order inside the sequence. Sequences with no existing redundancy or order may actually get enlarged.</p>
+<p><strong>SuperZip:</strong></p>
+<p>Suppose an algorithm designer says their algorithm SuperZip can compress any bitstream by 50%. Why is this impossible?</p>
+<p><strong>Argument 1:</strong> If true, they’d be able to compress everything into a <code>single bit</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yqz6z.png" alt="Argument 1"></p>
+<p><strong>Argument 2:</strong> There are far fewer short bitstreams than long ones. Guaranteeing compression even once by 50% is impossible. For example:</p>
+<ul>
+<li>There are $2^{1000}$ 1000-bit sequences.</li>
+<li>There are only $1 + 2 + 4 + \ldots + 2^{500} &#x3D; 2^{501} - 1$ bitstreams of length $\leq 500$.</li>
+<li>In other words, you have $2^{1000}$ things and only $2^{501} - 1$ places to put them.</li>
+<li>Of our 1000-bit inputs, only roughly $1$ in $2^{499}$, that is $\frac{2^{501} - 1}{2^{1000}}$, can be compressed by 50%.</li>
+<li>It shows that most data is incompressible.</li>
+</ul>
+<h2 id="Self-Extracting-Bits"><a href="#Self-Extracting-Bits" class="headerlink" title="Self-Extracting Bits"></a>Self-Extracting Bits</h2><p>As a model for the decompression process, let’s treat the <code>algorithm</code> and the <code>compressed bitstream</code> as a <code>single sequence</code> of bits.</p>
+<ul>
+<li><p>Imagine storing the compressed bitstream as a <code>byte[]</code> variable in a <code>.java</code> file.</p>
+</li>
+<li><p><code>algorithm</code> + <code>compressed bitstream</code> –&gt; <code>Interpreter</code></p>
+</li>
+</ul>
+<p><strong>Example:</strong> HugPlant</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/if1io.png"></p>
+<p>To keep things conceptually simpler, let’s package the compressed data plus decoder into a single self-extracting <code>.java</code> file.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fpxlc.png"></p>
+<p>Major operating systems have no idea what to do with a <code>.huf</code> file, we have to send over the 43,400 bits of Huffman <code>.java</code> code as well.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bl697.png"></p>
+<h2 id="LZW"><a href="#LZW" class="headerlink" title="LZW"></a>LZW</h2><p>It is named for inventors Limpel, Ziv, Welch. It was once a hated algorithm because of attempts to enforce licensing fees. Patent expired in 2003.</p>
+<p><strong>Compressing:</strong></p>
+<p>Key Idea: Each codeword represents <code>multiple symbols</code>.</p>
+<ul>
+<li>Start with trivial codeword table where each codeword corresponds to one ASCII symbol.</li>
+<li>Every time a codeword $X$ is used, <code>record</code> a new codeword $Y$ corresponding to $X$ concatenated with the next symbol.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/411px.png" alt="The LZW Approach"></p>
+<p>Neat fact: You don’t have to send the codeword table along with the compressed algorithm. It is possible to reconstruct codeword table alone.</p>
+<p><strong>Decompressing:</strong></p>
+<p>Key Idea: After processing each codeword, add the codeword that would have been added by the previous character.</p>
+<h2 id="Lossy-Compression"><a href="#Lossy-Compression" class="headerlink" title="Lossy Compression"></a>Lossy Compression</h2><p>Most media formats lose information during compression process like <code>.JPEG</code>, <code>.MP3</code>, and <code>.MP4</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9njtz.png" alt="So big..."></p>
+<p><strong>Basic Idea:</strong> Throw away information that <code>human sensory system</code> does not care about.</p>
+<p>Examples: Audio with high frequencies, video with subtle gradations of color (low frequencies).</p>
+<p><strong>Summary:</strong></p>
+<p>Huffman coding: Represent common symbols as codeword with fewer bits.</p>
+<ul>
+<li>Use something like <code>Map&lt;Character, BitSeq&gt;</code> for compression.</li>
+<li>Use something like <code>TrieMap&lt;Character&gt;</code> for decompression.</li>
+</ul>
+<p>LZW: Represent multiple symbols with a single codeword.</p>
+<ul>
+<li>Use something like <code>TrieMap&lt;Integer&gt;</code> for compression.</li>
+<li>Use something like <code>Map&lt;Character, SymbolSeq&gt;</code> for decompression.</li>
+</ul>
+<h2 id="P-NP"><a href="#P-NP" class="headerlink" title="P &#x3D; NP?"></a>P &#x3D; NP?</h2><p>It’s a question posed by Stephen Cook in 1971: Are all NP problems also P problems? In other words, are all problems with efficiently verifiable solutions also efficiently solvable?</p>
+<p>One reason to think yes:</p>
+<p>Easy to check any given answer. Maybe with the right pruning rules you can zero in on the answer.</p>
+<p>How do we know X can be turned into a longest paths problem?</p>
+<p>Short Answer: It’s a problem in the complexity class NP and therefore can be reduced to any NP complete problem, including longest paths.</p>
+<p>Two important classes of yes&#x2F;no problems:</p>
+<ul>
+<li>P: Efficiently <code>solvable</code> problems.<ul>
+<li>Is this array sorted?</li>
+<li>Does this array have duplicates?</li>
+</ul>
+</li>
+<li>NP: Problems with solutions that are <code>efficiently verifiable</code> (quickly check if it is true).<ul>
+<li>Is there a solution to this 3SAT problem?</li>
+<li>In graph G, does there exist a path from $s$ to $t$ of weight $&gt; k$?</li>
+</ul>
+</li>
+</ul>
+<p>Examples of problems not in NP:</p>
+<ul>
+<li>Is this the best chess move I can make next?<ul>
+<li>Hard to verify.</li>
+</ul>
+</li>
+<li>What is the longest path?<ul>
+<li>Not a yes&#x2F;no question.</li>
+</ul>
+</li>
+</ul>
+<p>Totally Shocking Fact:</p>
+<p>Every single NP problem reduces to 3SAT. In other words, any decision problem for which a yes answer can be efficiently verified can be transformed into a 3SAT problem (“efficient” here mean polynomial time).</p>
+<p><strong>Almost Like Gods</strong></p>
+<p>Poll:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/87wny.png"></p>
+<p>NP Complete Problems:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6ql3i.png"></p>
+<p>Fun Fact: Mathematical Proofs Are in NP! If P &#x3D; NP, then mathematical proof can be automated.</p>
+<p>P &#x3D; NP means checking a proof is roughly as easy as creating the proof.</p>
+<p>Millenium Prize Problems:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/p1ng2.png"></p>
+<p>Even More Impressive Consequences:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3d0xx.png"></p>
+<p><strong>Does Short &#x3D; Comprehensible?</strong></p>
+<p>Scott Aaronson earlier made an implicit conjecture that a short program will also be comprehensible. However, there are also reasons to suspect that simplicity might not indicate comprehensibility. Short problems can produce surprisingly complex output.</p>
+<p>For example: Fractals.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ag8nj.png"></p>
+<p>Also, music can be from very short programs.</p>
+<h2 id="Course-Summary"><a href="#Course-Summary" class="headerlink" title="Course Summary"></a>Course Summary</h2><p>Some Examples of Implementations for ADTs:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/12atd.png"></p>
+<p>Array-Based Data Structures:</p>
+<ul>
+<li>ArrayLists and ArrayDeque</li>
+<li>HashSets, HashMaps, MyHashMap: Array of buckets</li>
+<li>ArrayHeap (tree represented as an array)</li>
+</ul>
+<p>Linked Data Structures:</p>
+<ul>
+<li>Lined Lists<ul>
+<li>LinkedList, IntList, LinedListDeque, SLList, DLList</li>
+</ul>
+</li>
+<li>Trees: Hierarchical generalization of a linked list. Aim for bushiness.<ul>
+<li>TreeSet, TreeMap, BSTMap, Tries</li>
+</ul>
+</li>
+<li>Graphs: Generalization of a tree.</li>
+</ul>
+<p>Tractable Graph Problems and Algorithms:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/m1hcg.png" alt="Tractable Graph Problems and Algorithms"></p>
+<p>Searching and Sorting:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/iq5bk.png" alt="Searching and Sorting"></p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

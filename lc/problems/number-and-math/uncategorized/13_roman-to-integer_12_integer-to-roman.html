@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: 13. Roman to Integer &#x2F; 12. Integer to RomanDifficulty: Easy My Post: Java Solutions of Roman to Integer &amp; Integer to Roman (explanation, comments) Conversion SystemRoman numerals">
+<meta property="og:type" content="website">
+<meta property="og:title" content="13. Roman to Integer &#x2F; 12. Integer to Roman">
+<meta property="og:url" content="https://junhaow.com/lc/problems/number-and-math/uncategorized/13_roman-to-integer_12_integer-to-roman.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: 13. Roman to Integer &#x2F; 12. Integer to RomanDifficulty: Easy My Post: Java Solutions of Roman to Integer &amp; Integer to Roman (explanation, comments) Conversion SystemRoman numerals">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.134Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.134Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>13. Roman to Integer / 12. Integer to Roman</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/roman-to-integer/">13. Roman to Integer</a> &#x2F; <a target="_blank" rel="noopener" href="https://leetcode.com/problems/integer-to-roman/">12. Integer to Roman</a><br>Difficulty: <span class="green">Easy</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/roman-to-integer/discuss/399358">Java Solutions of Roman to Integer &amp; Integer to Roman (explanation, comments)</a></p>
+<h2 id="Conversion-System"><a href="#Conversion-System" class="headerlink" title="Conversion System"></a>Conversion System</h2><p>Roman numerals are represented by seven different symbols: <code>I</code>, <code>V</code>, <code>X</code>, <code>L</code>, <code>C</code>, <code>D</code> and <code>M</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Symbol       Value</span><br><span class="line">I             <span class="number">1</span></span><br><span class="line">V             <span class="number">5</span></span><br><span class="line">X             <span class="number">10</span></span><br><span class="line">L             <span class="number">50</span></span><br><span class="line">C             <span class="number">100</span></span><br><span class="line">D             <span class="number">500</span></span><br><span class="line">M             <span class="number">1000</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>I</code> can be placed before <code>V</code> (5) and <code>X</code> (10) to make <code>IV</code> (4) and <code>IX</code> (9).</li>
+<li><code>X</code> can be placed before <code>L</code> (50) and <code>C</code> (100) to make <code>XL</code> (40) and <code>XC</code> (90).</li>
+<li><code>C</code> can be placed before <code>D</code> (500) and <code>M</code> (1000) to make <code>CD</code> (400) and <code>CM</code> (900).</li>
+</ul>
+<h2 id="Roman-to-Integer"><a href="#Roman-to-Integer" class="headerlink" title="Roman to Integer"></a>Roman to Integer</h2><p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="string">&quot;III&quot;</span></span><br><span class="line">Output: <span class="number">3</span></span><br><span class="line"></span><br><span class="line">Input: <span class="string">&quot;IV&quot;</span></span><br><span class="line">Output: <span class="number">4</span></span><br><span class="line"></span><br><span class="line">Input: <span class="string">&quot;LVIII&quot;</span></span><br><span class="line">Output: <span class="number">58</span></span><br><span class="line">Explanation: L = <span class="number">50</span>, V= <span class="number">5</span>, III = <span class="number">3.</span></span><br><span class="line"></span><br><span class="line">Input: <span class="string">&quot;MCMXCIV&quot;</span></span><br><span class="line">Output: <span class="number">1994</span></span><br><span class="line">Explanation: M = <span class="number">1000</span>, CM = <span class="number">900</span>, XC = <span class="number">90</span> <span class="type">and</span> <span class="variable">IV</span> <span class="operator">=</span> <span class="number">4.</span></span><br></pre></td></tr></table></figure>
+
+<p>First, we need a function that receives a character and returns the corresponded value.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">getVal</span><span class="params">(<span class="type">char</span> ch)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (ch == <span class="string">&#x27;I&#x27;</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span> (ch == <span class="string">&#x27;V&#x27;</span>) <span class="keyword">return</span> <span class="number">5</span>;</span><br><span class="line">  <span class="keyword">if</span> (ch == <span class="string">&#x27;X&#x27;</span>) <span class="keyword">return</span> <span class="number">10</span>;</span><br><span class="line">  <span class="keyword">if</span> (ch == <span class="string">&#x27;L&#x27;</span>) <span class="keyword">return</span> <span class="number">50</span>;</span><br><span class="line">  <span class="keyword">if</span> (ch == <span class="string">&#x27;C&#x27;</span>) <span class="keyword">return</span> <span class="number">100</span>;</span><br><span class="line">  <span class="keyword">if</span> (ch == <span class="string">&#x27;D&#x27;</span>) <span class="keyword">return</span> <span class="number">500</span>;</span><br><span class="line">  <span class="keyword">if</span> (ch == <span class="string">&#x27;M&#x27;</span>) <span class="keyword">return</span> <span class="number">1000</span>;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;Unsupported Character&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The idea is very elegant. Each time we look ahead one element and compare the current element <code>curr</code> with the next element <code>next</code>.</p>
+<ul>
+<li><code>curr &lt; next</code>: Combination, eg. <code>IX</code>.</li>
+<li><code>curr &gt;= next</code>: Single Symbol, eg. <code>III</code>.</li>
+</ul>
+<p>The way of handling symbols like <code>IX</code> is very clever. We first deduct the value of the first symbol and then add the value of the second symbol. For this example <code>IX</code>, we first deduct <code>I</code>(1) and then add <code>X</code>(5), which turns out to be <code>4</code>.</p>
+<p>Here is the code:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">romanToInt</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">  <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (n == <span class="number">0</span>) <span class="keyword">return</span> result;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n - <span class="number">1</span>; ++i) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">curr</span> <span class="operator">=</span> getVal(s.charAt(i));</span><br><span class="line">    <span class="type">int</span> <span class="variable">next</span> <span class="operator">=</span> getVal(s.charAt(i + <span class="number">1</span>));</span><br><span class="line">    <span class="keyword">if</span> (curr &lt; next) &#123;</span><br><span class="line">      result -= curr;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      result += curr;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result + getVal(s.charAt(n - <span class="number">1</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Actually, we can check the index before assigning a value to <code>next</code>. With this check, the code becomes more elegant and succinct.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">romanToInt</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> s.length();</span><br><span class="line">  <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">curr</span> <span class="operator">=</span> getVal(s.charAt(i));</span><br><span class="line">    <span class="type">int</span> <span class="variable">next</span> <span class="operator">=</span> (i + <span class="number">1</span> &lt; n) ? getVal(s.charAt(i + <span class="number">1</span>)) : Integer.MIN_VALUE;</span><br><span class="line">    <span class="keyword">if</span> (curr &lt; next) &#123;</span><br><span class="line">      result -= curr;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      result += curr;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+<h2 id="Integer-to-Roman"><a href="#Integer-to-Roman" class="headerlink" title="Integer to Roman"></a>Integer to Roman</h2><p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="number">3</span></span><br><span class="line">Output: <span class="string">&quot;III&quot;</span></span><br><span class="line"></span><br><span class="line">Input: <span class="number">4</span></span><br><span class="line">Output: <span class="string">&quot;IV&quot;</span></span><br><span class="line"></span><br><span class="line">Input: <span class="number">58</span></span><br><span class="line">Output: <span class="string">&quot;LVIII&quot;</span></span><br><span class="line">Explanation: L = <span class="number">50</span>, V = <span class="number">5</span>, III = <span class="number">3.</span></span><br><span class="line"></span><br><span class="line">Input: <span class="number">1994</span></span><br><span class="line">Output: <span class="string">&quot;MCMXCIV&quot;</span></span><br><span class="line">Explanation: M = <span class="number">1000</span>, CM = <span class="number">900</span>, XC = <span class="number">90</span> <span class="type">and</span> <span class="variable">IV</span> <span class="operator">=</span> <span class="number">4.</span></span><br></pre></td></tr></table></figure>
+
+
+<p>The idea is to check all possible bases from largest to smallest. For example, we should use <code>M</code>(1000) to reduce <code>1994</code> to <code>994</code>, and then <code>CM</code>(900) and so on.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">intToRoman</span><span class="params">(<span class="type">int</span> num)</span> &#123;</span><br><span class="line">  <span class="type">int</span>[] values = <span class="keyword">new</span> <span class="title class_">int</span>[] &#123;</span><br><span class="line">    <span class="number">1000</span>, <span class="number">900</span>, <span class="number">500</span>, <span class="number">400</span>, <span class="number">100</span>, <span class="number">90</span>, <span class="number">50</span>, <span class="number">40</span>, <span class="number">10</span>, <span class="number">9</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">1</span></span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : values) &#123;</span><br><span class="line">    <span class="keyword">if</span> (val &gt; num) <span class="keyword">continue</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">numSymbol</span> <span class="operator">=</span> num / val;</span><br><span class="line">    <span class="keyword">while</span> (numSymbol &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      sb.append(getSymbol(val));</span><br><span class="line">      numSymbol -= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    num %= val;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> sb.toString();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> String <span class="title function_">getSymbol</span><span class="params">(<span class="type">int</span> val)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (val == <span class="number">1</span>)    <span class="keyword">return</span> <span class="string">&quot;I&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (val == <span class="number">5</span>)    <span class="keyword">return</span> <span class="string">&quot;V&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (val == <span class="number">10</span>)   <span class="keyword">return</span> <span class="string">&quot;X&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (val == <span class="number">50</span>)   <span class="keyword">return</span> <span class="string">&quot;L&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (val == <span class="number">100</span>)  <span class="keyword">return</span> <span class="string">&quot;C&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (val == <span class="number">500</span>)  <span class="keyword">return</span> <span class="string">&quot;D&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (val == <span class="number">1000</span>) <span class="keyword">return</span> <span class="string">&quot;M&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (val == <span class="number">4</span>)    <span class="keyword">return</span> <span class="string">&quot;IV&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (val == <span class="number">9</span>)    <span class="keyword">return</span> <span class="string">&quot;IX&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (val == <span class="number">40</span>)   <span class="keyword">return</span> <span class="string">&quot;XL&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (val == <span class="number">90</span>)   <span class="keyword">return</span> <span class="string">&quot;XC&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (val == <span class="number">400</span>)  <span class="keyword">return</span> <span class="string">&quot;CD&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (val == <span class="number">900</span>)  <span class="keyword">return</span> <span class="string">&quot;CM&quot;</span>;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;Unsupported Value&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> Depends on the value.<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

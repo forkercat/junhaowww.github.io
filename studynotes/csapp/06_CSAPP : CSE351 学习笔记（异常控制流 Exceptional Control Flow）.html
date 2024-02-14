@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="从给处理器加电开始，直到断电为止，程序计数器假设一个值的序列： $$a_0, a_1, \cdots, a_{n-1}$$ 其中，每个 $a_k$ 是某个相应的指令 $I_k$ 的地址。每次从 $a_k$ 到 $a_k+1$ 的过渡称为控制转移（control transfer）。这样的控制转移序列叫做处理器的控制流（flow of control or control flow）。 最简单的">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CSAPP &#x2F; CSE 351 学习笔记（异常控制流 Exceptional Control Flow)">
+<meta property="og:url" content="https://junhaow.com/studynotes/csapp/06_CSAPP%20:%20CSE351%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%BC%82%E5%B8%B8%E6%8E%A7%E5%88%B6%E6%B5%81%20Exceptional%20Control%20Flow%EF%BC%89.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="从给处理器加电开始，直到断电为止，程序计数器假设一个值的序列： $$a_0, a_1, \cdots, a_{n-1}$$ 其中，每个 $a_k$ 是某个相应的指令 $I_k$ 的地址。每次从 $a_k$ 到 $a_k+1$ 的过渡称为控制转移（control transfer）。这样的控制转移序列叫做处理器的控制流（flow of control or control flow）。 最简单的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xo8oi.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/p2rk1.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zu2t0.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ic60s.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bjasj.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4a69i.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/09aws.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/49qr9.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gdosb.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tkqz7.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9g1ke.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xefq4.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/voqxv.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ixn28.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.200Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.200Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xo8oi.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CSAPP / CSE 351 学习笔记（异常控制流 Exceptional Control Flow)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>从给处理器加电开始，直到断电为止，程序计数器假设一个值的序列：</p>
+<p>$$a_0, a_1, \cdots, a_{n-1}$$</p>
+<p>其中，每个 $a_k$ 是某个相应的指令 $I_k$ 的地址。每次从 $a_k$ 到 $a_k+1$ 的过渡称为<code>控制转移</code>（control transfer）。这样的控制转移序列叫做处理器的<code>控制流</code>（flow of control or control flow）。</p>
+<p>最简单的一种控制流是一个<code>平滑的</code>序列，其中每个 $I_k$ 和 $I_{k+1}$ 在内存中都是相邻的。这种平滑流的突变通常是由<code>跳转</code>、<code>调用</code>和<code>返回</code>这样一些熟悉的程序指令造成的。</p>
+<p>现代系统通过使控制流发生突变来做出反应。一般而言，我们把这些突变称为<code>异常控制流</code>（Exceptional Control Flow，ECF）。异常控制流发生在计算机系统的各个层次。比如：</p>
+<ul>
+<li><code>硬件层</code>：硬件检测到的事件会触发控制突然转移到异常处理程序。</li>
+<li><code>操作系统层</code>：内核通过<code>上下文切换</code>将控制从一个用户进程转移到另一个用户进程。</li>
+<li><code>应用层</code>：一个进程可以发送<code>信号</code>到另一个进程，而接收者会将控制突然转移到它的一个<code>信号处理程序</code>。</li>
+</ul>
+<p><strong>作为程序员，理解 ECF 很重要，因为：</strong></p>
+<ul>
+<li>帮助理解重要的系统概念。ECF 是操作系统用来实现 I&#x2F;O、进程和虚拟内存的<code>基本机制</code>。</li>
+<li>帮助理解应用程序是如何与操作系统交互的。应用程序通过使用一个叫做<code>陷阱</code>（trap）或者<code>系统调用</code>（system call）的 ECF 形式，向操作系统请求服务。</li>
+<li>帮助编写有趣的新应用程序。操作系统为应用程序提供了强大的<code>ECF 机制</code>，用来<code>创建</code>新进程、<code>等待</code>进程终止、<code>通知</code>其他进程系统中的异常事件，以及<code>检测</code>和<code>响应</code>这些事件。</li>
+<li>帮助你理解并发。ECF 是计算机系统中<code>实现并发的基本机制</code>。并发的例子有：中断应用程序执行的异常处理程序、在时间上重叠执行的进程和线程，以及中断应用程序执行的信号处理程序。</li>
+<li>帮助理解软件异常如何工作。像<code>C++</code>和<code>Java</code>这样的语言通过 try、catch 以及 throw 语句（属于<code>应用级 ECF</code>）来提供软件异常机制。软件异常允许程序进行<code>非本地跳转</code>（即违反通常的调用 &#x2F; 返回栈规则的跳转）来响应错误情况。</li>
+</ul>
+<h2 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h2><p>异常是异常控制流的一种形式，它一部分由<code>硬件</code>实现，一部分由<code>操作系统</code>实现。异常是控制流中的<code>突变</code>，用来<code>响应处理器状态</code>中的某些变化。下图体现其基本思想：</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xo8oi.jpg" alt="异常的剖析。处理器状态中的变化（事件）触发从应用程序到异常处理程序的突发的控制转移（异常）。在异常处理程序完成处理后才控制返回（CSAPP 8-1）"></p>
+<p>在图中，当<code>处理器状态</code>中发生一个重要的变化时，处理器正在执行某个当前指令 $I_{curr}$。在处理器中，<code>状态</code>被编码为不同的<code>位和信号</code>。状态变化成为<code>事件</code>（event）。事件可能和当前指令相关，比如虚拟内存缺页、算术溢出。事件也可能和当前指令无关，如一个系统定时器产生信号或者一个 I&#x2F;O 请求完成。</p>
+<p>在任何情况下，当处理器检测到有事件发生时，它会通过一张叫做<code>异常表</code>（exception table、interrupt vectors 中断向量表）的<code>跳转表</code>，进行一个间接过程调用（异常），到一个专门设计用来处理这类事件的<code>操作系统子程序</code>（异常处理程序，exception handler）。当异常处理程序完成处理后，根据引起异常的事件的类型，会发生以下三种情况之一：</p>
+<ol>
+<li>处理程序将控制返回给当前指令 $I_{curr}$</li>
+<li>处理程序将控制返回给下一调指令 $I_{next}$</li>
+<li>处理程序终止被中断的程序</li>
+</ol>
+<h3 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h3><p>系统中可能的每种类型的异常都分配了一个唯一的非负整数的<code>异常号</code>（exception number）。其中一些号码是由<code>处理器的设计者</code>分配的（零除、缺页、内存访问违例、算术溢出），其他号码是由<code>操作系统内核的设计者</code>分配的（系统调用）。</p>
+<p>在系统启动后，操作系统分配和初始化一张称为<code>异常表</code>的跳转表，使得<code>表目 k</code>包含<code>异常 k</code>的处理程序的<code>地址</code>。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/p2rk1.jpg" alt="异常表（CSAPP 8-2）"></p>
+<p>异常表的起始地址放在一个叫做<code>异常表基址寄存器</code>（exception table base register）的特殊 CPU 寄存器里。</p>
+<p><strong>异常和过程调用的区别：</strong></p>
+<ul>
+<li>异常处理程序的返回地址要么是当前指令，要么是下一条指令；而过程调用在跳转前将返回地址压入栈中。</li>
+<li>异常处理中处理器也把一些额外的处理器状态压到栈中。</li>
+<li>如果控制从用户程序转移到内核，所有这些项目都被压到<code>内核栈</code>中，而不是压到用户栈中。</li>
+<li>异常处理程序运行在内核模式下，意味着它们对所有的系统资源都有<code>完全的访问权限</code>。</li>
+</ul>
+<h3 id="异常的类别"><a href="#异常的类别" class="headerlink" title="异常的类别"></a>异常的类别</h3><table>
+<thead>
+<tr>
+<th>类别</th>
+<th>原因</th>
+<th>异步&#x2F;同步</th>
+<th>返回行为</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>中断（interrupt）</td>
+<td>来自 I&#x2F;O 设备的信号</td>
+<td>异步</td>
+<td>总是返回到下一条指令</td>
+</tr>
+<tr>
+<td>陷阱（trap）</td>
+<td>有意的异常</td>
+<td>同步</td>
+<td>总是返回到下一条指令</td>
+</tr>
+<tr>
+<td>故障（fault）</td>
+<td>潜在可恢复的错误</td>
+<td>同步</td>
+<td>可能返回到当前指令</td>
+</tr>
+<tr>
+<td>终止（abort）</td>
+<td>不可恢复的错误</td>
+<td>同步</td>
+<td>不会返回</td>
+</tr>
+</tbody></table>
+<h4 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h4><p>中断是<code>异步</code>发生的（generated externally），是来自处理器外部的 I&#x2F;O 设备的信号的结果。硬件中断不是由任何一条专门的指令造成的，从这个意义上来说它是异步的。硬件中断的异常处理程序常常称为<code>中断处理程序</code>（interrupt handler）。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zu2t0.jpg" alt="异步异常（CSE 351 - Processes, Video 1: Exceptional control flow）"></p>
+<p>剩下的异常类型是<code>同步</code>发生的（generated internally），是执行当前指令的结果。我们把这类指令叫做<code>故障指令</code>（faulting instruction）</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ic60s.jpg" alt="同步异常（CSE 351 - Processes, Video 1: Exceptional control flow）"></p>
+<h4 id="陷阱和系统调用"><a href="#陷阱和系统调用" class="headerlink" title="陷阱和系统调用"></a>陷阱和系统调用</h4><p>陷阱是<code>有意</code>的异常，是执行一条指令的结果。陷阱最重要的用途是在用户程序和内核之间提供一个像过程一样的接口，叫做<code>系统调用</code>。</p>
+<p>用户程序经常需要向内核请求服务，比如读一个文件、创建一个新的进程（fork）、加载一个新的程序（execve），或者终止当前进程（exit）。为了允许对这些内核服务的受控得到访问，处理器提供了一条特殊的<code>syscall n</code>的指令，当用户程序想要请求服务 n 时，可以执行这条指令，执行后会导致一个到异常处理程序的陷阱，这个处理程序解析参数，并调用适当的内核程序。</p>
+<p>从程序员的角度来看，系统调用和普通的函数调用是一样的。然而，它们<code>实现非常不同</code>。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bjasj.jpg" alt="系统调用例子 - 打开文件（CSE 351 - Processes, Video 1: Exceptional control flow）"></p>
+<h4 id="故障"><a href="#故障" class="headerlink" title="故障"></a>故障</h4><p>故障是由错误情况引起，它可能能够被故障处理程序修正，如缺页异常。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4a69i.jpg" alt="故障例子 - 缺页（CSE 351 - Processes, Video 1: Exceptional control flow）"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/09aws.jpg" alt="故障例子 - 无效地址（CSE 351 - Processes, Video 1: Exceptional control flow）"></p>
+<h4 id="终止"><a href="#终止" class="headerlink" title="终止"></a>终止</h4><p>终止是不可恢复的致命错误造成的结果。通常是一些<code>硬件错误</code>，比如 DRAM 或者 SRAM 位被损坏时发生的奇偶错误。处理程序将控制返回给一个 abort 例程，该例程会终止这个应用程序。</p>
+<p><strong>Linux&#x2F;x86-64 系统中的异常</strong></p>
+<p><code>0~31</code>的号码对应的是由 Intel 架构师定义的异常，因此对任何 x86-64 系统都是一样的。<code>32~255</code>的号码对应的是操作系统定义的中断和陷阱。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/49qr9.jpg" alt="x86-64 系统中的异常示例（CSAPP 8-9）"></p>
+<ul>
+<li><code>一般保护故障</code>：许多原因都会导致不为人知的一般保护故障（general protection fault），通常是因为一个程序引用了一个未定义的虚拟内存区域，或者是因为程序试图写一个只读的文本段。Linux 不会尝试恢复这类故障。Linux shell 通常会把这个一般保护故障报告为<code>段故障</code>（segmentation fault）。</li>
+<li><code>机器检查</code>：是在导致故障的指令执行中检测到致命的硬件错误时发生的。机器检查处理程序不返回控制给应用程序。</li>
+</ul>
+<p><strong>Linux&#x2F;x86-64 系统调用</strong></p>
+<p>Linux 提供几百种系统调用，当应用程序想要请求内核服务时可以使用，包括读文件、写文件或是创建一个新进程。每个系统调用都有一w唯一的整数号，对应于一个到内核中跳转表的偏移量。（不是异常表）</p>
+<p>C 程序用<code>syscall</code>函数可以直接调用任何系统调用。然而，实际j几乎没必要这么做。对于大多数系统调用，标准 C 库提供了一组方便的<code>包装函数</code>。这些包装函数将参数打包在一起，以适当的系统调用指令陷入内核，然后将系统调用的返回状态传递回调用程序。在本书中，系统调用与这些包装函数统称为<code>系统级函数</code>。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gdosb.jpg" alt="Linux x86-64 系统中常用的系统调用示例（CSAPP 8-10）"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">  write(<span class="number">1</span>, <span class="string">&quot;hello, world\n&quot;</span>, <span class="number">13</span>);</span><br><span class="line">  _exit(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>write 函数的第一个参数发送到 stdout，第二个参数是要写的字节序列，第三个要写的是字节数。其汇编版本如下：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">main:</span></span><br><span class="line">  movq $<span class="number">1</span>, %rax         <span class="comment"># write is system call 1</span></span><br><span class="line">  movq $<span class="number">1</span>, %rdi         <span class="comment"># Arg1: stdout has descriptor 1</span></span><br><span class="line">  movq $string, %rsi    <span class="comment"># Arg2: hello world string</span></span><br><span class="line">  movq $len, %rdx       <span class="comment"># Arg3: string length</span></span><br><span class="line">  <span class="keyword">syscall </span>              <span class="comment"># Make the system call</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>处理器 ISA 规范通常会区分异步<code>中断</code>和同步<code>异常</code>，但是并没有提供描述这些非常相似的概念的概括性术语。本书使用<code>异常</code>作为通用的术语，而且只有在必要时才区分异步异常（中断）和同步异常（陷阱、故障和终止）。</p>
+<h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><p>异常是允许操作系统内核提供进程（process）概念的<code>基本构造块</code>，进程是计算机科学中最深刻、最成功的概念之一。在现代系统上运行一个程序时，我们会得到一个假象，就好像我们的程序时系统中当前运行的<code>唯一</code>的程序一样。我们的程序好像是<code>独占</code>地使用处理器和内存。进程给应用程序提供的关键抽象：</p>
+<ul>
+<li>一个独立的<code>逻辑控制流</code>（logical control flow）：独占地使用处理器。</li>
+<li>一个<code>私有的地址空间</code>（private virtual address space）：独占地使用内存系统，由虚拟内存机制管理。</li>
+</ul>
+<p>Why are these illusions important?</p>
+<ul>
+<li>Simplify programming a lot</li>
+</ul>
+<p>进程的经典定义是一个执行中的<code>程序的实例</code>（instance of a running program）。系统中的每个程序都运行在某个进程的<code>上下文</code>（context）中。上下文是由程序正确运行所需的状态组成的。这个状态包括存放在内存中的代码和数据，它的栈、通用目的寄存器的内容、程序计数器、环境变量以及打开文件描述符的集合。</p>
+<p>每次用户通过向 shell 输入一个可执行目标文件的名字时，运行程序时，shell 就会创建一个新的进程，然后在这个<code>新进程的上下文</code>中运行这个可执行目标文件。当然，应用程序本身也可以创建新的进程。</p>
+<p>What do processes have to do with exceptional control flow?</p>
+<ul>
+<li>Exceptional control flow is the mechanism that the OS uses to enable multiple processes to run on the same system.</li>
+</ul>
+<h3 id="逻辑控制流"><a href="#逻辑控制流" class="headerlink" title="逻辑控制流"></a>逻辑控制流</h3><p>如果想用调试器单步执行程序，我们会看到一系列的程序计数器（PC）的值。这个值的序列叫做<code>逻辑控制流</code>（logical control flow），或者简称<code>逻辑流</code>。考虑一个运行着三个进程的系统，处理器的一个<code>物理控制流</code>被分成了三个<code>逻辑流</code>，每个进程一个。三个逻辑流的执行是交错的，每个进程执行它的流的一部分，然后被<code>抢占</code>（preempted，暂时挂起）。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tkqz7.jpg" alt="逻辑控制流（CSAPP 8-12）"></p>
+<h3 id="并发流"><a href="#并发流" class="headerlink" title="并发流"></a>并发流</h3><p>计算机系统中逻辑流有许多不同的形式。异常处理程序、进程、信号处理程序、线程和 Java 进程都是逻辑流的例子。一个逻辑流的执行在时间上与另一个流重叠，称为<code>并发流</code>（concurrent flow），这两个流被称为并发地运行。</p>
+<p>多个流并发地执行的一般现象被称为<code>并发</code>（concurrency）。一个进程和其他进程轮流运行的概念称为<code>多任务</code>（multitasking）。一个进程执行它的控制流的一部分的每一时间段叫做<code>时间片</code>（time slice）。因此，多任务也被叫做<code>时间分片</code>（time slicing）。</p>
+<p>注意，并发流的思想与流运行的处理器<code>核数</code>或<code>计算机数</code>无关。并行流是并发流的一个<code>真子集</code>。如果两个流并发地运行在不同的处理器核或者计算机上，那么我们称它们为<code>并行流</code>（parallel flow），它们并行地运行（running in parallel），且并行地执行（parallel execution）。</p>
+<p><strong>用户模式和内核模式</strong></p>
+<p>为了使操作系统内核提供一个无懈可击的进程抽象，处理器必须提供一种机制，限制一个应用可以执行的指令以及它可以访问的地址空间范围。处理器通常是用某个<code>控制寄存器</code>中的一个<code>模式位</code>（mode bit）来提供这种功能的，该寄存器描述了进程当前享有的特权。当设置了模式位，进程就运行在<code>内核模式</code>中。没有设置模式位时，进程就运行在<code>用户模式</code>中。用户程序必须通过<code>系统调用接口</code>间接地访问内核代码和数据（访问受限）。因此，进程从用户模式变为内核模式的<code>唯一方法</code>是通过诸如中断、故障或者陷入系统调用这样的<code>异常</code>。</p>
+<p>Linux 提供了一种聪明的机制，叫做<code>/proc</code>文件系统，它允许用户模式进程访问内核数据结构的内容，比如 CPU 类型（&#x2F;proc&#x2F;cpuinfo），或者某个特殊的进程使用的内存段（<code>/proc/&lt;process-id&gt;/maps</code>）。2.6 版本的 Linux 内核还引入了<code>/sys</code>文件系统，它输出关于系统总线和设备的额外的低层信息。</p>
+<p><strong>上下文切换</strong></p>
+<p>Important: the kernel is not a <code>separate process</code>, but rather runs as part of a <code>user process</code> (but with special privileges).</p>
+<p>操作系统内核使用一种称为<code>上下文切换</code>（context switch）的较高层形式的异常控制流来实现多任务。内核为每个进程维持一个<code>上下文</code>（context），就是一个内核重新启动一个被抢占的进程所需的状态。</p>
+<p>在进程执行的某些时刻，内核可以决定抢占当前进程，并重新开始一个先前被抢占了的进程。这种决策就叫做<code>调度</code>（scheduling），是由内核中称为<code>调度器</code>（scheduler）的代码处理的。当内核调度了一个新的进程运行后，它就抢占当前进程，并使用一种上下文切换的机制将控制转移到新的进程，上下文切换：</p>
+<ol>
+<li><code>保存</code>当前进程的上下文（即状态）</li>
+<li><code>恢复</code>某个先前被抢占的进程被保存的上下文</li>
+<li>将控制<code>传递</code>给这个新恢复的进程</li>
+</ol>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9g1ke.jpg" alt="进程上下文切换的剖析（CSAPP 8-14，应该是 kernel mode 或者 system mode，而不是用 code）"></p>
+<h2 id="系统调用错误处理"><a href="#系统调用错误处理" class="headerlink" title="系统调用错误处理"></a>系统调用错误处理</h2><p>当 Unix 系统级函数遇到错误时，它们通常会返回<code>-1</code>，并设置全局整数变量<code>errno</code>来表示什么出错了。程序员应该总是检查错误。</p>
+<h2 id="进程控制（fork-exec-model）"><a href="#进程控制（fork-exec-model）" class="headerlink" title="进程控制（fork-exec model）"></a>进程控制（fork-exec model）</h2><blockquote>
+<p>fork() and execve() are system calls<br>Note: process creation in Windows is slightly different from Linux’s fork-exec model<br>other calls for process management:<br>getpid(), exit(), wait() &#x2F; waitpid()</p>
+</blockquote>
+<p>Unix 提供了大量从 C 程序中操作进程的系统调用。</p>
+<p>新创建的子进程几乎但不完全与父进程相同。子进程得到与父进程用户级虚拟地址空间相同的（但是独立的）一份<code>副本</code>，包括代码和数据段、堆、共享库以及用户栈。子进程还获得与父进程任何打开文件描述符相同的副本，这就意味着当父进程调用 fork 时，子进程可以读写父进程中打开的任何文件。父进程和新创建的子进程之间最大的区别在于它们有不同的 PID。</p>
+<ul>
+<li>调用一次，返回两次</li>
+<li>并发执行</li>
+<li>相同但是独立的地址空间</li>
+<li>共享文件<ul>
+<li>父进程和子进程都把它们的输出显示在屏幕上。原因是子进程继承了父进程所有的打开文件。当父进程调用 fork 时，stdout 文件是打开的，并指向屏幕。自己成也继承了这个文件，因此它的输出也是指向屏幕的。</li>
+</ul>
+</li>
+</ul>
+<p>fork 函数是有趣的（也常常令人迷惑），因为它只被<code>调用一次</code>，却会<code>返回两次</code>（called <code>once</code>, but returns <code>twice</code>）：一次是在调用进程（父进程）中，一次是在新创建的子进程中。在父进程中，fork 返回子进程的 PID。在子进程中，fork 返回 0。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="type">pid_t</span> pid;</span><br><span class="line">  <span class="type">int</span> x = <span class="number">1</span>;</span><br><span class="line">  pid = Fork();</span><br><span class="line">  <span class="keyword">if</span> (pid == <span class="number">0</span>) &#123; <span class="comment">/* Child */</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;child : x=%d\n&quot;</span>, ++x);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Parent */</span></span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;parent : x=%d\n&quot;</span>, --x);</span><br><span class="line">  <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment">parent : x=0</span></span><br><span class="line"><span class="comment">child : x=2</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>What happens when you run the command “ls” in a Linux shell?</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xefq4.jpg" alt="Exec-ing a new program（CSE 351 - Processes, Video 4: Fork-exec）"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/voqxv.jpg" alt="execve 函数（CSE 351 - Processes, Video 4: Fork-exec）"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ixn28.jpg" alt="exit 函数（CSE 351 - Processes, Video 4: Fork-exec）"></p>
+<p>但是在 exit 函数运行之后，进程占用的资源并没有被完全释放，需要进一步的进程回收。</p>
+<p><strong>回收子进程</strong></p>
+<p>Zombies:</p>
+<ul>
+<li>Reaping（回收）<ul>
+<li>Performed by parent on terminated child</li>
+<li>Parent is given exit status information</li>
+<li>Kernel discards process</li>
+</ul>
+</li>
+</ul>
+<p>一个终止了但还未被回收的进程被称为<code>僵死进程</code>（zombie）。如果一个父进程终止了，内核会安排<code>init</code>进程称为它的孤儿进程的养父。init 进程的 PID 为 1，是在系统启动时由内核创建的，它不会终止，是所有进程的祖先。如果父进程没有回收它的僵死子进程就终止了，那么内核会安排 init 进程去回收它们。不过，长时间运行的程序，比如 shell 或者服务器，总是应该回收它们的僵死子进程。</p>
+<p>注意，程序不会按照特定的顺序回收子进程。子进程回收的顺序是特定计算机系统的属性。</p>
+<p>或者，使用<code>wait</code>与子进程同步。</p>
+<p>If parent process has multiple children, <code>wait()</code> will return when any of the children terminates. <code>waitpid()</code> can be used to wait on a specific child process.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ps -ef  <span class="comment"># 列出所有进程</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>确认什么是程序（代码和数据）与进程（实例、上下文环境）：</strong></p>
+<ul>
+<li><code>程序</code>：是一堆代码和数据；程序时可以作为目标文件存在于磁盘上，或者作为段存在于地址空间中。</li>
+<li><code>进程</code>：是执行中程序的一个具体的实例；<code>程序总是运行在某个进程的上下文中</code>。如果你想要理解 fork 和 execve 函数，理解这个差异是很重要的。<ul>
+<li>fork 函数在新的子进程中<code>运行相同的程序</code>（数据独立），新的子进程是父进程的一个复制品。</li>
+<li>execve 函数在当前进程的上下文加载并运行一个新的程序。它会<code>覆盖</code>当前进程的地址空间，并继承已打开的所有文件描述符，但并没有创建一个新的进程。</li>
+</ul>
+</li>
+</ul>
+<p>像 Unix shell 和 Web 服务器这样的程序大量地使用了 fork 和 execve 函数。shell 是一个交互型的应用级程序，它代表用户运行其他程序。最早的 shell 是<code>sh</code>程序，后面出现了一些<code>变种</code>，如 csh、tcsh、ksh 和 bash。shell 执行一些列的<code>读/求值</code>（read&#x2F;evaluate）步骤，然后终止。读步骤读取来自用户的一个命令行，求值步骤解析命令行，并<code>代表用户</code>运行程序。</p>
+<h2 id="信号"><a href="#信号" class="headerlink" title="信号"></a>信号</h2><blockquote>
+<p>内容有点多，了解一下概念就好了。参考 p526</p>
+</blockquote>
+<p>Linux 信号，是一种更高层的软件形式的异常，它允许进程和内核<code>中断其它进程</code>。一个信号就是一条<code>小消息</code>，它通知进程系统中发生了一个某种类型的事件。每种信号类型都对应于某种系统事件。低层的硬件异常是由内核异常处理程序处理的，正常情况下，对用户进程而言是不可见的。信号提供了一种机制，通知用户进程发生了这些异常。比如，如果一个进程试图除以 0，那么内核发送给它一个 SIGFPE 信号（号码为 8）。</p>
+<p>信号处理的语义是微妙的，并且随系统不同而不同。然而，在与 POXIS 兼容的系统上存在着一些机制，允许程序清楚地指定期望的信号处理语义。</p>
+<p>传送一个信号到目的进程是由两个不同步骤组成的：</p>
+<ul>
+<li><code>发送信号</code>：内核通过更新目的进程的上下文中的某个状态，发送（传递）一个信号给目的进程。发送信号可以有如下两种原因：<ul>
+<li>内核检测到一个系统事件，比如除零错误或者子进程终止。</li>
+<li>一个进程调用了<code>kill</code>函数，显式地要求内核发送一个信号给目的进程。一个进程可以发送信号给它自己。</li>
+</ul>
+</li>
+<li><code>接收信号</code>：当目的进程被内核强迫以某种方式对信号的发送做出反应时，它就接收了信号。进程可以忽略这个信号，终止或者通过执行一个称为<code>信号处理程序</code>（signal handler）的用户层函数捕获这个信号。一个发出而没有被接收的信号叫做<code>待处理信号</code>（pending signal）。</li>
+</ul>
+<p><strong>发送信号</strong></p>
+<p>Unix 系统提供了大量向进程发送信号的机制。所有这些机制都是基于<code>进程组</code>（process group）这个概念的。</p>
+<p>每个进程都只属于一个进程组，进程组是由一个正整数<code>进程组 ID</code>来标识的。默认地，一z子进程和它的父进程同属于一个进程组。</p>
+<p>用<code>/bin/kill</code>程序可以向另外的进程发送任意的信号。比如，命令：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/bin/kill -9 15213 <span class="comment"># 发送信号 9（SIGKILL）给进程组 15213 中的每个进程</span></span><br><span class="line"><span class="comment"># 使用完整路径名是因为有些 Unix shell 有自己内置的 kill 命令</span></span><br></pre></td></tr></table></figure>
+
+<p>一个为负的 PID 会导致信号被发送到进程组 PID 中的每个进程。比如，命令：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/bin/kill -9 -15213  <span class="comment"># 给进程组 15213 中的每个进程发送 SIGKILL 信号</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="非本地跳转"><a href="#非本地跳转" class="headerlink" title="非本地跳转"></a>非本地跳转</h2><p>C 语言提供了一种用户级异常控制流形式，称为<code>非本地跳转</code>（nonlocal jump），它将控制直接从一个函数转移到另一个当前正在执行的函数，而不需要经过正常的<code>调用-返回栈规则</code>。非本地跳转是通过<code>setjump</code>和<code>longjump</code>函数来提供的。</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

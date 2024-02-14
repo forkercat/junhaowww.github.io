@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="处理器体系结构这一章涉及硬件的知识比较多，我只是翻了一翻，了解一下概念。（尝试去读，但发现还是读不懂）优化程序性能这一章还是很好读的，学到了一些优化的思想和经验法则。  处理器体系结构一个处理器支持的指令和指令的字节级编码称为它的指令集体系结构（Instruction-Set Architecture，ISA）。不同的处理器「家族」，例如 Intel IA32 和 x86-64、IBM&amp;#x">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CSAPP &#x2F; CSE 351 学习笔记（处理器体系结构 &amp; 优化程序性能)">
+<meta property="og:url" content="https://junhaow.com/studynotes/csapp/03_CSAPP%20:%20CSE351%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%A4%84%E7%90%86%E5%99%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%20&%20%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD%EF%BC%89.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="处理器体系结构这一章涉及硬件的知识比较多，我只是翻了一翻，了解一下概念。（尝试去读，但发现还是读不懂）优化程序性能这一章还是很好读的，学到了一些优化的思想和经验法则。  处理器体系结构一个处理器支持的指令和指令的字节级编码称为它的指令集体系结构（Instruction-Set Architecture，ISA）。不同的处理器「家族」，例如 Intel IA32 和 x86-64、IBM&amp;#x">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/b28zc.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/t5s1v.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ncgxr.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5xh71.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.200Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.199Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/b28zc.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CSAPP / CSE 351 学习笔记（处理器体系结构 &amp; 优化程序性能)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<blockquote>
+<p><code>处理器体系结构</code>这一章涉及硬件的知识比较多，我只是翻了一翻，了解一下概念。（尝试去读，但发现还是读不懂）<br><code>优化程序性能</code>这一章还是很好读的，学到了一些优化的思想和经验法则。</p>
+</blockquote>
+<h2 id="处理器体系结构"><a href="#处理器体系结构" class="headerlink" title="处理器体系结构"></a>处理器体系结构</h2><p>一个处理器支持的指令和指令的字节级编码称为它的<code>指令集体系结构</code>（Instruction-Set Architecture，ISA）。不同的处理器「家族」，例如 Intel IA32 和 x86-64、IBM&#x2F;Freescale Power 和 ARM 处理器家族，都有不同的 ISA。ISA 在编译器编写者和处理器设计人员之间提供了一个<code>概念抽象层</code>：</p>
+<ul>
+<li>编译器编写者需要知道允许哪些命令，以及它们是如何编码的。</li>
+<li>处理器设计者必须建造出执行这些指令的处理器。</li>
+</ul>
+<p>现代处理器的实际工作方式可能跟 ISA 隐含的计算模型大相径庭。ISA 模型看上去应该是<code>顺序</code>指令执行。然而，通过同时处理多条指令的不同部分，处理器可以获得更高的性能。</p>
+<p>（以下内容作者们使用 Y86-64 来表示简单版的 x86-64）</p>
+<p>Y86-64 程序中的每条指令都会读取或修改处理器状态的某些部分，这称为<code>程序员可见状态</code>。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/b28zc.jpg" alt="Y86-64 程序员可见状态（CSAPP 4-1）"></p>
+<p><code>状态码</code>指明程序是否正常运行。</p>
+<p><strong>CISC 和 RISC 指令集</strong></p>
+<p>参考：p249</p>
+<p>读音：CISC（sisk）、RISC（risk）。</p>
+<table>
+<thead>
+<tr>
+<th>CISC</th>
+<th>早期的 RISC</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>指令数量数量很多。Intel 描述全套指令的文档有 1200 多页。</td>
+<td>指令数量通常少于 100 条。</td>
+</tr>
+<tr>
+<td>有些指令的延迟很长。</td>
+<td>没有较长延迟的指令。</td>
+</tr>
+<tr>
+<td>编码是可变长度的。</td>
+<td>编码是固定长度的。</td>
+</tr>
+<tr>
+<td>指定操作数的方式很多。</td>
+<td>简单寻址方式。通常只有基址和偏移量寻址。</td>
+</tr>
+<tr>
+<td>可以对内存和寄存器操作数进行算术和逻辑运算。</td>
+<td>只能对寄存器操作数进行算术和逻辑运算。</td>
+</tr>
+<tr>
+<td>对机器级程序来说实现细节是不可见的。ISA 提供了清晰的抽象。</td>
+<td>对机器级程序来说实现细节是可见的。</td>
+</tr>
+<tr>
+<td>有条件码。</td>
+<td>没有条件码。</td>
+</tr>
+<tr>
+<td>栈密集的过程链接。栈被用来存取过程参数和返回地址。</td>
+<td>寄存器密集的过程链接。寄存器被用来存取过程参数和返回地址。</td>
+</tr>
+</tbody></table>
+<p>先出现 CISC（Intel），再出现 RISC（Sun Microsystems、IBM、PowerPC）。20 世纪 90年代早期，争论逐渐平息，因为事实已经非常清楚了，无论是单纯的 RISC 还是单纯的 CISC 都不如结合两者精华的思想和设计。RISC 机器发展进化的过程中，引入了更多的指令，而许多这样的指令都需要执行多个周期。今天的 RISC 机器的指令表中有几百条指令，几乎与其名不相符。</p>
+<p><strong>存储器和时钟</strong></p>
+<p>组合电路从本质上讲，不存储任何信息。相反，它们只是简单地响应输入信号，产生等于输入的某个函数的输出。除了产生<code>时序电路</code>（sequential circuit），也就是有状态并且在这个状态上进行计算的系统，我们必须引入按位存储信息的设备。存储设备都是由同一个时钟控制的，时钟是一个周期性信号，决定什么时候要把新值加载到设备中。</p>
+<ul>
+<li>时钟寄存器（寄存器）：存储单个位或字。时钟信号控制寄存器加载输入值。</li>
+<li>随机访问存储器（内存）：存储多个字，用地址来选择该读或写哪个字。</li>
+</ul>
+<p><strong>流水线</strong></p>
+<p>流水线化一个重要特性就是提高了系统的<code>吞吐量</code>（throughput），也就是单位时间内服务的顾客总数，不过它也会轻微地增加<code>延迟</code>（latency），也就是服务一个用户所需要的时间。（这里的顾客就是指令）</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/t5s1v.jpg" alt="非流水线化的计算硬件（CSAPP 4-32）"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ncgxr.jpg" alt="三阶段流水线化的计算硬件（CSAPP 4-33）"></p>
+<h2 id="优化程序性能"><a href="#优化程序性能" class="headerlink" title="优化程序性能"></a>优化程序性能</h2><p>编写高效程序需要做到：</p>
+<ol>
+<li>我们必须选择一组适当的算法和数据结构。</li>
+<li>我们必须编写出编译器能够<code>有效优化</code>以转换成高效可执行代码的源代码，所以需要理解优化编译器的能力和局限性是很重要的。</li>
+</ol>
+<h3 id="优化编译器能力和局限性"><a href="#优化编译器能力和局限性" class="headerlink" title="优化编译器能力和局限性"></a>优化编译器能力和局限性</h3><p>大多数编译器，包括 GCC，向用户提供了一些对它们所使用的优化的控制。最简单的控制就是制定<code>优化级别</code>。例如，以命令行选项<code>-Og</code>调用是让 GCC 使用一组基本的优化。以选项<code>-O1</code>、<code>-O2</code>或<code>-O3</code>调用将得到更多的优化。</p>
+<p>编译器必须很小心地对程序只使用<code>安全的优化</code>，也就是说对于程序可能遇到的所有可能的情况，在 C 语言标准提供的保证之下，优化后得到的程序和未优化的版本有一样的行为。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">twiddle1</span><span class="params">(<span class="type">long</span> *xp, <span class="type">long</span> *yp)</span> &#123;</span><br><span class="line">  *xp += *yp;</span><br><span class="line">  *xp += *yp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">twiddle2</span><span class="params">(<span class="type">long</span> *xp, <span class="type">long</span> *yp)</span> &#123;</span><br><span class="line">  *xp += <span class="number">2</span> * *yp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这两个过程似乎有相同的行为，将存储在由指针 yp 指示的位置的值两次加到指针 xp 指示位置的值。另一方面，twiddle2 的执行效率更高一些，它只要求三次内存引用（读 *xp、读 *yp、写 *xp），而 twiddle1 需要六次内存引用（两次读 *xp、两次读 *yp、两次写 *xp）。</p>
+<p>不过，考虑 xp 等于 yp 的情况。此时，函数 twiddle1 会执行下面的计算：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">*xp += *xp;</span><br><span class="line">*xp += *xp;</span><br></pre></td></tr></table></figure>
+
+<p>结果是 xp 指向的值增加到 4 倍。另一方面，twiddle2 会执行下面的计算：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*xp += <span class="number">2</span> * *xp; <span class="comment">/* Triple value at xp */</span></span><br></pre></td></tr></table></figure>
+
+<p>结果是 xp 指向的值仅增加到 3 倍。编译器不知道 twiddle1 会如何被调用，因此它必须假设参数 xp 和 yp 可能会相等。因此，我们不能使用 twiddle2 版本对 twiddle1 进行优化。</p>
+<p>这种两个指针可能指向同一个内存位置的情况称为<code>内存别名使用</code>（memory aliasing）。在只执行安全的优化中，编译器必须假设不同的指针可能会指向内存中同一个位置。</p>
+<p><strong>用内联函数替换优化函数调用</strong></p>
+<p>包含函数调用的代码可以用一个称为<code>内联函数替换</code>（inline substitution），或者简称<code>内敛</code>（inline）的过程进行优化，此时，将函数调用替换为函数体。</p>
+<p>这样的转换减少了函数调用的开销，也允许对展开的代码做进一步的优化。</p>
+<p>参考：p345</p>
+<p>在各种编译器中，就优化能力来说，GCC 被认为是胜任的，但是并不是特别突出。它完成基本的优化，但是它不会对程序进行更加「有进取心」的编译器所做的那种激进变换。因为，使用 GCC 的程序员必须花费更多的精力，以一种简化编译器生成高效代码的任务的方式来编写程序。</p>
+<p>p350 结论：</p>
+<p>未经优化的代码是从 C 语言代码到机器代码的直接翻译，通常效率明显较低。简单地使用命令行选项<code>-O1</code>，就会进行一些基本的优化。程序员不需要做什么，就会显著地提高程序性能——超过两个数量级。通常，养成至少使用这个级别优化的习惯是很好的。</p>
+<h3 id="表示程序性能"><a href="#表示程序性能" class="headerlink" title="表示程序性能"></a>表示程序性能</h3><p>处理器活动的顺序是由时钟控制的，时钟提供了某个频率的规律信号，通常用<code>千赫兹</code>（GHz），即十亿周期每秒来表示。例如，当表明一个系统有<code>4GHz</code>处理器时，这表示处理器时钟运行频率为每秒 $4\times 10^9$ 个周期。每个<code>时钟周期</code>的时间是<code>时钟频率</code>的倒数，通常是纳秒、皮秒。</p>
+<p>从程序员的角度来看，用<code>时钟周期</code>来表示度量标准要比用<code>纳秒或皮秒</code>来表示有帮助得多。用时钟周期来表示，度量值表示的是执行了多少条指令，而不是时钟运行得有多快。</p>
+<h3 id="消除循环的低效率"><a href="#消除循环的低效率" class="headerlink" title="消除循环的低效率"></a>消除循环的低效率</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">*dest = IDENT;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">long</span> i = <span class="number">0</span>; i &lt; vec_length(v); ++i) &#123;</span><br><span class="line">  <span class="type">data_t</span> val;</span><br><span class="line">  get_vec_element(v, i, &amp;val);</span><br><span class="line">  *dest = *dest OP val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个程序在每次循环迭代时都必须对测试条件求值。另一方面，向量的长度并不会随着循环的进行而改变。因此，只需计算一次向量的长度，然后在我们的测试条件中都使用这个值。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">long</span> length = vec_length(v); <span class="comment">// calculate first</span></span><br><span class="line">*dest = IDENT;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">long</span> i = <span class="number">0</span>; i &lt; length; ++i) &#123;  <span class="comment">// remove vec_length(v)</span></span><br><span class="line">  <span class="type">data_t</span> val;</span><br><span class="line">  get_vec_element(v, i, &amp;val);</span><br><span class="line">  *dest = *dest OP val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个优化是一类常见的优化，称为<code>代码移动</code>（code motion）。这类优化包括识别要执行多次（例如在循环里）但是计算结果不会改变的计算。因而可以将计算移动到代码前面不会被多次求值的部分。</p>
+<p>优化编译器会试着进行代码移动。不幸的是，对于会改变在哪里调用函数或调用多少次的变换，编译器通常会非常小心（它们不知道啊）。为了改进代码，程序员必须经常帮助编译器<code>显式</code>地完成代码的移动。</p>
+<p>还有个<code>strlen()</code>的例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">long</span> i = <span class="number">0</span>; i &lt; <span class="built_in">strlen</span>(s); ++i)</span><br><span class="line">  <span class="comment">// foo-1</span></span><br><span class="line"></span><br><span class="line"><span class="type">long</span> len = <span class="built_in">strlen</span>(s);</span><br><span class="line"><span class="keyword">for</span> (<span class="type">long</span> i = <span class="number">0</span>; i &lt; len; ++i)</span><br><span class="line">  <span class="comment">// foo-2</span></span><br></pre></td></tr></table></figure>
+
+<p>在理想的世界里，编译器会认为循环测试中对 strlen 的每次调用都会返回相同的结果，因此应该能够把这个调用移出循环。但是，这需要非常成熟完善的分析，编译器需要检查字符串的元素以判断。程序员还是自己做这种转换吧。</p>
+<p>这个示例说明了编程时的一个常见的问题，一个看上去无足轻重的代码片段有隐藏的<code>渐近低效率</code>（asymptotic inefficiency）。这段无危险的代码变成了一个主要的性能瓶颈。一个有经验的程序员工作的一部分就是避免引入这样的渐近低效率。</p>
+<h3 id="减少过程调用"><a href="#减少过程调用" class="headerlink" title="减少过程调用"></a>减少过程调用</h3><p>尽量减少在循环中进行函数调用，但也要考虑这种变换严重损害了程序的<code>模块性</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">*dest = IDENT;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">long</span> i = <span class="number">0</span>; i &lt; length; ++i) &#123;</span><br><span class="line">  <span class="type">data_t</span> val;</span><br><span class="line">  get_vec_element(v, i, &amp;val);</span><br><span class="line">  *dets = *dest OP val;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// better</span></span><br><span class="line">*dest = IDENT:</span><br><span class="line"><span class="type">data_t</span> *data = get_vec_start(v);</span><br><span class="line"><span class="keyword">for</span> (<span class="type">long</span> i = <span class="number">0</span>; i &lt; length; ++i) &#123;</span><br><span class="line">  *dest = *dest OP data[i];  <span class="comment">// val -&gt; data[i]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="消除不必要的内存引用（临时变量做累积值）"><a href="#消除不必要的内存引用（临时变量做累积值）" class="headerlink" title="消除不必要的内存引用（临时变量做累积值）"></a>消除不必要的内存引用（临时变量做累积值）</h3><p>上述的代码将合并运算计算的值累积在指针 dest 指定的位置。通过检查编译出来的为内循环产生的汇编代码可以看出这个属性：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">.L17:</span></span><br><span class="line">  vmovsd  (%rbx), %xmm0          <span class="comment"># Read product from dest</span></span><br><span class="line">  vmulsd  (%rdx), %xmm0, %xmm()  <span class="comment"># Multiply product by data[i]</span></span><br><span class="line">  vmovsd  %xmm0, (%rbx)          <span class="comment"># Store product at dest</span></span><br><span class="line">  <span class="keyword">addq </span> $<span class="number">8</span>, %rdx                 <span class="comment"># Increment data+i</span></span><br></pre></td></tr></table></figure>
+
+<p>为了消除这种不必要的内存读写，我们可以引入一个临时变量 acc，它在循环中用来累积计算出来的值，只有在循环完成之后结果才存放在 dest 中。此时，编译器现在可以用寄存器 %xmm0 来保存累积值。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">data_t</span> acc = IDENT;  <span class="comment">// local variable</span></span><br><span class="line"><span class="keyword">for</span> (<span class="type">long</span> i = <span class="number">0</span>; i &lt; length; ++i) &#123;</span><br><span class="line">  acc = acc OP data[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">.L25:</span></span><br><span class="line">  vmulsd  (%rdx), %xmm0, %xmm0   <span class="comment"># Multiply acc by data[i]</span></span><br><span class="line">  <span class="keyword">addq </span> $<span class="number">8</span>, %rdx                 <span class="comment"># Increment data+i</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="理解现代处理器"><a href="#理解现代处理器" class="headerlink" title="理解现代处理器"></a>理解现代处理器</h3><p><code>乱序处理</code>最早是在 1964 年 Control Data Corporation 的 6600 处理器中实现的。</p>
+<p>处理器可以在每个时钟周期执行多个操作，而且是<code>乱序的</code>（out-of-order）。这些处理器在工业界被称为<code>超标量</code>（superscalar）。整个设计有两个主要部分：</p>
+<ul>
+<li><code>指令控制单元</code>（Instruction Control Unit，ICU）：负责从内存中读出指令序列，并根据这些指令序列生成一组针对程序数据的基本操作。</li>
+<li><code>执行单元</code>（Execution Unit，EU）：执行以上操作。</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5xh71.jpg" alt="一个乱序处理器的框图（CSAPP 5-11）"></p>
+<p>ICU 从<code>指令告诉缓存</code>（instruction cache）中读取指令，指令高速缓存是一个特殊的告诉存储器，它包含最近访问的指令。通常，ICU 会在当前正在执行的指令很早之前取指，这样它才有足够的时间对指令<code>译码</code>，并把操作发送到 EU。</p>
+<p>当遇到分支时，现代处理器采用了一种称为<code>分支预测</code>（branch prediction）的技术，猜测是否会选择分支，同时还预测分支的目标地址。使用<code>投机执行</code>（speculative execution）的技术，处理器会开始取出位于它预测的分支会跳到的地方的指令，并执行译码。这种逻辑是通过<code>取指控制</code>来完成的。</p>
+<p>一条指令可以被译码成多个操作，关于指令如何被译码操作序列的细节，不同的机器都会不同，这个信息可谓是<code>高度机密</code>。</p>
+<p>在 ICU 中，<code>退役单元</code>（retirement unit）记录正在进行的处理，并确保它遵守机器级程序的顺序语义。</p>
+<h3 id="循环展开"><a href="#循环展开" class="headerlink" title="循环展开"></a>循环展开</h3><p><code>循环展开</code>是一种程序变换，通过增加每次迭代计算的元素的数量，减少循环的迭代次数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">long</span> i = <span class="number">0</span>; i &lt; limit; ++i) &#123;</span><br><span class="line">  acc = acc OP data[i];</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* Combine 2 elements at a time */</span></span><br><span class="line"><span class="keyword">for</span> (<span class="type">long</span> i = <span class="number">0</span>; i &lt; limit; i+=<span class="number">2</span>) &#123;</span><br><span class="line">  acc = (acc OP data[i]) OP data[i + <span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* Finish any remaining elements */</span></span><br><span class="line"><span class="keyword">for</span> (; i &lt; length; ++i) &#123;</span><br><span class="line">  acc = acc OP data[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译器可以很容易地执行循环展开。只要优化级别设置得足够高，许多编译器都能例行公事地做到这一点。用优化级别 3 或更高等级调用 GCC，它就会执行循环展开。</p>
+<h3 id="提高并行性"><a href="#提高并行性" class="headerlink" title="提高并行性"></a>提高并行性</h3><ul>
+<li><p>多个累积变量（multiple accumulators）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">long</span> i = <span class="number">0</span>; i &lt; limit; i+=<span class="number">2</span>) &#123;</span><br><span class="line">  acc0 = acc0 OP data[i];</span><br><span class="line">  acc1 = acc1 OP data[i + <span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意：浮点乘法和加法是不可结合的。不同的结合方式可能产生不同的结果。</p>
+</li>
+<li><p>重新结合变换（reassociation transformation）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line">acc = (acc OP data[i]) OP data[i + <span class="number">1</span>];</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">acc = acc OP (data[i] OP data[i + <span class="number">1</span>]);</span><br></pre></td></tr></table></figure>
+<p>因为括号改变了向量元素与累积值 acc 的合并顺序，产生了我们成为<code>2 x 1a</code>的循环展开形式。这种方法可以增加并行执行的操作数量。</p>
+<p>具体原理参考：p374</p>
+<p>注意：对于浮点数情况，必须再次评估这种重新结合是否有可能严重影响结果。</p>
+<p>大多数编译器不会尝试对浮点运算做重新结合，因为这些运算不保证是可结合的。当前的 GCC 版本会对整数运算执行重新结合，但不是总有好的效果。通常，并行地累积变量是更好地方法。</p>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<li>高级设计</li>
+</ol>
+<ul>
+<li>适当的算法和数据结构</li>
+</ul>
+<ol start="2">
+<li>基本编码原则</li>
+</ol>
+<ul>
+<li>消除连续的函数调用（将计算移到循环外）</li>
+<li>消除不必要的的内存引用（引入临时变量保存中间结果）</li>
+</ul>
+<ol start="3">
+<li>低级优化<ul>
+<li>展开循环</li>
+<li>多个累积变量和重新结合（提高指令级并行）</li>
+</ul>
+</li>
+</ol>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

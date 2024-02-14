@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="I&#39;m Junhao Wang. Welcome! I&#39;m a 2-year software development engineer at Amazon. I am working on O3DE Game Engine and Amazon GameLift at AWS Game Tech. I like C&#x2F;C++, game engine, and gameplay developme">
+<meta property="og:type" content="website">
+<meta property="og:title" content="forkercat.blog">
+<meta property="og:url" content="https://junhaow.com/tags/%E6%8C%87%E9%92%88/index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="I&#39;m Junhao Wang. Welcome! I&#39;m a 2-year software development engineer at Amazon. I am working on O3DE Game Engine and Amazon GameLift at AWS Game Tech. I like C&#x2F;C++, game engine, and gameplay developme">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Tag: 指针</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <div id="archive">
+  <ul class="post-list">
+    
+    
+    
+    
+      
+      
+      
+      
+        <li class="post-year"><h2>2018</h2></li>
+      
+      <li class="post-item">
+        
+    <div class="meta">
+      
+        
+          <time datetime="2018-10-01T18:01:44.000Z" class="dt-published" itemprop="datePublished">2018-10-01</time>
+        
+      
+    </div>
+
+
+        <span>
+    
+        <a class="" href="/2018/10/01/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/">隐式转换：把 C 语言数组转换为指针</a>
+    
+
+
+</span>
+      </li>
+    
+      
+      
+      
+      
+      <li class="post-item">
+        
+    <div class="meta">
+      
+        
+          <time datetime="2018-09-21T04:33:05.000Z" class="dt-published" itemprop="datePublished">2018-09-20</time>
+        
+      
+    </div>
+
+
+        <span>
+    
+        <a class="" href="/2018/09/20/038_C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%EF%BC%9A%E4%B8%8D%E8%A6%81%E5%86%8D%E5%8F%AB%E6%88%91%E6%98%AF%E6%8C%87%E9%92%88%E4%BA%86%EF%BC%81/">C 语言数组：不要再叫我是指针了！</a>
+    
+
+
+</span>
+      </li>
+    
+  </ul>
+  
+
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

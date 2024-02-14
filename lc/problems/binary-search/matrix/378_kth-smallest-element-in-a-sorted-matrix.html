@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode EPI 11.6Difficulty: Medium Problem Given a n x n matrix where each of the rows and columns are sorted in ascending order, find the kth smallest element in the matrix.   Note that">
+<meta property="og:type" content="website">
+<meta property="og:title" content="378. Kth Smallest Element in a Sorted Matrix">
+<meta property="og:url" content="https://junhaow.com/lc/problems/binary-search/matrix/378_kth-smallest-element-in-a-sorted-matrix.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode EPI 11.6Difficulty: Medium Problem Given a n x n matrix where each of the rows and columns are sorted in ascending order, find the kth smallest element in the matrix.   Note that">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tlh7x.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.115Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.115Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tlh7x.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>378. Kth Smallest Element in a Sorted Matrix</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/">LeetCode</a> <span class="gray">EPI 11.6</span><br>Difficulty: <span class="orange">Medium</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a <code>n x n</code> matrix where each of the rows and columns are sorted in ascending order, find the <code>kth</code> smallest element in the matrix.</p>
+</blockquote>
+<blockquote>
+<p>Note that it is the <code>kth</code> smallest element in the sorted order, not the <code>kth</code> distinct element.</p>
+</blockquote>
+<p><strong>Note:</strong> You may assume $k$ is always valid, $1 ≤ k ≤ n^2$.</p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">matrix = [</span><br><span class="line">   [ <span class="number">1</span>,  <span class="number">5</span>,  <span class="number">9</span>],</span><br><span class="line">   [<span class="number">10</span>, <span class="number">11</span>, <span class="number">13</span>],</span><br><span class="line">   [<span class="number">12</span>, <span class="number">13</span>, <span class="number">15</span>]</span><br><span class="line">],</span><br><span class="line">k = <span class="number">8</span>,</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="number">13.</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Brute-Force</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">kthSmallest</span><span class="params">(<span class="type">int</span>[][] matrix, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> matrix.length;</span><br><span class="line">  PriorityQueue&lt;Integer&gt; pq = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;((n1, n2) -&gt; (n2 - n1));</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; n; ++j) &#123;</span><br><span class="line">      pq.add(matrix[i][j]);</span><br><span class="line">      <span class="keyword">if</span> (pq.size() &gt; k) &#123;</span><br><span class="line">        pq.poll();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> pq.poll();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(n^2\log{k})$<br><strong>Space:</strong> $O(k)$</p>
+<h3 id="Row-Heap"><a href="#Row-Heap" class="headerlink" title="Row Heap"></a>Row Heap</h3><ul>
+<li>Add the <code>first row</code> into the priority queue. Poll values from it for <code>k times</code> then the last one we poll will be the kth smallest.</li>
+<li>Each time we poll a value from it, we should <code>offer</code> its next value if available.</li>
+</ul>
+<p><strong>Note:</strong> We can also use the column.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// PQ (min-heap)</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">kthSmallest</span><span class="params">(<span class="type">int</span>[][] matrix, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">kthNum</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> matrix.length;</span><br><span class="line">  Comparator&lt;<span class="type">int</span>[]&gt; comp = (n1, n2) -&gt; (matrix[n1[<span class="number">0</span>]][n1[<span class="number">1</span>]] - matrix[n2[<span class="number">0</span>]][n2[<span class="number">1</span>]]);</span><br><span class="line">  PriorityQueue&lt;<span class="type">int</span>[]&gt; minPQ = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;(comp);</span><br><span class="line">  <span class="comment">// add first row</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">col</span> <span class="operator">=</span> <span class="number">0</span>; col &lt; n; ++col) &#123;</span><br><span class="line">    minPQ.add(<span class="keyword">new</span> <span class="title class_">int</span>[] &#123; <span class="number">0</span>, col &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// add &amp; poll PQ</span></span><br><span class="line">  <span class="keyword">while</span> (k &gt; <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="type">int</span>[] index = minPQ.poll();</span><br><span class="line">    kthNum = matrix[index[<span class="number">0</span>]][index[<span class="number">1</span>]];</span><br><span class="line">    <span class="comment">// add next</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">nextRow</span> <span class="operator">=</span> index[<span class="number">0</span>] + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (nextRow &lt; n) &#123;</span><br><span class="line">      minPQ.add(<span class="keyword">new</span> <span class="title class_">int</span>[] &#123; nextRow, index[<span class="number">1</span>] &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    k -= <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> kthNum;</span><br><span class="line">  <span class="comment">// return matrix[minPQ.peek()[0]][minPQ.peek()[1]];</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(n\log{k})$<br><strong>Space:</strong> $O(k)$</p>
+<p>If we use bottom-up heapification, it should be $O(n + k\log{n})$</p>
+<p>If $k &lt; n$, we can have pruning:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tlh7x.png"></p>
+<h3 id="Binary-Search"><a href="#Binary-Search" class="headerlink" title="Binary Search"></a>Binary Search</h3><p>Reference:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/discuss/85173/Share-my-thoughts-and-Clean-Java-Code">Java Alternative Solution 2 with line-by-line comment</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/discuss/85193/Binary-Search-Heap-and-Sorting-comparison-with-concise-code-and-1-liners-Python-72-ms">Binary Search, Heap and Sorting comparison, with concise code and 1-liners, Python 72 ms</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/discuss/85173/Share-my-thoughts-and-Clean-Java-Code">Share my thoughts and Clean Java Code</a></li>
+</ul>
+<p>The key point for any binary search is to figure out <code>search space</code>. There are two kinds of search space: <code>index</code> and <code>range</code>. Usually, when the array is sorted in one direction, we can use <code>index</code> as search space; otherwise, we use values as our search space.</p>
+<p>In this case, we cannot use index as our search space, because the matrix is sorted in two directions, we can not find a linear way to map the number and its index.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">kthSmallest</span><span class="params">(<span class="type">int</span>[][] matrix, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> matrix.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">lo</span> <span class="operator">=</span> matrix[<span class="number">0</span>][<span class="number">0</span>];          <span class="comment">// min value</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">hi</span> <span class="operator">=</span> matrix[n - <span class="number">1</span>][n - <span class="number">1</span>];  <span class="comment">// max value</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">while</span> (lo &lt;= hi) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> lo + (hi - lo) / <span class="number">2</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> count(matrix, mid); <span class="comment">// count values that are &lt;= mid</span></span><br><span class="line">    <span class="keyword">if</span> (count &gt;= k) &#123;</span><br><span class="line">      hi = mid - <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      lo = mid + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> lo;   <span class="comment">// e.g. k = 5, finally lo, hi both equal 11</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">   [ 1,  5,  9],</span></span><br><span class="line"><span class="comment">   [10, 11, 13],</span></span><br><span class="line"><span class="comment">   [12, 13, 15]</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="comment">// count the number of values that are &lt;= mid</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">count</span><span class="params">(<span class="type">int</span>[][] matrix, <span class="type">int</span> mid)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> matrix.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> n - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123; <span class="comment">// row - O(n)</span></span><br><span class="line">    <span class="comment">// from right to left ==&gt; j + 1 is the count number</span></span><br><span class="line">    <span class="comment">// mid is getting bigger</span></span><br><span class="line">    <span class="comment">// move n / 2 times</span></span><br><span class="line">    <span class="comment">// move n / 4 times</span></span><br><span class="line">    <span class="comment">// move n / 8 times</span></span><br><span class="line">    <span class="keyword">while</span> (j &gt;= <span class="number">0</span> &amp;&amp; matrix[i][j] &gt; mid) &#123; <span class="comment">// col - O(logn)</span></span><br><span class="line">      --j;</span><br><span class="line">    &#125;</span><br><span class="line">    count += (j + <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(n\log{n}\log{N})$</p>
+<ul>
+<li>$N$ is the search space that ranges from the smallest to the largest element.</li>
+<li>Each <code>count</code> takes $O(n\log{n})$ in the best case when <code>mid</code> is getting smaller.</li>
+<li>Each <code>count</code> takes $O(n^2)$ in the worst case when <code>mid</code> is getting larger.</li>
+</ul>
+<p><strong>Space:</strong> $O(1)$</p>
+<p><strong>Improvement:</strong></p>
+<p>We can actually improve <code>count</code> function.</p>
+<p><strong>Time:</strong> $O(n\log{N})$<br><strong>Space:</strong> $O(1)$</p>
+<p>Count by <code>row</code> starting from <code>up-right</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// do a binary search</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">count</span><span class="params">(<span class="type">int</span>[][] matrix, <span class="type">int</span> mid)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> matrix.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> <span class="number">0</span>, c = n - <span class="number">1</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (r &lt; n &amp;&amp; c &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (mid &gt;= matrix[r][c]) &#123;</span><br><span class="line">      r += <span class="number">1</span>;</span><br><span class="line">      count += c + <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      c -= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Count by <code>column</code> starting from <code>bottom-left</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">count</span><span class="params">(<span class="type">int</span>[][] matrix, <span class="type">int</span> mid)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> matrix.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> n - <span class="number">1</span>, c = <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (r &gt;= <span class="number">0</span> &amp;&amp; c &lt; n) &#123;</span><br><span class="line">    <span class="keyword">if</span> (mid &gt;= matrix[r][c]) &#123;</span><br><span class="line">      c += <span class="number">1</span>;</span><br><span class="line">      count += r + <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      r -= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

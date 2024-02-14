@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Hard Problem Given a non-empty binary tree, find the maximum path sum.   For this problem, a path is defined as any sequence of nodes from some starting node to any no">
+<meta property="og:type" content="website">
+<meta property="og:title" content="124. Binary Tree Maximum Path Sum">
+<meta property="og:url" content="https://junhaow.com/lc/problems/tree/sum-and-path/124_binary-tree-maximum-path-sum.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Hard Problem Given a non-empty binary tree, find the maximum path sum.   For this problem, a path is defined as any sequence of nodes from some starting node to any no">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fc4cg.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sp6dw.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/baob4.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.150Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.150Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fc4cg.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>124. Binary Tree Maximum Path Sum</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/binary-tree-maximum-path-sum/">LeetCode</a><br>Difficulty: <span class="red">Hard</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a <code>non-empty</code> binary tree, find the maximum path sum.</p>
+</blockquote>
+<blockquote>
+<p>For this problem, a path is defined as any sequence of nodes from some starting node to any node in the tree along the parent-child connections. The path must contain <code>at least one node</code> and does <code>not need to go through the root</code>.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Input: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]   Input: [-<span class="number">10</span>,<span class="number">9</span>,<span class="number">20</span>,<span class="literal">null</span>,<span class="literal">null</span>,<span class="number">15</span>,<span class="number">7</span>]</span><br><span class="line">       <span class="number">1</span>             -<span class="number">10</span></span><br><span class="line">      / \            / \</span><br><span class="line">     <span class="number">2</span>   <span class="number">3</span>          <span class="number">9</span>   <span class="number">20</span> </span><br><span class="line">                       /  \</span><br><span class="line">                      <span class="number">15</span>   <span class="number">7</span></span><br><span class="line">Output: <span class="number">6</span>        Output: <span class="number">42</span></span><br></pre></td></tr></table></figure>
+
+<p>Also, notice the following cases:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[-<span class="number">1</span>]        -<span class="number">1</span></span><br><span class="line">[-<span class="number">1</span>,-<span class="number">2</span>,-<span class="number">3</span>]  -<span class="number">1</span></span><br><span class="line">[-<span class="number">6</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]   <span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p><strong>Methods:</strong></p>
+<p>First, let’s understand the idea of <code>maxGain(node)</code>.</p>
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/binary-tree-maximum-path-sum/solution/">link</a></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fc4cg.jpg" alt="maxGain(node)"></p>
+<p>Most importantly, we need to design a <code>maxGain(node)</code> that can handle <code>negative numbers</code>. The idea is as follows:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sp6dw.jpg"></p>
+<p><strong>However</strong>, just using <code>maxGain(node)</code> could not give us the correct result, because the max sum path does not necessarily go through <code>node</code>. So we can use a field to store this value.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/baob4.jpg"></p>
+<ol>
+<li>Recursion<ul>
+<li>This problem could be simplified by implementing a function <code>maxGain(node)</code> which computes the maximum path sum from this node to <code>one node</code> below (it could be a non-leaf node). Here are the rules inside <code>maxGain(node)</code><ul>
+<li><code>Root</code> must be used.</li>
+<li>At most <code>one child</code> can be used, or not used when both have negative gains.</li>
+</ul>
+</li>
+<li>If one would know that the max sum path contains <code>node</code>, the problem would be solved as <code>maxGain(node)</code>. However, this path does not necessarily go through the <code>node</code>. A max sum path <strong>could be a path at the bottom</strong> not crossing the <code>node</code>.</li>
+<li>Thus, we need to modify the function and to check which path is better and update the maximum value if necessary (a field variable). As for <code>maxGain(node)</code>, it still returns the maximum gain of the path that crosses the <code>node</code>.</li>
+<li><strong>Note:</strong> The idea is not easy, but not hard to understand. However, how to manage the design of recursive functions and handle corner cases is super tricky and complicated if not using the trick (<code>int leftGain = Math.max(maxGain(node.left), 0)</code>).</li>
+<li><strong>Time:</strong> $O(N)$ since we visit each node for no more than $2$ times.</li>
+<li><strong>Space:</strong> $O(h)$</li>
+</ul>
+</li>
+</ol>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><h3 id="Original-Version"><a href="#Original-Version" class="headerlink" title="Original Version"></a>Original Version</h3><p><strong>Note:</strong> <code>140 ms</code></p>
+<ul>
+<li>The time complexity is $O(N^2)$ in the worst case, since it does a lot of repeated calculations.</li>
+<li>It just separate the checking idea from the <code>maxGain(node)</code> and make it into <code>maxPathSum(node)</code>. Actually, it turns out that we could do it in one function.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxPathSum</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// root node must be included</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">lMax</span> <span class="operator">=</span> maxPathSumOnOneSide(root.left);</span><br><span class="line">  <span class="type">int</span> <span class="variable">rMax</span> <span class="operator">=</span> maxPathSumOnOneSide(root.right);</span><br><span class="line">  <span class="type">int</span> <span class="variable">p1</span> <span class="operator">=</span> root.val + lMax + rMax;</span><br><span class="line">  <span class="type">int</span> <span class="variable">p2</span> <span class="operator">=</span> root.val + Math.max(lMax, rMax);</span><br><span class="line">  <span class="type">int</span> <span class="variable">p3</span> <span class="operator">=</span> root.val;</span><br><span class="line">  <span class="type">int</span> <span class="variable">maxVal</span> <span class="operator">=</span> Math.max(p1, Math.max(p2, p3));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (root.left != <span class="literal">null</span>) &#123;</span><br><span class="line">    maxVal = Math.max(maxVal, maxPathSum(root.left));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (root.right != <span class="literal">null</span>) &#123;</span><br><span class="line">    maxVal = Math.max(maxVal, maxPathSum(root.right));</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> maxVal;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">maxPathSumOnOneSide</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">lMax</span> <span class="operator">=</span> maxPathSumOnOneSide(root.left);</span><br><span class="line">  <span class="type">int</span> <span class="variable">rMax</span> <span class="operator">=</span> maxPathSumOnOneSide(root.right);</span><br><span class="line">  <span class="type">int</span> <span class="variable">p1</span> <span class="operator">=</span> root.val + lMax;</span><br><span class="line">  <span class="type">int</span> <span class="variable">p2</span> <span class="operator">=</span> root.val + rMax;</span><br><span class="line">  <span class="type">int</span> <span class="variable">p3</span> <span class="operator">=</span> root.val;</span><br><span class="line">  <span class="keyword">return</span> Math.max(p1, Math.max(p2, p3));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Initial-Improvement"><a href="#Initial-Improvement" class="headerlink" title="Initial Improvement"></a>Initial Improvement</h3><p><strong>Note:</strong> <code>2 ms</code></p>
+<ul>
+<li>The reason why this code is too long and complicated is because I check a lot of corner cases for negative numbers. For example:<ul>
+<li><code>[-3]</code> should return <code>-3</code> rather than <code>0</code>. <code>root == null</code> will lead to <code>return 0</code>, but it should not be treated as a valid return value because it is not a node at all. In other words, <code>0</code> should not be compared with <code>-3</code>.</li>
+<li><code>[2, -1]</code> should return <code>2</code> rather than <code>2 + (-1) = 1</code>.</li>
+</ul>
+</li>
+<li>Therefore, when calculating the <code>max sum</code>, I have to do many combinations of the results of <code>root.val</code>, <code>root.left</code>, <code>root.right</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Integer maxVal;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxPathSum</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  maxVal = <span class="literal">null</span>;</span><br><span class="line">  helper(root);</span><br><span class="line">  <span class="keyword">return</span> maxVal;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">helper</span><span class="params">(TreeNode root)</span> &#123; <span class="comment">// return the max gain</span></span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (root.left == <span class="literal">null</span> &amp;&amp; root.right == <span class="literal">null</span>) &#123;</span><br><span class="line">    maxVal = (maxVal == <span class="literal">null</span>) ? root.val : Math.max(maxVal, root.val);</span><br><span class="line">    <span class="keyword">return</span> root.val;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> <span class="variable">lMax</span> <span class="operator">=</span> helper(root.left);</span><br><span class="line">  <span class="type">int</span> <span class="variable">rMax</span> <span class="operator">=</span> helper(root.right);</span><br><span class="line">  <span class="type">int</span> <span class="variable">p1</span> <span class="operator">=</span> root.val + lMax;</span><br><span class="line">  <span class="type">int</span> <span class="variable">p2</span> <span class="operator">=</span> root.val + rMax;</span><br><span class="line">  <span class="type">int</span> <span class="variable">p3</span> <span class="operator">=</span> root.val;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// update the sum max</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">oneMax</span> <span class="operator">=</span> root.val;</span><br><span class="line">  <span class="keyword">if</span> (root.left != <span class="literal">null</span>) &#123;</span><br><span class="line">    oneMax = Math.max(oneMax, lMax);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (root.right != <span class="literal">null</span>) &#123;</span><br><span class="line">    oneMax = Math.max(oneMax, rMax);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">twoMax</span> <span class="operator">=</span> root.val + Math.max(lMax, rMax);</span><br><span class="line">  <span class="type">int</span> <span class="variable">threeMax</span> <span class="operator">=</span> root.val + lMax + rMax;</span><br><span class="line">  <span class="type">int</span> <span class="variable">newMax</span> <span class="operator">=</span> Math.max(oneMax, Math.max(twoMax, threeMax));</span><br><span class="line">  maxVal = (maxVal == <span class="literal">null</span>) ? newMax : Math.max(maxVal, newMax);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> Math.max(p1, Math.max(p2, p3));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Clean-Solution"><a href="#Clean-Solution" class="headerlink" title="Clean Solution"></a>Clean Solution</h3><p><strong>Note:</strong> <code>1 ms</code></p>
+<ul>
+<li>Learn how to calculate the maximum values among several values. It turns out that if <code>maxGain(node)</code> returns a negative number, we would definitely not to choose it as our part of values. With this simple code, it handles all the cases as you can imagine.</li>
+<li>If the <code>maxGain(node)</code> of a node’s left or right child is negative, we will immediately drop that value and start over from <code>node</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Integer maxSum;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxPathSum</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  maxSum = Integer.MIN_VALUE;</span><br><span class="line">  maxGain(root);</span><br><span class="line">  <span class="keyword">return</span> maxSum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">maxGain</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// max gain on the left and right subtrees of current node</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">leftGain</span> <span class="operator">=</span> Math.max(maxGain(root.left), <span class="number">0</span>);   <span class="comment">// if they are negative, set 0</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">rightGain</span> <span class="operator">=</span> Math.max(maxGain(root.right), <span class="number">0</span>); <span class="comment">// suppress negative results</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// it is better to start a new path crossing the current node? (Can use both sides)</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">newPathSum</span> <span class="operator">=</span> root.val + leftGain + rightGain; <span class="comment">// don&#x27;t need to check root.val + leftGain</span></span><br><span class="line">  <span class="built_in">this</span>.maxSum = Math.max(<span class="built_in">this</span>.maxSum, newPathSum);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// return max gain (Can only use one side)</span></span><br><span class="line">  <span class="keyword">return</span> root.val + Math.max(leftGain, rightGain);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

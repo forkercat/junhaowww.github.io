@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="并发不仅仅局限于内核，应用级并发在其他情况下也是很有用的：  访问慢速 I&#x2F;O 与人交互 通过推迟工作以降低延迟（优先级低的工作） 服务多个网络客户端 在多核机器上进行并行计算  使用应用级并发的应用程序称为并发程序（concurrent program）。现代操作系统提供了三种基本的构造并发程序的方法：  进程：每个逻辑控制流都是一个进程，由内核来调度和维护。因为进程有独立的虚拟地">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CSAPP &#x2F; CSE 351 学习笔记（并发编程）">
+<meta property="og:url" content="https://junhaow.com/studynotes/csapp/09_CSAPP%20:%20CSE351%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%EF%BC%89.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="并发不仅仅局限于内核，应用级并发在其他情况下也是很有用的：  访问慢速 I&#x2F;O 与人交互 通过推迟工作以降低延迟（优先级低的工作） 服务多个网络客户端 在多核机器上进行并行计算  使用应用级并发的应用程序称为并发程序（concurrent program）。现代操作系统提供了三种基本的构造并发程序的方法：  进程：每个逻辑控制流都是一个进程，由内核来调度和维护。因为进程有独立的虚拟地">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/beix8.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xoynh.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dsgzh.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.201Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.201Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/beix8.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CSAPP / CSE 351 学习笔记（并发编程）</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>并发不仅仅局限于<code>内核</code>，应用级并发在其他情况下也是很有用的：</p>
+<ul>
+<li>访问慢速 I&#x2F;O</li>
+<li>与人交互</li>
+<li>通过推迟工作以降低延迟（优先级低的工作）</li>
+<li>服务多个网络客户端</li>
+<li>在多核机器上进行并行计算</li>
+</ul>
+<p>使用<code>应用级并发</code>的应用程序称为<code>并发程序</code>（concurrent program）。现代操作系统提供了三种基本的构造并发程序的方法：</p>
+<ul>
+<li><code>进程</code>：每个逻辑控制流都是一个进程，由内核来调度和维护。因为进程有独立的虚拟地址空间，想要和其他流通信，控制流必须使用某种显式的<code>进程间通信</code>（interprocess communication，IPC）机制。</li>
+<li><code>I/O 多路复用</code>：应用程序在一个进程的上下文中显式地调用它们自己的逻辑流。逻辑流被模型化为<code>状态机</code>，数据到达文件描述符后，主程序显式地从一个状态转换为另一个状态。因为程序是一个<code>单独的进程</code>，所以所有的流都共享同一个地址空间。</li>
+<li><code>线程</code>：线程是运行在一个单一进程上下文中的逻辑流，由内核进行调度。你可以把线程看成是其他两种方式的混合体，像进程流一样由内核进行调度，而像 I&#x2F;O 多路复用流一样共享同一个虚拟地址空间。</li>
+</ul>
+<h2 id="基于进程的并发编程"><a href="#基于进程的并发编程" class="headerlink" title="基于进程的并发编程"></a>基于进程的并发编程</h2><p>对于在父、子进程间共享状态信息，进程有一个非常清晰的模型：共享文件表，但是不共享用户地址空间（既是优点也是缺点）。另一方面，独立的地址空间使得进程共享状态信息变得更加困难。为了共享信息，它们必须使用显式 IPC（进程间通信）机制。此外，基于进程的并发设计的另一个缺点是它们往往比较慢，因为 IPC 开销很大。</p>
+<p><strong>Unix IPC</strong></p>
+<p><code>waitpid</code>函数和信号是基本的 IPC 机制，它们允许进程发送小消息到同一主机上到其他进程。<code>套接字接口</code>是 IPC 的一种重要形式，它允许不同主机上的进程交换任意的字节流。术语 Unix IPC 通常指的是所有允许进程和同一台主机上其他进程进行通信的技术。其中包括<code>管道</code>、<code>先进先出（FIFO）</code>、<code>系统 V 共享内存</code>，以及<code>系统 V 信号量</code>（semaphore）。</p>
+<h2 id="基于-I-O-多路复用的并发编程"><a href="#基于-I-O-多路复用的并发编程" class="headerlink" title="基于 I&#x2F;O 多路复用的并发编程"></a>基于 I&#x2F;O 多路复用的并发编程</h2><p>假设要编写一个 echo 服务器，它也能对用户从标准输入键入的交互命令做出响应。在这种情况下，服务器必须响应两个互相独立的 I&#x2F;O 事件：1）网络客户端发起连接请求，2）用户在键盘上键入命令。如果在 accept 中等待一个连接请求，我们就不能响应输入的命令。类似地，如果在 read 中等待一个输入命令，我们就不能响应任何连接请求。</p>
+<p>针对这种困境的一个解决办法是<code>I/O 多路复用</code>（I&#x2F;O multiplexing）技术。基本的思路就是使用<code>select</code>函数，要求内核挂起进程，只有在一个或多个 I&#x2F;O 事件发生后，才将控制返回给应用程序。select 函数会一只阻塞，直到读集合中至少有一个描述符准备好可以读。</p>
+<p><strong>并发事件驱动服务器</strong></p>
+<p>I&#x2F;O 多路复用可以用做<code>并发事件驱动（event-driven）</code>程序的基础，在事件驱动程序中，某些事件会导致流向前推进。一般的思路是将<code>逻辑流模型</code>化为<code>状态机</code>。不严格地说，一个<code>状态机</code>（state machine）就是一组<code>状态</code>（state）、<code>输入事件</code>（input event）和<code>转移</code>（transition），其中转移是将状态和输入事件映射到状态。通常把状态机画成<code>有向图</code>，其中节点表示<code>状态</code>，有向弧表示<code>转移</code>，而弧上的标号表示<code>输入事件</code>。</p>
+<p>服务器使用 I&#x2F;O 多路复用，借助 select 函数检测输入事件的发生。当每个已连接描述符准备好可读时，服务器就为相应的状态机执行转移，在这里就是从描述符读和写回一个文本行。</p>
+<p>现代高性能服务器（例如，Node.js、nginx 和 Tornado）使用的都是基于 I&#x2F;O 多路复用的事件驱动的编程方式，主要是因为相比于进程和线程的方式，它有明显的性能优势。</p>
+<h2 id="基于线程的并发编程"><a href="#基于线程的并发编程" class="headerlink" title="基于线程的并发编程"></a>基于线程的并发编程</h2><p><code>线程</code>（thread）就是运行在进程上下文中的逻辑流。程序都是由每个进程中的至少一个线程组成的。线程由内核自动调度。每个线程都有它自己的<code>线程上下文</code>（thread context），包括一个唯一的<code>整数线程 ID</code>（Thread ID，TID）、栈、栈指针、程序计数器、通用目的寄存器和条件码。所有的运行在一个进程里的线程共享该进程的整个虚拟地址空间。基于线程的逻辑流集合了基于进程和基于 I&#x2F;O 多路复用的流的特性。</p>
+<p>每个进程开始生命周期时都是单一线程，这个线程称为<code>主线程</code>（main thread）。在某一时刻，主线程创建一个<code>对等线程</code>（peer thread），从这个时间点开始，两个线程就并发地运行。因为一个线程的上下文要比一个进程的上下文小得多，线程的上下文切换要比进程的上下文切换快得多。另一个不同的的是线程不像进程那样，不是按照严格的父子层次来组织的。</p>
+<p>Posix 线程（Pthreads）是在 C 程序中处理线程的一个标准接口。它最早出现在 1995 年，而且在所有的 Linux 系统都可用。线程的代码和本地数据被封装在一个<code>线程例程</code>（thread routine）中。</p>
+<p>在任何一个时间点上，线程是<code>可结合点</code>（joinable）或者是<code>分离的</code>（detached）。一个可结合的线程能够被其他线程收回或杀死。在被其他线程回收之前，它的内存资源（例如栈）是不释放的。相反，一个分离的线程是不能被其他线程回收或者杀死的。它的内存资源在它终止时由系统自动释放。</p>
+<h2 id="多线程程序中的共享变量"><a href="#多线程程序中的共享变量" class="headerlink" title="多线程程序中的共享变量"></a>多线程程序中的共享变量</h2><p>从实际操作的角度来说，让一个线程去读或写另一个线程的寄存器是不可能的。因此寄存器是从不共享的，而虚拟内存总是共享的。</p>
+<p>多线程的 C 程序中变量根据它们的存储类型被映射到虚拟内存：</p>
+<ul>
+<li><code>全局变量</code>：在运行时，虚拟内存的读&#x2F;写区域只包含每个全局变量的一个实例，任何线程都可以引用。</li>
+<li><code>本地自动变量</code>：每个线程的栈都包含它自己的所有本地自动变量的实例，即使多个线程执行同一个线程例程时也是如此。</li>
+<li><code>本地静态变量</code>：和全局变量一样，虚拟内存的读&#x2F;写区域只包含在程序中声明的每个本地静态变量的一个实例。</li>
+</ul>
+<h2 id="用信号量同步线程"><a href="#用信号量同步线程" class="headerlink" title="用信号量同步线程"></a>用信号量同步线程</h2><p>对于<code>同步错误</code>有个<code>关键点</code>：一般而言，你<code>没有办法预测</code>操作系统是否将为你的线程选择一个正确的顺序。</p>
+<h3 id="进度图（progress-graph）"><a href="#进度图（progress-graph）" class="headerlink" title="进度图（progress graph）"></a>进度图（progress graph）</h3><p>参考：p701</p>
+<h3 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h3><p>Edsger Dijkstra，并发编程领域的先锋人物，提出了一种经典的解决同步不同执行线程问题的方法，这种方法是基于一种叫做<code>信号量</code>（semaphore）的特殊类型的变量。信号量 s 是具有非负整数值的全局变量，只能由两种特殊的操作来处理，这两种操作称为 P 和 V：</p>
+<blockquote>
+<p>Dijkstra 出生于荷兰。名字 P 和 V 来源于荷兰单词 Proberen（测试）和 Verhogen（增加）。</p>
+</blockquote>
+<ul>
+<li>P(s)：如果 s 是非零的，那么 P 将 s 减 1，并且立即返回。如果 s 为零，那么就挂起这个线程，直到 s 变为非零，而一个 V 操作会重启这个线程。在重启之后，P 操作将 s 减 1，并将控制返回给调用者。</li>
+<li>V(s)：V 操作将 s 加 1。如果有任何线程阻塞在 P 操作等待 s 变成非零，那么 V 操作会重启这些线程种的一个（没有定义是哪一个，只需要重启一个即可），然后该线程将 s 减 1，完成它的 P 操作。</li>
+</ul>
+<p>P 中的测试和减 1 操作是不可分割的，也就是说，一旦预测信号量 s 变为非零，就会将 s 减 1，不能有中断。V 中的加 1 操作是不可分割的，也就是加载、加 1 和存储信号量的过程中没有中断。</p>
+<p>P 和 V 的定义确保了一个正在运行的程序绝不可能进入一种状态：一个正确初始化的信号量有一个负值。这个属性称为<code>信号量不变性</code>（semaphore invariant）。</p>
+<p>Posix 标准定义了许多操作信号量的函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">sem_init</span><span class="params">(<span class="type">sem_t</span> *sem, <span class="number">0</span>, <span class="type">unsigned</span> <span class="type">int</span> value)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">sem_wait</span><span class="params">(<span class="type">sem_t</span> *s)</span>;  <span class="comment">/* P(s) */</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">sem_post</span><span class="params">(<span class="type">sem_t</span> *s)</span>;  <span class="comment">/* V(s) */</span></span><br><span class="line"><span class="comment">// 或者自行封装</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">P</span><span class="params">(<span class="type">sem_t</span> *s)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">V</span><span class="params">(<span class="type">sem_t</span> *s)</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用信号量来实现互斥"><a href="#使用信号量来实现互斥" class="headerlink" title="使用信号量来实现互斥"></a>使用信号量来实现互斥</h4><p>信号量提供了一种很方便的方法来确保对共享变量的<code>互斥访问</code>。基本思想是将每个共享变量（或者一组相关的共享变量）与一个信号量 s（初始化为 1）联系起来，然后用 P(s) 和 V(s) 操作将相应的临界区包围起来。</p>
+<p>以这种方式来博阿虎共享变量的信号量叫做<code>二元信号量</code>（binary semaphore），因为它的值总是是 0 或 1。以提供互斥为目的的二元信号量常常也称为<code>互斥锁</code>（mutex）。一个被用作一组可用资源的计数器的信号量被称为<code>计数信号量</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; niters; ++i) &#123;</span><br><span class="line">  P(&amp;mutex);</span><br><span class="line">  cnt++;</span><br><span class="line">  V(&amp;mutex);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="利用信号量来调度共享资源"><a href="#利用信号量来调度共享资源" class="headerlink" title="利用信号量来调度共享资源"></a>利用信号量来调度共享资源</h4><p>信号量的另一个重要的作用是调度对共享资源的访问。一个线程用信号量操作来通知另一个线程，程序状态中的某个条件已经为真了。两个经典的例子是<code>生产者-消费者</code>和<code>读者-写者</code>问题。</p>
+<p>生产者和消费者线程共享有一个 n 个槽的<code>有限缓冲区</code>。生产者线程反复地生成新的<code>项目</code>（item），并把它们插入到缓冲区中。消费者线程不断地从缓冲区中取出这些项目，然后消费（使用）它们。</p>
+<p>因为插入和取出项目都涉及更新共享变量，所以我们必须保证对缓冲区的访问是互斥的。此外，如果缓冲区是满的，那么生产者必须等待直到有一个槽位变为可用。与之相似，如果缓冲区是空的，那么消费者必须等待直到有一个项目变为可用。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/beix8.jpg" alt="生产者-消费者问题（CSAPP 12-23）"></p>
+<p>例子：</p>
+<ul>
+<li>在一个多媒体系统中，生产者编码视频帧，而消费者解码并在屏幕上呈现出来。</li>
+<li>在一个图形用户接口的设计中，生产者检测到鼠标和键盘事件，并将它们插入到缓冲区中。消费者以某种基于优先级的方式从缓冲区取出这些事件，并显示在屏幕上。</li>
+</ul>
+<h4 id="读者-写者问题"><a href="#读者-写者问题" class="headerlink" title="读者-写者问题"></a>读者-写者问题</h4><p>读者-写者问题是互斥问题的一个概括。一组并发的线程要访问一个共享对象，例如一个主存中的数据结构，或者一个磁盘上的数据库。有些线程只读对象（读者），有些线程只修改对象（写者）。写者必须拥有对对象的独占的访问，而读者可以和无限多个其他的读者共享对象。一般来说，有无限多个并发的读者和写者。</p>
+<p>例子：</p>
+<ul>
+<li>一个在线航空预订系统可允许有无限多个客户同时查看座位分配，但是正在预订座位的客户必须拥有对数据库的独占的访问。</li>
+<li>一个多线程缓存 Web 代理中，无限多个线程可以从共享页面缓存中取出已有的页面，但是任何向缓存中写入一个新的页面的线程必须拥有独占的访问。</li>
+</ul>
+<p>几个变种：</p>
+<ul>
+<li><p>第一类：读者优先，要求不让读者等待，读者不会因为有一个写者在等待而等待。</p>
+<p>信号量 w 控制对访问共享对象的临界区访问。信号量 mutex 保护对共享变量 readcnt 的访问，readcnt 统计当前在临界区中的读者数量。</p>
+<p>每当一个写者进入临界区，它对互斥锁 w 加锁，离开的时候解锁。</p>
+<p>这就保证了任何时候只有一个写者。另一方面，只有第一个进入临界区的读者对 w 加锁，而只有最后一个进入离开临界区的读者对 w 解锁。这就意味着还有一个读者占用互斥锁 w，无限多数量的读者可以没有障碍地进入临界区。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> readcnt;  <span class="comment">/* Initially = 0 */</span></span><br><span class="line"><span class="type">sem_t</span> mutex, w;   <span class="comment">/* Both initially = 1 */</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">reader</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">    P(&amp;mutex);</span><br><span class="line">    readcnt++;</span><br><span class="line">    <span class="keyword">if</span> (readcnt == <span class="number">1</span>) <span class="comment">/* First In */</span></span><br><span class="line">      P(&amp;w);</span><br><span class="line">    V(&amp;mutex);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Critical section */</span></span><br><span class="line">    <span class="comment">/* Reading happens */</span></span><br><span class="line"></span><br><span class="line">    P(&amp;mutex);</span><br><span class="line">    readcnt--;</span><br><span class="line">    <span class="keyword">if</span> (readcnt == <span class="number">0</span>) <span class="comment">/* Last Out */</span></span><br><span class="line">      V(&amp;w);</span><br><span class="line">    V(&amp;mutex);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">writer</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">    P(&amp;w);</span><br><span class="line">    <span class="comment">/* Critical section */</span></span><br><span class="line">    <span class="comment">/* Writing happens */</span></span><br><span class="line">    V(&amp;w);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>第二类：写者优先，要求一旦一个写者准备好写，它就会尽可能地完成它的写操作。</p>
+</li>
+</ul>
+<p>对这两种读者-写者问题的正确解答可能导致饥饿（starvation），饥饿就是一个线程无限期地阻塞，无法进展。比如，如果读者不断地到达，写者就可能无限期地等待。</p>
+<p>此外，我们应该直到还存在其他同步技术。例如：</p>
+<ul>
+<li>Java 线程是用一种叫做 Java 监控器（Java Monitor）的机制来同步的，它提供了对信号量互斥和调度能力的更高级别的抽象；实际上，监控器可以用信号量来实现。</li>
+<li>Pthreads 接口定义了一组对互斥锁和条件变量的同步操作。Pthreads 互斥锁被用来实现互斥。条件变量用来调度对共享资源的访问。</li>
+</ul>
+<p><strong>顺序、并发、并行程序之间的集合关系</strong></p>
+<p>写顺序程序只有一条逻辑流。写并发程序有多条并发流。并行程序是一个运行在多个处理器上的<code>并发程序</code>。因此，并行程序的集合是并发程序集合的真子集。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xoynh.jpg" alt="顺序、并发和并行程序集合之间的关系（CSAPP 12-30）"></p>
+<h2 id="其他并发问题"><a href="#其他并发问题" class="headerlink" title="其他并发问题"></a>其他并发问题</h2><h3 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h3><p>当用线程编写程序时，必须小心地编写那些具有<code>线程安全性</code>（thread safety）属性的函数。通常有四类线程不安全函数：</p>
+<ol>
+<li><code>不保护共享变量的函数</code></li>
+<li><code>保持跨越多个调用的状态的函数</code>：一个伪随机数生成器是属于这一类。rand 函数是线程不安全的，因为当前调用的结果依赖于前次调用的中间结果。解决办法是重写它，使得它不再使用任何 static 数据。</li>
+<li><code>返回指向静态变量的指针的函数</code></li>
+<li><code>调用线程不安全函数的函数</code></li>
+</ol>
+<h3 id="可重入性"><a href="#可重入性" class="headerlink" title="可重入性"></a>可重入性</h3><p>有一类重要的线程安全函数叫做<code>可重入函数</code>（reentrant function），其特点在于它们被多个线程调用时，不会引用任何共享数据。尽管<code>线程安全</code>和<code>可重入</code>有时会被不正确地当作同义词，但是它们之间还是有显著的差别的，值得留意。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dsgzh.jpg" alt="三种函数的集合关系（CSAPP12-39）"></p>
+<p>可重入函数通常要比不可重入的线程安全的函数高效一些，因为它们不需要同步操作。检查某个函数的代码并先验地断定它是可重入的，这可能吗？不幸的是，不一定能这样。如果所有函数的参数都是传值传递（即没有指针），并且所有的数据引用都是本地的自动栈变量（即没有引用静态或全局变量），那么函数就是<code>显式可重入的</code>。</p>
+<p>然而，允许显式可重入函数中的一些参数是引c传递，那么我们就得到了一个<code>隐式可重入函数</code>，也就是调用线程小心地传递指向非共享数据的指针，那么该函数还是可重入的。</p>
+<p><code>关键在于</code>：可重入性有时既是调用者也是被调用者的属性。</p>
+<h3 id="在线程化的程序中使用已存在的库函数"><a href="#在线程化的程序中使用已存在的库函数" class="headerlink" title="在线程化的程序中使用已存在的库函数"></a>在线程化的程序中使用已存在的库函数</h3><p>大多数 Linux 函数，包括定义在标准 C 库中的函数（例如 malloc、free、realloc、printf 和 scanf）都是线程安全的，只有一小部分是例外。Linux 系统提供大多数线程不安全函数的可重入版本，且函数名字总是以<code>_r</code>后缀结尾的。</p>
+<h3 id="竞争"><a href="#竞争" class="headerlink" title="竞争"></a>竞争</h3><p>当一个程序的正确性依赖于一个线程要在另一个线程到达 y 点之前到达它的控制流中的 x 点时，就会发生<code>竞争</code>（race）。通常发生竞争是因为程序员假定线程将按照某种特殊的轨迹线穿过执行状态空间，而忘记了另一条准则规定：多线程的程序必须对任何可行的轨迹线都正确工作。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* buggy code */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> N 4</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> *<span class="title function_">thread</span><span class="params">(<span class="type">void</span> *vargp)</span> &#123;</span><br><span class="line">  <span class="type">int</span> myid = *((<span class="type">int</span> *) vargp);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Hello from thread %d\n&quot;</span>, myid);</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="type">pthread_t</span> tid[N];</span><br><span class="line">  <span class="type">int</span> i;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; N; ++i)</span><br><span class="line">    Pthread_create(&amp;tid[i], <span class="literal">NULL</span>, thread, &amp;i);</span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; N; ++i)</span><br><span class="line">    Pthread_join(tid[i], <span class="literal">NULL</span>);</span><br><span class="line">  <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  Hello from thread 1</span></span><br><span class="line"><span class="comment">  Hello from thread 3</span></span><br><span class="line"><span class="comment">  Hello from thread 2</span></span><br><span class="line"><span class="comment">  Hello from thread 3</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<p>问题是由于每个对等线程和主线程之间的竞争引起的。当主线程创建了一个对等线程时，它传递了一个指向本地栈变量 i 的指针。在此时，竞争出现在下一次在对 i 加一和 thread 函数类对 i 的间接引用和赋值之间。两者的先后顺序将会导致不同的结果。</p>
+<p>为了消除竞争，我们可以动态地为每个整数 ID 分配一个独立的块，并且传递给线程例程一个指向这个块的指针，但记得释放已分配的块。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> *<span class="title function_">thread</span><span class="params">(<span class="type">void</span> *vargp)</span> &#123;</span><br><span class="line">  <span class="type">int</span> myid = *((<span class="type">int</span> *) vargp);</span><br><span class="line">  <span class="built_in">free</span>(vargp);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Hello from thread %d\n&quot;</span>, myid);</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// main</span></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; N; ++i) &#123;</span><br><span class="line">  ptr = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line">  *ptr = i;</span><br><span class="line">  Pthread_create(&amp;tid[i], <span class="literal">NULL</span>, thread, ptr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h3><p>信号量引入了一种潜在的令人厌恶的运行时错误，叫做<code>死锁</code>（deadlock），它指的是一组线程被阻塞了，等待一个永远也不会为真的条件。</p>
+<ul>
+<li>程序员使用 P 和 V 操作顺序不当，使得每个线程都在等待其他线程执行一个根本不可能发生的 V 操作。</li>
+<li>死锁是一个相当困难的问题，因为它不重视可预测的。你可以运行一个程序 1000 次不出任何问题，但是下一次它就死锁了。最糟糕的是，错误常常是不可重复的，因为不同的执行有不同的轨迹线。</li>
+</ul>
+<p>其中，对于二元信号量，可以遵循这样的规则来避免死锁：给定所有互斥操作一个全序，如果每个线程都是以<code>一种顺序</code>获得互斥锁并以<code>相反的顺序</code>释放，那么这个程序就是无死锁的。</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

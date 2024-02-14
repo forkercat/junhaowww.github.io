@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="数组的协变性如果类 Base 是类 Derived 的父类，那么 Base[] 就是 Derived[] 的父类。 因此，我们的代码可以这么写： 123456789Number[] array1 &#x3D; new Number[2];array1[0] &#x3D; Integer.valueOf(1);array1[1] &#x3D; Integer.valueOf(2);System.out.println(array">
+<meta property="og:type" content="article">
+<meta property="og:title" content="注意 Java 中数组和范型的协变性（Covariant）">
+<meta property="og:url" content="https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="数组的协变性如果类 Base 是类 Derived 的父类，那么 Base[] 就是 Derived[] 的父类。 因此，我们的代码可以这么写： 123456789Number[] array1 &#x3D; new Number[2];array1[0] &#x3D; Integer.valueOf(1);array1[1] &#x3D; Integer.valueOf(2);System.out.println(array">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-02-27T05:32:01.000Z">
+<meta property="article:modified_time" content="2024-02-13T15:52:28.542Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="协变性">
+<meta property="article:tag" content="Covariant">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>注意 Java 中数组和范型的协变性（Covariant）</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Posts</a></li><!--
+     --><!--
+       --><li><a href="/studynotes/">Notes</a></li><!--
+     --><!--
+       --><li><a href="/lc/">Leetcode</a></li><!--
+     --><!--
+       --><li><a href="/games/">Games</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">Me</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2019/02/14/046_%E5%A5%BD%E5%A5%BD%E8%B0%83%E6%88%8F%20Java%20%E8%8C%83%E5%9E%8B%E4%B8%AD%E7%9A%84%E9%80%9A%E9%85%8D%E7%AC%A6%E4%BB%A5%E5%8F%8A%E8%BE%B9%E7%95%8C%E9%99%90%E5%AE%9A%E8%A7%84%E5%88%99/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/&text=注意 Java 中数组和范型的协变性（Covariant）"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/&title=注意 Java 中数组和范型的协变性（Covariant）"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/&is_video=false&description=注意 Java 中数组和范型的协变性（Covariant）"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=注意 Java 中数组和范型的协变性（Covariant）&body=Check out this article: https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/&title=注意 Java 中数组和范型的协变性（Covariant）"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/&title=注意 Java 中数组和范型的协变性（Covariant）"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/&title=注意 Java 中数组和范型的协变性（Covariant）"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/&title=注意 Java 中数组和范型的协变性（Covariant）"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/&name=注意 Java 中数组和范型的协变性（Covariant）&description=&lt;h2 id=&#34;数组的协变性&#34;&gt;&lt;a href=&#34;#数组的协变性&#34; class=&#34;headerlink&#34; title=&#34;数组的协变性&#34;&gt;&lt;/a&gt;数组的协变性&lt;/h2&gt;&lt;p&gt;如果类 &lt;code&gt;Base&lt;/code&gt; 是类 &lt;code&gt;Derived&lt;/code&gt; 的父类，那么 &lt;code&gt;Base[]&lt;/code&gt; 就是 &lt;code&gt;Derived[]&lt;/code&gt; 的父类。&lt;/p&gt;
+&lt;p&gt;因此，我们的代码可以这么写：&lt;/p&gt;
+&lt;figure class=&#34;highlight java&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;Number[] array1 = &lt;span class=&#34;keyword&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;Number&lt;/span&gt;[&lt;span class=&#34;number&#34;&gt;2&lt;/span&gt;];&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;array1[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;] = Integer.valueOf(&lt;span class=&#34;number&#34;&gt;1&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;array1[&lt;span class=&#34;number&#34;&gt;1&lt;/span&gt;] = Integer.valueOf(&lt;span class=&#34;number&#34;&gt;2&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;System.out.println(array1[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;]);  &lt;span class=&#34;comment&#34;&gt;// ok&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Number[] array2 = &lt;span class=&#34;keyword&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;Integer&lt;/span&gt;[&lt;span class=&#34;number&#34;&gt;2&lt;/span&gt;];&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;array2[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;] = Integer.valueOf(&lt;span class=&#34;number&#34;&gt;1&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;array2[&lt;span class=&#34;number&#34;&gt;1&lt;/span&gt;] = Integer.valueOf(&lt;span class=&#34;number&#34;&gt;2&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;System.out.println(array2[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;]);  &lt;span class=&#34;comment&#34;&gt;// ok&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/&t=注意 Java 中数组和范型的协变性（Covariant）"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text">数组的协变性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8C%83%E5%9E%8B%E7%B1%BB%E4%B8%8D%E5%85%B7%E6%9C%89%E5%8D%8F%E5%8F%98%E6%80%A7"><span class="toc-number">2.</span> <span class="toc-text">范型类不具有协变性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        注意 Java 中数组和范型的协变性（Covariant）
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Junhao Wang</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-02-27T05:32:01.000Z" class="dt-published" itemprop="datePublished">2019-02-26</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Java/">Java</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Covariant/" rel="tag">Covariant</a>, <a class="p-category" href="/tags/Java/" rel="tag">Java</a>, <a class="p-category" href="/tags/%E5%8D%8F%E5%8F%98%E6%80%A7/" rel="tag">协变性</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="数组的协变性"><a href="#数组的协变性" class="headerlink" title="数组的协变性"></a>数组的协变性</h2><p>如果类 <code>Base</code> 是类 <code>Derived</code> 的父类，那么 <code>Base[]</code> 就是 <code>Derived[]</code> 的父类。</p>
+<p>因此，我们的代码可以这么写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Number[] array1 = <span class="keyword">new</span> <span class="title class_">Number</span>[<span class="number">2</span>];</span><br><span class="line">array1[<span class="number">0</span>] = Integer.valueOf(<span class="number">1</span>);</span><br><span class="line">array1[<span class="number">1</span>] = Integer.valueOf(<span class="number">2</span>);</span><br><span class="line">System.out.println(array1[<span class="number">0</span>]);  <span class="comment">// ok</span></span><br><span class="line"></span><br><span class="line">Number[] array2 = <span class="keyword">new</span> <span class="title class_">Integer</span>[<span class="number">2</span>];</span><br><span class="line">array2[<span class="number">0</span>] = Integer.valueOf(<span class="number">1</span>);</span><br><span class="line">array2[<span class="number">1</span>] = Integer.valueOf(<span class="number">2</span>);</span><br><span class="line">System.out.println(array2[<span class="number">0</span>]);  <span class="comment">// ok</span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p>但是，数组的协变性可能会导致一些难以发现的错误，比如下面的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Error A */</span></span><br><span class="line">Object[] array3 = <span class="keyword">new</span> <span class="title class_">String</span>[<span class="number">10</span>];</span><br><span class="line">array3[<span class="number">0</span>] = <span class="number">10</span>;  <span class="comment">// -&gt; array[0] = Integer.valueOf(10)</span></span><br></pre></td></tr></table></figure>
+
+<p><code>Error A</code> 可以通过编译，<code>Object[]</code> 类型的引用（注意左边是引用）可以指向一个 <code>String[]</code> 类型的对象。但是，这在运行的时候会报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Exception in thread &quot;main&quot; java.lang.ArrayStoreException: java.lang.Integer</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Error B */</span></span><br><span class="line">Number[] array4 = <span class="keyword">new</span> <span class="title class_">Number</span>[<span class="number">2</span>];</span><br><span class="line">array4[<span class="number">0</span>] = <span class="string">&quot;abc&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>Error B</code>这种错误可以在编译的时候出现。</p>
+<h2 id="范型类不具有协变性"><a href="#范型类不具有协变性" class="headerlink" title="范型类不具有协变性"></a>范型类不具有协变性</h2><p>最后，范型类 <code>不具有协变性</code>，如 <code>List&lt;Base&gt;</code> 不会是 <code>List&lt;Derived&gt;</code> 的父类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Object&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;String&gt;();  <span class="comment">// 在这里直接凉了</span></span><br><span class="line">list.add(<span class="number">10</span>);</span><br><span class="line">List&lt;Object&gt; list2 = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Integer&gt;();  <span class="comment">// 一起凉了</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>为什么范型是不协变的？</strong></p>
+<p>因为这样做会破坏要提供的类型的安全范型。如果能够将 <code>List&lt;Integer&gt;</code> 赋值给 <code>List&lt;Number&gt;</code>，那么下面的代码将允许将非 <code>Integer</code> 的内容放入 <code>List&lt;Integer&gt;</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; intList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Integer&gt;();</span><br><span class="line">List&lt;Number&gt; numList = intList;  <span class="comment">// error</span></span><br><span class="line"><span class="comment">/* Type mismatch: cannot convert from List&lt;Integer&gt; to List&lt;Number&gt; */</span></span><br><span class="line">numList.add(<span class="keyword">new</span> <span class="title class_">Float</span>(<span class="number">1.23</span>)); </span><br></pre></td></tr></table></figure>
+
+<p><code>numList</code> 实际上引用的是一个 <code>List&lt;Integer&gt;</code>，只能存 <code>Integer</code> 或者其 <code>子类</code>，所以在第二行就禁止了这种赋值行为。<code>List&lt;Integer&gt;</code> 和 <code>List&lt;Number&gt;</code> 两者是不同的类，且没有继承关系。</p>
+<p>如果需要这样的赋值，比如作为函数的参数，可以这么做：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; intList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Integer&gt;();</span><br><span class="line">List&lt;? <span class="keyword">extends</span> <span class="title class_">Number</span>&gt; numList = intList;   <span class="comment">// 使用通配符 ?</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>为什么数组不支持范型？</strong></p>
+<p>假设数组支持范型，数组是在运行时才去判断数组元素的类型约束（此时范型信息已被擦除），因为无法做类型约束。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2e1a9edbae55">Java 数组协变</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/xsc_c/article/details/18010499">Java——协变数组和类型擦除(covariant array &amp; type erasure)</a></li>
+</ul>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Posts</a></li>
+        
+          <li><a href="/studynotes/">Notes</a></li>
+        
+          <li><a href="/lc/">Leetcode</a></li>
+        
+          <li><a href="/games/">Games</a></li>
+        
+          <li><a href="/links/">Links</a></li>
+        
+          <li><a href="/about/">Me</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text">数组的协变性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8C%83%E5%9E%8B%E7%B1%BB%E4%B8%8D%E5%85%B7%E6%9C%89%E5%8D%8F%E5%8F%98%E6%80%A7"><span class="toc-number">2.</span> <span class="toc-text">范型类不具有协变性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/&text=注意 Java 中数组和范型的协变性（Covariant）"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/&title=注意 Java 中数组和范型的协变性（Covariant）"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/&is_video=false&description=注意 Java 中数组和范型的协变性（Covariant）"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=注意 Java 中数组和范型的协变性（Covariant）&body=Check out this article: https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/&title=注意 Java 中数组和范型的协变性（Covariant）"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/&title=注意 Java 中数组和范型的协变性（Covariant）"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/&title=注意 Java 中数组和范型的协变性（Covariant）"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/&title=注意 Java 中数组和范型的协变性（Covariant）"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/&name=注意 Java 中数组和范型的协变性（Covariant）&description=&lt;h2 id=&#34;数组的协变性&#34;&gt;&lt;a href=&#34;#数组的协变性&#34; class=&#34;headerlink&#34; title=&#34;数组的协变性&#34;&gt;&lt;/a&gt;数组的协变性&lt;/h2&gt;&lt;p&gt;如果类 &lt;code&gt;Base&lt;/code&gt; 是类 &lt;code&gt;Derived&lt;/code&gt; 的父类，那么 &lt;code&gt;Base[]&lt;/code&gt; 就是 &lt;code&gt;Derived[]&lt;/code&gt; 的父类。&lt;/p&gt;
+&lt;p&gt;因此，我们的代码可以这么写：&lt;/p&gt;
+&lt;figure class=&#34;highlight java&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;Number[] array1 = &lt;span class=&#34;keyword&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;Number&lt;/span&gt;[&lt;span class=&#34;number&#34;&gt;2&lt;/span&gt;];&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;array1[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;] = Integer.valueOf(&lt;span class=&#34;number&#34;&gt;1&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;array1[&lt;span class=&#34;number&#34;&gt;1&lt;/span&gt;] = Integer.valueOf(&lt;span class=&#34;number&#34;&gt;2&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;System.out.println(array1[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;]);  &lt;span class=&#34;comment&#34;&gt;// ok&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Number[] array2 = &lt;span class=&#34;keyword&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;Integer&lt;/span&gt;[&lt;span class=&#34;number&#34;&gt;2&lt;/span&gt;];&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;array2[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;] = Integer.valueOf(&lt;span class=&#34;number&#34;&gt;1&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;array2[&lt;span class=&#34;number&#34;&gt;1&lt;/span&gt;] = Integer.valueOf(&lt;span class=&#34;number&#34;&gt;2&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;System.out.println(array2[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;]);  &lt;span class=&#34;comment&#34;&gt;// ok&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/&t=注意 Java 中数组和范型的协变性（Covariant）"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

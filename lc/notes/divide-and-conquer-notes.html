@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference:  分治法（Divide And Conquer）Translated Recursion Trees and the Master Method  The ParadigmNote: We sometimes call it CDQ algorithm. CDQ is a name of a Chinese scholar. Introduction to Algorit">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Divide And Conquer Notes">
+<meta property="og:url" content="https://junhaow.com/lc/notes/divide-and-conquer-notes.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference:  分治法（Divide And Conquer）Translated Recursion Trees and the Master Method  The ParadigmNote: We sometimes call it CDQ algorithm. CDQ is a name of a Chinese scholar. Introduction to Algorit">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xqscd.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/snkgk.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/q2sdc.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/a8m3l.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/my41e.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/hc0sy.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.091Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.090Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xqscd.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Divide And Conquer Notes</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/xlinsist/article/details/79198842">分治法（Divide And Conquer）Translated</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cs.cornell.edu/courses/cs3110/2012sp/lectures/lec20-master/lec20.html">Recursion Trees and the Master Method</a></li>
+</ul>
+<h2 id="The-Paradigm"><a href="#The-Paradigm" class="headerlink" title="The Paradigm"></a>The Paradigm</h2><p><strong>Note:</strong> We sometimes call it CDQ algorithm. CDQ is a name of a <a target="_blank" rel="noopener" href="https://cs.stanford.edu/~danqi/">Chinese scholar</a>.</p>
+<p><em>Introduction to Algorithms</em> describes Divide And Conquer as follows:</p>
+<ul>
+<li><strong>Divide</strong> the problem into a number of <code>independent</code> subproblems that are smaller instances of the same problem.</li>
+<li><strong>Conquer</strong> the subproblems by solving them recursively. If the subproblem sizes are small enough, however, just solve the subproblems in a straightforward manner.</li>
+<li><strong>Combine</strong> the solutions to the subproblems into the solution for the original problem.</li>
+</ul>
+<h2 id="Recurrence-Relation"><a href="#Recurrence-Relation" class="headerlink" title="Recurrence Relation"></a>Recurrence Relation</h2><p>We can use <code>recurrence relation</code> to depict time complexity of divide and conquer:</p>
+<p>Consider size of the original problem is $n$:</p>
+<ul>
+<li>The problem is divided into $a$ subproblems.</li>
+<li>Each subproblem size is $\frac{1}{b}$ of the original problem, so the size is $\frac{n}{b}$.</li>
+<li>Each subproblem takes $T(\frac{n}{b})$ time.</li>
+<li>Dividing takes $D(n)$.</li>
+<li>Merging or combining takes $C(n)$.</li>
+</ul>
+<p>So, we have the recurrence relation:</p>
+<p>$$T(n) &#x3D; aT(\frac{n}{b}) + D(n) + C(n)$$</p>
+<p>For example, as for mergesort:</p>
+<ul>
+<li>$a &#x3D; b &#x3D; 2$, $D(n) &#x3D; \Theta(1)$, $C(n) &#x3D; \Theta(n)$.</li>
+<li>$T(n) &#x3D; \Theta(n\log{n})$</li>
+</ul>
+<p>How do we know the total time complexity? The answer is to solve the recurrence.</p>
+<h2 id="Three-Methods"><a href="#Three-Methods" class="headerlink" title="Three Methods"></a>Three Methods</h2><p>There are three methods: substitution method, recursion tree, master method</p>
+<p>The substitution method is super powerful and it could be used to solve all recurrence relations, but it is kind of an overhead. As for some particular problems or formulas, we can use master method.</p>
+<h3 id="Substitution-Method"><a href="#Substitution-Method" class="headerlink" title="Substitution Method"></a>Substitution Method</h3><p><strong>Two steps:</strong></p>
+<ul>
+<li><code>Predict</code>: Guess the form of the solution.</li>
+<li><code>Prove</code>: Use <a target="_blank" rel="noopener" href="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/0xgiv.jpg">mathematical induction</a> to find the constants and show that the solution works.</li>
+</ul>
+<p>Substitution method example: <a target="_blank" rel="noopener" href="https://www.cs.cornell.edu/courses/cs3110/2014sp/recitations/24/using-the-substitution-and-master-method.html">link</a></p>
+<h3 id="Recursion-Tree"><a href="#Recursion-Tree" class="headerlink" title="Recursion Tree"></a>Recursion Tree</h3><p>A recursion tree is useful for visualizing what happens when a recurrence is iterated. It diagrams the tree of recursive calls and the amount of work done at each call.</p>
+<p><strong>Mergesort:</strong></p>
+<p>Based on the recurrence $T(n) &#x3D; 2T(\frac{n}{2}) + O(n)$, we have the recursion tree of mergesort as follows:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xqscd.png" alt="Mergesort Recursion Tree"></p>
+<p>According to the tree, we sum up $k$ of $\log{n}$ and have $O(n\log{n})$.</p>
+<p><strong>Squared Combination Time:</strong></p>
+<p>Consider the following recurrence: $T(n) &#x3D; 2T(\frac{n}{2}) + n^2$. The tree is as follows:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/snkgk.jpg" alt="From Cornell lecture note"></p>
+<p>In the second row, $(\frac{n}{2})^2 + (\frac{n}{2})^2 &#x3D; \frac{n^2}{2}$.</p>
+<p>$$<br>\begin{aligned}<br>T(n) &amp;&#x3D; O(n^2 \times (1 + \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \ldots + \frac{1}{2^{lg{n}}}))\<br>&amp;&#x3D; O(n^2 \times (1 + 1))\<br>&amp;&#x3D; O(n^2)\<br>\end{aligned}<br>$$</p>
+<p>The sum is $O(n^2)$. In this case, the depth of the tree does not really matter; the amount of work at each level is decreasing so quickly that the total is only a constant factor more than the root.</p>
+<p><strong>Note:</strong> Recursion trees can be useful for gaining intuition about a closed form, <strong>but they are not a proof</strong>. Sometimes it is easy to get the wrong answer.</p>
+<p>A good way of establishing a closed form is to make an educated guess and then prove by induction. Therefore, recurrence trees can be a good method of guessing.</p>
+<p>Consider another example: $T(n) &#x3D; T(\frac{n}{3}) + T(\frac{2}{3}n)$</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/q2sdc.jpg" alt="From Cornell lecture note"></p>
+<p>Note that the tree here is not balanced. The longest path is the rightmost one, and its length is $\log_{3&#x2F;2}{n}$, so our guess for the closed form of this recurrence is $O(n\log{n})$.</p>
+<p><strong>Fibonacci Series:</strong></p>
+<p>As for Fibonacci Series, the recurrence is $T(n) &#x3D; T(n - 1) + T(n - 2) + O(1)$.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/a8m3l.png" alt="Fibonacci Series Recurrence Tree"></p>
+<p>According to the tree, the longest path is the leftmost one, so the depth is $O(n)$. The runtime is as follows:</p>
+<p>$$<br>\begin{aligned}<br>T(n) &amp;&#x3D; O(1 + 2 + 4 + 8 + \ldots + 2^n)\<br>&amp;&#x3D; O(2 \times 2^n + 1)\<br>&amp;&#x3D; O(2^n)\<br>\end{aligned}<br>$$</p>
+<h3 id="The-Master-Method"><a href="#The-Master-Method" class="headerlink" title="The Master Method"></a>The Master Method</h3><p>老子一张图总结：</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/my41e.png" alt="老子一张图总结"></p>
+<p><strong>Note:</strong> 上面 log 的底标错了，$n&#x2F;b$ 才是子问题的大小，$b$ 只是一个比例。</p>
+<p>The master theorem concerns recurrence relations of the form:</p>
+<p>$$T(n) &#x3D; aT(\frac{n}{b}) + f(n),\ \ \text{where}\ a \geq 1, b &gt; 1$$</p>
+<p>We can just simply apply the theorem to solve recurrences. There are <code>three cases</code> and we need to figure out in which case the recurrence is to apply the following formula.</p>
+<p>Recall:</p>
+<ul>
+<li>$a$: #subproblems</li>
+<li>$n&#x2F;b$: Size of the subproblem</li>
+<li>$f(n)$: Division and combination time</li>
+</ul>
+<p><strong>Case 1:</strong> $c &lt; \log_b{a}$</p>
+<ul>
+<li>If:<ul>
+<li>$f(n) &#x3D; \Theta(n^c)$,  where $c &lt; \log_b{a}$ (using Big-O notation)</li>
+</ul>
+</li>
+<li>Then:<ul>
+<li>$T(n) &#x3D; \Theta(n^{\log_b{a}})$</li>
+</ul>
+</li>
+</ul>
+<p><strong>Case 2:</strong> $c &#x3D; \log_b{a}$</p>
+<ul>
+<li>If: (for some constant $k \geq 0$)<ul>
+<li>$f(n) &#x3D; \Theta(n^c \log^k{n})$, where $c &#x3D; \log_b{a}$</li>
+</ul>
+</li>
+<li>Then:<ul>
+<li>$T(n) &#x3D; \Theta(n^c \log^{k + 1}{n})$</li>
+</ul>
+</li>
+</ul>
+<p><strong>Case 3:</strong> $c &gt; \log_b{a}$</p>
+<ul>
+<li>If:<ul>
+<li>$f(n) &#x3D; \Theta(n^c)$, where $c &gt; \log_b{a}$</li>
+</ul>
+</li>
+<li>Then:<ul>
+<li>$T(n) &#x3D; \Theta(f(n))$</li>
+</ul>
+</li>
+</ul>
+<p>Therefore, we just need to figure the relation between $a$, $b$, and $c$, then we can compute the time complexity for a specific case.</p>
+<p><strong>Note:</strong> If the following cases occur, we cannot apply the master theorem.</p>
+<ul>
+<li>$T(n)$ is not <code>monotone</code>, e.g. $T(n) &#x3D; \sin(n)$</li>
+<li>$f(n)$ is not a <code>polynomial</code>, e.g. $T(n) &#x3D; 2T(\frac{n}{2}) + 2^n$</li>
+<li>$b$ cannot be expressed as a <code>constant</code>, e.g. $T(n) &#x3D; T(\sqrt{n})$</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/hc0sy.jpg"></p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

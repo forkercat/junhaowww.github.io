@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode 347 &#x2F; LeetCode 692Difficulty: Medium Top K Frequent Elements Given a non-empty array of integers, return the k most frequent elements.  Note:   You may assume k is always va">
+<meta property="og:type" content="website">
+<meta property="og:title" content="347. Top K Frequent Elements &#x2F; 692. Top K Frequent Words">
+<meta property="og:url" content="https://junhaow.com/lc/problems/heap/347_top-k-frequent-elements.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode 347 &#x2F; LeetCode 692Difficulty: Medium Top K Frequent Elements Given a non-empty array of integers, return the k most frequent elements.  Note:   You may assume k is always va">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.126Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.126Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>347. Top K Frequent Elements / 692. Top K Frequent Words</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/top-k-frequent-elements/">LeetCode 347</a> &#x2F; <a target="_blank" rel="noopener" href="https://leetcode.com/problems/top-k-frequent-words/">LeetCode 692</a><br>Difficulty: <span class="orange">Medium</span></p>
+<h2 id="Top-K-Frequent-Elements"><a href="#Top-K-Frequent-Elements" class="headerlink" title="Top K Frequent Elements"></a>Top K Frequent Elements</h2><blockquote>
+<p>Given a non-empty array of integers, return the <code>k</code> most frequent elements.</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>You may assume <code>k</code> is always valid, <code>1 ≤ k ≤ number of unique elements</code>.</li>
+<li>Your algorithm’s time complexity must be <code>better than</code> $O(N\log{N})$, where $N$ is the array’s size.</li>
+</ul>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input: nums = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>], k = <span class="number">2</span></span><br><span class="line">Output: [<span class="number">1</span>,<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">Input: nums = [<span class="number">1</span>], k = <span class="number">1</span></span><br><span class="line">Output: [<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Heap"><a href="#Heap" class="headerlink" title="Heap"></a>Heap</h3><ul>
+<li>Build a hash map <code>val</code> -&gt; <code>count</code>. $O(N)$</li>
+<li>Build a min heap of size $k$. $O(N\log{k})$</li>
+<li>Build an output list. $O(k\log{k})$</li>
+</ul>
+<p><strong>Note:</strong></p>
+<ul>
+<li>If we use max heap, the runtime would be $O(N\log{N})$, since we cannot keep the heap size as $k$. Therefore, for largest problems we use min heap.</li>
+<li>The resulting order is not required.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title function_">topKFrequent</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="comment">// assume nums is non-empty; k is always valid</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// count</span></span><br><span class="line">  Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">    map.put(val, map.getOrDefault(val, <span class="number">0</span>) + <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// priority queue</span></span><br><span class="line">  List&lt;Integer&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  PriorityQueue&lt;Integer&gt; minPQ = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;((v1, v2) -&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> map.get(v1) - map.get(v2);</span><br><span class="line">  &#125;);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : map.keySet()) &#123;</span><br><span class="line">    minPQ.offer(val);</span><br><span class="line">    <span class="keyword">if</span> (minPQ.size() &gt; k) &#123;</span><br><span class="line">      minPQ.poll();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// output</span></span><br><span class="line">  <span class="keyword">while</span> (minPQ.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    result.add(minPQ.poll());</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N\log{k})$<br><strong>Space:</strong> $O(N)$</p>
+<h2 id="Top-K-Frequent-Words"><a href="#Top-K-Frequent-Words" class="headerlink" title="Top K Frequent Words"></a>Top K Frequent Words</h2><blockquote>
+<p>Given a non-empty list of words, return the k most frequent elements.</p>
+</blockquote>
+<blockquote>
+<p>Your answer should be sorted by frequency from highest to lowest. If two words have the same frequency, then the word with the lower alphabetical order comes first.</p>
+</blockquote>
+<p><strong>Example:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: [<span class="string">&quot;i&quot;</span>, <span class="string">&quot;love&quot;</span>, <span class="string">&quot;leetcode&quot;</span>, <span class="string">&quot;i&quot;</span>, <span class="string">&quot;love&quot;</span>, <span class="string">&quot;coding&quot;</span>], k = <span class="number">2</span></span><br><span class="line">Output: [<span class="string">&quot;i&quot;</span>, <span class="string">&quot;love&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="Sorting"><a href="#Sorting" class="headerlink" title="Sorting"></a>Sorting</h3><p>For comparator, from left to right: <code>w1, w2</code> and <code>count(w2), count(w1)</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;String&gt; <span class="title function_">topKFrequent</span><span class="params">(String[] words, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="comment">// assume words is non-empty and k is valid</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// count</span></span><br><span class="line">  Map&lt;String, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (String s : words) &#123;</span><br><span class="line">    map.put(s, map.getOrDefault(s, <span class="number">0</span>) + <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// sorting (descending)</span></span><br><span class="line">  List&lt;String&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(map.keySet());</span><br><span class="line">  Collections.sort(result, (w1, w2) -&gt; &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> map.get(w2) - map.get(w1);</span><br><span class="line">    <span class="keyword">if</span> (cmp == <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> w1.compareTo(w2);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> cmp;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> result.subList(<span class="number">0</span>, k);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N\log{N})$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="Heap-1"><a href="#Heap-1" class="headerlink" title="Heap"></a>Heap</h3><p><strong>Note:</strong> Be careful of the code in the comparator.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;String&gt; <span class="title function_">topKFrequent</span><span class="params">(String[] words, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="comment">// assume words is non-empty and k is valid</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// count</span></span><br><span class="line">  Map&lt;String, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (String s : words) &#123;</span><br><span class="line">    map.put(s, map.getOrDefault(s, <span class="number">0</span>) + <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// priority queue</span></span><br><span class="line">  PriorityQueue&lt;String&gt; minPQ = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;((s1, s2) -&gt; &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> map.get(s1) - map.get(s2);</span><br><span class="line">    <span class="keyword">if</span> (cmp == <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> s2.compareTo(s1); <span class="comment">// &quot;z&quot; goes first (alphabet)</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> cmp;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  </span><br><span class="line">  LinkedList&lt;String&gt; result = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (String s : map.keySet()) &#123;</span><br><span class="line">    minPQ.offer(s);</span><br><span class="line">    <span class="keyword">if</span> (minPQ.size() &gt; k) &#123;</span><br><span class="line">      minPQ.poll();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// output (ordering matters)</span></span><br><span class="line">  <span class="keyword">while</span> (minPQ.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    result.addFirst(minPQ.poll());</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Time:</strong> $O(N\log{k})$<br><strong>Space:</strong> $O(N)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

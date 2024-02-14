@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode EPI 14.3Difficulty: Medium Problem Given a binary search tree, write a function kthSmallest to find the kth smallest element in it.  Note: You may assume $k$ is always valid, 1 ≤">
+<meta property="og:type" content="website">
+<meta property="og:title" content="230. Kth Smallest Element in a BST">
+<meta property="og:url" content="https://junhaow.com/lc/problems/tree/bst/230_kth-smallest-element-in-a-bst.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode EPI 14.3Difficulty: Medium Problem Given a binary search tree, write a function kthSmallest to find the kth smallest element in it.  Note: You may assume $k$ is always valid, 1 ≤">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.143Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.143Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>230. Kth Smallest Element in a BST</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/kth-smallest-element-in-a-bst/">LeetCode</a> <span class="gray">EPI 14.3</span><br>Difficulty: <span class="orange">Medium</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a binary search tree, write a function <code>kthSmallest</code> to find the <code>kth</code> smallest element in it.</p>
+</blockquote>
+<p><strong>Note:</strong> You may assume $k$ is always valid, 1 ≤ k ≤ BST’s total elements.</p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Input: root = [<span class="number">3</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="literal">null</span>,<span class="number">2</span>], k = <span class="number">1</span></span><br><span class="line">   <span class="number">3</span></span><br><span class="line">  / \</span><br><span class="line"> <span class="number">1</span>   <span class="number">4</span></span><br><span class="line">  \</span><br><span class="line">   <span class="number">2</span></span><br><span class="line">Output: <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> What if the BST is modified (insert&#x2F;delete operations) often and you need to find the kth smallest frequently? How would you optimize the <code>kthSmallest</code> routine?</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/kth-smallest-element-in-a-bst/discuss/63679/Any-thoughts-on-follow-up">Evercode</a>: I think we can keep both the kth smallest element and (k-1)th smallest element. If we insert or delete an element larger than the kth smallest element, the result remains unaffected. If something smaller than is inserted, compare it with the (k-1)th smallest element. The larger one becomes the new kth smallest element and adjust (k-1)th element accordingly.</p>
+</blockquote>
+<blockquote>
+<p>Or maybe you can add another attribute like <code>size</code> to the tree nodes telling how many nodes is there in the subtree it’s rooted at?</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">size</span><span class="params">(TreeNode x)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">return</span> x.size;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Assume the TreeNode has a size field</span></span><br><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">kthSmallest</span><span class="params">(TreeNode root, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="type">int</span> <span class="variable">t</span> <span class="operator">=</span> size(root.left);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (t &lt; k) &#123; <span class="comment">// go right</span></span><br><span class="line">    <span class="keyword">return</span> kthSmallest(root.right, k - t - <span class="number">1</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (t + <span class="number">1</span> == k) &#123;</span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">// t &gt; k</span></span><br><span class="line">    <span class="keyword">return</span> kthSmallest(root.left, k);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p><strong>Methods:</strong></p>
+<ol>
+<li>Recursion<ul>
+<li>Use a field variable to keep track of the <code>count</code> and <code>result</code>.</li>
+<li>Use an array to keep track of the result.</li>
+<li><strong>Time:</strong> $O(H + k)$</li>
+<li><strong>Space:</strong> $O(H + k)$</li>
+</ul>
+</li>
+<li>Iteration<ul>
+<li>With the help of stack, we can convert the recursion version into iteration.</li>
+<li>We can use the <code>stack</code> to store everything we need.</li>
+<li><strong>Time:</strong> $O(H + k)$</li>
+<li><strong>Space:</strong> $O(H + k)$</li>
+</ul>
+</li>
+</ol>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><h3 id="Recursion"><a href="#Recursion" class="headerlink" title="Recursion"></a>Recursion</h3><p><strong>Note:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">int</span> count;</span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> result;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">kthSmallest</span><span class="params">(TreeNode root, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  count = <span class="number">0</span>;</span><br><span class="line">  inorder(root, k);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">inorder</span><span class="params">(TreeNode x, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (count == k) <span class="keyword">return</span>;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  inorder(x.left, k);</span><br><span class="line">  <span class="keyword">if</span> (count &lt; k) &#123;</span><br><span class="line">    result = x.val;</span><br><span class="line">    ++count;</span><br><span class="line">    inorder(x.right, k);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>An alternative way is to use a list to store the element, just like the solution in EPI.</p>
+<h3 id="Iteration"><a href="#Iteration" class="headerlink" title="Iteration"></a>Iteration</h3><p><strong>Note:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">kthSmallest</span><span class="params">(TreeNode root, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> -<span class="number">99999</span>;</span><br><span class="line">  Stack&lt;TreeNode&gt; stack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">p</span> <span class="operator">=</span> root;    </span><br><span class="line">  <span class="keyword">while</span> (p != <span class="literal">null</span> || stack.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">null</span>) &#123;</span><br><span class="line">      stack.push(p);</span><br><span class="line">      p = p.left;</span><br><span class="line">    &#125;</span><br><span class="line">    p = stack.pop();</span><br><span class="line">    <span class="keyword">if</span> (count == k) <span class="keyword">break</span>;</span><br><span class="line">    result = p.val;</span><br><span class="line">    ++count;</span><br><span class="line">    </span><br><span class="line">    p = p.right; <span class="comment">// may be null</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Improvement:</strong></p>
+<ul>
+<li>Use stack to keep track of the result.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">kthSmallest</span><span class="params">(TreeNode root, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  Stack&lt;TreeNode&gt; stack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">p</span> <span class="operator">=</span> root;    </span><br><span class="line">  <span class="keyword">while</span> (p != <span class="literal">null</span> || stack.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">null</span>) &#123;</span><br><span class="line">      stack.push(p);</span><br><span class="line">      p = p.left;</span><br><span class="line">    &#125;</span><br><span class="line">    p = stack.pop();  <span class="comment">// visit</span></span><br><span class="line">    --k;</span><br><span class="line">    <span class="keyword">if</span> (k == <span class="number">0</span>) <span class="keyword">return</span> p.val;</span><br><span class="line">    p = p.right; <span class="comment">// may be null</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

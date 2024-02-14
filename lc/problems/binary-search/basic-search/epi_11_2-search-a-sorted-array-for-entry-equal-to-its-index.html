@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: EPI 11.2 Problem Design an efficient algorithm that takes a sorted array of distinct integers, and returns an index $i$ such that the element at index $i$ equals $i$.  Example:  1234&#x2F;&#x2F; 0">
+<meta property="og:type" content="website">
+<meta property="og:title" content="EPI 11.2 | Search a Sorted Array for Entry Equal to Its Index">
+<meta property="og:url" content="https://junhaow.com/lc/problems/binary-search/basic-search/epi_11_2-search-a-sorted-array-for-entry-equal-to-its-index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: EPI 11.2 Problem Design an efficient algorithm that takes a sorted array of distinct integers, and returns an index $i$ such that the element at index $i$ equals $i$.  Example:  1234&#x2F;&#x2F; 0">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.115Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.115Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>EPI 11.2 | Search a Sorted Array for Entry Equal to Its Index</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <span class="gray">EPI 11.2</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Design an efficient algorithm that takes a sorted array of <code>distinct</code> integers, and returns an index $i$ such that the element at index $i$ equals $i$.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 0  1  2  3  4  5  6</span></span><br><span class="line">[ -<span class="number">2</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">9</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">// It should return 2 or 3.</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> Can you reduce this problem to ordinary binary search?</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">binarySearch</span><span class="params">(<span class="type">int</span>[] A)</span> &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; A.length; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (i == A.get(i)) &#123;</span><br><span class="line">      <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Binary-Search"><a href="#Binary-Search" class="headerlink" title="Binary Search"></a>Binary Search</h3><p>The brute-force approach does not take advantage of the fact that the array <code>A</code> is sorted and consists of distinct elements.</p>
+<p>We should note that the difference between an entry and its index increases by at least $1$ as we iterate through <code>A</code>:</p>
+<ul>
+<li>If <code>A[j] &gt; j</code>, then no entry after <code>j</code> can satisfy the given condition.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  0  1  2  [3]  4  5  6</span></span><br><span class="line"><span class="comment">// -2  0  1  [4]  5  6  7</span></span><br><span class="line"><span class="comment">//                ------- right side does not satisfy</span></span><br></pre></td></tr></table></figure></li>
+<li>If <code>A[j] &lt; j</code>, then no entry before <code>j</code> can satisfy the given condition.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  0  1  2  [3]  4  5  6</span></span><br><span class="line"><span class="comment">// -2  0  1  [2]  4  6  7</span></span><br><span class="line"><span class="comment">// -------- left side does not satisfy</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>This observation can help us create a binary search type algorithm for finding <code>i</code> such that <code>A[i] = i</code>.</p>
+<p><strong>Note:</strong></p>
+<ul>
+<li>There might exist multiple answers. The follow version returns the first correct it encounters.</li>
+</ul>
+<p><strong>Standard Version:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">binarySearch</span><span class="params">(<span class="type">int</span>[] A)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">lo</span> <span class="operator">=</span> <span class="number">0</span>, hi = A.size() - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (lo &lt;= hi) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> lo + (hi - lo) / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (A[mid] == mid) <span class="keyword">return</span> mid; <span class="comment">// found</span></span><br><span class="line">    <span class="keyword">if</span> (A[mid] &gt; mid) &#123;</span><br><span class="line">      hi = mid - <span class="number">1</span>; <span class="comment">// go left</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      lo = mid + <span class="number">1</span>; <span class="comment">// go right</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(\log{N})$<br><strong>Space:</strong> $O(1)$</p>
+<p><strong>Lower Bound Version:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">binarySearch</span><span class="params">(<span class="type">int</span>[] A)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">lo</span> <span class="operator">=</span> <span class="number">0</span>, hi = A.size() - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (lo &lt;= hi) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> lo + (hi - lo) / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (A[mid] &gt;= mid) &#123;</span><br><span class="line">      hi = mid - <span class="number">1</span>; <span class="comment">// go left</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      lo = mid + <span class="number">1</span>; <span class="comment">// go right</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (lo &lt; A.length &amp;&amp; A[lo] == lo) &#123;</span><br><span class="line">    <span class="keyword">return</span> lo;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>This code works because when we have <code>A[mid] &gt;= mid</code>, there are two cases:</p>
+<ul>
+<li><code>A[mid] == mid</code>: It does not return immediately. Instead, it goes to left side to see if there exists a smaller index that satisfies the condition. <strong>But, we are sure that the answer won’t exist in the right side.</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  0  1  2  [3]  4  5  6</span></span><br><span class="line"><span class="comment">// -2  0  1  [3]  5  6  7</span></span><br><span class="line"><span class="comment">//                ------- right side does not satisfy</span></span><br></pre></td></tr></table></figure></li>
+<li><code>A[mid] &gt; mid</code>: <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  0  1  2  [3]  4  5  6</span></span><br><span class="line"><span class="comment">// -2  0  1  [4]  5  6  7</span></span><br><span class="line"><span class="comment">//                ------- right side does not satisfy</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>Note the fact that all left-side items are <code>less than or equal to</code> their corresponding indices, so we have:</p>
+<ul>
+<li><code>A[mid] &lt; mid</code> will hold true for the less-than case. (go right)</li>
+<li><code>A[mid] &gt;= mid</code> will hold true for the equal-to case. (go left)</li>
+</ul>
+<p>Let’s assume there does not exist an answer on the left side and we always call <code>A[mid] &lt; mid</code>. Interestingly, when the searching is over, <code>lo</code> will point to the first <code>mid</code> (in the example above the index is <code>3</code>) we had at the beginning. Since this value might not satisfy <code>A[mid] == mid</code>, we have to check before returning the index.</p>
+<h3 id="Follow-Up"><a href="#Follow-Up" class="headerlink" title="Follow Up"></a>Follow Up</h3><p>Solve the same problem when <code>A</code> is sorted but may contain duplicates. <span class="purple">Marked</span></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  0  1  2  [3]  4  5  6</span></span><br><span class="line"><span class="comment">//  1  2  2  [2]  4  4  5</span></span><br></pre></td></tr></table></figure>
+
+<p>In the example above, there are duplicate entries in the array. However, the answer might lie on both sides. We have no idea of which side we will go into at each loop.</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="系统级 I&#x2F;O什么是输入&#x2F;输出？（估计很多人都说不清楚!） 输入&#x2F;输出（I&#x2F;O）是在主存和外部设备（磁盘驱动器、终端、网络等）之间复制数据的过程。其中：  输入操作是从 I&#x2F;O 设备复制数据到主存 输出操作是从主存复制数据到 I&#x2F;O 设备  Unix I&#x2F;O一个 Linux 文件就是一个 m 个字节的序列： $$B_0, B_1, \">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CSAPP &#x2F; CSE 351 学习笔记（系统级 I&#x2F;O &amp; 网络编程）">
+<meta property="og:url" content="https://junhaow.com/studynotes/csapp/08_CSAPP%20:%20CSE351%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E7%B3%BB%E7%BB%9F%E7%BA%A7%20IO%20&%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%89.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="系统级 I&#x2F;O什么是输入&#x2F;输出？（估计很多人都说不清楚!） 输入&#x2F;输出（I&#x2F;O）是在主存和外部设备（磁盘驱动器、终端、网络等）之间复制数据的过程。其中：  输入操作是从 I&#x2F;O 设备复制数据到主存 输出操作是从主存复制数据到 I&#x2F;O 设备  Unix I&#x2F;O一个 Linux 文件就是一个 m 个字节的序列： $$B_0, B_1, \">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/c7wvw.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/djc6p.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/cbjiw.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7bkiu.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tor05.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/45vx3.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/esdhe.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.201Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.201Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/c7wvw.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CSAPP / CSE 351 学习笔记（系统级 I/O &amp; 网络编程）</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<h2 id="系统级-I-O"><a href="#系统级-I-O" class="headerlink" title="系统级 I&#x2F;O"></a>系统级 I&#x2F;O</h2><p>什么是输入&#x2F;输出？（估计很多人都说不清楚!）</p>
+<p><code>输入/输出</code>（I&#x2F;O）是在<code>主存</code>和<code>外部设备</code>（磁盘驱动器、终端、网络等）之间复制数据的过程。其中：</p>
+<ul>
+<li><code>输入操作</code>是从 I&#x2F;O 设备复制数据到主存</li>
+<li><code>输出操作</code>是从主存复制数据到 I&#x2F;O 设备</li>
+</ul>
+<h3 id="Unix-I-O"><a href="#Unix-I-O" class="headerlink" title="Unix I&#x2F;O"></a>Unix I&#x2F;O</h3><p>一个 Linux 文件就是一个 m 个字节的序列：</p>
+<p>$$<br>B_0, B_1, \cdots, B_k, \cdots, B_{m-1}<br>$$</p>
+<p>所有的 I&#x2F;O 设备都被模型化文件，而所有的输入和输出都被当作对相应文件的读和写来执行。这种将设备优雅地映射为文件的方式，允许 Linux 内核引出一个简单、低级的<code>应用接口</code>，称为<code>Unix I/O</code>，这使得所有的输入和输出都能以一种统一且一致的方式来执行：</p>
+<ul>
+<li>打开文件。一个应用程序通过要求内核打开相应的文件，来宣告它想要访问一个 I&#x2F;O 设备。内核返回一个小的非负整数，叫做<code>描述符</code>，它在后续对此文件的所有操作中标识这个文件。</li>
+<li>Linux shell 创建的每个进程开始时都有三个打开的文件：<code>标准输入</code>（描述符为 0）、<code>标准输出</code>（描述符为 1）、<code>标准错误</code>（描述符为 2）。</li>
+<li>改变当前的文件位置、读写文件、关闭文件等。</li>
+</ul>
+<h3 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h3><p>每个 Linux 文件都有一个类型（type）来表明它在系统中的角色：</p>
+<ul>
+<li><code>普通文件</code>（regular file）：包含任意数据。应用程序常常要区分<code>文本文件</code>（text file）和<code>二进制文件</code>（binary file），文本文件是只含有 ASCII 或 Unicode 字符的普通文件；二进制文件是所有其他文件。对内核而言，文本文件和二进制文件没有区别。Linux 文本文件还包含了一个文本行（text line）序列，其中每一行都是一个字符序列。</li>
+<li><code>目录</code>（directory）：包含一组<code>链接</code>（link）的文件，其中每个链接都将一个<code>文件名</code>映射到一个文件（注意这个文件可能又是另一个目录）。每个目录至少有两个文件（<code>.</code>、<code>..</code>）。</li>
+<li><code>套接字</code>（socket）：用来与另一个进程进行跨网络通信的文件。</li>
+<li>其他类型：<code>命名通道</code>（named pipe）、<code>符号链接</code>（symbolic link）、<code>字符和块设备</code>（character and block device）。</li>
+</ul>
+<h3 id="共享文件"><a href="#共享文件" class="headerlink" title="共享文件"></a>共享文件</h3><p>可以用许多不同的方式共享 Linux 文件。除非你很清楚内核是如何表示打开文件，否则文件共享的概念相当难懂。内核用三个相关的数据结构来表示打开的文件：</p>
+<ul>
+<li><code>描述符表</code>（descriptor table）：每个进程都有它独立的描述符表，它的表项是由进程打开的文件描述符来索引的。每个打开的<code>描述符表项</code>指向<code>文件表</code>中的一个<code>表项</code>。</li>
+<li><code>文件表</code>（file table）：打开文件的集合是由一张文件表来表示的，所有的进程共享这张表。每个文件表的表项组成包括当前的文件位置、引用计数（reference count），以及一个指向 v-node 表中对应表项的指针。关闭一个描述符会减少相应的文件表项中的引用次数。当引用次数为零时，内核会删除这个文件表表项。</li>
+<li><code>v-node 表</code>（v-node table）：同文件表一样，所有的进程共享这张 v-node 表。每个表项包含了 stat 结构中的大多数信息，包括<code>st_mode</code>和<code>st_size</code>成员。</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/c7wvw.jpg" alt="典型的打开文件的内核数据结构（CSAPP 10-12）"></p>
+<p>在这个示例中，两个描述符引用不同的文件，没有共享。</p>
+<p>多个描述符也可以通过不同的文件表表项目来引用同一个文件。例如，如果以同一个 filename 调用 open 函数两次。<code>关键思想</code>是每个描述符都有它自己的文件位置，所以对不同描述符的读操作可以从文件的不同位置获取数据。（是指同一个文件的不同位置？）</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/djc6p.jpg" alt="文件共享（CSAPP 10-13）"></p>
+<p>这个例子展示了两个描述符通过两个打开文件表表项共享同一个磁盘文件。</p>
+<p>我们也可以理解父子进程是如何共享文件的。假设在调用 fork 之前，父进程有如图 10-12 所示的打开文件。然后，图 10-14 展示了调用 fork 后的情况。子进程有一个父进程描述符表的<code>副本</code>。父子进程共享相同的打开文件表集合，因此共享相同的文件位置。一个很重要的结果是，在内核删除相应文件表表项之前，父子进程必须都关闭了它们的描述符。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/cbjiw.jpg" alt="子进程如何继承父进程的打开文件（CSAPP 10-14）"> </p>
+<h3 id="标准-I-O"><a href="#标准-I-O" class="headerlink" title="标准 I&#x2F;O"></a>标准 I&#x2F;O</h3><p>C 语言定义了一组高级输入输出函数，称为<code>标准 I/O 库</code>，为程序员提供了<code>Unix I/O</code>的较高级别的替代。标准 I&#x2F;O 库将一个打开的文件模型化为一个<code>流</code>。对于程序员而言，一个流就是一个指向<code>FILE</code>类型的结构的<code>指针</code>。每个 ANSI C 程序开始时都有三个打开的流 stdin、stdout 和 stderr。</p>
+<h2 id="网络编程"><a href="#网络编程" class="headerlink" title="网络编程"></a>网络编程</h2><h3 id="客户端-服务器编程模型"><a href="#客户端-服务器编程模型" class="headerlink" title="客户端-服务器编程模型"></a>客户端-服务器编程模型</h3><p>每个网络应用都是基于<code>客户端-服务器</code>模型的。采用这个模型，一个应用是由一个<code>服务器进程</code>和一个或者多个<code>客户端进程</code>组成。服务器管理某种<code>资源</code>，并且通过操作这种资源为它的客户端提供某种服务。</p>
+<p>客户端-服务器模型中的基本操作是<code>事务</code>（transaction）。该事务没有数据库事务的任何特性。一个客户端-服务器事务由以下四步组成：</p>
+<ol>
+<li>当一个客户端需要服务时，它向服务器发送一个<code>请求</code>，发起一个<code>事务</code>。</li>
+<li>服务器收到<code>请求</code>后，解析它，并以适当的方式操作它的<code>资源</code>。</li>
+<li>服务器给客户端发送一个<code>响应</code>，并等待下一个<code>请求</code>。</li>
+<li>客户端收到<code>响应</code>并处理它。</li>
+</ol>
+<p><strong>注意：</strong>认识到客户端和服务器是<code>进程</code>，而不是常提到的机器或者主机，这是很重要的。</p>
+<h3 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7bkiu.jpg" alt="在互联网络上，数据是如何从一台主机传送到另一台主机的（CSAPP 11-7）"></p>
+<p>如果不同的网络有不同的帧大小的最大值，该怎么办？路由器如何知道该往哪里转发帧呢？当网络拓扑变化时，如何通知路由器呢？如果一个包丢失了又会如何呢？虽然如此，这个示例抓住了互联网络思想的精髓，<code>封装是关键</code>。</p>
+<h3 id="全球-IP-因特网"><a href="#全球-IP-因特网" class="headerlink" title="全球 IP 因特网"></a>全球 IP 因特网</h3><p>全球 IP 因特网是最著名和最成功的互联网络实现。</p>
+<p>因特网是政府、学校和工业界合作的最成功的示例之一。</p>
+<p>因特网的发展历史（挺有趣的）：p652，起源于美国政府实行的高级研究计划署<code>ARPA</code>中的<code> ARPANET</code>项目。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tor05.jpg" alt="一个因特网应用程序的硬件和软件组织"></p>
+<p>因特网的客户端和服务器混合使用<code>套接字接口</code>函数和<code>Unix I/O</code>函数来进行通信。通常将<code>套接字接口</code>函数实现为<code>系统调用</code>，这些系统调用会陷入内核，并调用各种内核模式的 TCP&#x2F;IP 函数。</p>
+<h4 id="IP-地址"><a href="#IP-地址" class="headerlink" title="IP 地址"></a>IP 地址</h4><p>一个 IP 地址是一个 32 位无符号整数。网络程序将 IP 地址存放在 IP 地址结构中。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* IP address structure */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span> &#123;</span></span><br><span class="line">  <span class="type">uint32_t</span> s_addr; <span class="comment">/* Address in network byte order (big-endian) */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>把一个标量地址存放在结构中，是套接字接口早期实现的不幸产物。为 IP 地址定义一个标量类型应该更有意义，但是现在更改已经太迟了。TCP&#x2F;IP 为任意整数数据项定义了统一的<code>网络字节顺序</code>（network byte order）（大端字节顺序），即使主机字节顺序（host byte order）是小端法。</p>
+<h3 id="套接字接口"><a href="#套接字接口" class="headerlink" title="套接字接口"></a>套接字接口</h3><p>一个套接字是链接的一个断点。每个套接字都有相应的<code>套接字地址</code>，是由一个因特网地址和一个 16 位的整数<code>端口</code>组成的，用<code>地址: 端口</code>来表示。</p>
+<p>当客户端发起一个连接请求时，客户端套接字地址中的端口是由内核自动分配的，称为<code>临时端口</code>（ephemeral port）。然而，服务器套接字地址中的端口号通常是某个<code>知名端口</code>，是和这个服务对应的，记录在<code>/etc/services</code>。</p>
+<p>一个连接是由它两端的套接字地址唯一确定的。这对套接字地址叫做<code>套接字对</code>（socket pair），由元组表示：<code>(cliaddr:cliport, servaddr:servport)</code>。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/45vx3.jpg" alt="因特网连接分析（CSAPP 11-11）"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/esdhe.jpg" alt="基于套接字接口的网络应用概述（CSAPP 11-12）"></p>
+<p><strong>起源</strong></p>
+<p>套接字接口是加州大学伯克利分校的研究人员在 20 世纪 80 年代早期提出的，所以也叫做<code>伯克利套接字</code>。</p>
+<p>从 Linux 内核的角度来看，一个套接字就是通信的一个端点。从 Linux 程序的角度来看，套接字就是一个有相应描述符的打开文件。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* IP socket address structure */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> &#123;</span></span><br><span class="line">  <span class="type">uint16_t</span>        sin_family;   <span class="comment">/* Protocol family (always AF_INET) */</span></span><br><span class="line">  <span class="type">uint16_t</span>        sin_port;     <span class="comment">/* Port number */</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span>  <span class="title">sin_addr</span>;</span>     <span class="comment">/* IP address */</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span>   sin_zero[<span class="number">8</span>];  <span class="comment">/* Pad to sizeof(struct sockaddr) */</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Generic socket address structure (for connect, bind, and accept) */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr</span> &#123;</span></span><br><span class="line">  <span class="type">unit16_t</span>        sa_family;    <span class="comment">/* Protocol family */</span></span><br><span class="line">  <span class="type">char</span>            sa_data[<span class="number">14</span>];  <span class="comment">/* Address data */</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* For casting */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr</span> <span class="title">SA</span>;</span></span><br></pre></td></tr></table></figure>
+
+<p>定义套接字函数要求一个指向通用 sockaddr 结构的指针，然后要求应用程序将与协议特定的结构的指针强制转换成这个通用结构。</p>
+<p>参考：p654 有各种函数</p>
+<p>参考：p665 万维网的起源（Tim Berners-Lee 在欧洲粒子物理研究所发明的；随后在 1993 年 Marc Andreesen【后来创建了 Netscape】和同事在 NCSA 发布了一种图形化的浏览器，叫做 MOSAIC，使 Web 网站彻底火了）</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

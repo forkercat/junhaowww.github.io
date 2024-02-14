@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: Problem I &amp; Problem IIDifficulty: Medium My Post:  Problem I: Easy-understand Java Solutions with Explanations (DP Top-down, Bottom-up, Linear Space) Problem II: Easy-understand Java">
+<meta property="og:type" content="website">
+<meta property="og:title" content="62. Unique Paths I &amp; II">
+<meta property="og:url" content="https://junhaow.com/lc/problems/dp/62_unique-paths.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: Problem I &amp; Problem IIDifficulty: Medium My Post:  Problem I: Easy-understand Java Solutions with Explanations (DP Top-down, Bottom-up, Linear Space) Problem II: Easy-understand Java">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bu9wv.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ljcsc.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8pax9.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fbu40.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bckom.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2usv6.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rbu2e.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.122Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.122Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bu9wv.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>62. Unique Paths I &amp; II</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/unique-paths/">Problem I</a> &amp; <a target="_blank" rel="noopener" href="https://leetcode.com/problems/unique-paths-ii/">Problem II</a><br>Difficulty: <span class="orange">Medium</span></p>
+<p>My Post:</p>
+<ul>
+<li>Problem I: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/unique-paths/discuss/405983">Easy-understand Java Solutions with Explanations (DP Top-down, Bottom-up, Linear Space)</a></li>
+<li>Problem II: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/unique-paths-ii/discuss/405988">Easy-understand Java Solutions with Explanations (DP Bottom-up, Linear Space)</a></li>
+</ul>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>A robot is located at the top-left corner of a <code>m x n</code> grid (marked ‘Start’ in the diagram below).</p>
+</blockquote>
+<blockquote>
+<p>The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked ‘Finish’ in the diagram below).</p>
+</blockquote>
+<blockquote>
+<p>How many possible unique paths are there?</p>
+</blockquote>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bu9wv.jpg"></p>
+<p><strong>Note:</strong> <code>m</code> and <code>n</code> will be at most 100.</p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Input: m = <span class="number">1</span>, n = <span class="number">1</span></span><br><span class="line">Output: <span class="number">1</span></span><br><span class="line"></span><br><span class="line">Input: m = <span class="number">3</span>, n = <span class="number">2</span></span><br><span class="line">Output: <span class="number">3</span></span><br><span class="line"></span><br><span class="line">Input: m = <span class="number">7</span>, n = <span class="number">3</span></span><br><span class="line">Output: <span class="number">28</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Recursion"><a href="#Recursion" class="headerlink" title="Recursion"></a>Recursion</h3><p>Check out the comments.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ljcsc.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Define: opt(i, j) the number of ways to the point (i, j)</span></span><br><span class="line"><span class="comment">// (0, 0) is the starting point, (m - 1, n - 1) is the finish point</span></span><br><span class="line"><span class="comment">// Recurrence: opt(i, j) = opt(i - 1, j) + opt(i, j - 1)</span></span><br><span class="line"><span class="comment">// Init: opt(0, 0) = 1, opt(0, j) = opt(i, 0) = 1</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">uniquePaths</span><span class="params">(<span class="type">int</span> m, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (m == <span class="number">0</span> || n == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;m or n can&#x27;t be 0&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> numPaths(m - <span class="number">1</span>, n - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">numPaths</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> j)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (i == <span class="number">0</span> || j == <span class="number">0</span>) &#123; <span class="comment">// includes the row 0 and col 0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> numPaths(i - <span class="number">1</span>, j) + numPaths(i, j - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(2^{M + N})$<br><strong>Space:</strong> $O(M + N)$</p>
+<p>Recurrence Tree for complexity analysis:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8pax9.jpg"></p>
+<h3 id="DP-Top-down-with-Memoization"><a href="#DP-Top-down-with-Memoization" class="headerlink" title="DP (Top-down with Memoization)"></a>DP (Top-down with Memoization)</h3><p>Use an 2D array <code>mem</code> to do memoization.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">uniquePaths</span><span class="params">(<span class="type">int</span> m, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (m == <span class="number">0</span> || n == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;m or n can&#x27;t be 0&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span>[][] mem = <span class="keyword">new</span> <span class="title class_">int</span>[m][n];</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; m; ++i) &#123; <span class="comment">// init</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; n; ++j) &#123;</span><br><span class="line">      mem[i][j] = -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> numPaths(m - <span class="number">1</span>, n - <span class="number">1</span>, mem);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">numPaths</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> j, <span class="type">int</span>[][] mem)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (i == <span class="number">0</span> || j == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (mem[i - <span class="number">1</span>][j] == -<span class="number">1</span>) mem[i - <span class="number">1</span>][j] = numPaths(i - <span class="number">1</span>, j, mem);</span><br><span class="line">  <span class="keyword">if</span> (mem[i][j - <span class="number">1</span>] == -<span class="number">1</span>) mem[i][j - <span class="number">1</span>] = numPaths(i, j - <span class="number">1</span>, mem);</span><br><span class="line">  <span class="keyword">return</span> mem[i - <span class="number">1</span>][j] + mem[i][j - <span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(MN)$ where $MN$ is the number of subproblems.<br><strong>Space:</strong> $O(MN)$</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fbu40.jpg"></p>
+<h3 id="DP-Bottom-up"><a href="#DP-Bottom-up" class="headerlink" title="DP (Bottom-up)"></a>DP (Bottom-up)</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bckom.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">uniquePaths</span><span class="params">(<span class="type">int</span> m, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (m == <span class="number">0</span> || n == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;m or n can&#x27;t be 0&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span>[][] dp = <span class="keyword">new</span> <span class="title class_">int</span>[m][n];</span><br><span class="line">  <span class="comment">// init</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; m; ++i) dp[i][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) dp[<span class="number">0</span>][i] = <span class="number">1</span>;</span><br><span class="line">  <span class="comment">// dp</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; m; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &lt; n; ++j) &#123;</span><br><span class="line">      dp[i][j] = dp[i - <span class="number">1</span>][j] + dp[i][j - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dp[m - <span class="number">1</span>][n - <span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(MN)$<br><strong>Space:</strong> $O(MN)$</p>
+<h3 id="DP-Bottom-up-Linear-Space"><a href="#DP-Bottom-up-Linear-Space" class="headerlink" title="DP (Bottom-up, Linear Space)"></a>DP (Bottom-up, Linear Space)</h3><p>Reduce the $O(MN)$ space complexity to $O(N)$ (a row) or $O(M)$ (a column). In terms of a row, we would update <code>dp[j]</code> by its old value plus <code>dp[j - 1]</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2usv6.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">uniquePaths</span><span class="params">(<span class="type">int</span> m, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (m == <span class="number">0</span> || n == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;m or n can&#x27;t be 0&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span>[] dp = <span class="keyword">new</span> <span class="title class_">int</span>[n]; <span class="comment">// row</span></span><br><span class="line">  <span class="comment">// init</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) dp[i] = <span class="number">1</span>;</span><br><span class="line">  <span class="comment">// dp</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; m; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &lt; n; ++j) &#123;</span><br><span class="line">      dp[j] = dp[j] + dp[j - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dp[n - <span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(MN)$<br><strong>Space:</strong> $O(N)$ or $O(M)$</p>
+<h2 id="Unique-Paths-II-with-Obstacles"><a href="#Unique-Paths-II-with-Obstacles" class="headerlink" title="Unique Paths II (with Obstacles)"></a>Unique Paths II (with Obstacles)</h2><p>Now consider if some obstacles are added to the grids. How many unique paths would there be?</p>
+<p>An obstacle and empty space is marked as <code>1</code> and <code>0</code> respectively in the grid.</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">[</span><br><span class="line">  [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]</span><br><span class="line">]</span><br><span class="line">Output: <span class="number">2</span></span><br><span class="line">Explanation:</span><br><span class="line">There is one obstacle in the middle of the 3x3 grid above.</span><br><span class="line">There are two ways to reach the bottom-right corner:</span><br><span class="line"><span class="number">1.</span> Right -&gt; Right -&gt; Down -&gt; Down</span><br><span class="line"><span class="number">2.</span> Down -&gt; Down -&gt; Right -&gt; Right</span><br></pre></td></tr></table></figure>
+
+<h3 id="DP-Bottom-up-1"><a href="#DP-Bottom-up-1" class="headerlink" title="DP (Bottom-up)"></a>DP (Bottom-up)</h3><p>The problem is very great. Check out the picture below. Here are some points to be considered carefully:</p>
+<ul>
+<li>What two surrounding cells are affected if a cell is blocked?<ul>
+<li>Do we need to change the recurrence in the code?</li>
+<li><code>No</code>. If blocked, just setting <code>dp[i][j]</code> as $0$ is all we need.</li>
+</ul>
+</li>
+<li>What happens if the starting point or the finish point is blocked?</li>
+<li>In the initial step, what happens to its following cells if a cell is blocked?</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rbu2e.jpg"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">uniquePathsWithObstacles</span><span class="params">(<span class="type">int</span>[][] obstacleGrid)</span> &#123;</span><br><span class="line">  <span class="comment">// Assume m &gt; 0 and n &gt; 0</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">m</span> <span class="operator">=</span> obstacleGrid.length, n = obstacleGrid[<span class="number">0</span>].length;</span><br><span class="line">  <span class="type">int</span>[][] dp = <span class="keyword">new</span> <span class="title class_">int</span>[m][n];</span><br><span class="line">  <span class="comment">// init</span></span><br><span class="line">  dp[<span class="number">0</span>][<span class="number">0</span>] = (obstacleGrid[<span class="number">0</span>][<span class="number">0</span>] == <span class="number">1</span>) ? <span class="number">0</span> : <span class="number">1</span>; <span class="comment">// check starting point; finish point will be considered.</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; m; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (obstacleGrid[i][<span class="number">0</span>] == <span class="number">1</span>) dp[i][<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> dp[i][<span class="number">0</span>] = dp[i - <span class="number">1</span>][<span class="number">0</span>];  <span class="comment">// if there is an obstacle, the following cell cannot be reached (= 0)</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (obstacleGrid[<span class="number">0</span>][i] == <span class="number">1</span>) dp[<span class="number">0</span>][i] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> dp[<span class="number">0</span>][i] = dp[<span class="number">0</span>][i - <span class="number">1</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// dp</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; m; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &lt; n; ++j) &#123;</span><br><span class="line">      <span class="keyword">if</span> (obstacleGrid[i][j] == <span class="number">1</span>) dp[i][j] = <span class="number">0</span>; <span class="comment">// blocked</span></span><br><span class="line">      <span class="keyword">else</span> dp[i][j] = dp[i - <span class="number">1</span>][j] + dp[i][j - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dp[m - <span class="number">1</span>][n - <span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(MN)$<br><strong>Space:</strong> $O(MN)$</p>
+<h3 id="DP-Bottom-up-Linear-Space-1"><a href="#DP-Bottom-up-Linear-Space-1" class="headerlink" title="DP (Bottom-up, Linear Space)"></a>DP (Bottom-up, Linear Space)</h3><p>We can reduce the space complexity too, but be careful when actually writing the code! In the row case, we need check if a cell at the first column is blocked in the dp step every time, which is usually forgotten.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">uniquePathsWithObstacles</span><span class="params">(<span class="type">int</span>[][] obstacleGrid)</span> &#123;</span><br><span class="line">  <span class="comment">// Assume m &gt; 0 and n &gt; 0</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">m</span> <span class="operator">=</span> obstacleGrid.length, n = obstacleGrid[<span class="number">0</span>].length;</span><br><span class="line">  <span class="type">int</span>[] dp = <span class="keyword">new</span> <span class="title class_">int</span>[n]; <span class="comment">// a row</span></span><br><span class="line">  <span class="comment">// init</span></span><br><span class="line">  dp[<span class="number">0</span>] = (obstacleGrid[<span class="number">0</span>][<span class="number">0</span>] == <span class="number">1</span>) ? <span class="number">0</span> : <span class="number">1</span>; <span class="comment">// check starting point; finish point is considered.</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (obstacleGrid[<span class="number">0</span>][i] == <span class="number">1</span>) dp[i] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span>                         dp[i] = dp[i - <span class="number">1</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// dp</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; m; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (obstacleGrid[i][<span class="number">0</span>] == <span class="number">1</span>) dp[<span class="number">0</span>] = <span class="number">0</span>; <span class="comment">// should check the first cell each time</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &lt; n; ++j) &#123;</span><br><span class="line">      <span class="keyword">if</span> (obstacleGrid[i][j] == <span class="number">1</span>) dp[j] = <span class="number">0</span>; <span class="comment">// blocked</span></span><br><span class="line">      <span class="keyword">else</span>                         dp[j] = dp[j - <span class="number">1</span>] + dp[j];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dp[n - <span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(MN)$<br><strong>Space:</strong> $O(N)$ or $O(M)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

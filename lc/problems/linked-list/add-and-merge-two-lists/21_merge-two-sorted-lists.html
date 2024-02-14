@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode EPI 7.1Difficulty: Easy Problem Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists (non-">
+<meta property="og:type" content="website">
+<meta property="og:title" content="21. Merge Two Sorted Lists">
+<meta property="og:url" content="https://junhaow.com/lc/problems/linked-list/add-and-merge-two-lists/21_merge-two-sorted-lists.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode EPI 7.1Difficulty: Easy Problem Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists (non-">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.127Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.127Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>21. Merge Two Sorted Lists</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/merge-two-sorted-lists/">LeetCode</a> <span class="gray">EPI 7.1</span><br>Difficulty: <span class="green">Easy</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists (non-destructive).</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="number">1</span>-&gt;<span class="number">2</span>-&gt;<span class="number">4</span>, <span class="number">1</span>-&gt;<span class="number">3</span>-&gt;<span class="number">4</span></span><br><span class="line">Output: <span class="number">1</span>-&gt;<span class="number">1</span>-&gt;<span class="number">2</span>-&gt;<span class="number">3</span>-&gt;<span class="number">4</span>-&gt;<span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong></p>
+<ul>
+<li>Space from $O(n + m)$ to $O(1)$.</li>
+<li>Solve the same problem when the lists are doubly linked. <span class="purple">Marked</span><ul>
+<li>Set previous node during the process.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Naive-Solution"><a href="#Naive-Solution" class="headerlink" title="Naive Solution"></a>Naive Solution</h3><p>Append the two lists together and sort the resulting list. But it does not use the fact that the two initial lists are sorted.</p>
+<p><strong>Time:</strong> $O((n + m)\log{(n + m)})$ (use witch sorting algorithm?)</p>
+<h3 id="Iteration"><a href="#Iteration" class="headerlink" title="Iteration"></a>Iteration</h3><p><strong>Note:</strong> When <code>n1</code> or <code>n2</code> becomes null, it is not necessary to walk through the rest nodes of the list.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">iteration</span><span class="params">(ListNode n1, ListNode n2)</span> &#123;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">dummy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(-<span class="number">1</span>);</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> dummy;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (n1 != <span class="literal">null</span> &amp;&amp; n2 != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (n1.val &lt;= n2.val) &#123;</span><br><span class="line">      prev.next = n1;</span><br><span class="line">      n1 = n1.next;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      prev.next = n2;</span><br><span class="line">      n2 = n2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    prev = prev.next;  <span class="comment">// don&#x27;t forget</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  prev.next = (n1 != <span class="literal">null</span>) ? n1 : n2;</span><br><span class="line">  <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Time:</strong> $O(n + m)$, since each time exactly one of <code>n1</code> or <code>n2</code> will move by one step. The best case occurs when one list is <code>much shorter</code> than the other and the values are <code>less than</code> the ones in the other list.<br><strong>Space:</strong> $O(1)$ because of pointers.</p>
+<h3 id="Recursion"><a href="#Recursion" class="headerlink" title="Recursion"></a>Recursion</h3><p>We can define the result of a <code>merge</code> operation on two lists as follows:</p>
+<ul>
+<li><code>list1[0]</code> + merge(<code>list1[1:]</code>, <code>list2</code>), when <code>list1[0] &lt; list2[0]</code>.</li>
+<li><code>list2[0]</code> + merge(<code>list1</code>, <code>list2[1:]</code>), otherwise.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Example</span></span><br><span class="line">list1 = [<span class="number">1</span> <span class="number">2</span> <span class="number">4</span>]</span><br><span class="line">list2 = [<span class="number">3</span> <span class="number">5</span> <span class="number">7</span>]</span><br><span class="line"><span class="comment">// Start:</span></span><br><span class="line"><span class="number">1</span> + merge([<span class="number">2</span> <span class="number">4</span>], [<span class="number">3</span> <span class="number">5</span> <span class="number">7</span>])</span><br><span class="line"><span class="number">2</span> + merge([<span class="number">4</span>], [<span class="number">3</span> <span class="number">5</span> <span class="number">7</span>])</span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong> Notice how to handle the corner cases.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">recursion</span><span class="params">(ListNode n1, ListNode n2)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> mergeHelper(n1, n2);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// n1 == null, n2 != null =&gt; n2</span></span><br><span class="line"><span class="comment">// n1 != null, n2 == null =&gt; n1</span></span><br><span class="line"><span class="comment">// n1 == null, n2 == null =&gt; null</span></span><br><span class="line"><span class="keyword">private</span> ListNode <span class="title function_">merge</span><span class="params">(ListNode n1, ListNode n2)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (n1 == <span class="literal">null</span> || n2 == <span class="literal">null</span>) &#123; <span class="comment">// this line is redundant</span></span><br><span class="line">    <span class="keyword">if</span> (n1 == <span class="literal">null</span>) <span class="keyword">return</span> n2;</span><br><span class="line">    <span class="keyword">if</span> (n2 == <span class="literal">null</span>) <span class="keyword">return</span> n1;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (n1.val &lt; n2.val) &#123;</span><br><span class="line">    n1.next = merge(n1.next, n2);</span><br><span class="line">    <span class="keyword">return</span> n1;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    n2.next = merge(n2.next, n1);</span><br><span class="line">    <span class="keyword">return</span> n2;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Improvement:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> ListNode <span class="title function_">merge</span><span class="params">(ListNode n1, ListNode n2)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (n1 == <span class="literal">null</span>) <span class="keyword">return</span> n2;</span><br><span class="line">  <span class="keyword">if</span> (n2 == <span class="literal">null</span>) <span class="keyword">return</span> n1;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// n1, n2 NotNull</span></span><br><span class="line">  <span class="keyword">if</span> (n1.val &lt; n2.val) &#123;</span><br><span class="line">    n1.next = merge(n1.next, n2);</span><br><span class="line">    <span class="keyword">return</span> n1;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    n2.next = merge(n1, n2.next);</span><br><span class="line">    <span class="keyword">return</span> n2;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(n + m)$, number of elements in two lists.<br><strong>Space:</strong> $O(n + m)$, $n + m$ stack frames in total.  </p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

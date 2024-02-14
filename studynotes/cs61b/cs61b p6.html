@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="HashingInteger, String as IndexesWe’ve now seen several implementations of the Set (or Map) ADT.   Limits of Search Tree Based Sets:  Our search tree based sets require items to be comparable. Our s">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CS 61B | Part 6 | Hashing, PQs and Heaps">
+<meta property="og:url" content="https://junhaow.com/studynotes/cs61b/cs61b%20p6.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="HashingInteger, String as IndexesWe’ve now seen several implementations of the Set (or Map) ADT.   Limits of Search Tree Based Sets:  Our search tree based sets require items to be comparable. Our s">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/704tl.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1j1bq.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vbdux.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gtlyq.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/27ldm.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ygpuz.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/iwm8z.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/m048z.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fq4sm.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2qevk.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wgo73.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/09ic2.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fuo8u.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qa3o7.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jxz7d.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/nmy0f.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ngj6i.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ljiwj.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/04ezk.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5zg51.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/60u1h.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/l8kow.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tddu7.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wfden.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/eeyu3.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/v95zl.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/awadc.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1w32e.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/poukw.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/pmtpu.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/n4u7w.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ih769.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/a97fn.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rb6v2.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/g6gx2.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/poko8.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6slcm.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/0l3y7.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8jdr2.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.197Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.197Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/704tl.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CS 61B | Part 6 | Hashing, PQs and Heaps</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<h2 id="Hashing"><a href="#Hashing" class="headerlink" title="Hashing"></a>Hashing</h2><h3 id="Integer-String-as-Indexes"><a href="#Integer-String-as-Indexes" class="headerlink" title="Integer, String as Indexes"></a>Integer, String as Indexes</h3><p>We’ve now seen several implementations of the Set (or Map) ADT.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/704tl.png" alt="Several implementations of the Set (or Map) ADT"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1j1bq.png" alt="Worst case runtimes"></p>
+<p><strong>Limits of Search Tree Based Sets:</strong></p>
+<ul>
+<li>Our search tree based sets require items to be <code>comparable</code>.</li>
+<li>Our search tree based sets have excellent performance, but could maybe be better, say $\Theta(1)$?<ul>
+<li>$\Theta(\log{N})$ is amazing. One billion items are still only height $~30$.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Using Data as an Index &amp; Its Downsides</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vbdux.png"></p>
+<p><strong>Using English words as indexes and avoiding collisions (just mimicking decimal number system)</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gtlyq.png"></p>
+<p>It turns out as long as we pick a base &gt;&#x3D; 26, this algorithm is guaranteed to give each lowercase English word a <code>unique number</code> (no collision)!</p>
+<p>Implementing <code>letterNum</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">letterNum</span><span class="params">(String s, <span class="type">int</span> i)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">ithChar</span> <span class="operator">=</span> s.charAt(i);</span><br><span class="line">  <span class="keyword">if</span> ((ithChar &lt; <span class="string">&#x27;a&#x27;</span>) || ithChar &gt; <span class="string">&#x27;z&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> ithChar - <span class="string">&#x27;a&#x27;</span> + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Implementing <code>englishToInt</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">englishToInt</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; s.length(); i += <span class="number">1</span>) &#123;</span><br><span class="line">    sum = sum * <span class="number">27</span> + letterNum(s, i);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Using ASCII to represent more symbols</strong></p>
+<p>Implementing <code>asciiToInt</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// e.g. abc</span></span><br><span class="line"><span class="comment">// sum = 126^2 * [a] + 126^1 * [b] + 126^0 * [c]</span></span><br><span class="line"><span class="comment">// i=0: sum = [a]</span></span><br><span class="line"><span class="comment">// i=1: sum = [a] * 126 + [b]</span></span><br><span class="line"><span class="comment">// i=2: sum = 126^2 * [a] + 126 * [b] + [c]</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">asciiToInt</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; s.length(); i += <span class="number">1</span>) &#123;</span><br><span class="line">    sum = sum * <span class="number">126</span> + s.charAt(i);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Consequence of Overflow (Collisions):</strong></p>
+<p>Overflow can result in collisions, causing incorrect answers due.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/27ldm.png"></p>
+<h3 id="Hash-Code-and-the-Pigeonhole-Principle"><a href="#Hash-Code-and-the-Pigeonhole-Principle" class="headerlink" title="Hash Code and the Pigeonhole Principle"></a>Hash Code and the Pigeonhole Principle</h3><blockquote>
+<p>Pigeonhole: To classify mentally; To place in a file or small compartment.</p>
+</blockquote>
+<p>Via Wolfram Alpha: A <code>hash code</code> “projects a value from a set with many (or even an <code>infinite</code> number of) members to a value or a set with a <code>fixed</code> number of (fewer) members (when collision occurs).”</p>
+<p>In Java, the size of our target set is 4,294,967,296.</p>
+<p><code>Pigeonhole principle</code> tells us that if there are more than 4,294,967,296 possible items, multiple items will share the same hash code.</p>
+<p><strong>Bottom line:</strong> Collisions are inevitable.</p>
+<h3 id="Hash-Tables-Handling-Collisions"><a href="#Hash-Tables-Handling-Collisions" class="headerlink" title="Hash Tables: Handling Collisions"></a>Hash Tables: Handling Collisions</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ygpuz.png" alt="The Separate Chaining Data Indexed Array"></p>
+<p><strong>Runtime:</strong> $\Theta(Q)$. (Q: Length of the longest list)</p>
+<p>Avoid Duplication: Can’t we just add to the beginning of the LinkedList, which takes $\Theta(1)$ time? No! Because we have to check to make sure the item isn’t already in the LinkedList.</p>
+<ul>
+<li>Data is converted by a <code>hash function</code> into an integer representation called a <code>hash code</code>.</li>
+<li>The <code>hash code</code> is then <code>reduced</code> to a valid index, usually using the modulus operator, e.g. 2348762878 % 10 &#x3D; 8. (solving space)</li>
+</ul>
+<p>The good news: We use way <code>less memory</code> and can now handle <code>arbitrary data</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/iwm8z.png" alt="The Hash Table"></p>
+<p>In terms of $Q$, the length of the longest list will be $\frac{N}{5}$ in the best case, while it will be $N$ in the worst case. So, $Q(N)$ is $\Theta(N)$.</p>
+<p><strong>How can we improve our design to guarantee that $\frac{N}{M}$ is $\Theta(1)$?</strong></p>
+<ul>
+<li><strong>Resizing:</strong> Using an <code>increasing number of buckets</code> $M$. (e.g. linear to $N$)</li>
+<li>As long as $M &#x3D; \Theta(N)$, then $O(\frac{N}{M}) &#x3D; O(1)$. ($\frac{N}{M}$ is called the <code>load factor</code>)</li>
+</ul>
+<p>E.g. When the load factor $\frac{N}{M} \geq 1.5$, then double $M$.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/m048z.png"></p>
+<p>Assuming items are evenly distributed, lists will be approximately $\Theta(\frac{N}{M})$ runtimes.</p>
+<ul>
+<li>Doubling strategy ensures that $\frac{N}{M} &#x3D; O(1)$.</li>
+<li>Unless that operation causes a resize, which takes $\Theta(N)$ time.</li>
+<li>But similar to AList, as long as we resize by a multiplicative factor, the average runtime will still be amortized $\Theta(1)$.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fq4sm.png"></p>
+<p>Note that we need to add elements one by one again because since the size of the array changes, <code>the modulus also changes</code>, therefore the item probably belongs in a different bucket in the new hash table than in the old one.</p>
+<p><code>A Small Point</code>: when doing the resize, we don’t actually need to check if the items are already present in the LinkedList or not (because we know there are no duplicates), so we can just add each item in $\Theta(1)$ time for sure by adding it to the front of the linked list (<code>addFirst</code>). (Recall that usually we have to search the LinkedList to make sure the item isn’t there… but we can skip that step when resizing.)</p>
+<h3 id="Hash-Tables-in-Java"><a href="#Hash-Tables-in-Java" class="headerlink" title="Hash Tables in Java"></a>Hash Tables in Java</h3><p>Hash tables are the most popular implementation for sets and maps.</p>
+<ul>
+<li>Great performance in practice.</li>
+<li>Don’t require items to be comparable.</li>
+<li>Implementations often relatively simple.</li>
+<li>Python dictionaries are just hash tables in disguise.</li>
+</ul>
+<p>In Java, each object has a function called <code>hashCode</code>, whose default implementation simply returns the <code>memory address</code> of the object.</p>
+<p><strong>How do use a negative hash code?</strong></p>
+<p>In Java, <code>-1 % 4 = -1</code>, which will result in index errors! Instead, <code>Math.floorMod(-1, 4)</code> will return <code>3</code>.</p>
+<p><strong>Two Important Warnings When Using HashMap &#x2F; HashSet:</strong></p>
+<p>Warning #1: Never store objects that can change in a HashSet or HashMap!</p>
+<ul>
+<li>If an object’s variables change, then its hashCode changes. May result in items getting lost.</li>
+<li>For example: <code>Set of Lists</code></li>
+</ul>
+<p>Warning #2: Never override <code>equals</code> without also overriding <code>hashCode</code>.</p>
+<ul>
+<li>Can also lead to items getting lost and weird behavior.</li>
+<li><code>HashMap</code> and <code>HashSet</code> use <code>equals</code> to determine if an item exists in a particular bucket.</li>
+</ul>
+<h3 id="Good-Hash-Functions"><a href="#Good-Hash-Functions" class="headerlink" title="Good Hash Functions"></a>Good Hash Functions</h3><p>Can think of multiplying data by powers of some base as ensuring that all the data gets scrambled together into a <code>seemingly random</code> integer.</p>
+<p>For example, the Java 8 hash code for strings:</p>
+<ul>
+<li>Represents strings as a <code>base 31</code> number.<ul>
+<li>Why small? Real hash codes don’t care about uniqueness.</li>
+</ul>
+</li>
+<li>Stores (caches) calculated hash codes, so future <code>hashCode</code> calls are faster.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">h</span> <span class="operator">=</span> cachedHashValue;</span><br><span class="line">  <span class="keyword">if</span> (h == <span class="number">0</span> &amp;&amp; <span class="built_in">this</span>.length() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="built_in">this</span>.length(); i++) &#123;</span><br><span class="line">      h = <span class="number">31</span> * h + <span class="built_in">this</span>.charAt(i);</span><br><span class="line">    &#125;</span><br><span class="line">    cachedHashValue = h;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> h;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2qevk.png" alt="Example: Choosing a Base"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wgo73.png" alt="Example: Base 126"></p>
+<p><strong>Typical Base</strong></p>
+<p>A typical hash code base is a <code>small prime</code>.</p>
+<p>Why prime?</p>
+<ul>
+<li>Never even: Avoid the overflow issue.</li>
+<li>Lower chance of resulting <code>hashCode</code> having a bad relationship with the number of buckets $M$.</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://www.quora.com/Why-are-prime-numbers-used-for-constructing-hash-functions">Quora: Why are prime numbers used for constructing hash functions?</a></p>
+<p>Why small?</p>
+<ul>
+<li>Lower cost to compute.</li>
+</ul>
+<p><strong>Hashing A Collection</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">hashCode</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (Object o : <span class="built_in">this</span>) &#123;</span><br><span class="line">    hashCode = hashCode * <span class="number">31</span> + o.hashCode();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> hashCode;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>To save time hashing: Look at only first few items. Higher chance of collision but things will still work.</p>
+<p><strong>Hashing a Recursive Data Structure</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Binary Tree hashCode (assuming sentinel leaves) */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//      5        [5] + 31 * (...) + 31^2 * (...)</span></span><br><span class="line"><span class="comment">//    /   \</span></span><br><span class="line"><span class="comment">//   3     7     [3] + 31 * [1] + 31^2 * [4], [7] + 31 * [6] + 31^2 * [8]</span></span><br><span class="line"><span class="comment">//  / \   / \</span></span><br><span class="line"><span class="comment">// 1   4 6   8   [1]  [4]  [6]  [8]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 1: [1]</span></span><br><span class="line"><span class="comment">// 3: [3] + 31 * [1] + 31^2 * [4]</span></span><br><span class="line"><span class="comment">// 4: [4]</span></span><br><span class="line"><span class="comment">// 5: [...]</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">this</span>.value == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">this</span>.value.hashCode + <span class="number">31</span> * <span class="built_in">this</span>.left.hashCode() + <span class="number">31</span> * <span class="number">31</span> * <span class="built_in">this</span>.right.hashCode();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Linear-Probing-Hash-Tables"><a href="#Linear-Probing-Hash-Tables" class="headerlink" title="Linear Probing Hash Tables"></a>Linear Probing Hash Tables</h3><p>The above content is called <code>External Chaining</code>. Here is another solution called <code>Linear Probing</code>.</p>
+<p><a target="_blank" rel="noopener" href="http://www.cs.rmit.edu.au/online/blackboard/chapter/05/documents/contribute/chapter/05/linear-probing.html">Linear Probing Hash Tables</a></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/09ic2.jpg" alt="Linear Probing (another way is Quadratic Probing)"></p>
+<h2 id="Ex-Discussion"><a href="#Ex-Discussion" class="headerlink" title="Ex (Discussion)"></a>Ex (Discussion)</h2><h3 id="Ex-1-Valid-Or-Not"><a href="#Ex-1-Valid-Or-Not" class="headerlink" title="Ex 1 (Valid Or Not?)"></a>Ex 1 (Valid Or Not?)</h3><p>Categorize each as either a valid or an invalid hash function.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123; <span class="keyword">return</span> -<span class="number">1</span>; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>Valid. This hash function returns the same hashCode for Integers that are <code>equals()</code> to each other. However, it is a terrible hash function because collisions are extremely frequent (100%).</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123; <span class="keyword">return</span> intValue() * intValue(); &#125;</span><br></pre></td></tr></table></figure>
+
+<p>Valid. Similar to the previous function. However, integers that share the same absolute values will collide. A better hash function would be to just return the <code>intValue()</code> itself.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123; <span class="keyword">return</span> <span class="built_in">super</span>.hashCode(); &#125;</span><br></pre></td></tr></table></figure>
+
+<p>Invalid. This is not a valid hash function because integers will not have the same hash code. <code>super.hashCode()</code> is the method of Object that returns the memory address, and different objects with the same value have different addresses.</p>
+<p>Extra Questions:</p>
+<p>(a) When you modify a key that has been inserted into a HashMap will you be able to retrieve that entry again? Explain.</p>
+<p>Sometimes. If the <code>hashCode</code> for the key happens to change, we won’t be able to correctly retrieve the key.</p>
+<p>(b) When you modify a value that has been inserted into a HashMap will you be able to retrieve that entry again? Explain.</p>
+<p>Always. The bucket index for an entry in a HashMap is decided by the key.</p>
+<h3 id="Ex-2-Hashtable-Runtimes"><a href="#Ex-2-Hashtable-Runtimes" class="headerlink" title="Ex 2 (Hashtable Runtimes)"></a>Ex 2 (Hashtable Runtimes)</h3><p>From: Examprep</p>
+<p><a target="_blank" rel="noopener" href="https://sp19.datastructur.es/materials/discussion/examprep08sol.pdf">Link (the first problem)</a></p>
+<h2 id="Ex-Guide"><a href="#Ex-Guide" class="headerlink" title="Ex (Guide)"></a>Ex (Guide)</h2><h3 id="Ex1-Efficient-String"><a href="#Ex1-Efficient-String" class="headerlink" title="Ex1 (Efficient String)"></a>Ex1 (Efficient String)</h3><p><a target="_blank" rel="noopener" href="https://d1b10bmlvqabco.cloudfront.net/attach/hx9h4t96ea8qv/h32s1vxe6mb5o0/i7vkubmrxjn0/fa14_mt2.pdf">Problem 2</a> of the Fall 2014 midterm.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Purpose of this class: Used as a key in a HashMap</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">EfficientString</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="type">int</span> _hash;</span><br><span class="line">  <span class="keyword">private</span> String _val;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">EfficientString</span><span class="params">(String val)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (val == <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    _val = val;</span><br><span class="line">    _hash = val.hashCode();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> _val;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> _hash;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setVal</span><span class="params">(String val)</span> &#123;</span><br><span class="line">    _val = val;</span><br><span class="line">    <span class="comment">// A:  what about _hash = val.hashCode()</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object obj)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> obj <span class="keyword">instanceof</span> EfficientString &amp;&amp; _val.equals(obj.toString());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Even after problem A is fixed (so that the hash value is always correct) some users report problems using <code>EfficientStrings</code> in hash tables. What is the problem?</p>
+<p>&#x2F;&#x2F; —————- To be done —————<br>Recall the purpose of this class and we know that the same values (e.g. s1 &#x3D; “abc” vs. s2 &#x3D; “abc”) should result in the same hash codes.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">EfficientString</span> <span class="variable">es1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">EfficientString</span>(<span class="string">&quot;abc&quot;</span>);</span><br><span class="line"><span class="type">EfficientString</span> <span class="variable">es2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">EfficientString</span>(<span class="string">&quot;abc&quot;</span>);</span><br><span class="line">???</span><br></pre></td></tr></table></figure>
+<p>&#x2F;&#x2F; ——————————————-</p>
+<h3 id="Ex-2-R-31-M-31"><a href="#Ex-2-R-31-M-31" class="headerlink" title="Ex 2 (R&#x3D;31, M&#x3D;31)"></a>Ex 2 (R&#x3D;31, M&#x3D;31)</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fuo8u.png"></p>
+<p>For example: <code>x</code> is <code>[abc]</code></p>
+<p>The 1st round:<br><code>hashCode = hc(a) % 31</code></p>
+<p>The 2nd round:<br><code>hashCode = [(hc(a) % 31) * 31 + hc(b)] % 31 = hc(b) % 31</code></p>
+<p>The 3rd round:<br><code>hashCode = [(hc(b) % 31) * 31 + hc(c)] % 31 = hc(c) % 31</code></p>
+<p><strong>Problem:</strong> Only the last char is hashed in fact. So finally, the result is <code>hc(c) % 31</code>. The first two items won’t play a role in hashing.</p>
+<p><strong>Also</strong>, explain why the approach in A-level question 1 works better if we initially start the hashCode at <code>1</code> instead of <code>0</code>.</p>
+<p>The 1st round:<br><code>hashCode = [31 + hc(a)] % 31 = hc(a) % 31</code></p>
+<p>Maybe it would be better if we do not use <code>M = 31</code>.</p>
+<h3 id="Ex-3-Same-Hash-Code"><a href="#Ex-3-Same-Hash-Code" class="headerlink" title="Ex 3 (Same Hash Code)"></a>Ex 3 (Same Hash Code)</h3><p>Reference: <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/12925988/how-to-generate-strings-that-share-the-same-hashcode-in-java">How to generate strings that share the same hash code in Java?</a></p>
+<p>Find the string with the same hash code in Java String.</p>
+<p><code>A</code>: 65<br><code>B</code>: 66<br><code>a</code>: 97 &#x3D; <code>B</code> + 31</p>
+<p><code>Aa</code>: 65 x 31 + 97 &#x3D; 2112<br><code>AB</code>: 66 x 31 + 66 &#x3D; 2112</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// s1: a b</span></span><br><span class="line"><span class="comment">// s2: x y</span></span><br><span class="line"><span class="comment">// based on the formula: </span></span><br><span class="line"><span class="comment">// 31 * a + b = 31 * x + y</span></span><br><span class="line"><span class="comment">// y = 31 * a + b - 31 * x (given specific x)</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s1</span> <span class="operator">=</span> <span class="string">&quot;Aa&quot;</span>;</span><br><span class="line">String s2;</span><br><span class="line"></span><br><span class="line"><span class="type">char</span> <span class="variable">a</span> <span class="operator">=</span> s1.charAt(<span class="number">0</span>);</span><br><span class="line"><span class="type">char</span> <span class="variable">b</span> <span class="operator">=</span> s1.charAt(<span class="number">1</span>);</span><br><span class="line"><span class="type">char</span> <span class="variable">x</span> <span class="operator">=</span> <span class="string">&#x27;C&#x27;</span>;</span><br><span class="line"><span class="type">char</span> <span class="variable">y</span> <span class="operator">=</span> (<span class="type">char</span>) (<span class="number">31</span> * a + b - <span class="number">31</span> * x);</span><br><span class="line"></span><br><span class="line">s2 = Character.toString(x) + Character.toString(y);</span><br><span class="line"></span><br><span class="line">System.out.println(<span class="string">&quot;s1: &quot;</span> + s1 + <span class="string">&quot; (&quot;</span> + s1.hashCode() + <span class="string">&quot;)&quot;</span>);</span><br><span class="line">System.out.println(<span class="string">&quot;s2: &quot;</span> + s2 + <span class="string">&quot; (&quot;</span> + s2.hashCode() + <span class="string">&quot;)&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Ex-4-Permutation"><a href="#Ex-4-Permutation" class="headerlink" title="Ex 4 (Permutation)"></a>Ex 4 (Permutation)</h3><p>[Adapted from textbook 3.4.23] Suppose that we hash strings as described in A-level problem 1, using <code>R = 256</code> and <code>M = 255</code>. Show that any permutation of letters within a string hashes to the same value. Why is this a bad thing?</p>
+<p>Let the string be <code>ab</code>.</p>
+<p>In the 1st round:</p>
+<ul>
+<li>$(a)\ % \ 255$</li>
+</ul>
+<p>In the 2nd round:</p>
+<ul>
+<li>$\left[((a)\ % \ 255) \times 256 + (b)\right]\ %\ 255$</li>
+<li>$&#x3D; \left[((a)\ %\ 255) \times (255 + 1) + (b)\right] \ %\ 255$</li>
+<li>$&#x3D; \left[ (a) + (b) \right]\ %\ 255$</li>
+</ul>
+<p>So, for <code>ba</code>, the hash code will be the same $\left[ (b) + (a) \right]\ %\ 255$.</p>
+<h3 id="Ex-5-2-Digit-Hashing"><a href="#Ex-5-2-Digit-Hashing" class="headerlink" title="Ex 5 (2-Digit Hashing)"></a>Ex 5 (2-Digit Hashing)</h3><p><a target="_blank" rel="noopener" href="http://inst.eecs.berkeley.edu/~cs61b/fa13/samples/test2.pdf">CS61B Fall 2009 midterm</a>, #4 (really beautiful problem)</p>
+<p><strong>a)</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qa3o7.png"></p>
+<p>Two-digit base-26 number means $26 \times (first) + (last)$.</p>
+<p><code>algebra</code>: 0 x 26 + 0 &#x3D; 0<br><code>add</code>: 0 x 26 + 3 &#x3D; 3<br><code>bad</code>: 1 x 26 + 3 &#x3D; 29</p>
+<p>There are $26^{2}$ combinations, so this is the number of buckets in total.</p>
+<p>Since the hash function will divide the data evenly into only $26^2 &#x3D; 676$ buckets, the time to check the selected bucket grows as $\frac{N}{676}$ at most.</p>
+<p>Worst case runtime is $\Theta(N)$.</p>
+<p><strong>b)</strong> How does your answer to (a) change if we change the hash function so that it considers up to the first $\log_{26}{N}$ characters (or the length of the key, whichever is smaller), keeping other assumptions the same? (Ignore the time to compute $\log_{26}{N}$)</p>
+<p><strong>c)</strong> A heap data structure containing integers is represented as an array. Assuming that the heap is initially empty, show that for any $N$, there is a sequence of distinct $N$ values that can be added to the heap in total time $O(N)$.</p>
+<p><strong>d)</strong> For Java <code>int</code> variable $x$, what is <code>(~x) - ((-1) ^ x)</code>?</p>
+<p><code>^</code> XOR operator:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">60</span>;             <span class="comment">/* 0011 1100 */</span></span><br><span class="line"><span class="type">int</span> <span class="variable">b</span> <span class="operator">=</span> <span class="number">13</span>;             <span class="comment">/* 0000 1101 */</span></span><br><span class="line"><span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> a ^ b; <span class="comment">/* c = 49 = 0011 0001 */</span></span><br></pre></td></tr></table></figure>
+
+<p><code>(~x)</code> &#x3D;&gt; 1 to 0, 0 to 1.</p>
+<p><code>(-1) ^ x</code> &#x3D;&gt; 1 to 0, 0 to 1. (same as <code>~x</code>)</p>
+<p><code>Answer</code>: 0.</p>
+<h2 id="HW-3-Oomage-Hash"><a href="#HW-3-Oomage-Hash" class="headerlink" title="HW 3: Oomage Hash"></a>HW 3: Oomage Hash</h2><p>HW 3: <a target="_blank" rel="noopener" href="https://sp19.datastructur.es/materials/hw/hw3/hw3">link</a><br>Code: <a target="_blank" rel="noopener" href="https://github.com/junhaowww/cs61b-sp18/tree/master/hw3/hw3/hash">link</a></p>
+<h3 id="equals"><a href="#equals" class="headerlink" title="equals"></a>equals</h3><p>How to write <code>equals</code> method?</p>
+<p><code>equals</code> method should have the following properties to be in compliance:</p>
+<ul>
+<li><code>Reflexive</code>: x.equals(x) must be true for any non-null x.</li>
+<li><code>Symmetric</code>: x.equals(y) must be the same as y.equals(x) for any non-null x and y.</li>
+<li><code>Transitive</code>: if x.equals(y) and y.equals(z), then x.equals(z) for any non-null x, y, and z.</li>
+<li><code>Consistent</code>: x.equals(y) must return the same result if called multiple times, so long as the object referenced by x and y do not change.</li>
+<li><code>Not Null</code>: x.equals(null) should be false for any non-null x.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (o == <span class="built_in">this</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">if</span> (o == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">if</span> (o.getClass() != <span class="built_in">this</span>.getClass()) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="type">SimpleOomage</span> <span class="variable">that</span> <span class="operator">=</span> (SimpleOomage) o; <span class="comment">/* casting */</span></span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">this</span>.red == that.red &amp;&amp; <span class="built_in">this</span>.green == that.green &amp;&amp; <span class="built_in">this</span>.blue == that.blue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="hashCode"><a href="#hashCode" class="headerlink" title="hashCode"></a>hashCode</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (!USE_PERFECT_HASH) &#123;</span><br><span class="line">    <span class="keyword">return</span> red + green + blue;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">/* perfect hash code */</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> red / <span class="number">5</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">g</span> <span class="operator">=</span> green / <span class="number">5</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">b</span> <span class="operator">=</span> blue / <span class="number">5</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">hc</span> <span class="operator">=</span> <span class="number">256</span> * <span class="number">256</span> * r + <span class="number">256</span> * g + b;</span><br><span class="line">    <span class="keyword">return</span> hc;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Modulus"><a href="#Modulus" class="headerlink" title="Modulus"></a>Modulus</h3><p>For the purposes of converting an Oomage’s hashCode to a bucket number, you should compute <code>bucketNum = (o.hashCode() &amp; 0x7FFFFFFF) % M</code>, where <code>o</code> is an Oomage. You should not use <code>Math.abs</code> or <code>Math.floorMod</code>.</p>
+<p><code>Math.abs</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">abs</span><span class="params">(<span class="type">int</span> a)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (a &lt; <span class="number">0</span>) ? -a : a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>1111 1111 &#x3D;&gt; 255<br>1111 1111 &#x3D;&gt; -1</p>
+</blockquote>
+<p>If you do <code>Math.abs(-2147483648)</code>, it will still output <code>-2147483648</code> since <code>-(-2147483648) = 2147483648</code> overflows.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jxz7d.jpg"></p>
+<p>Just like <code>127</code> + <code>1</code> &#x3D;&gt; <code>-128</code>.</p>
+<h3 id="Big-Number-in-Java"><a href="#Big-Number-in-Java" class="headerlink" title="Big Number in Java"></a>Big Number in Java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">2147483648</span>; <span class="comment">// error: integer number too large</span></span><br><span class="line"><span class="type">int</span> <span class="variable">b</span> <span class="operator">=</span> <span class="number">2147483647</span> + <span class="number">1</span>; <span class="comment">// ok: compiler won&#x27;t yell</span></span><br><span class="line">System.out.println(b); <span class="comment">// output: -2147483648</span></span><br><span class="line"><span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> <span class="comment">/* some big number input by users - ok */</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Lab-8-HashMap"><a href="#Lab-8-HashMap" class="headerlink" title="Lab 8: HashMap"></a>Lab 8: HashMap</h2><p>Lab 8 in Spring 2019 (similar to Lab 9 in Spring 2018).</p>
+<p>My code: <a target="_blank" rel="noopener" href="https://github.com/junhaowww/cs61b-sp18/tree/master/lab8">link</a></p>
+<p>Algs4 code: <a target="_blank" rel="noopener" href="https://algs4.cs.princeton.edu/34hash/SeparateChainingHashST.java.html">link</a></p>
+<h2 id="Priority-Queue"><a href="#Priority-Queue" class="headerlink" title="Priority Queue"></a>Priority Queue</h2><h3 id="Interface"><a href="#Interface" class="headerlink" title="Interface"></a>Interface</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * (Min) priority Queue: Allowing tracking and removal of</span></span><br><span class="line"><span class="comment"> * the smallest item in a priority queue.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">MinPQ</span>&lt;Item&gt; &#123;</span><br><span class="line">  <span class="comment">/** Adds the item to the priority queue. */</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">add</span><span class="params">(Item x)</span>;</span><br><span class="line">  <span class="comment">/** Returns the smallest item in the priority queue. */</span></span><br><span class="line">  <span class="keyword">public</span> Item <span class="title function_">getSmallest</span><span class="params">()</span>;</span><br><span class="line">  <span class="comment">/** Removes the smallest item form the priority queue. */</span></span><br><span class="line">  <span class="keyword">public</span> Item <span class="title function_">removeSmallest</span><span class="params">()</span>;</span><br><span class="line">  <span class="comment">/** Returns the size of the priority queue. */</span></span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">size</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Usage Example: Unharmonious Texts</p>
+<ul>
+<li>Your job: Monitor the text messages of the citizens to make sure that they are not having any unharmonious conversations.</li>
+<li>Each day, you prepare a report of the $M$ messages that seem most unharmonious using the HarmoniousnessComparator.</li>
+</ul>
+<p><strong>Naive Approach:</strong> Create a list of all messages sent for the entire day. Sort it using your comparator. Return the $M$ messages that are largest.</p>
+<p><strong>Better Implementation: Track the M Best</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Use only M memory</span></span><br><span class="line"><span class="keyword">public</span> List&lt;String&gt; <span class="title function_">unharmoniousTexts</span><span class="params">(Sniffer sniffer, <span class="type">int</span> M)</span> &#123;</span><br><span class="line">  Comparator&lt;String&gt; cmptr = <span class="keyword">new</span> <span class="title class_">HarmoniousnessComparator</span>();</span><br><span class="line">  MinPQ&lt;String&gt; unharmoniousTexts = <span class="keyword">new</span> <span class="title class_">HeapMinPQ</span>&lt;Transaction&gt;(cmptr);</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">Timer</span> <span class="variable">timer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Timer</span>(); timer.hours() &lt; <span class="number">24</span>; ) &#123;</span><br><span class="line">    unharmoniousTexts.add(sniffer.getNextMessage());</span><br><span class="line">    <span class="keyword">if</span> (unharmoniousTexts.size() &gt; M) &#123;</span><br><span class="line">      unharmoniousTexts.removeSmallest();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ArrayList&lt;String&gt; textList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;String&gt;();</span><br><span class="line">  <span class="keyword">while</span> (unharmoniousTexts.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    textList.add(unharmoniousTexts.removeSmallest());</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> textList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>How Would We Implement a MinPQ?</strong></p>
+<p>Some possibilities:</p>
+<ul>
+<li>Ordered Array</li>
+<li>Bushy BST: Maintaining bushiness is annoying. Handling duplicate priorities is awkward.</li>
+<li>HashTable: No good! Items go into random places.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/nmy0f.png" alt="Worst Case $\Theta(\cdot)$ Runtimes"></p>
+<h3 id="Tree-Representations"><a href="#Tree-Representations" class="headerlink" title="Tree Representations"></a>Tree Representations</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ngj6i.png" alt="Tree Representations (Summary)"></p>
+<h4 id="Approach-1"><a href="#Approach-1" class="headerlink" title="Approach 1"></a>Approach 1</h4><p><strong>Approach 1A</strong></p>
+<p>Consider creating pointers to our children and storing the value inside of the node object. It gives us fixed-width nodes.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ljiwj.jpg" alt="Approach 1A"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Tree1A</span>&lt;Key&gt; &#123;</span><br><span class="line">  Key k;</span><br><span class="line">  Tree1A left;</span><br><span class="line">  Tree1A middle;</span><br><span class="line">  Tree1A right;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Approach 1B (N-ary Tree)</strong></p>
+<p>We explore the use of arrays as representing the mapping between children and nodes. This would give us variable-width nodes, but also awkward traversals and performance will be worse.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/04ezk.jpg" alt="Approach 1B"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Tree1B</span>&lt;Key&gt; &#123;</span><br><span class="line">  Key k;</span><br><span class="line">  Tree1B[] children;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Approach 1C</strong></p>
+<p>Lastly, we can use the approach for Tree1C. This will be slightly different from the usual approaches that we’ve seen. Instead of only representing a node’s children, we say that nodes can also maintain a reference to their siblings.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5zg51.jpg" alt="Approach 1C"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Tree1C</span>&lt;Key&gt; &#123;</span><br><span class="line">  Key k;</span><br><span class="line">  Tree1C favoredChild;</span><br><span class="line">  Tree1C sibling;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In summary, in the 1st approach we store explicit references to who is below us (actual tree children objects).</p>
+<h4 id="Approach-2"><a href="#Approach-2" class="headerlink" title="Approach 2"></a>Approach 2</h4><p>Without explicit references to children objects.</p>
+<p>Recall the <code>Disjoint Sets ADT</code>. The way that we represented this <code>Weighted Quick Union</code> structure was through arrays. For representing a tree, we can store the keys array as well as a <code>parents array</code>. </p>
+<ul>
+<li>The <code>keys array</code> represents which index maps to which key.</li>
+<li>The <code>parents array</code> represents which key is a child of another key.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/60u1h.jpg" alt="Approach 2"></p>
+<p>parent &#x3D; (child - 1) &#x2F; 2</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Tree2</span>&lt;Key&gt; &#123;</span><br><span class="line">  Key[] keys;</span><br><span class="line">  <span class="type">int</span>[] parents;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>It’s time to make a very important observation! Based on the structure of the tree and the relationship between the array representations and the diagram of the tree, we can see:</p>
+<ul>
+<li>The tree is <code>complete</code>. This is a property we have defined earlier.</li>
+<li>The parents array has a sort of <code>redundant pattern</code> where elements are just doubled.</li>
+<li>Reading the <code>level-order</code> of the tree, we see that it matches exactly the order of the keys in the keys array.</li>
+</ul>
+<h4 id="Approach-3"><a href="#Approach-3" class="headerlink" title="Approach 3"></a>Approach 3</h4><p>In this approach, we assume that our tree is <code>complete</code>. This is to ensure that there are <code>no gaps</code> inside of our array representation. So we can flatten this complex 2D structure of the tree and flatten it into an array.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/l8kow.jpg" alt="Approach 3 - Note starting from 1 (a bit different)"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TreeC</span>&lt;Key&gt; &#123;</span><br><span class="line">  Key[] keys;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>This is the underlying implementation for the Priority Queue ADT.</p>
+<p>How to get a node’s parent?</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">parent</span><span class="params">(<span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> k / <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>How to get a node’s left or right child?</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">leftChild</span><span class="params">(<span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">2</span> * k</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">rightChild</span><span class="params">(<span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">2</span> * k + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Swim code:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">swim</span><span class="params">(<span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (parent(k) == k) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (keys[parent(k)] &gt; keys[k]) &#123;</span><br><span class="line">    swap(k, parent(k));</span><br><span class="line">    swim(parent(k));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="Heaps"><a href="#Heaps" class="headerlink" title="Heaps"></a>Heaps</h3><p>BSTs would work, but need to be kept bushy and duplicates are awkward.</p>
+<p><code>Binary min-heap</code>: Binary tree that is <code>complete</code> and obeys <code>min-heap property</code>.</p>
+<ul>
+<li>Complete: Missing items only at the <code>bottom</code> level (if any), all nodes are as far <code>left</code> as possible.</li>
+<li>Min-heap: Every node is <code>less than or equal to</code> both of its children.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tddu7.png" alt="Examples"></p>
+<h4 id="Construction"><a href="#Construction" class="headerlink" title="Construction"></a>Construction</h4><ul>
+<li><code>Heap Construction (Heapification)</code>: Sink or swim items in array (Usually when we update an item’s key) &#x3D;&gt; $O(N\log{N})$<ul>
+<li>The order of <code>sink()</code> or <code>swim()</code> doesn’t matter.</li>
+</ul>
+</li>
+<li><code>Quicksort</code>: Partition once on every item (pivot) &#x3D;&gt; $O(N\log{N} + N)&#x3D;  O(N\log{N})$<ul>
+<li>MinHeap: Add in increasing order.</li>
+</ul>
+</li>
+<li><code>Up-Bottom Heapification</code>: The following contents from 61B are based on this approach. &#x3D;&gt; $O(N\log{N})$<ul>
+<li>Insert an item into an array from the <code>left</code> side, or building from the top of the heap. (Place the item at current rightmost position)</li>
+<li><code>Swim</code> the inserted item if necessary.</li>
+</ul>
+</li>
+<li><code>Bottom-up Heapification</code>: A better approach (will explain). &#x3D;&gt; $O(N)$<ul>
+<li>Insert an item into an array from the <code>right</code> side, or building from the bottom of the heap.</li>
+<li><code>Sink</code> the inserted item if necessary.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Why?</strong></p>
+<p>Reference: <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/9755721/how-can-building-a-heap-be-on-time-complexity">How can building a heap be O(n) time complexity? (Answer byJeremy West)</a></p>
+<p><code>Sink</code> is better than <code>Swim</code>. Assuming a heap is of height $\log{N}$, sinking from the top takes $1 \times \log{N}$ at most; while swimming from the bottom (when it is full of nodes) takes $N &#x2F; 2 \times \log{N}$.</p>
+<p><code>Swim (Up-Bottom)</code>: </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(h * n/2) + ((h-1) * n/4) + ((h-2)*n/8) + ... + (0 * 1)</span><br><span class="line">The first term is already O(nlogn)</span><br></pre></td></tr></table></figure>
+
+<p><code>Sink (Bottom-Up)</code>: </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(0 * n/2) + (1 * n/4) + (2 * n/8) + ... + (h * 1) &lt; n</span><br><span class="line">Why? It is about Taylor series (details in the link).</span><br></pre></td></tr></table></figure>
+
+<p>The Up-Bottom Heapification is presented by 61B in the next section.</p>
+<p>Here is the process of Bottom-Up heap construction.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wfden.png" alt="My Drawing"></p>
+<h4 id="Operations"><a href="#Operations" class="headerlink" title="Operations"></a>Operations</h4><p><strong>Add:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/eeyu3.png" alt="Question: How to add 3?"></p>
+<ul>
+<li>Add to end of heap temporarily.</li>
+<li>Swim up the hierarchy to your rightful place.</li>
+</ul>
+<p><strong>Delete:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/v95zl.png" alt="Question: Delete min"></p>
+<ul>
+<li>Swap the <code>last item</code> in the heap into the root.</li>
+<li>Then sink your way down the hierarchy, yielding to most qualified folks.</li>
+</ul>
+<p><strong>Summary</strong></p>
+<ul>
+<li><code>getSmallest()</code>: Return the item in the root node.</li>
+<li><code>add(x)</code>: Place the new employee in the last position, and promotes as high as possible.</li>
+<li><code>removeSmallest()</code>: <ul>
+<li>Assassinate the president (of the company), promote the rightmost person in the company to president. Then demote repeatedly, always taking the ‘better’ successor.</li>
+<li>Or, swap the <code>last</code> item in the heap into the root. Sink down the hierarchy to the proper place. Sinking involves swapping nodes if parent &gt; child. Swap the smallest child to preserve min-heap property.</li>
+<li>How could we get the last item &#x3D;&gt; How to better represent a tree?</li>
+</ul>
+</li>
+</ul>
+<h4 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h4><h5 id="Approach-1-1"><a href="#Approach-1-1" class="headerlink" title="Approach 1"></a>Approach 1</h5><p><a target="_blank" rel="noopener" href="https://github.com/junhaowww/cs61b-sp18/blob/master/classcode/w4/MyHeap.java">MyHeap.java</a> (very interesting!)</p>
+<p>It turns out that I did extra comparisons, but it worthed trying.</p>
+<p><strong>1) Use helper methods like size() &amp; height()</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">size</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> size(root);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">size</span><span class="params">(Node x)</span> &#123; <span class="comment">// helper method - make code better</span></span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">return</span> x.size;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">height</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> height(root);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">height</span><span class="params">(Node x)</span> &#123; <span class="comment">// helper method</span></span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">return</span> x.height;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>With this code, we don’t write:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// x.left or x.right might be null</span></span><br><span class="line">x.size = <span class="number">1</span> + x.left.size + x.right.size;</span><br></pre></td></tr></table></figure>
+
+<p>Instead, we should write:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x.size = <span class="number">1</span> + size(x.left) + size(x.right);</span><br><span class="line">x.height = <span class="number">1</span> + Math.max(height(x.left), height(x.right));</span><br></pre></td></tr></table></figure>
+
+<p><strong>2) See promote() &amp; demote()</strong></p>
+<p><code>promote()</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Node <span class="title function_">promote</span><span class="params">(Node x)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">if</span> (x.left != <span class="literal">null</span> &amp;&amp; x.left.key.compareTo(x.key) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    swap(x, x.left);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (x.right != <span class="literal">null</span> &amp;&amp; x.right.key.compareTo(x.key) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    swap(x, x.right);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Why this swapping works?</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  A                        B</span><br><span class="line"> / \   -- swap(A,B) --&gt;   / \</span><br><span class="line">B   C                    A   C</span><br></pre></td></tr></table></figure>
+
+<p>If I <code>swap(B,C)</code>, will C be greater than A?</p>
+<p>No. B &lt; A. After <code>swap(B,C)</code>, C &lt; B. So C &lt; B &lt; A and C is the parent.</p>
+<p>Also, a better way to think about it is to make the tree a list.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// A is the parent</span><br><span class="line">// Remember we can only swap(1,2) or swap(1,3)</span><br><span class="line">A - B - C</span><br><span class="line"></span><br><span class="line">// a) If A is the min, no swapping</span><br><span class="line">// b) If B or C is the min, it will be swapped the to first place.</span><br></pre></td></tr></table></figure>
+
+<p><strong>Actually, it is too much. It could be simpler.</strong></p>
+<p>When the node is being promoted, we just need to compare the node to its parent, not its sibling.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  A                        C</span><br><span class="line"> / \   -- swap(A,C) --&gt;   / \</span><br><span class="line">B   C                    B   A</span><br></pre></td></tr></table></figure>
+
+<p>Because A &lt; B, after <code>swap(A,C)</code> C is less than B.</p>
+<p>However, the data structure determines I can only compare twice because I can’t look to a node <code>x</code>‘s parent. If <code>x</code> is the parent, I don’t know which child should be compared with.</p>
+<p><code>demote()</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">checkProperty</span><span class="params">(Node x)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">/* when size == 0 */</span></span><br><span class="line">  <span class="keyword">if</span> (x.left == <span class="literal">null</span> &amp;&amp; x.right == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">/* when size == 1 */</span></span><br><span class="line">  <span class="keyword">if</span> (x.right == <span class="literal">null</span>) &#123; <span class="comment">/* when size == 2 */</span></span><br><span class="line">    <span class="keyword">return</span> x.key.compareTo(x.left.key) &lt; <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* when size &gt;= 3 */</span></span><br><span class="line">  <span class="keyword">return</span> x.key.compareTo(x.left.key) &lt; <span class="number">0</span> &amp;&amp; x.key.compareTo(x.right.key) &lt; <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">demote</span><span class="params">(Node x)</span> &#123;</span><br><span class="line">  <span class="comment">/* Check property */</span></span><br><span class="line">  <span class="keyword">if</span> (checkProperty(x) == <span class="literal">true</span>) &#123; <span class="comment">// including null cases</span></span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Need swapping */</span></span><br><span class="line">  <span class="keyword">if</span> (x.right == <span class="literal">null</span>) &#123; <span class="comment">/* when size == 2 */</span></span><br><span class="line">    swap(x, x.left);</span><br><span class="line">    <span class="keyword">return</span>; <span class="comment">/* no more children */</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Get the smallest. A (parent) - B - C</span></span><br><span class="line">  <span class="comment">// Why? We know A is not the smallest because checkProperty() wasn&#x27;t passed.</span></span><br><span class="line">  <span class="comment">// So if we find the min(B, C), the min is definitely the min of A, B, and C.</span></span><br><span class="line">  <span class="keyword">if</span> (x.left.key.compareTo(x.right.key) &lt; <span class="number">0</span>) &#123; <span class="comment">// left &lt; right =&gt; goto left</span></span><br><span class="line">    swap(x, x.left);</span><br><span class="line">    demote(x.left);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">// left &gt;= right =&gt; goto right</span></span><br><span class="line">    swap(x, x.right);</span><br><span class="line">    demote(x.right);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>See the comment.</p>
+<h5 id="Approach-3B"><a href="#Approach-3B" class="headerlink" title="Approach 3B"></a>Approach 3B</h5><p>My HeapPQ Implementation (Based on Approach 3B): (<a target="_blank" rel="noopener" href="https://github.com/junhaowww/cs61b-sp18/blob/master/clab8/HeapPQ.java">https://github.com/junhaowww/cs61b-sp18/blob/master/clab8/HeapPQ.java</a>)</p>
+<p>It allows <code>comparators</code> to support MinPQ and MaxPQ. It includes testing.</p>
+<h4 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h4><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/awadc.png" alt="Heap Implementation of a Priority Queue"></p>
+<h2 id="Ex-Discussion-1"><a href="#Ex-Discussion-1" class="headerlink" title="Ex (Discussion)"></a>Ex (Discussion)</h2><h3 id="Ex-1-Heaps-of-Fun"><a href="#Ex-1-Heaps-of-Fun" class="headerlink" title="Ex 1 (Heaps of Fun)"></a>Ex 1 (Heaps of Fun)</h3><p>Just simple practice.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1w32e.png"></p>
+<p>Answer: <a target="_blank" rel="noopener" href="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7se6v.png">my drawing</a></p>
+<h2 id="Ex-Examprep"><a href="#Ex-Examprep" class="headerlink" title="Ex (Examprep)"></a>Ex (Examprep)</h2><h3 id="Ex-1-Median-Value"><a href="#Ex-1-Median-Value" class="headerlink" title="Ex 1 (Median Value)"></a>Ex 1 (Median Value)</h3><p>Consider the min heap below , where each letter represents some value in the tree. Assume each value in the tree is unique.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/poukw.png"></p>
+<p>(a) Assuming values are inserted into the heap in <code>increasing</code> order, indicate all letters which could represent the following values:</p>
+<p>Smallest value: H<br>Median value: K<br>Largest value: G</p>
+<p>(b) Assuming values are inserted into the heap in <code>decreasing</code> order, indicate all letters which could represent the following values:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/pmtpu.png"></p>
+<p>Smallest value: H<br>Median value: L<br>Largest value: A</p>
+<p>(c) Assuming values are inserted into the heap in an <code>unknown</code> order, indicate all letters which could represent the following values:</p>
+<p>As for median: </p>
+<p>1st: Impossible.<br>2nd: Only L</p>
+<p>If D is the median, it can hold 6 elements larger or equal than itself, but there are only 5 elements.</p>
+<p>3rd layers: B, F, K, M<br>4th layers: A, C, E, G</p>
+<p>Smallest value: H<br>Median value: L, B, F, K, M, A, C, E, G<br>Largest value: A, C, E, G</p>
+<h2 id="Ex-Guide-1"><a href="#Ex-Guide-1" class="headerlink" title="Ex (Guide)"></a>Ex (Guide)</h2><p><strong>Priority Queue.</strong> A Max Priority Queue (or PQ for short) is an ADT that supports at least the <code>insert</code> and <code>delete-max operations</code>. A MinPQ supports <code>insert</code> and <code>delete-min</code>.</p>
+<p><strong>Heaps.</strong> A max (min) heap is an <code>array</code> representation of a binary tree such that <code>every node is larger (smaller) than all of its children</code>. This definition naturally applies recursively, i.e. a heap of height 5 is composed of two heaps of height 4 plus a parent.</p>
+<h3 id="C-level"><a href="#C-level" class="headerlink" title="C level"></a>C level</h3><h4 id="Ex-1-Add-Order"><a href="#Ex-1-Add-Order" class="headerlink" title="Ex 1 (Add Order)"></a>Ex 1 (Add Order)</h4><p>Is an array that is sorted in descending order also a max-oriented heap?</p>
+<p>Yes.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">index: 0 1 2 3 4 5 6 7</span><br><span class="line">data:  0 7 6 5 4 3 2 1</span><br><span class="line">Tree:</span><br><span class="line">     7</span><br><span class="line">   /    \</span><br><span class="line">  6      5</span><br><span class="line"> / \    / \</span><br><span class="line">4   3  2   1</span><br></pre></td></tr></table></figure>
+
+<h4 id="Ex-2-Easy"><a href="#Ex-2-Easy" class="headerlink" title="Ex 2 (Easy)"></a>Ex 2 (Easy)</h4><p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spring15/cos226/exams/mid-f09.pdf">Problem 3</a> from Princeton’s Fall 2009 midterm:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/n4u7w.png"></p>
+<p>(a) Along the swimming (promoting) path: <code>K, M, R, T</code>.</p>
+<p>(b) <img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ih769.png"></p>
+<h4 id="Ex-3-Change-or-Not"><a href="#Ex-3-Change-or-Not" class="headerlink" title="Ex 3 (Change or Not?)"></a>Ex 3 (Change or Not?)</h4><p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spring15/cos226/exams/mid-f08.pdf">Problem 4</a> from Princeton’s Fall 2008 midterm:</p>
+<p>(c) True or false: given any binary heap with $N$ <code>distinct</code> keys, the result of inserting a key larger than any of the $N$ keys, and then deleting the maximum key yields the original binary heap.</p>
+<p>True. The same path when swimming and sinking.</p>
+<h3 id="B-level"><a href="#B-level" class="headerlink" title="B level"></a>B level</h3><h4 id="Ex-1-The-k-th-largest"><a href="#Ex-1-The-k-th-largest" class="headerlink" title="Ex 1 (The k-th largest)"></a>Ex 1 (The k-th largest)</h4><p>(Textbook 2.4.7) The largest item in a heap must appear in position 1, and the second largest must appear in position 2 or 3. Give the list of positions in a heap of size 31 where the k-th largest CAN appear, and where the k-th largest CANNOT appear for k &#x3D; 2, 3, 4. Assume values are distinct.</p>
+<p>k &#x3D; 2: <code>2nd or 3rd</code><br>k &#x3D; 3: <code>2nd or 3rd</code> or <code>4th ~ 7th</code><br>k &#x3D; 4: <code>2nd or 3rd</code> or <code>4th ~ 7th</code> or <code>8th ~ 15th</code></p>
+<h4 id="Ex-2-Stack-and-Queue-with-PQs"><a href="#Ex-2-Stack-and-Queue-with-PQs" class="headerlink" title="Ex 2 (Stack and Queue with PQs)"></a>Ex 2 (Stack and Queue with PQs)</h4><p>(Textbook 2.4.21) Explain how to use a priority queue to implement the stack and queue data types.</p>
+<blockquote>
+<p>Interesting!</p>
+</blockquote>
+<ul>
+<li><p>Stack: FILO</p>
+<p>For example, we have a <code>min-heap</code>. To guarantee <code>getSmallest</code>, we have to add in decreasing order (MAX -&gt; MIN). </p>
+<p>So we need another <code>max-heap</code> and add <strong>all values</strong> into the <code>max-heap</code> first, and then get the maximum and put it into the <code>min-heap</code>.</p>
+</li>
+<li><p>Queue: FIFO</p>
+<p>For example, we have a <code>min-heap</code>. To guarantee <code>getSmallest</code>, we have to add in decreasing order (MIN -&gt; MAX).</p>
+<p>So we need another <code>min-heap</code>.</p>
+</li>
+</ul>
+<h4 id="Ex-3-getMin-in-MaxPQ"><a href="#Ex-3-getMin-in-MaxPQ" class="headerlink" title="Ex 3 (getMin in MaxPQ)"></a>Ex 3 (getMin in MaxPQ)</h4><p>(Adapted from Textbook 2.4.27). Add a min() method to a maximum-oriented PQ. Your implementation should use <strong>constant time and constant extra space</strong>.</p>
+<blockquote>
+<p>Interesting!</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">      50</span><br><span class="line">    /    \</span><br><span class="line">  42     30</span><br><span class="line">  /  \   /</span><br><span class="line">10  60  20</span><br></pre></td></tr></table></figure>
+
+<p>Need one field to record the minimum value and initialize it as minus infinity. Each time a new item is added we need to make a comparison and update the minimum value if necessary.</p>
+<p>Besides, we don’t need to make a big change in the <code>getLargest</code> (assume it includes removing) method because it works on the largest number which has no effect on the smallest one except there is only one item.</p>
+<h4 id="Ex-4-Exchange"><a href="#Ex-4-Exchange" class="headerlink" title="Ex 4 (#Exchange)"></a>Ex 4 (#Exchange)</h4><p>(Textbook 2.4.14) What is the minimum number of items that must be exchanged during a remove-the-max operation in a heap of size $N$ with <strong>no duplicate keys</strong>? Give a heap of <code>size 15</code> for which the minimum is achieved. Answer the same question for two and three successive remove-the-maximum operations.</p>
+<p>For size &#x3D; 15, the minimum number of exchanging (not including replacing the root) is <code>1</code> if size &gt; 3.</p>
+<p>The last item could be demoted to the left or right.</p>
+<p>Visualization:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">        15</span><br><span class="line">     /      \ </span><br><span class="line">    14       13</span><br><span class="line">   /  \     /  \</span><br><span class="line">  12  11   10   9</span><br><span class="line"> / \  / \  / \  / \</span><br><span class="line">8  7 6  5  4 3  2  1</span><br></pre></td></tr></table></figure>
+
+<p>For example, we are demoting 1. What if the item at [14] (14 is just an example) is very small. So 1 has to go to left. Then it may stop or continue demoting.</p>
+<p>It depends on the values like [14], [12], [10], [2].</p>
+<blockquote>
+<p>Not finished.</p>
+</blockquote>
+<h4 id="Ex-5-k-heap"><a href="#Ex-5-k-heap" class="headerlink" title="Ex 5 (k-heap)"></a>Ex 5 (k-heap)</h4><p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spring15/cos226/exams/mid-s08.pdf">Problem 4</a> from Princeton’s Spring 2008 midterm.</p>
+<blockquote>
+<p>Interesting!</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">MaxPQ&lt;Integer&gt; pq = <span class="keyword">new</span> <span class="title class_">MaxPQ</span>&lt;Integer&gt;();</span><br><span class="line"><span class="type">int</span> <span class="variable">N</span> <span class="operator">=</span> a.length;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">  pq.insert(a[i]);</span><br><span class="line">  <span class="keyword">if</span> (pq.size() &gt; k) pq.delMax();  <span class="comment">/* MARK */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; k; i++) &#123;</span><br><span class="line">  System.out.println(pq.delMax());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>(a) What does it output? It outputs the <code>k smallest</code> Integers in descending order.</p>
+<p>(b) What is the order of growth of its worst-case running time.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/a97fn.png"></p>
+<p><code>insert</code>: N (a[] is in decreasing order) -&gt; $N\log{N}$</p>
+<p>Note: The maximum size of the heap is $k$.</p>
+<p><code>insert</code>: $N \log{k}$<br><code>MARK</code>: $(N - k) \times \log{k}$<br><code>println</code>: $k \log{k}$</p>
+<p><code>Total</code>: $N\log{k} + (N - k) \times \log{k} + k \log{k} &#x3D; N \log{k}$</p>
+<p><strong>If the marked line was deleted. Repeat the two questions.</strong></p>
+<p>(c) What does it output? It outputs the <code>k largest</code> Integers in descending order.</p>
+<p>(d) What is the order of growth of its worst-case running time.</p>
+<p>Note: The maximum size of the heap is $N$.</p>
+<p><code>insert</code>: $N \log{N}$<br><code>println</code>: $k \log{N}$</p>
+<p><code>Total</code>: $N\log{N} + k \log{N} &#x3D; N\log{N}$</p>
+<p>($N\log{N} + k\log{N} \leq N\log{N} + N\log{N} &#x3D; 2N \log{N} \sim N\log{N}$)</p>
+<h4 id="Ex-6-Zork-Sort"><a href="#Ex-6-Zork-Sort" class="headerlink" title="Ex 6 (Zork Sort)"></a>Ex 6 (Zork Sort)</h4><p><a target="_blank" rel="noopener" href="https://d1b10bmlvqabco.cloudfront.net/attach/hx9h4t96ea8qv/h32s1vxe6mb5o0/i7vkubmrxjn0/fa14_mt2.pdf">Problem 6</a> from Hug’s Fall 2014 midterm.</p>
+<p>Suppose you are given an array A with $n$ elements such that no element is more than $k$ slots away from its position in the sorted array. Assume that $k &gt; 0$ and that $k$, while not constant, is much less than $n$ ($k &lt;&lt; n$).</p>
+<blockquote>
+<p>If k &#x3D; 1, it is sorted.</p>
+</blockquote>
+<p>a) Fill in the blanks such that array A is sorted after execution of this method. The important operations on a <code>PriorityQueue</code> are <code>add(x)</code>, <code>remove()</code>, and <code>isEmpty()</code>. Your solution should be as fast as possible.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rb6v2.png"></p>
+<p>b) What is the running time of this algorithm, as a function of $n$ and $k$? Justify you answer.</p>
+<p>$O(n\log{k})$</p>
+<p>Go over approximately $n$ elements and each time <code>remove</code> or <code>add</code> takes $\log{k}$ since the size of the PriorityQueue is $k$.</p>
+<h4 id="Ex-7-3-heap"><a href="#Ex-7-3-heap" class="headerlink" title="Ex 7 (3-heap)"></a>Ex 7 (3-heap)</h4><ul>
+<li><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spring15/cos226/exams/mid-f12.pdf">Problem 4</a> from Princeton’s 2014 midterm.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/g6gx2.png"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/poko8.png"></p>
+<p>(b) Given the array index $k$ of a key, what are the indices of its three (potential) children as a function of $k$? Assume 1-based indexing.</p>
+<p>For parent $k$ and child $p$:</p>
+<ul>
+<li>Left child &#x3D; $3k - 1$</li>
+<li>Middle child &#x3D; $3k$</li>
+<li>Right child &#x3D; $3k + 1$</li>
+<li>Parent &#x3D; $\frac{p + 1}{3}$</li>
+</ul>
+<p>(c) What is the maximum number of compares for a <code>delete-the-maximum</code> operation as a function of the number of keys $N$ in the data structure?</p>
+<p>To sink a key, we first find the largest child <code>and also</code> determine if it is less than the largest child.</p>
+<p>The first step takes 2 compares and the second step takes only 1 compare. So in total it takes 3 compares in each level.</p>
+<p>Since the height of a 3-heap is $\sim \log_3{N}$, the total number of compares in the worst case is $\sim 3\log_3{N}$.</p>
+<h4 id="Ex-8-Bottom-Up-Heapification"><a href="#Ex-8-Bottom-Up-Heapification" class="headerlink" title="Ex 8 (Bottom-Up Heapification)"></a>Ex 8 (Bottom-Up Heapification)</h4><p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spring15/cos226/exams/mid-s13.pdf">Problem 5</a> from Hug’s Spring 2013 midterm.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6slcm.png" alt="In Approach 3B Representation"></p>
+<p>(b) Consider the process of creating a max heap from an arbitrary text file containing $N$ integers. What is the order of growth of the run time of the best possible algorithm for this process?</p>
+<p><code>Heapification</code> is linear time $O(N)$. Best algorithm is to use <code>bottom-up heapification</code> or <code>bottom-up heap construction</code>, where each node is successively sunk starting with the rightmost element of the array and working backwards to the left. (versus the <code>Up-Bottom Heapification</code> presented by 61B which takes $O(N\log{N})$)</p>
+<p>(c) Is there <code>any reason in terms of time or space efficiency</code> to use a max heap to implement a max priority queue instead of using an LLRB tree? Justify your answer.</p>
+<blockquote>
+<p>Linearithmic: Taking up to time proportional to $N\log{N}$ to run on inputs of size $N$.</p>
+</blockquote>
+<ul>
+<li><code>Time saving</code>. Bottom-up heapification is linear time $O(N)$, whereas constructing an LLRB takes <code>linearithmic</code> time. Finding the max in a max heap is constant time $O(1)$, but in an LLRB it is logarithmic time $O(\log{N})$.</li>
+<li><code>Space saving</code>. A max heap uses less memory since we don’t need to store lots of node objects including links and colors.</li>
+<li></li>
+</ul>
+<h3 id="A-level"><a href="#A-level" class="headerlink" title="A level"></a>A level</h3><h4 id="Ex-1-Median-PQ"><a href="#Ex-1-Median-PQ" class="headerlink" title="Ex 1 (Median PQ)"></a>Ex 1 (Median PQ)</h4><p>Design a data type that supports insert in $O(\log{N})$ time, find-the-median in $O(1)$ time, and delete-the-median in $O(\log{N})$ time.</p>
+<blockquote>
+<p>Super interesting! I like this one!</p>
+</blockquote>
+<p>Use 2 PQs: <code>maxPQ</code> and <code>minPQ</code>. Left-side values are stored in <code>maxPQ</code>, while the right-side values are stored in <code>minPQ</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MedianHeap</span>&lt;Item&gt; &#123;</span><br><span class="line">  <span class="keyword">private</span> MaxPQ&lt;Item&gt; maxPQ;</span><br><span class="line">  <span class="keyword">private</span> MinPQ&lt;Item&gt; minPQ;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">MedianHeap</span><span class="params">()</span> &#123;</span><br><span class="line">    maxPQ = <span class="keyword">new</span> <span class="title class_">MaxPQ</span>&lt;&gt;();</span><br><span class="line">    minPQ = <span class="keyword">new</span> <span class="title class_">MinPQ</span>&lt;&gt;();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">size</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> maxPQ.size() + minPQ.size();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">insert</span><span class="params">(Item x)</span>&#123; <span class="comment">// O(logN)</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> x.compareTo(getMedian());</span><br><span class="line">    <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) &#123; <span class="comment">// &gt; median</span></span><br><span class="line">      minPQ.add(x);</span><br><span class="line">      <span class="keyword">if</span> (minPQ.size() &gt; maxPQ.size()) &#123; <span class="comment">// not balanced</span></span><br><span class="line">        maxPQ.add(minPQ.remove());</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;       <span class="comment">// &lt;= median</span></span><br><span class="line">      maxPQ.add(x);</span><br><span class="line">      <span class="keyword">if</span> ((maxPQ.size - minPQ.size) &gt; <span class="number">1</span>) &#123; <span class="comment">// not balanced</span></span><br><span class="line">        minPQ.add(maxPQ.remove());</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> Item <span class="title function_">deleteMedian</span><span class="params">()</span> &#123; <span class="comment">// O(logN)</span></span><br><span class="line">    <span class="keyword">if</span> (size() == <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="type">Item</span> <span class="variable">deleted</span> <span class="operator">=</span> maxPQ.remove();</span><br><span class="line">    <span class="keyword">if</span> (maxPQ.size() &lt; minPQ.size()) &#123;</span><br><span class="line">      maxPQ.add(minPQ.remove());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> deleted;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> Item <span class="title function_">getMedian</span><span class="params">()</span> &#123;  <span class="comment">// O(1)</span></span><br><span class="line">    <span class="keyword">if</span> (size() == <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (maxPQ.size() == minPQ.size()) <span class="comment">// even</span></span><br><span class="line">      <span class="keyword">return</span> (maxPQ.get() + minPQ.get()) / <span class="number">2.0</span>;</span><br><span class="line">    <span class="keyword">else</span>                              <span class="comment">// odd</span></span><br><span class="line">      <span class="keyword">return</span> maxPQ.get();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Ex-2-Max-Min-PQ"><a href="#Ex-2-Max-Min-PQ" class="headerlink" title="Ex 2 (Max-Min PQ)"></a>Ex 2 (Max-Min PQ)</h4><p>Design a data type that supports insert in $O(\log{N})$ time, delete-the-max in $O(\log{N})$ time, and delete-the-minimum in $O(\log{N})$ time.</p>
+<blockquote>
+<p>Again. Interesting!</p>
+</blockquote>
+<p>Possible solution: minPQ (maxMid)  +  (minMid) maxPQ</p>
+<p>But actually <code>remove</code> may cause bad things to occur. What happens if I delete all from <code>minPQ</code> leaving <code>maxPQ</code> with many items?</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MaxMinPQ</span>&lt;Item&gt; &#123;</span><br><span class="line">  <span class="keyword">private</span> MinPQ&lt;Item&gt; minPQ;</span><br><span class="line">  <span class="keyword">private</span> MaxPQ&lt;Item&gt; maxPQ;</span><br><span class="line">  <span class="keyword">private</span> Item maxMid;  <span class="comment">// points to the max value of minPQ</span></span><br><span class="line">  <span class="keyword">private</span> Item minMid;  <span class="comment">// points to the max value of minPQ</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/31577314/is-it-possible-to-implement-a-binary-heap-that-is-both-a-max-and-a-min-heap">Is it possible to implement a binary heap that is both a max and a min heap?</a></p>
+<p>The simple way is to just use a <code>binary search tree</code>, as M. Shaw and user2357112 recommend.</p>
+<p><strong>Two Binary Heaps</strong></p>
+<p>If you’re required to build this on top of binary heaps, then in each heap, alongside each element, store the element’s position in the other heap. Every time you move an element in one heap, you can go straight to its position in the other heap and update it. When you perform a delete-min or delete-max, no expensive linear scan in the other heap is required.</p>
+<p>Or use hash table to index, as Eric Z mentions:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/0l3y7.jpg" alt="The table is indexed by the value of the heap element"></p>
+<h4 id="Ex-3-Stable-PQ"><a href="#Ex-3-Stable-PQ" class="headerlink" title="Ex 3 (Stable PQ)"></a>Ex 3 (Stable PQ)</h4><p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spring15/cos226/exams/mid-f10.pdf">Problem 7</a> from Princeton’s Fall 2010 midterm.</p>
+<p>A min-based priority queue is <code>stable</code> if <code>min()</code> and <code>deleteMin()</code> return the minimum key that was least-recently inserted. Describe how to implement a <code>StableMinPQ</code> data type such that every operation takes at most (amortized) logarithmic time.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8jdr2.png"></p>
+<p>Reference: <a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spring15/cos226/exams/mid-f10-sol.pdf">Solution from Princeton</a></p>
+<p><strong>Binary heap solution:</strong></p>
+<p>The basic idea is to associate the integer timestamp $i$ with the $i^{th}$ key that is inserted. To compare two keys, compare their keys as usual; if they are not equal, break ties according to the associated timestamp. This ensures that if there are two equal keys, the one that was inserted first is considered smaller than the one that was inserted last. (Example: <a target="_blank" rel="noopener" href="https://lemire.me/blog/2017/03/13/stable-priority-queues/">Stable Priority Queues?</a>)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">StableKey</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> Key key;</span><br><span class="line">  <span class="keyword">private</span> <span class="type">long</span> timestamp;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compareTo</span><span class="params">(StableKey that)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> <span class="built_in">this</span>.key.compareTo(that.key);</span><br><span class="line">    <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) <span class="keyword">return</span> +<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.timestamp - that.timestamp;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Or by adding a parallel array <code>long[] timestamp</code> as an instance variable of StableMinPQ.</p>
+<p><strong>Binary search tree solution:</strong></p>
+<p>To handle duplicate keys, we declare a <code>RedBlackBST&lt;Key, Queue&lt;Key&gt;&gt;</code>, where the value is a queue of all the keys equal to the key.</p>
+<ul>
+<li>To insert a key, we check if there is a key equal to it already in the BST. If there is, we add the key to the corresponding queue.</li>
+<li>To delete the minimum key, we call <code>min()</code> to find the minimum, and return the first element of corresponding queue.</li>
+</ul>
+<h4 id="Ex-4-Random-PQ"><a href="#Ex-4-Random-PQ" class="headerlink" title="Ex 4 (Random PQ)"></a>Ex 4 (Random PQ)</h4><p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spring15/cos226/exams/mid-s12.pdf">Problem 8</a> from Princeton’s Spring 2012 midterm.</p>
+<p>Describe how to add the methods <code>sample()</code> and <code>delRandom()</code> to our binary heap implementation of the <code>MinPQ</code> API. The two methods return a key that iss chosen uniformly at random among the remaining keys, with the latter method also removing <code>that</code> key.</p>
+<p>You should implement the <code>sample()</code> method in constant time and the <code>delRandom()</code> method in time proportional to $\log{N}$, where $N$ is the number of keys in the data structure. For simplicity, do not worry about resizing the underlying array.</p>
+<p><code>sample()</code>: Select a random array index $r$ (between $1$ and $N$) and return the key $a[r]$.</p>
+<p><code>delRandom()</code>:</p>
+<ul>
+<li><p>Select: Do <code>sample()</code> and save away the key $a[r]$, to be returned.</p>
+</li>
+<li><p>Delete: Swap $a[r]$ and $a[N]$ and decrement $N$.</p>
+</li>
+<li><p>Restore: Restore heap order invariants.</p>
+<ul>
+<li>Call <code>sink(r)</code> if $a[N]$ was too big.</li>
+<li>Call <code>swim(r)</code> if $a[N]$ was too small. (Since $a[N]$ might not be the largest key)</li>
+<li>Note: Although two methods are called, the actual swapping would only happen at one direction (up or down) or no swapping happens if $a[N]$ fits quite well.<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// If a[N] sinks down, C or D would be moved up to the position r.</span><br><span class="line">// At that time, no swim is needed since C or D would be definitely less than A.</span><br><span class="line">A</span><br><span class="line">  \</span><br><span class="line">  a[N] (it was a[r])</span><br><span class="line"> /   \</span><br><span class="line">C     D</span><br></pre></td></tr></table></figure></li>
+<li>Note: The <code>order</code> of sink and swim does not matter.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Key <span class="title function_">sample</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> <span class="number">1</span> + StdRandom.uniform(N); <span class="comment">// between 1 and N</span></span><br><span class="line">  <span class="keyword">return</span> a[r];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> Key <span class="title function_">delRandom</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> <span class="number">1</span> + StdRandom.uniform(N);</span><br><span class="line">  <span class="type">Key</span> <span class="variable">key</span> <span class="operator">=</span> a[r];</span><br><span class="line">  exch(r, N--); <span class="comment">// to make deleting easy</span></span><br><span class="line">  sink(r);</span><br><span class="line">  swim(r);</span><br><span class="line">  a[N + <span class="number">1</span>] = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">return</span> key;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Note: <code>sample()</code> and <code>delRandom()</code> may not refer to the same key. One way to achieve is to add a field <code>randomIndex</code> and additional helper method <code>random()</code> to generate the randomized index. Then both two methods above refer to this index.</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

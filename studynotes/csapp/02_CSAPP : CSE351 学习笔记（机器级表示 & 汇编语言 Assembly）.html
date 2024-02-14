@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="汇编代码是机器代码的文本表示，给出程序中的每一条指令。通过阅读汇编代码，我们能够理解编译器的优化能力，并分析代码中隐含的低效率。与机器代码相比，汇编代码的主要特点是它用可读性更好的文本格式表示。 源代码与对应的汇编代码的关系通常不太容易理解——就像要拼出的拼图与盒子上图片的设计有点不太一样。这是一种逆向工程（reverse engineering）——通过研究系统和逆向工作，来试图了解系统的创">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CSAPP &#x2F; CSE 351 学习笔记（机器级表示 &amp; 汇编语言 Assembly）">
+<meta property="og:url" content="https://junhaow.com/studynotes/csapp/02_CSAPP%20:%20CSE351%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E6%9C%BA%E5%99%A8%E7%BA%A7%E8%A1%A8%E7%A4%BA%20&%20%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%20Assembly%EF%BC%89.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="汇编代码是机器代码的文本表示，给出程序中的每一条指令。通过阅读汇编代码，我们能够理解编译器的优化能力，并分析代码中隐含的低效率。与机器代码相比，汇编代码的主要特点是它用可读性更好的文本格式表示。 源代码与对应的汇编代码的关系通常不太容易理解——就像要拼出的拼图与盒子上图片的设计有点不太一样。这是一种逆向工程（reverse engineering）——通过研究系统和逆向工作，来试图了解系统的创">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dwqn6.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vi0ph.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4ezs3.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/t8ris.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/amnso.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ewxfd.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ku1mk.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tehso.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ph76l.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/g8j2f.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9cm6x.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4xwuh.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/b6dms.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/lhsjk.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/h04h4.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8cv6c.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/nlqqp.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/pdda4.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xj8u2.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.199Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.199Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dwqn6.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CSAPP / CSE 351 学习笔记（机器级表示 &amp; 汇编语言 Assembly）</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>汇编代码是机器代码的<code>文本表示</code>，给出程序中的每一条<code>指令</code>。通过阅读汇编代码，我们能够理解编译器的优化能力，并分析代码中隐含的低效率。与机器代码相比，汇编代码的主要特点是它用可读性更好的文本格式表示。</p>
+<p>源代码与对应的汇编代码的关系通常不太容易理解——就像要拼出的拼图与盒子上图片的设计有点不太一样。这是一种<code>逆向工程</code>（reverse engineering）——通过研究系统和逆向工作，来试图了解系统的创建过程。</p>
+<h2 id="历史观点"><a href="#历史观点" class="headerlink" title="历史观点"></a>历史观点</h2><p>Intel 处理器系列俗称 x86，经历了一个长期的、不断进化的发展过程。开始时，它是第一代单芯片、16 位微处理器之一，由于当时集成电路技术水平十分有限，其中做了很多妥协。</p>
+<p>Intel CPU 历史：</p>
+<table>
+<thead>
+<tr>
+<th>CPU</th>
+<th>Date</th>
+<th>#Transistor</th>
+<th>MHz</th>
+<th>Feature</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>8086</td>
+<td>1978 年</td>
+<td>29K</td>
+<td>5-10</td>
+<td>第一代单芯片、16 位微处理器之一</td>
+</tr>
+<tr>
+<td>i386</td>
+<td>1986 年</td>
+<td>275K</td>
+<td>16-33</td>
+<td>IA32，增加了平坦寻址模式（flat addressing model），Intel 第一台全面支持 Unix 的机器</td>
+</tr>
+<tr>
+<td>Pentium 4E</td>
+<td>2004 年</td>
+<td>125M</td>
+<td>？</td>
+<td>超线程（hyperthreading）、x86-64</td>
+</tr>
+<tr>
+<td>Core 2</td>
+<td>2006 年</td>
+<td>291M</td>
+<td>？</td>
+<td>第一个多核微处理器（不支持超线程）</td>
+</tr>
+<tr>
+<td>Core i7，Nehalem</td>
+<td>2008 年</td>
+<td>781M</td>
+<td>？</td>
+<td>多线程、多核</td>
+</tr>
+</tbody></table>
+<p>AMD（Advanced Micro Devices）在技术上紧跟 Intel，执行的市场策略是：生产性能稍低但是价格更便宜的处理器（slower, but cheaper）。2002 年，AMD 的处理器变得更加有竞争力，它们率先突破了可商用微处理器的1 GHz 的时钟速度屏障，并且引入了广泛采用的 IA32 的 64 位扩展 x86-64（AMD64）。</p>
+<blockquote>
+<p>AMD usually applies aggressive designs.</p>
+</blockquote>
+<h2 id="程序编码"><a href="#程序编码" class="headerlink" title="程序编码"></a>程序编码</h2><p>对于机器级编程来说，其中两种抽象尤为重要。第一种是<code>指令集体系结构</code>或<code>指令集架构</code>（Instruction Set Architecture，ISA）来定义机器级程序的格式和行为，它定义了处理器状态、指令的格式，以及每条指令对状态的影响。第二种抽象是，机器级程序使用的内存地址是<code>虚拟地址</code>，提供的内存模型看上去是一个非常大的字节数组。</p>
+<p>x86-64 的机器代码和原始的 C 代码差别非常大。一些通常对 C 语言程序员隐藏的处理器状态都是可见的：</p>
+<ul>
+<li><code>程序计数器</code>（PC，在 x86-64 中用 %rip 表示，IA32 中用 %eip 表示）：给出将要执行的下一条指令在内存中的地址。</li>
+<li><code>整数寄存器文件</code>：包含 16 个命名的位置，分别存储 64 位的值。这些寄存器可以存储地址或整数数据，或记录某些重要的程序状态。而其他的寄存器用来保存临时数据，例如参数、局部变量，以及函数的返回值。</li>
+<li><code>条件码寄存器</code>：保存着最近执行的算术或逻辑指令的状态信息。它们用来实现控制或数据流中的条件变化，比如说用来实现 if 和 while 语句。</li>
+<li><code>向量寄存器</code>：可以存放一个或多个整数或浮点数值。</li>
+</ul>
+<p>汇编代码不区分有符号或无符号整数，不区分各种类型的指针，甚至不区分指针和整数。</p>
+<p>x86-64 的虚拟地址是由 64 位的字来表示的。在目前的实现中，这些地址的高 16 位必须设置为 0，所以一个地址实际上能够指定的是 $2^{48}$或 256 TB 范围内的一个字节。</p>
+<p>代码示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">long</span> <span class="title function_">mult2</span><span class="params">(<span class="type">long</span>, <span class="type">long</span>)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">multstore</span><span class="params">(<span class="type">long</span> x, <span class="type">long</span> y, <span class="type">long</span> *dest)</span> &#123;</span><br><span class="line">  <span class="type">long</span> t = mult2(x, y);</span><br><span class="line">  *dest = t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在命令行上使用<code>-S</code>选项，就能看到 C 语言编译器产生的汇编代码：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">multstore:</span></span><br><span class="line"><span class="keyword"></span>  pushq %rbx</span><br><span class="line">  movq  %rdx, %rbx</span><br><span class="line">  call  <span class="keyword">mult2</span></span><br><span class="line"><span class="keyword"></span>  movq  %rax, (%rbx)</span><br><span class="line">  popq  %rbx</span><br><span class="line">  ret</span><br></pre></td></tr></table></figure>
+
+<p>要查看机器代码文件的内容，有一类称为<code>反汇编器</code>（disassembler）的程序非常有用。这些程序根据机器代码产生一种类似于汇编代码的格式。在 Linux 系统中，带<code>-d</code>命令行标志的程序<code>OBJDUMP</code>可以充当这个角色：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -d mstore.o</span><br></pre></td></tr></table></figure>
+
+<p>所有以<code>.</code>开头的行都是指导汇编器和链接器工作的<code>伪指令</code>。我们通常可以忽略这些行。</p>
+<p>本文使用的是<code>ATT</code>格式的汇编代码格式。</p>
+<p>Intel（一般只在 Intel 和 Microsoft 的文档遇到）和 ATT 格式在如下方面不同：</p>
+<ul>
+<li>Intel 代码省略了指示大小的后缀，用的是<code>push</code>，而不是<code>pushq</code>。</li>
+<li>Intel 代码省略了寄存器名字前面的<code>%</code>符号，用的是<code>rbx</code>，而不是<code>%rbx</code>。</li>
+<li>Intel 代码用不同的方式来描述内存中的位置，用的是<code>QWORD PTR [rbx]</code>，而不是<code>(%rbx)</code>。</li>
+<li>在带有多个操作数的指令情况下，列出<code>操作数的顺序相反</code>。</li>
+</ul>
+<p>在 C 程序中插入汇编代码有两种方法：</p>
+<ol>
+<li>编写完整的函数，放进一个独立的汇编代码文件中，让汇编器和链接器把它和用 C 语言书写的代码合并起来。</li>
+<li>使用 GCC 的内联汇编（inline assembly）特性，用 asm 伪指令可以在 C 程序中包含简短的汇编代码。（这种方法减少了与机器代码相关的代码量）</li>
+</ol>
+<p>Three basic kinds of instructions:</p>
+<ol>
+<li>Perform arithmetic function on register or memory data</li>
+<li>Transfer data between register and memory (load &amp; store)</li>
+<li>Transfer control (conditional <code>if</code> &amp; unconditional <code>jump</code>)</li>
+</ol>
+<h2 id="数据格式"><a href="#数据格式" class="headerlink" title="数据格式"></a>数据格式</h2><p>由于侍从 16 位体系结构扩展成 32 位的，Intel 用术语<code>字</code>（word）表示 16 位数据类型。因此，32 位数称为<code>双字</code>（double words），64 位数称为<code>四字</code>（quad words）。注意以下汇编代码的后缀：</p>
+<table>
+<thead>
+<tr>
+<th>C 声明</th>
+<th>Intel 数据类型</th>
+<th>汇编代码后缀</th>
+<th>大小（字节）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>char</td>
+<td>字节</td>
+<td>b</td>
+<td>1</td>
+</tr>
+<tr>
+<td>short</td>
+<td>字</td>
+<td>w</td>
+<td>2</td>
+</tr>
+<tr>
+<td>int</td>
+<td>双字</td>
+<td>l</td>
+<td>4</td>
+</tr>
+<tr>
+<td>long</td>
+<td>四字</td>
+<td>q</td>
+<td>8</td>
+</tr>
+<tr>
+<td>char*</td>
+<td>四字</td>
+<td>q</td>
+<td>8</td>
+</tr>
+<tr>
+<td>float</td>
+<td>单精度</td>
+<td>s</td>
+<td>4</td>
+</tr>
+<tr>
+<td>double</td>
+<td>双精度</td>
+<td>l</td>
+<td>8</td>
+</tr>
+</tbody></table>
+<h2 id="访问信息"><a href="#访问信息" class="headerlink" title="访问信息"></a>访问信息</h2><p>一个 x86-64 的中央处理单元（CPU）包含一组 16 个存储 64 位值的<code>通用目的寄存器</code>。这些寄存器用来存储整数数据和指针。最初的 8086 中有 8 个 16 位的寄存器。每个寄存器都有特殊的用途，它们的名字就反映了这些不同的用途。在 x86-64 中，还增加了 8 个新的寄存器，它们的标号是按照新的命名规则制定的：从<code>%r8</code>到<code>%r15</code>。</p>
+<p><code>栈指针</code>是用来指明运行时栈的结束位置。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dwqn6.jpg" alt="整数寄存器（CSAPP 3-2）"></p>
+<h3 id="操作数指示符"><a href="#操作数指示符" class="headerlink" title="操作数指示符"></a>操作数指示符</h3><p>大多数指令有一个或多个<code>操作数</code>（operand），指示出执行一个操作中要使用的源数据值，以及放置结果的目的位置。x86-64 支持多种操作数格式。源数据值可以以<code>常数</code>形式给出，或是从<code>寄存器</code>或<code>内存</code>中读出，结果可以存放在<code>寄存器</code>或<code>内存</code>中。各种不同的的操作数的可能性被分为三种类型：</p>
+<ul>
+<li>立即数（immediate）：用来表示常数，如<code>$-577</code>或<code>$0x1F</code>。</li>
+<li>寄存器（register）：表示寄存器的内容。</li>
+<li>内存引用：根据计算出来的地址（通常叫有效地址，effective address）访问某个内存位置。</li>
+</ul>
+<p>有多种不同的<code>寻址模式</code>，允许不同形式的内存引用。其中<code>Imm(rb, ri, s)</code>表示的是最常用的形式。其中，<code>Imm</code>是立即数偏移，<code>rb</code>是基址寄存器，<code>ri</code>是变址寄存器，和一个比例因子 s（这里的 s 必须是 1、2、4 或者 8）。基址和变址都必须是 64 位寄存器。有效地址被计算为<code>Imm + R[rb] + R[ri] * s</code>。引用数组元素时，会用到这种通用形式。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vi0ph.jpg" alt="操作数格式（CSAPP 3-3）"></p>
+<h3 id="数据传送指令"><a href="#数据传送指令" class="headerlink" title="数据传送指令"></a>数据传送指令</h3><p>最简单形式的数据传送指令<code>MOV</code>类，包括<code>movb</code>、<code>movw</code>、<code>movl</code>、<code>movq</code>。</p>
+<p>x86-64 加了一条限制，传送指令的两个操作数不能都指向内存位置，所以将一个内存上的值复制到内存上的另一个位置需要两条指令完成。MOV 指令只会更新目的操作数指定的那些寄存器字节或内存位置。</p>
+<p>唯一的例外是<code>movl</code>指令以寄存器作为目的时它会把该寄存器的高位 4 字节设置为 0。造成这个例外的原因是 x86-64 采用的惯例，即任何为寄存器生成 32 位值的指令都会把该寄存器的高位部分设置为 0。</p>
+<p>下面列出了五种可能的组合：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">movl  $<span class="number">0x4050</span>, %eax</span><br><span class="line">movw  %<span class="keyword">bp, </span>%<span class="built_in">sp</span></span><br><span class="line">movb  (%rdi, %rcx), %al</span><br><span class="line">movb  $-<span class="number">17</span>, (%rsp)  <span class="comment"># (register name) -&gt; get the value</span></span><br><span class="line">movq  %rax, -<span class="number">12</span>(%rbp)</span><br></pre></td></tr></table></figure>
+
+<p>此外，<code>movabsq</code>指令能够以任意 64 位立即数作为源操作数，并且只能以寄存器作为目的。</p>
+<p>以下是从低位到高位字节的<code>零扩展</code>和<code>符号扩展</code>的 MOV 类指令：</p>
+<table>
+<thead>
+<tr>
+<th>零扩展</th>
+<th>符号扩展</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>movzbw</td>
+<td>movsbw</td>
+</tr>
+<tr>
+<td>movzbl</td>
+<td>movsbl</td>
+</tr>
+<tr>
+<td>movzwl</td>
+<td>movswl</td>
+</tr>
+<tr>
+<td>movzbq</td>
+<td>movsbq</td>
+</tr>
+<tr>
+<td>movzwq</td>
+<td>movswq</td>
+</tr>
+<tr>
+<td>&#x2F;</td>
+<td>movslq</td>
+</tr>
+<tr>
+<td>&#x2F;</td>
+<td>cltq（把 %eax 符号扩展到 %rax）</td>
+</tr>
+</tbody></table>
+<p><strong>数据传送示例</strong></p>
+<p>C 代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">long</span> <span class="title function_">exchange</span><span class="params">(<span class="type">long</span> *xp, <span class="type">long</span> y)</span> &#123;</span><br><span class="line">  <span class="type">long</span> x = *xp;</span><br><span class="line">  *xp = y;</span><br><span class="line">  <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>汇编代码：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">exchange:</span></span><br><span class="line">  movq  (%rdi), %rax  <span class="comment"># Get x at xp. Set as return value</span></span><br><span class="line">  movq  %rsi, (%rdi)  <span class="comment"># Store y at xp.</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="压入和弹出栈数据"><a href="#压入和弹出栈数据" class="headerlink" title="压入和弹出栈数据"></a>压入和弹出栈数据</h3><p>在 x86-64 中，程序栈存放在内存中某个区域，且栈是向下增长的（<code>高地址</code>到<code>低地址</code>）。<code>pushq</code>指令的功能是把数据压入到栈中，而<code>popq</code>指令是弹出数据。这些指令都是只有一个操作数——压入的数据源和弹出的数据目的。</p>
+<p><code>pushq</code>指令：首先将栈指针<code>%rsp</code>减 8，然后将值写到新的栈顶地址，其等价于：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">subq </span> $<span class="number">8</span>, %rsp      <span class="comment"># Decrement stack pointer</span></span><br><span class="line">movq  %rbp, (%rsp)  <span class="comment"># Store %rbp on stack</span></span><br></pre></td></tr></table></figure>
+
+<p><code>popq</code>指令：弹出一个四字的操作包括从栈顶位置读出数据，然后将栈指针<code>%rsp</code>加 8，其等价于：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">movq  (%rsp), %rax  <span class="comment"># Read %rax from stack</span></span><br><span class="line"><span class="keyword">addq </span> $<span class="number">8</span>, %rsp      <span class="comment"># Increment stack pointer</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="算术和逻辑操作"><a href="#算术和逻辑操作" class="headerlink" title="算术和逻辑操作"></a>算术和逻辑操作</h2><p>大多数操作数都分成了指令类，这些指令类有各种带不同大小操作数的变种（只有<code>leaq</code>没有其他大小的变种）。这些操作被分为四组：<code>加载有效地址</code>、<code>一元操作</code>、<code>二元操作和移位</code>。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4ezs3.jpg" alt="整数算术操作（CSAPP 3-10）"></p>
+<h3 id="加载有效地址"><a href="#加载有效地址" class="headerlink" title="加载有效地址"></a>加载有效地址</h3><p>加载有效地址（load effective address）指令 leaq 实际上是 movq 指令的变形。它的指令形式是<code>从内存读数据到寄存器</code>，但实际上它根本就<code>没有引用内存</code>。它的第一个操作数看上去是一个内存引用，但该指令并不是从指定的位置读入数据，而是将有效地址写入到目的操作数。这条指令可以：</p>
+<ul>
+<li>为后面的内存引用<code>产生指针</code></li>
+<li>描述普通的<code>算术操作</code></li>
+</ul>
+<p><strong>注意</strong>：目的操作数必须是一个<code>寄存器</code>，不能是<code>内存地址</code></p>
+<p>为了说明 leaq 在编译出的代码中的使用，看看下面这个 C 程序：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">long</span> <span class="title function_">scale</span><span class="params">(<span class="type">long</span> x, <span class="type">long</span> y, <span class="type">long</span> z)</span> &#123;</span><br><span class="line">  <span class="type">long</span> t = x + <span class="number">4</span> * y + <span class="number">12</span> * z;</span><br><span class="line">  <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译时，该函数的算术运算以三条 leaq 指令实现：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">scale:</span></span><br><span class="line"><span class="keyword"></span>  <span class="comment"># x in %rdi, y in %rsi, z in %rdx</span></span><br><span class="line">  leaq  (%rdi, %rsi, <span class="number">4</span>), %rax   <span class="comment"># x + 4 * y</span></span><br><span class="line">  leaq  (%rdx, %rdx, <span class="number">2</span>), %rdx   <span class="comment"># z + 2 * z = 3 * z</span></span><br><span class="line">  leaq  (%rax, %rdx, <span class="number">4</span>), %rax   <span class="comment"># (x + 4 * y) + 4 * (3 * z) = x + 4 * y + 12 * z</span></span><br><span class="line">  <span class="comment"># return value stored at %rax</span></span><br><span class="line">  ret</span><br></pre></td></tr></table></figure>
+
+<h3 id="特殊的算术操作"><a href="#特殊的算术操作" class="headerlink" title="特殊的算术操作"></a>特殊的算术操作</h3><p>两个 64 位有符号或无符号整数相乘得到的乘积需要 128 位来表示。Intel 把 16 字节的数称为<code>八字</code>（oct word）。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/t8ris.jpg" alt="特殊的算术操作（CSAPP 3-12）"></p>
+<p><code>imulq</code>指令又两种不同的形式。其中一种，是<code>IMUL</code>指令类中的一种。这种形式的<code>imulq</code>指令是一个<code>双操作数</code>乘法指令。</p>
+<p>此外，x86-64 指令集还提供了两条不同的<code>单操作数</code>乘法指令，以计算两个 64 位值的全 128 位乘积——一个是<code>无符号数乘法</code>（mulq），而另一个是<code>补码乘法</code>（imulq）。这两条指令都要求一个参数必须在寄存器<code>%rax</code>中，而另一个作为指令的源操作数给出。虽然<code>imulq</code>可以用于两个不同的乘法操作，但是汇编器能够通过计算操作数的数目，分辨出想用哪条指令。</p>
+<h2 id="控制"><a href="#控制" class="headerlink" title="控制"></a>控制</h2><p>用<code>jump</code>指令可以改变一组机器代码指令的执行顺序，<code>jump</code>指令指定控制应该被传递到程序的某个其他部分，可能是<code>依赖于某个测试的结果</code>。</p>
+<h3 id="条件码"><a href="#条件码" class="headerlink" title="条件码"></a>条件码</h3><p>除了整数寄存器，CPU 还维护着一组单个位的<code>条件码</code>（condition code）寄存器，它们描述了最近的算术或逻辑操作的属性。可以检测这些寄存器来执行条件分支指令。常用的条件码有：</p>
+<ul>
+<li><code>CF</code>：进位标志。最近的操作使最高位产生了进位。可用来检查无符号操作的溢出。</li>
+<li><code>ZF</code>：零标志。最近的操作得到的结果为 0。</li>
+<li><code>SF</code>：符号标志。最近的操作得到的结果为负数。</li>
+<li><code>OF</code>：溢出标志。最近的操作导致一个补码溢出——正溢出或负溢出。</li>
+</ul>
+<p>比如说，假设我们用一条 ADD 指令完成等价于 C 表达式<code>t = a + b</code>（<code>addq  b  a</code>）的功能。然后，根据下面的 C 表达式来设置条件码：</p>
+<table>
+<thead>
+<tr>
+<th>条件码</th>
+<th>等价的 C 表达式（a 原来的数，t 新的数）</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CF</td>
+<td>(unsigned) t &lt; (unsigned) a</td>
+<td>无符号溢出</td>
+</tr>
+<tr>
+<td>ZF</td>
+<td>(t &#x3D;&#x3D; 0)</td>
+<td>零</td>
+</tr>
+<tr>
+<td>SF</td>
+<td>(t &lt; 0)</td>
+<td>负数</td>
+</tr>
+<tr>
+<td>OF</td>
+<td>(a &lt; 0 &#x3D;&#x3D; b &lt; 0) &amp;&amp; (t &lt; 0 !&#x3D; a &lt; 0)</td>
+<td>有符号溢出</td>
+</tr>
+</tbody></table>
+<p><strong>注意：</strong>leaq 指令不改变任何条件码，因为它是用来进行地址计算的。</p>
+<p>此外，还有两类指令只设置条件码而不改变任何其他寄存器。<code>CMP</code>指令根据两个操作数之差来设置条件码（相当于不改变目的寄存器的<code>SUB</code>指令）。在 ATT 格式中，列出操作数的顺序是相反的，这使代码有点难读。如果两个操作数相等，这些指令会将零标志设置为 1，而其他的标志可以用来确定两个操作数之间的大小关系。</p>
+<p><code>TEST</code>指令的行为与<code>AND</code>指令一样，除了不改变目的寄存器的值。例如，<code>testq  %rax, %rax</code>用来检查<code>%rax</code>是负数、零、还是正数。</p>
+<ul>
+<li><code>CMP  S1, S2</code>：cmpb、cmpw、cmpl、cmpq。</li>
+<li><code>TEST  S1, S2</code>：testb、testw、testl、testq。</li>
+</ul>
+<h3 id="访问条件码"><a href="#访问条件码" class="headerlink" title="访问条件码"></a>访问条件码</h3><p>条件码通常不会直接读取，常用的使用方法有三种：</p>
+<ol>
+<li>可以根据条件码的某种组合，将一个字节设置为 0 或者 1（使用<code>SET</code>指令）</li>
+<li>可以条件跳转到程序的某个其他的部分</li>
+<li>可以有条件地传送数据</li>
+</ol>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># int comp(data_t a, data_t b)</span></span><br><span class="line"><span class="comment"># a in %rdi, b in %rsi</span></span><br><span class="line"><span class="symbol">comp:</span></span><br><span class="line">  cmpq    %rsi, %rdi  <span class="comment"># Compare a:b</span></span><br><span class="line">  setl    %al         <span class="comment"># Set low-order byte of %eax to 0 or 1</span></span><br><span class="line">  <span class="keyword">movzbl </span> %al, %eax   <span class="comment"># Clear rest of %eax (and rest of %rax)</span></span><br><span class="line">  ret</span><br></pre></td></tr></table></figure>
+
+<p>注意<code>cmpq</code>指令的比较顺序。虽然参数列出的顺序先是<code>%rsi(b)</code>再是<code>%rdi(a)</code>，实际上比较的是 a 和 b。</p>
+<h3 id="跳转指令"><a href="#跳转指令" class="headerlink" title="跳转指令"></a>跳转指令</h3><p>在汇编代码中，这些跳转的目的地通常用一个<code>标号</code>（label）指明。考虑下面的汇编代码序列：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  movq  $<span class="number">0</span>, %rax</span><br><span class="line">  <span class="keyword">jmp </span>  .L1</span><br><span class="line">  movq  (%rax), %rdx  <span class="comment"># Null pointer dereference (skipped)</span></span><br><span class="line"><span class="symbol">.L1:</span></span><br><span class="line">  popq  %rdx  <span class="comment"># Jump target</span></span><br></pre></td></tr></table></figure>
+
+<p>指令<code>jmp .L1</code>会导致程序跳过<code>movq</code>指令，而从<code>popq</code>指令开始继续执行。在产生目标代码文件时，<code>汇编器</code>会确定所有带标号指令的地址，并将<code>跳转目标</code>（目的指令的地址）编码为跳转指令的一部分。</p>
+<p>jmp 指令是<code>无条件跳转</code>。它可以是<code>直接跳转</code>（<code>jmp .L1</code>），也可以<code>间接跳转</code>（如<code>jmp *%rax</code>和<code>jmp *(%rax)</code>）。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/amnso.jpg" alt="跳转指令（CSAPP 3-15）"></p>
+<p>跳转指令有几种不同的编码，但是最常用都是<code>PC 相对的</code>（PC-relative）。也就是，它们会将目标指令的地址与紧跟在跳转指令后面那条指令的地址（PC 值）之间的差作为编码。这种实现基于<code>位置无关代码</code>机制。第二种编码方法是给出<code>「绝对」地址</code>，用四个字节直接指定目标。汇编器和链接器会选择适当的跳转目的编码。</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编号 地址  指令字节序列  汇编代码</span></span><br><span class="line"><span class="number">1</span>     <span class="number">0</span>:    <span class="number">48</span> <span class="number">89</span> f8    mov   %rdi, %rax</span><br><span class="line"><span class="number">2</span>     <span class="number">3</span>:    eb <span class="number">03</span>       <span class="keyword">jmp </span>  <span class="number">8</span> &lt;loop+<span class="number">0x8</span>&gt;</span><br><span class="line"><span class="number">3</span>     <span class="number">5</span>:    <span class="number">48</span> d1 f8    sar   %rax</span><br><span class="line"><span class="number">4</span>     <span class="number">8</span>:    <span class="number">48</span> <span class="number">85</span> c0    test  %rax, %rax</span><br><span class="line"><span class="number">5</span>     <span class="keyword">b: </span>   <span class="number">7</span>f f8       <span class="keyword">jg </span>   <span class="number">5</span> &lt;loop+<span class="number">0x5</span>&gt;</span><br><span class="line"><span class="number">6</span>     d:    f3 c3       repz  retq</span><br></pre></td></tr></table></figure>
+
+<p>第 2 行中跳转指令的跳转目标指明为<code>0x8</code>，第 5 行中跳转指令的跳转目标是<code>0x5</code>。注意，<code>03</code>和<code>f8</code>（相当于十进制的<code>-8</code>）是偏移地址，最后分别跳到第 4 行（+ 下一条指令的地址<code>0x5</code>，5）和第 3 行（+ 下一条指令的地址<code>0xd</code>，13）。</p>
+<p><code>rep</code>和<code>repz</code>分别等价于<code>retq</code>和<code>rep</code>，参考：p141。</p>
+<h3 id="用条件控制来实现条件分支"><a href="#用条件控制来实现条件分支" class="headerlink" title="用条件控制来实现条件分支"></a>用条件控制来实现条件分支</h3><p>C 语言中的 if-else 语句的通用形式模板如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (test-expr)</span><br><span class="line">  then-statement</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="keyword">else</span>-statement</span><br><span class="line">done-statement</span><br></pre></td></tr></table></figure>
+
+<p>对于这种通用形式，汇编实现通常会使用下面这种形式：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">  t = test-expr;</span><br><span class="line">  <span class="keyword">if</span> (!t)</span><br><span class="line">    <span class="keyword">goto</span> <span class="literal">false</span>;</span><br><span class="line">  then-statement</span><br><span class="line">  <span class="keyword">goto</span> done;</span><br><span class="line"><span class="literal">false</span>:</span><br><span class="line">  <span class="keyword">else</span>-statement</span><br><span class="line">done:</span><br><span class="line">  done-statement</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例：</strong></p>
+<p>C 代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">cond</span><span class="params">(<span class="type">long</span> a, <span class="type">long</span> *p)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (p &amp;&amp; a &gt; *p)</span><br><span class="line">    *p = a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>GCC 会产生下面的汇编代码：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># void cond(long a, long *p)</span></span><br><span class="line"><span class="comment"># a in %rdi, p in %rsi</span></span><br><span class="line"><span class="symbol">cond:</span>                   <span class="comment"># 这样就解释了 p &amp;&amp; a &gt; *p 的写法，如果第一个条件不成立，第二个条件是不会执行的</span></span><br><span class="line">  testq   %rsi, %rsi    <span class="comment"># 相当于 AND %rsi, %rsi 只有 NULL 才成立</span></span><br><span class="line">  <span class="keyword">je </span>     .L1           <span class="comment"># je(equal / zero) if p == NULL: jump</span></span><br><span class="line">  cmpq    %rdi, (%rsi)</span><br><span class="line">  <span class="keyword">jge </span>    .L1           <span class="comment"># if %rsi &gt;= %rdi</span></span><br><span class="line">  movq    %rdi, (%rsi)  <span class="comment"># *p = a</span></span><br><span class="line"><span class="symbol">.L1:</span></span><br><span class="line">  rep</span><br><span class="line">  ret</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="用条件传送来实现条件分支"><a href="#用条件传送来实现条件分支" class="headerlink" title="用条件传送来实现条件分支"></a>用条件传送来实现条件分支</h3><p>实现条件操作的传统方法是通过使用<code>控制</code>的条件转移。当条件满足时，程序沿着一条执行路径执行，而当条件不满足时，就走另一条路径。这种机制简单而通用，但是在现代处理器上，它可能非常低效。</p>
+<p>一种替代的策略是使用<code>数据</code>的条件转移。这种方法计算一个条件操作的两种结果，然后根据条件是否满足从中选取一个。只有在一些受限的情况，这种策略才可行，但是如果可行，就可以用一条简单的<code>条件传送</code>指令来实现它。</p>
+<p>原始 C 语言代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">long</span> <span class="title function_">absdiff</span><span class="params">(<span class="type">long</span> x, <span class="type">long</span> y)</span> &#123;</span><br><span class="line">  <span class="type">long</span> result;</span><br><span class="line">  <span class="keyword">if</span> (x &lt; y)</span><br><span class="line">    result = y - x;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    result = x - y;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用条件赋值的实现：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">long</span> <span class="title function_">cmovdiff</span><span class="params">(<span class="type">long</span> x, <span class="type">long</span> y)</span> &#123;</span><br><span class="line">  <span class="type">long</span> rval = y - x;</span><br><span class="line">  <span class="type">long</span> eval = x - y;</span><br><span class="line">  <span class="type">long</span> ntest = x &gt;= y;</span><br><span class="line">  <span class="comment">/* Line below requires single instruciton */</span></span><br><span class="line">  <span class="keyword">if</span> (ntest) rval = eval;</span><br><span class="line">  <span class="keyword">return</span> rval;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>汇编代码：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># long absdiff(long x, long y)</span></span><br><span class="line"><span class="comment"># x in %rdi, y in %rsi</span></span><br><span class="line"><span class="symbol">absdiff:</span></span><br><span class="line">  movq  %rsi, %rax</span><br><span class="line">  <span class="keyword">subq </span> %rdi, %rax  <span class="comment"># rval = y - x</span></span><br><span class="line">  movq  %rdi, %rdx</span><br><span class="line">  <span class="keyword">subq </span> %rsi, %rdx  <span class="comment"># eval = x - y</span></span><br><span class="line">  cmpq  %rsi, %rdi  <span class="comment"># Compare x : y</span></span><br><span class="line">  cmovge  %rdx, %rax  <span class="comment"># If &gt;=, rval = eval</span></span><br><span class="line">  ret</span><br></pre></td></tr></table></figure>
+
+<p>更多的条件传送指令可参考：p147</p>
+<h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><p>汇编中没有相应的指令存在，可以用<code>条件测试</code>和<code>跳转</code>组合起来实现循环的效果。GCC 和其他汇编器产生的循环代码主要基于两种基本的循环模式。</p>
+<h4 id="do-while-循环"><a href="#do-while-循环" class="headerlink" title="do-while 循环"></a>do-while 循环</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span></span><br><span class="line">  body-statement</span><br><span class="line">  <span class="title function_">while</span> <span class="params">(test-expr)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这种通用形式可以被翻译成如下所示的条件和 goto 语句：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">loop:</span><br><span class="line">  body-statement</span><br><span class="line">  t = test-expr;</span><br><span class="line">  <span class="keyword">if</span> (t)</span><br><span class="line">    <span class="keyword">goto</span> loop;</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// C 代码</span></span><br><span class="line"><span class="type">long</span> <span class="title function_">fact_do</span><span class="params">(<span class="type">long</span> n)</span> &#123;</span><br><span class="line">  <span class="type">long</span> result = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    result *= n;</span><br><span class="line">    n = n - <span class="number">1</span>;</span><br><span class="line">  &#125; <span class="keyword">while</span> (n &gt; <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 等价的 goto 版本</span></span><br><span class="line"><span class="type">long</span> <span class="title function_">fact_do_goto</span><span class="params">(<span class="type">long</span> n)</span> &#123;</span><br><span class="line">  <span class="type">long</span> result = <span class="number">1</span>;</span><br><span class="line">  loop:</span><br><span class="line">    result *= n;</span><br><span class="line">    n = n - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">      <span class="keyword">goto</span> loop;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>汇编代码：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># long fact_do(long n)</span></span><br><span class="line"><span class="comment"># n in %rdi</span></span><br><span class="line"><span class="symbol">fact_do:</span></span><br><span class="line">  movl  $<span class="number">1</span>, %eax</span><br><span class="line"><span class="symbol">.L2:</span></span><br><span class="line">  imulq  %rdi, %rax   <span class="comment"># Compute result *= n</span></span><br><span class="line">  <span class="keyword">subq </span>  $<span class="number">1</span>, %rdi</span><br><span class="line">  cmpq   $<span class="number">1</span>, %rdi     <span class="comment"># Compare n : 1</span></span><br><span class="line">  <span class="keyword">jg </span>    .L2</span><br><span class="line">  rep</span><br><span class="line">  ret</span><br></pre></td></tr></table></figure>
+
+<h4 id="while-循环"><a href="#while-循环" class="headerlink" title="while 循环"></a>while 循环</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (text-expr)</span><br><span class="line">  body-statement</span><br></pre></td></tr></table></figure>
+
+<p>第一种翻译方法：<code>跳转到中间</code>（jump to middle）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">goto</span> test;</span><br><span class="line">loop:</span><br><span class="line">  body-statement</span><br><span class="line">test:</span><br><span class="line">  t = test-expr;</span><br><span class="line">  <span class="keyword">if</span> (t)</span><br><span class="line">    <span class="keyword">goto</span> loop;</span><br></pre></td></tr></table></figure>
+
+<p>第二种翻译方法，称为<code>guarded-do</code>。首先使用条件分支，如果初始条件不成立就跳出循环（先判断要不要跳转到<code>done</code>），把代码变换为<code>do-while</code>循环。当使用较高优化等级编译时（如<code>-O1</code>），GCC 会使用这种策略。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">t = test-expr;</span><br><span class="line"><span class="keyword">if</span> (!t)</span><br><span class="line">  <span class="keyword">goto</span> done;</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  body-statement</span><br><span class="line">  <span class="title function_">while</span> <span class="params">(test-expr)</span></span><br><span class="line">done:</span><br><span class="line"></span><br><span class="line"><span class="comment">// goto 版本</span></span><br><span class="line">t = test-expr;</span><br><span class="line"><span class="keyword">if</span> (!t)</span><br><span class="line">  <span class="keyword">goto</span> done;</span><br><span class="line">loop:</span><br><span class="line">  body-statement</span><br><span class="line">  t = test-expr;</span><br><span class="line">  <span class="keyword">if</span> (t)</span><br><span class="line">    <span class="keyword">goto</span> loop;</span><br><span class="line">done:</span><br></pre></td></tr></table></figure>
+
+<h4 id="for-循环"><a href="#for-循环" class="headerlink" title="for 循环"></a>for 循环</h4><p>GCC 为 for 循环产生的代码是 while 循环的两种翻译之一，这取决于优化的等级。和 while 两种策略的代码形式大致相同，只是在开头多了<code>init-expr</code>，在 body-statement 后多了<code>update-expr</code>。可以先将 for 循环改写成 while 循环。</p>
+<h4 id="switch-语句"><a href="#switch-语句" class="headerlink" title="switch 语句"></a>switch 语句</h4><p>switch（开关）语句可以根据一个整数索引值进行<code>多重分支</code>（multiway branching）。在处理具有多重可能结果的测试时，这种语句特别有用。它们不仅提高了 C 代码的可读性，而且通过使用<code>跳转表</code>（jump table）这种数据结构使得实现更加高效。跳转表是一个数组，表项 i 是一个代码段的地址，这个代码段实现当开关索引值等于 i 时程序应该采取的动作。</p>
+<p>和使用一组很长的<code>if-else</code>语句相比，使用跳转表的优点是执行开关语句的时间与开关情况的数量无关。GCC 根据开关情况的数量和开关情况值的稀疏程度来翻译开关语句。当开关情况比较多并且值的范围跨度比较小时，就会使用跳转表。这些对应的信息存储在目标代码文件的<code>.rodata</code>节中。</p>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>过程的形式多样：函数、方法、子例程（subroutine）、处理函数（handler）等等。假设过程 P 调用过程 Q，Q 执行后返回到 P。这些动作必须包括下面一个或多个机制：</p>
+<ul>
+<li><code>传递控制</code>：在进入过程 Q 的时候，程序计数器必须被设置为 Q 的代码的起始地址，然后在返回时，要把程序计数器设置为 P 中调用 Q 后面那条指令的指令。</li>
+<li><code>传递数据</code>：P 必须能够向 Q 提供一个或多个参数，Q 必须能够向 P 返回一个值。</li>
+<li><code>分配和释放内存</code>：在开始时，Q 可能需要为局部变量分配空间，而在返回前，又必须释放这些存储空间。</li>
+</ul>
+<h3 id="运行时栈"><a href="#运行时栈" class="headerlink" title="运行时栈"></a>运行时栈</h3><p>C 语言过程调用机制的一个关键特性在于使用了栈数据结构提供<code>后进先出</code>的内存管理原则。</p>
+<p>x86-64 的栈向<code>低地址</code>方向增长，而栈指针<code>%rsp</code>指向栈顶元素。可以用 pushq 和 popq 指令将数据存入栈中或是从栈中取出。<code>将栈指针减小</code>一个适当的量可以为没有指定初始值的数据在栈上分配空间。类似地，可以通过<code>增加栈指针</code>来释放空间。</p>
+<p>当 x86-64 过程需要的存储空间超过寄存器能够存放的大小时，就会在栈上分配空间。这个部分称为过程的<code>栈帧</code>（stack frame）。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ewxfd.jpg" alt="通用的栈帧结构（CSAPP 3-25）"></p>
+<p>当前正在执行的过程的帧总是在栈顶。当过程 P 调用过程 Q 时，会把返回地址当做 P 的栈帧的一部分，因为它存放的是与 P 相关的状态。Q 的代码会扩展当前栈的边界，分配它的栈帧所需要的空间。在这个空间中，它可以<code>保存寄存器的值</code>，分配<code>局部变量</code>空间，为它调用的过程<code>设置参数</code>。</p>
+<p>大多数过程栈帧都是<code>定长</code>的，在过程开始的时候就分配好了。但是有些过程需要变长的帧，这在后面会讨论到。通用寄存器，过程 P 可以传递最多 6 个整数值（也就是指针和整数），但是如果需要更多的参数，就需要使用栈帧存储。</p>
+<p>实际上，许多函数甚至根本不需要栈帧。当所有的局部变量都可以保存在寄存器中，而且该函数不会调用任何其他函数（有时称之为<code>叶子过程</code>，此时把过程调用看做<code>树结构</code>）时，就可以这样处理。</p>
+<h3 id="转移控制"><a href="#转移控制" class="headerlink" title="转移控制"></a>转移控制</h3><p>将控制从函数 P 转移到函数 Q 只需要简单地把程序计数器设置为 Q 的代码的起始位置。不过，当稍后从 Q 返回的时候，处理器必须记录好它需要继续 P 的执行的代码位置。</p>
+<ul>
+<li><code>call Q</code>：在 x86-64 机器中，这个信息是用指令<code>call Q</code>调用过程 Q 来记录的。该指令把地址 A 压入栈中，并将 PC 设置为 Q 的起始地址。压入的地址 A 被称为<code>返回地址</code>，是紧跟在 call 指令后面那条指令的地址。</li>
+<li><code>ret</code>：对应的指令 ret 会从栈中弹出地址 A，并把 PC 设置为 A。</li>
+</ul>
+<p><strong>注意：</strong>这些指令在程序 OBJDUMP 产生的反汇编输出中被称为<code>callq</code>和<code>retq</code>。添加的后缀<code>q</code>只是为了强调这些是 x86-64 版本的调用和返回，而不是 IA32 的。</p>
+<h3 id="传递数据"><a href="#传递数据" class="headerlink" title="传递数据"></a>传递数据</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ku1mk.jpg" alt="传递函数参数的寄存器"></p>
+<p>如果一个函数有大于 6 个整型参数，超出 6 个的部分就要通过栈来传递，参数 7 位于栈顶。通过栈传递参数时，所有的数据大小都向 8 的倍数对齐。参数到位以后，程序就可以执行 call 指令将控制转移到过程 Q 了。过程 Q 可以通过寄存器访问参数，有必要的话也可以通过栈访问。</p>
+<p>考虑下面的有 8 个函数的例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">proc</span><span class="params">(<span class="type">long</span>  a1, <span class="type">long</span>  *a1p,</span></span><br><span class="line"><span class="params">          <span class="type">int</span>   a2, <span class="type">int</span>   *a2p,</span></span><br><span class="line"><span class="params">          <span class="type">short</span> a3, <span class="type">short</span> *a3p,</span></span><br><span class="line"><span class="params">          <span class="type">char</span>  a4, <span class="type">char</span>  *a4p)</span> &#123;</span><br><span class="line">  *a1p += a1;</span><br><span class="line">  *a2p += a2;</span><br><span class="line">  *a3p += a3;</span><br><span class="line">  *a4p += a4;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对应的汇编代码：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># void proc(a1, a1p, a2, a2p, a3, a3p, a4, a4p)</span></span><br><span class="line"><span class="comment"># Arguments passed as follows:</span></span><br><span class="line">  <span class="built_in">a1</span>  in %rdi     (<span class="number">64</span> <span class="keyword">bits)</span></span><br><span class="line"><span class="keyword"></span>  a1p in %rsi     (<span class="number">64</span> <span class="keyword">bits)</span></span><br><span class="line"><span class="keyword"></span>  <span class="built_in">a2</span>  in %edx     (<span class="number">32</span> <span class="keyword">bits)</span></span><br><span class="line"><span class="keyword"></span>  a2p in %rcx     (<span class="number">64</span> <span class="keyword">bits)</span></span><br><span class="line"><span class="keyword"></span>  <span class="built_in">a3</span>  in %r8w     (<span class="number">16</span> <span class="keyword">bits)</span></span><br><span class="line"><span class="keyword"></span>  a3p in %r9      (<span class="number">64</span> <span class="keyword">bits)</span></span><br><span class="line"><span class="keyword"></span>  <span class="built_in">a4</span>  <span class="built_in">at</span> %rsp+<span class="number">8</span>   (<span class="number">8</span>  <span class="keyword">bits)</span></span><br><span class="line"><span class="keyword"></span>  a4p <span class="built_in">at</span> %rsp+<span class="number">16</span>  (<span class="number">64</span> <span class="keyword">bits)</span></span><br><span class="line"><span class="keyword"></span><span class="symbol">proc:</span></span><br><span class="line">  movq    <span class="number">16</span>(%rsp), %rax  <span class="comment"># Fetch a4p  (64 bits)</span></span><br><span class="line">  <span class="keyword">addq </span>   %rdi, (%rsi)    <span class="comment"># *a1p += a1 (64 bits)</span></span><br><span class="line">  <span class="keyword">addl </span>   %edx, (%rcx)    <span class="comment"># *a2p += a2 (32 bits)</span></span><br><span class="line">  <span class="keyword">addw </span>   %r8w, (%r9)     <span class="comment"># *a3p += a3 (16 bits)</span></span><br><span class="line">  movl    <span class="number">8</span>(%rsp), %edx   <span class="comment"># Fetch a4   (8  bits)</span></span><br><span class="line">  <span class="keyword">addb </span>   %dl, (%rax)     <span class="comment"># *a4p += a4 (8  bits)</span></span><br><span class="line">  ret</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tehso.jpg" alt="函数 proc 的栈帧结构（CSAPP 3-30）"></p>
+<h3 id="栈上的局部存储"><a href="#栈上的局部存储" class="headerlink" title="栈上的局部存储"></a>栈上的局部存储</h3><p>有些时候，局部变量必须存放在内存中，常见的情况包括：</p>
+<ol>
+<li>寄存器不足够存放所有的本地数据。</li>
+<li>对一个局部变量使用地址运算符<code>&amp;</code>，因此必须能够为它产生一个地址。</li>
+<li>某些局部变量是数组或结构，因此必须能够通过数组或结构引用被访问到。</li>
+</ol>
+<h3 id="寄存器中的局部存储空间"><a href="#寄存器中的局部存储空间" class="headerlink" title="寄存器中的局部存储空间"></a>寄存器中的局部存储空间</h3><p>寄存器组是唯一被所有过程共享的资源。虽然在给定时刻只有一个过程是活动的，我们仍然必须确保当一个过程（调用者）调用另一个过程（被调用者）时，被调用者不会覆盖调用者稍后会使用的寄存器值。为此，x86-64 采用了一组统一的寄存器使用惯例，所有的过程（包括程序库）都必须遵循。</p>
+<p>根据惯例，寄存器 %rbx、%rbp 和 %r12~%r15 被划分为<code>被调用者保存</code>寄存器。所有其他寄存器，除了栈指针寄存器，都分类为<code>调用者保存</code>寄存器。这就意味着任何函数都能修改它们（基于一种必须遵守的假设）。（前面的寄存器表有所有的说明）</p>
+<p>保存方式可用寄存器，或者内存栈。</p>
+<h3 id="递归过程"><a href="#递归过程" class="headerlink" title="递归过程"></a>递归过程</h3><p>递归调用一个函数本身与调用其他函数一样。栈规则提供了一种机制，每次函数调用都有它自己私有的状态信息存储空间。如果需要，它还可以提供局部变量的存储。栈分配和释放的规则很自然地就与函数调用-返回的顺序匹配。</p>
+<p>C 代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">long</span> <span class="title function_">rfact</span><span class="params">(<span class="type">long</span> n)</span> &#123;</span><br><span class="line">  <span class="type">long</span> result;</span><br><span class="line">  <span class="keyword">if</span> (n &lt;= <span class="number">1</span>)</span><br><span class="line">    result = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    result = n * rfact(n - <span class="number">1</span>);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>汇编代码：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># n in %rdi</span></span><br><span class="line"><span class="symbol">rfact:</span></span><br><span class="line">  pushq   %rbx         <span class="comment"># Save %rbx</span></span><br><span class="line">  movq    %rdi, %rbx   <span class="comment"># Store n in callee-saved register</span></span><br><span class="line">  movl    $<span class="number">1</span>, %eax     <span class="comment"># Set return value = 1</span></span><br><span class="line">  cmpq    $<span class="number">1</span>, %rdi     <span class="comment"># Compare n:1</span></span><br><span class="line">  <span class="keyword">jle </span>    .L35         <span class="comment"># If &lt;=, goto done (return)</span></span><br><span class="line">  leaq    -<span class="number">1</span>(%rdi), %rdi  <span class="comment"># Compare n-1</span></span><br><span class="line">  call    rfact        <span class="comment"># Call rfact(n-1)</span></span><br><span class="line">  imulq   %rbx, %rax   <span class="comment"># Multiply result by n</span></span><br><span class="line"><span class="symbol">.L35:</span></span><br><span class="line">  popq    %rbx  <span class="comment"># Restore %rbx</span></span><br><span class="line">  ret</span><br></pre></td></tr></table></figure>
+
+<h2 id="数组、指针的分配和访问"><a href="#数组、指针的分配和访问" class="headerlink" title="数组、指针的分配和访问"></a>数组、指针的分配和访问</h2><p>x86-64 的内存引用指令可以用来简化数组访问。例如，假设 E 是一个 int 型的数组，而我们想计算<code>E[i]</code>，在此，E 的地址存放在寄存器<code>%rdx</code>中，而 i 存放在寄存器<code>%rcx</code>中。然后，指令：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">movl  (%rdx, %rcx, <span class="number">4</span>), %eax</span><br></pre></td></tr></table></figure>
+
+<p>会得到第 i 个元素的地址，并将结果存放到寄存器 %eax 中。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ph76l.jpg" alt="例子（CSAPP p177）"></p>
+<p><strong>嵌套的数组</strong></p>
+<p>要访问多维数组的元素，编译器会以数组起w为基地址，（可能需要经过伸缩的）偏移量作为索引，产生计算期望的元素的偏移量，然后使用某种 MOV 指令。通常来说，对一个<code>T D[R][C]</code>的数组，它的数组元素<code>D[i][j]</code>的内存地址为：</p>
+<p>$$ &amp; D\left[i \right]\left[ j \right] &#x3D; x_D + L(C\cdot i + j) $$</p>
+<p>考虑一个定义为 5x3 的整型数组 A。可以用下面的代码将数组元素 A[i][j] 复制到寄存器 %eax 中：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># A in %rdi, i in %rsi, and j in %rdx</span></span><br><span class="line">leaq  (%rsi, %rsi, <span class="number">2</span>), %rax   <span class="comment"># Compute 3i</span></span><br><span class="line">leaq  (%rdi, %rax, <span class="number">4</span>), %rax   <span class="comment"># Compute xA + 12i</span></span><br><span class="line">movl  (%rax, %rdx, <span class="number">4</span>), %eax   <span class="comment"># Read from M[xA + 12i + 4j]</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>多维数组 vs 多级数组</strong></p>
+<p>多维数组（multi-dimension array）：T[i][j]</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">2</span>][<span class="number">3</span>] = &#123; &#123; <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> &#125;, &#123; <span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span> &#125; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>多级数组（multi-level array）：T* [i]</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *a[<span class="number">2</span>] = &#123; &#123; <span class="number">1</span>,<span class="number">2</span> &#125;, &#123; <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span> &#125; &#125; <span class="comment">// 任意长度</span></span><br></pre></td></tr></table></figure>
+
+<p>两者的区别：是否做了两次<code>内存读</code>。注意，Java 就是用多级数组的方式来表示多维数组。</p>
+<p><strong>定长数组</strong></p>
+<p>C 语言编译器能够优化定长多维数组上的操作代码。这里展示优化等级设置为<code>-O1</code>时 GCC 采用的一些优化。假设我们用如下方式将数据类型 fix_matrix 声明为 16x16 的整型数组：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> N 16</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">int</span> fix_matrix[N][N]</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Compute i, k of fixed matrix product */</span></span><br><span class="line"><span class="comment">/* 计算矩阵 A 和 B 乘积的元素 i，k，即 A 的行 i 和 B 的列 k 的内积 */</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">fix_prod_ele</span><span class="params">(fix_matrix A, fix_matrix B, <span class="type">long</span> i, <span class="type">long</span> k)</span> &#123;</span><br><span class="line">  <span class="type">long</span> j;</span><br><span class="line">  <span class="type">int</span> result = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; N; ++J)</span><br><span class="line">    result += A[i][j] * B[j][k];</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>GCC 产生的代码中进行了如下优化：</p>
+<ol>
+<li>生成一个指针，命名为<code>Aptr</code>，指向 A 的行 i 中连续的元素。</li>
+<li>生成一个指针，命名为<code>Bptr</code>，指向 B 的列 j 中连续的元素。</li>
+<li>生成一个指针，命名为<code>Bend</code>，当需要终止循环时，它会等于 Bptr 的值。</li>
+</ol>
+<p>优化过的 C 代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Compute i, k of fixed matrix product */</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">fix_prod_ele_opt</span><span class="params">(fix_matrix A, fix_matrix B, <span class="type">long</span> i, <span class="type">long</span> k)</span> &#123;</span><br><span class="line">  <span class="type">int</span> *Aptr = &amp;A[i][<span class="number">0</span>];</span><br><span class="line">  <span class="type">int</span> *Bptr = &amp;B[<span class="number">0</span>][k];</span><br><span class="line">  <span class="type">int</span> *Bend = &amp;B[N][k];</span><br><span class="line">  <span class="type">int</span> result = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    result += *Aptr * *Bptr;</span><br><span class="line">    Aptr++;</span><br><span class="line">    Bptr += N;</span><br><span class="line">  &#125; <span class="keyword">while</span> (Bptr != Bend);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>变长数组</strong></p>
+<p>参考：p181，优化方法与定长数组类似。</p>
+<h2 id="异质的数据结构"><a href="#异质的数据结构" class="headerlink" title="异质的数据结构"></a>异质的数据结构</h2><p>参考：p183 &amp; p186</p>
+<h2 id="在机器级程序中将控制与数据结合起来"><a href="#在机器级程序中将控制与数据结合起来" class="headerlink" title="在机器级程序中将控制与数据结合起来"></a>在机器级程序中将控制与数据结合起来</h2><h3 id="内存越界引用和缓冲区溢出"><a href="#内存越界引用和缓冲区溢出" class="headerlink" title="内存越界引用和缓冲区溢出"></a>内存越界引用和缓冲区溢出</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Read input line and write it back */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">echo</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="type">char</span> buf[<span class="number">8</span>];  <span class="comment">/* way to small! */</span></span><br><span class="line">  gets(buf);</span><br><span class="line">  <span class="built_in">puts</span>(buf);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对应的汇编代码：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">echo:</span></span><br><span class="line">  <span class="keyword">subq </span>   %<span class="number">24</span>, %rsp     <span class="comment"># Allocate 24 bytes on stack</span></span><br><span class="line">  movq    %rsp, %rdi    <span class="comment"># Compute buf as %rsp</span></span><br><span class="line">  call    gets          <span class="comment"># Call gets</span></span><br><span class="line">  movq    %rsp, %rdi    <span class="comment"># Compute buf as %rsp</span></span><br><span class="line">  call    puts          <span class="comment"># Call puts</span></span><br><span class="line">  <span class="keyword">addq </span>   $<span class="number">24</span>, %rsp     <span class="comment"># Deallocate stack space</span></span><br><span class="line">  ret</span><br></pre></td></tr></table></figure>
+
+<p>长一些的字符串会导致 gets 覆盖栈上存储的某些信息。随着字符串变长，下面的信息会被破坏：</p>
+<table>
+<thead>
+<tr>
+<th>输入的字符数量</th>
+<th>附加的被破坏的状态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0 ~ 7</td>
+<td>无</td>
+</tr>
+<tr>
+<td>9 ~ 23</td>
+<td>未被使用的栈空间</td>
+</tr>
+<tr>
+<td>24 ~ 31</td>
+<td>返回地址</td>
+</tr>
+<tr>
+<td>32+</td>
+<td>caller 中保存的状态</td>
+</tr>
+</tbody></table>
+<p>字符串到 23 个字符之前都没有严重的后果，但是超过以后，返回指针的值以及更多可能的保存状态会被破坏。如果存储的返回地址的值被破坏了，那么 ret 指令会导致程序跳到一个完全意想不到的位置。如果只看 C 代码，根本就不可能看出会有上面这些行为。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/g8j2f.jpg" alt="echo 函数（CSAPP 3-40）"></p>
+<p>通常，使用 gets 或其它任何能导致存储溢出的函数，都是不好的编程习惯。不幸的是，很多常用的库函数，包括 strcpy、strcat 和 sprintf，都有一个属性——不需要告诉它们目标缓冲区的大小。</p>
+<p>缓冲区溢出的一个更加致命的使用就是让程序执行它本来不愿意执行的函数。这是一种最常见的通过计算机网络攻击系统安全的方法。通常，输入给程序一个字符串，这个字符串包含一些可执行代码的字节编码，称为<code>攻击代码</code>（exploit code），另外，还有一些字节会用一个指向攻击代码的指针覆盖返回地址。那么，执行 ret 指令的效果就是跳转到攻击代码。</p>
+<p>在一种攻击形式中，攻击代码会使用<code>系统调用</code>启动一个 shell 程序，给攻击者提供一组操作系统函数。在另一种攻击形式中，攻击代码会执行一些未授权的任务，修复对栈的破坏，然后第二次执行 ret 指令，（表面上）正常返回给调用者。</p>
+<p>蠕虫和病毒都试图在计算机中传播它们自己的代码段。<code>蠕虫</code>（worm）可以自己运行，并且能够将自己等效副本传播到其他机器。<code>病毒</code>（virus）能将自己添加到包括操作系统在内的其他程序中，但它不能独立运行。两者是不同的，媒体有时会把应该叫做<code>蠕虫</code>的东西称为<code>病毒</code>。</p>
+<h3 id="对缓冲区溢出攻击"><a href="#对缓冲区溢出攻击" class="headerlink" title="对缓冲区溢出攻击"></a>对缓冲区溢出攻击</h3><p>以下列举 Linux 上最新 GCC 版本所提供的一些机制。</p>
+<h4 id="栈随机化"><a href="#栈随机化" class="headerlink" title="栈随机化"></a>栈随机化</h4><p>为了在系统中插入攻击代码，攻击者既要插入代码，也要插入指向这段代码的指针，这个指针也是攻击字符串的一部分。产生这个指针需要知道这个字符串放置的栈地址。在过去，程序的栈地址非常容易预测。对于所有运行同样程序和操作系统版本的系统来说，在不同的机器之间，栈的位置是相当固定的。这种现象常被称为<code>安全单一化</code>（security monoculture）。</p>
+<p><code>栈随机化</code>的思想使得栈的位置在程序每次运行时都有变化。实现的方式是：程序开始时，在栈上分配一段 0 ~ n 字节之间的随机大小空间。程序不使用这段空间，但是它会导致程序每次执行时后续的栈位置发生了变化。当 n 很大的时候才能获得足够多的栈地址变化，但这也会导致浪费。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 确定栈地址的方法 */</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="type">long</span> local;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;local at %p\n&quot;</span>, %local);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 Linux 系统中，栈随机化已经成为了<code>标准行为</code>。它是更大的一类技术中的一种，这类技术成为<code>地址空间布局随机化</code>（Address-Space Layout Randomization），或者简称<code>ASLR</code>。采用它，每次运行时程序的不同部分，包括程序代码、库代码、栈、全局变量和堆数据，都会被加载到内存的不同区域。这就意味着在一台机器上运行一个程序，与在其他机器上运行同样的程序，它们的地址映射大相径庭。</p>
+<p>然而，一个执著的攻击者总是能够用蛮力克服随机化，他可以反复地用不同的地址进行攻击。一种常见的把戏就是在实际的攻击代码前插入很长一段的<code>nop</code>（no operation）指令。执行这种指令除了对程序计数器加一，使之指向下一条指令之外，没有任何的效果。攻击者可以使程序经过这个序列，到达攻击代码。这个序列的术语是<code>空操作雪橇</code>（nop sled），意思是程序会「滑过」这个序列。</p>
+<h4 id="栈破坏检测"><a href="#栈破坏检测" class="headerlink" title="栈破坏检测"></a>栈破坏检测</h4><p>计算机的第二道防线是能够检测到何时栈已被破坏。最近的 GCC 版本在产生的代码中加入了一种<code>栈保护者</code>（stack protector）机制，来检测缓冲区越界。其思想是在栈帧中任何局部缓冲区与栈状态之间存储一个特殊的<code>金丝雀值</code>（canary，它们能在煤矿中察觉有毒气体），也称为<code>哨兵值</code>（guard value），是在程序每次运行时随机产生的。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9cm6x.jpg" alt="echo 函数具有栈保护者的栈组织（CSAPP 3-42）"></p>
+<p>在恢复寄存器状态和从函数返回之前，程序检查这个金丝雀值是否被函数的某个操作或者该函数调用的某个函数的某个操作改变了。如果是的，那么程序异常中止。</p>
+<h4 id="限制可执行代码区域"><a href="#限制可执行代码区域" class="headerlink" title="限制可执行代码区域"></a>限制可执行代码区域</h4><p>最后一招是消除攻击者向系统中插入可执行代码的能力。一种方法是限制哪些内存区域能够存放可执行代码。硬件支持多种形式的内存保护，能够指明用户程序和操作系统内核所允许的访问形式。</p>
+<p>最近，AMD 为它的 64 位处理器的内存保护引入了<code>NX</code>（No-Execute，不执行）位，将读和执行访问模式分开，Intel 也跟进了。有了这个特性，栈可以被标记为可读和可写，但是不可执行，而检查页是否可执行由硬件来完成，效率上没有损失。</p>
+<h3 id="支持变长栈帧"><a href="#支持变长栈帧" class="headerlink" title="支持变长栈帧"></a>支持变长栈帧</h3><p>为了管理变长栈帧，x86-64 代码使用寄存器<code>%rbp</code>作为<code>帧指针</code>（frame pointer），也称为<code>基指针</code>（base pointer）。此时，函数栈帧结构如下：</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4xwuh.jpg" alt="函数的栈帧结构（CSAPP 3-44）"></p>
+<p>可以看到代码必须把 %rbp 以前的值保存到栈中，因为它是一个被调用者保存寄存器。然后在函数执行的整个过程中，都使得 %rbp 指向那个时刻栈的位置，然后用固定长度的局部变量相对于 %rbp 的偏移量来引用它们。</p>
+<p>在函数的开始，代码建立栈帧，并为数组 p 分配空间。首先把 %rbp 的当前值压入栈中，将 %rbp 设置为指向当前的栈位置。然后，在栈上分配 16 个字节（如图）。</p>
+<p>在函数的结尾，<code>leave</code>指令将帧指针恢复到它之前的值。这条指令不需要参数，等价于执行以下两条指令：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">movq  %rbp, %rsp  <span class="comment"># set %rsp back</span></span><br><span class="line">popq  %rbp        <span class="comment"># set %rbp back</span></span><br></pre></td></tr></table></figure>
+
+<p>在较早版本的 x86 代码（IA32）中，每个函数调用都使用了帧指针。而现在，只在栈帧长可变的情况下才使用。可以把使用帧指针的代码和不使用帧指针的代码混在一起，只要所有的函数都把 %rbp 当做被调用者保存寄存器来处理即可。</p>
+<h2 id="浮点代码"><a href="#浮点代码" class="headerlink" title="浮点代码"></a>浮点代码</h2><p>AVX 浮点体系结构允许数据存储在 16 个<code>YMM</code>寄存器中，它们的名字为<code>%ymm0 ~ %ymm15</code>。每个 YMM 寄存器都是 256 位（32 字节）。当对标量数据操作时，这些寄存器只保存浮点数，而且只使用低 32 位（对于 float）或 64 位（对于 double）。汇编代码用寄存器 SSE XMM 寄存器名字<code>%xmm0 ~ %xmm15</code>来引用它们，每个 XMM 寄存器都是对应的 YMM 寄存器的低 128 位（16 字节）。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/b6dms.jpg" alt="媒体（media）寄存器（CSAPP 3-45）"></p>
+<h3 id="浮点数传送"><a href="#浮点数传送" class="headerlink" title="浮点数传送"></a>浮点数传送</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/lhsjk.jpg" alt="浮点传送指令（CSAPP 3-46）"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> <span class="title function_">float_mov</span><span class="params">(<span class="type">float</span> v1, <span class="type">float</span> *src, <span class="type">float</span> *dst)</span> &#123;</span><br><span class="line">  <span class="type">float</span> v2 = *src;</span><br><span class="line">  *dst = v1;</span><br><span class="line">  <span class="keyword">return</span> v2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>与它相关联的 x86-64 汇编代码为</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># float float_mov(float v1, float *src, float *dst)</span></span><br><span class="line"><span class="comment"># v1 in %xmm0, src in %rdi, dst in %rsi</span></span><br><span class="line"><span class="symbol">float_mov:</span></span><br><span class="line">  vmovaps  %xmm0, %xmm1   <span class="comment"># Copy v1</span></span><br><span class="line">  vmovss   (%rdi), %xmm0  <span class="comment"># Read v2 from src</span></span><br><span class="line">  vmovss   %xmm1, (%rsi)  <span class="comment"># Write v1 to dst</span></span><br><span class="line">  ret                     <span class="comment"># Return v2 in %xmm0</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="浮点数转换"><a href="#浮点数转换" class="headerlink" title="浮点数转换"></a>浮点数转换</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/h04h4.jpg" alt="双操作数浮点转换指令，从 XMM 寄存器读出浮点值进行转换，然后写入通用寄存器（CSAPP 3-47）"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8cv6c.jpg" alt="三操作数浮点转换指令，把整数转换成浮点数（CSAPP 3-48）"></p>
+<p>第一个操作数读取来自于内存或一个通用目的寄存器。这里可以忽略第二个操作数，因为它的值只会影响结果的高位字节。而我们的目标必须是 XMM 寄存器。在最常见的使用场景中，第二个源目的操作数都是一样的，就像下面这条指令：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vcvtsi2sdq  %rax, %xmm1, %xmm1</span><br></pre></td></tr></table></figure>
+
+<p>这条指令从寄存器 %rax 读出一个长整数，把它转换成数据类型 double，并把结果存放进 XMM 寄存器 %xmm1 的低字节里。</p>
+<p>最后，要在两种不同的浮点格式之间转换，GCC 的当前版本生成的代码需要单独说明。假设 %xmm0 低位 4 字节保存着一个单精度值，很容易就想到用下面这条指令把转换成一个双精度值，并将结果存储在寄存器 %xmm0 的低 8 字节。</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vcvtss2sd  %xmm0, %xmm0, %xmm0</span><br></pre></td></tr></table></figure>
+
+<p>不过 GCC 实际生成的代码如下（原因参考 p207）：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vunpcklps  %xmm0, %xmm0, %xmm0</span><br><span class="line">vcvtps2pd  %xmm0, %xmm0</span><br></pre></td></tr></table></figure>
+
+<p>对于双精度转换为单精度，GCC 会产生类似的代码：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vmovddup    %xmm0, %xmm0</span><br><span class="line">vcvtpd2psx  %xmm0, %xmm0</span><br></pre></td></tr></table></figure>
+
+<h3 id="浮点数运算"><a href="#浮点数运算" class="headerlink" title="浮点数运算"></a>浮点数运算</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/nlqqp.jpg" alt="标量浮点算术运算（CSAPP 3-49）"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">double</span> <span class="title function_">funct</span><span class="params">(<span class="type">double</span> a, <span class="type">float</span> x, <span class="type">double</span> b, <span class="type">int</span> i)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> a * x - b / i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>x86-64 代码如下：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># double funct(double a, float x, double b, int i)</span></span><br><span class="line"><span class="comment"># a in %xmm0, x in %xmm1, b in %xmm2, i in %edi</span></span><br><span class="line"><span class="symbol">funct:</span></span><br><span class="line">  <span class="comment"># The following two instructions convert x to double</span></span><br><span class="line">  vunpcklps   %xmm1, %xmm1, %xmm1</span><br><span class="line">  vcvtps2pd   %xmm1, %xmm1</span><br><span class="line">  vmulsd      %xmm0, %xmm1, %xmm0  <span class="comment"># Multiple a by x, xmm0 * xmm1</span></span><br><span class="line">  vcvtsi2sd   %edi, %xmm1, %xmm1   <span class="comment"># Convert i to double</span></span><br><span class="line">  vdivsd      %xmm1, %xmm2, %xmm2  <span class="comment"># Compute b / i, xmm2 / xmm1</span></span><br><span class="line">  vsubsd      %xmm2, %xmm0, %xmm0  <span class="comment"># Subtract from a * x, xmm0 - xmm2</span></span><br><span class="line">  ret</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="浮点数常量"><a href="#浮点数常量" class="headerlink" title="浮点数常量"></a>浮点数常量</h3><p>和整数运算操作不同，AVX 浮点操作不能以<code>立即数</code>作为操作数。相反，编译器必须为所有常量值分配和初始化存储空间。然后代码再把这些值从内存读入。如摄氏度到华氏度转换的函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">double</span> <span class="title function_">cel2fahr</span><span class="params">(<span class="type">double</span> temp)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1.8</span> * temp + <span class="number">32.0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对应的汇编代码：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># temp in %xmm0</span></span><br><span class="line"><span class="symbol">cel2fahr:</span></span><br><span class="line">  vmulsd  .LC2(%rip), %xmm0, %xmm0    <span class="comment"># Multiply by 1.8</span></span><br><span class="line">  vaddsd  .LC3(%rip), %xmm0, %xmm0    <span class="comment"># Add 32.0</span></span><br><span class="line">  ret</span><br><span class="line"><span class="symbol">.LC2:</span></span><br><span class="line">  <span class="meta">.long</span>  <span class="number">3435973837</span>    <span class="comment"># Low-order of 1.8 (4 bytes)</span></span><br><span class="line">  <span class="meta">.long</span>  <span class="number">1073532108</span>    <span class="comment"># High-order of 1.8</span></span><br><span class="line"><span class="symbol">.LC3:</span></span><br><span class="line">  <span class="meta">.long</span>  <span class="number">0</span>             <span class="comment"># Low-order of 32.0</span></span><br><span class="line">  <span class="meta">.long</span>  <span class="number">1077936128</span>    <span class="comment"># High-order of 32.0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="浮点数位级操作"><a href="#浮点数位级操作" class="headerlink" title="浮点数位级操作"></a>浮点数位级操作</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/pdda4.jpg" alt="对封装数据的位级操作（CSAPP 3-50）"></p>
+<h3 id="浮点比较操作"><a href="#浮点比较操作" class="headerlink" title="浮点比较操作"></a>浮点比较操作</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xj8u2.jpg" alt="比较浮点数值的指令（CSAPP p213）"></p>
+<p>条件码的设置条件如下：</p>
+<table>
+<thead>
+<tr>
+<th>顺序 $S_2 : S_1$</th>
+<th>CF</th>
+<th>ZF</th>
+<th>PF</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>无序的</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>$S_2 &lt; S_1$</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>$S_2 &#x3D; S_1$</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>$S_2 &gt; S_1$</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<p>当任以操作数为<code>NaN</code>时，就会出现<code>无序</code>的情况。可以通过<code>奇偶标志位</code>发现这种情况。通常<code>jp</code>（jump on parity）指令是<code>条件跳转</code>，条件就是浮点比较得到一个无序的结果。</p>
+<h2 id="IA32-的一些汇编代码"><a href="#IA32-的一些汇编代码" class="headerlink" title="IA32 的一些汇编代码"></a>IA32 的一些汇编代码</h2><p>在看 CSE 351 视频的时候，课上首先采用了 IA32 进行讲解。IA32 和 x86-64 还是由一定差别的，所以还是记录一下 IA32 的几个程序。</p>
+<ol>
+<li>注意参数的获取方式</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> *xp, <span class="type">int</span> *yp)</span> &#123;</span><br><span class="line">  <span class="type">int</span> t0 = *xp;</span><br><span class="line">  <span class="type">int</span> t1 = *yp;</span><br><span class="line">  *xp = t1;</span><br><span class="line">  *yp = t0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># %ecx - yp, %edx - xp, %eax - t1, %ebx - t0</span></span><br><span class="line">movl  <span class="number">12</span>(%ebp), %ecx   <span class="comment"># ecx = yp</span></span><br><span class="line">movl  <span class="number">8</span>(%ebp), %edx    <span class="comment"># edx = xp</span></span><br><span class="line">movl  (%ecx), %eax     <span class="comment"># eax = *yp (t1)</span></span><br><span class="line">movl  (%edx), %ebx     <span class="comment"># ebx = *xp (t0)</span></span><br><span class="line">movl  %eax, (%edx)     <span class="comment"># *xp = t1)</span></span><br><span class="line">movl  %ebx, (%ecx)     <span class="comment"># *yp = ebx</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>全局变量的获取方式</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> zip1 = <span class="number">15123</span>;</span><br><span class="line"><span class="type">int</span> zip2 = <span class="number">98150</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">call_swap</span><span class="params">()</span> &#123;</span><br><span class="line">  swap(&amp;zip1, &amp;zip2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">call_swap:</span></span><br><span class="line">  <span class="comment"># ...</span></span><br><span class="line">  pushl  $zip2</span><br><span class="line">  pushl  $zip1  <span class="comment"># 而且注意推入的顺序，从右往左</span></span><br><span class="line">  call   <span class="keyword">swap</span></span><br><span class="line"><span class="keyword"></span>  movl   %ebp, %esp   <span class="comment"># 将 esp 指回 ebp（基址）</span></span><br><span class="line">  popl   %ebp   <span class="comment"># 注意这条指令是建立在上一条指令之上的，因为 popl 需要 esp 指向 ebp</span></span><br><span class="line">  ret           <span class="comment"># 此时因为 pop 了 old ebp，esp 指向 return address，ret 将 esp 的值给 PC</span></span><br></pre></td></tr></table></figure>
+
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

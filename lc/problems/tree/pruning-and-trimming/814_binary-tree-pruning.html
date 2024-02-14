@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium Problem We are given the head node root of a binary tree, where additionally every node’s value is either a 0 or a 1. Return the same tree where every subtree (">
+<meta property="og:type" content="website">
+<meta property="og:title" content="814. Binary Tree Pruning">
+<meta property="og:url" content="https://junhaow.com/lc/problems/tree/pruning-and-trimming/814_binary-tree-pruning.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium Problem We are given the head node root of a binary tree, where additionally every node’s value is either a 0 or a 1. Return the same tree where every subtree (">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/o5jgx.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tv8be.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.147Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.147Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/o5jgx.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>814. Binary Tree Pruning</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/binary-tree-pruning/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>We are given the head node <code>root</code> of a binary tree, where additionally every node’s value is either a <code>0</code> or a <code>1</code>. Return the same tree where every subtree (of the given tree) not containing a <code>1</code> has been removed.</p>
+</blockquote>
+<blockquote>
+<p>Recall that the subtree of a node <code>X</code> is <code>X</code>, plus every node that is a descendant of <code>X</code>.</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>The binary tree will have at most <code>100 nodes</code>.</li>
+<li>The value of each node will only be <code>0</code> or <code>1</code>.</li>
+</ul>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Example <span class="number">1</span>:</span><br><span class="line">Input: [<span class="number">1</span>,<span class="literal">null</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>]</span><br><span class="line">Output: [<span class="number">1</span>,<span class="literal">null</span>,<span class="number">0</span>,<span class="literal">null</span>,<span class="number">1</span>]</span><br><span class="line"> </span><br><span class="line">Explanation: </span><br><span class="line">Only the red nodes satisfy the property <span class="string">&quot;every subtree not containing a 1&quot;</span>.</span><br><span class="line">The diagram on the right represents the answer.</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/o5jgx.jpg"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Example <span class="number">2</span>:</span><br><span class="line">Input: [<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>]</span><br><span class="line">Output: [<span class="number">1</span>,<span class="literal">null</span>,<span class="number">1</span>,<span class="literal">null</span>,<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tv8be.jpg"></p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p><strong>Methods:</strong></p>
+<ol>
+<li>Recursion<ul>
+<li>Prune children of the tree recursively. The only decision at each node is whether to prune the left child or the right child or not.</li>
+<li><code>containsOne(node)</code>: Whether the tree at this <code>node</code> contains <code>1</code>, and it also prunes all subtrees not containing <code>1</code>, e.g. <code>node.left</code> does not contain a <code>1</code>, then we should prune it via <code>node.left = null</code>.</li>
+<li>Also, the current node’s value needs to be checked.</li>
+<li><strong>Time:</strong> $O(N)$</li>
+<li><strong>Space:</strong> $O(h)$</li>
+</ul>
+</li>
+</ol>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><h3 id="Recursion"><a href="#Recursion" class="headerlink" title="Recursion"></a>Recursion</h3><h4 id="Bad-Code"><a href="#Bad-Code" class="headerlink" title="Bad Code"></a>Bad Code</h4><p><strong>Note:</strong></p>
+<ul>
+<li>This is the first version I wrote, but it turns out that <code>containsOne(node)</code> does a lot of repeated jobs.</li>
+<li>To improve, consider the traversal order. We can put the <code>line 1</code> after visiting left subtree and right subtree. Therefore, <strong>traversal order sometimes is very important in performance or in reducing repeated calculations</strong>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">pruneTree</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (!containsOne(root)) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  root.left = pruneTree(root.left);</span><br><span class="line">  root.right = pruneTree(root.right);</span><br><span class="line">  <span class="keyword">return</span> root;    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">containsOne</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (root.val == <span class="number">1</span>) <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">// line 1</span></span><br><span class="line">  <span class="keyword">return</span> containsOne(root.left) || containsOne(root.right); <span class="comment">// line 2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Change <code>pruneTree</code> to:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> containsOne(root) ? root : <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+
+<p>Change the <code>line 1 &amp; 2</code> to:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">boolean</span> <span class="variable">l</span> <span class="operator">=</span> containsOne(root.left); <span class="comment">// do it first!</span></span><br><span class="line"><span class="type">boolean</span> <span class="variable">r</span> <span class="operator">=</span> containsOne(root.right);</span><br><span class="line"><span class="keyword">if</span> (l == <span class="literal">false</span>) root.left = <span class="literal">null</span>;   <span class="comment">// pruning</span></span><br><span class="line"><span class="keyword">if</span> (r == <span class="literal">false</span>) root.right = <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">return</span> (root.val == <span class="number">1</span>) || l || r;</span><br></pre></td></tr></table></figure>
+
+<p>I try using a <code>HashMap</code> to cache those calculated nodes, but the runtime does not improve and even get worse.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">pruneTree</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  HashMap&lt;TreeNode, Boolean&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">return</span> pruneTree(root, map);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> TreeNode <span class="title function_">pruneTree</span><span class="params">(TreeNode root, HashMap&lt;TreeNode, Boolean&gt; map)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (!containsOne(root, map)) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  root.left = pruneTree(root.left, map);</span><br><span class="line">  root.right = pruneTree(root.right, map);</span><br><span class="line">  <span class="keyword">return</span> root;    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">containsOne</span><span class="params">(TreeNode root, HashMap&lt;TreeNode, Boolean&gt; map)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (map.containsKey(root)) <span class="keyword">return</span> map.get(root); <span class="comment">// cache found</span></span><br><span class="line">  <span class="keyword">if</span> (root.val == <span class="number">1</span>) &#123; <span class="comment">// set true</span></span><br><span class="line">    map.put(root, <span class="literal">true</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">boolean</span> <span class="variable">ret</span> <span class="operator">=</span> containsOne(root.left, map) || containsOne(root.right, map);</span><br><span class="line">  map.put(root, ret);</span><br><span class="line">  <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Clean-Code"><a href="#Clean-Code" class="headerlink" title="Clean Code"></a>Clean Code</h4><p><strong>Note:</strong></p>
+<ul>
+<li>Can we do pruning in <code>containsOne(node)</code>?</li>
+<li>It is a <code>postorder</code> traversal. Can we do it in <code>preorder</code> way, which means checking the current node first? <strong>No!</strong> If <code>root.val == 1</code>, we cannot just return <code>true</code>, since we need to check the children.</li>
+<li>If <code>root</code> is <code>null</code>, we should return <code>false</code>. List all the base cases to see why it is the case.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">pruneTree</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> containsOne(root) ? root : <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">containsOne</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="type">boolean</span> <span class="variable">lRes</span> <span class="operator">=</span> containsOne(root.left);</span><br><span class="line">  <span class="type">boolean</span> <span class="variable">rRes</span> <span class="operator">=</span> containsOne(root.right);</span><br><span class="line">  <span class="keyword">if</span> (lRes == <span class="literal">false</span>) root.left = <span class="literal">null</span>;    <span class="comment">// pruning</span></span><br><span class="line">  <span class="keyword">if</span> (rRes == <span class="literal">false</span>) root.right = <span class="literal">null</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> (root.val == <span class="number">1</span>) || lRes || rRes; <span class="comment">// if one of them contains 1, the tree should not be pruned.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

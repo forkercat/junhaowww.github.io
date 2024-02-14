@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Hard My Post: [Java] Detailed Explanations &amp; Illustrations (divide-and-conquer, DP, two pointers) Problem Given n non-negative integers representing an elevation m">
+<meta property="og:type" content="website">
+<meta property="og:title" content="42. Trapping Rain Water">
+<meta property="og:url" content="https://junhaow.com/lc/problems/dp/42_trapping-rain-water.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Hard My Post: [Java] Detailed Explanations &amp; Illustrations (divide-and-conquer, DP, two pointers) Problem Given n non-negative integers representing an elevation m">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/73p9s.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/58vfa.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/cta9e.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7nxzy.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/eixvt.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bufdh.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.122Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.122Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/73p9s.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>42. Trapping Rain Water</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/trapping-rain-water/">LeetCode</a><br>Difficulty: <span class="red">Hard</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/trapping-rain-water/discuss/409175">[Java] Detailed Explanations &amp; Illustrations (divide-and-conquer, DP, two pointers)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given <code>n</code> non-negative integers representing an elevation map where the width of each bar is <code>1</code>, compute how much water it is able to trap after raining.<br><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/73p9s.jpg" alt="by Marcos"></p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: [<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>]</span><br><span class="line">Output: <span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p><strong>Wrong Idea:</strong> One pointer to detect increase or decrease. My mind was influenced by the solution to the longest mountain in an array.</p>
+<p><strong>A tricky test case:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/58vfa.jpg"></p>
+<p>The correct answer is <code>w1 + w2</code>. To compute the amount, we can’t just go by the bars <code>b</code> and <code>c</code>; instead, we must consider <code>a</code> and <code>d</code> with a broader perspective.</p>
+<p>Come up with the brute-force first!</p>
+<h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p>For each position <code>i</code> in <code>height[0...n-1]</code>, calculate how much water it contains. The amount of water can be computed by <code>min(leftMax, rightMax) - height[i]</code>. where <code>leftMax</code> is the highest left bar in <code>height[0...i-1]</code> and <code>rightMax</code> is the highest right bar in <code>height[i+1...n-1]</code>. What does it mean? No Picture You Say J8~</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/cta9e.jpg"></p>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>When <code>i</code> equals <code>0</code> and <code>n - 1</code>, the amount must be 0 since <code>min(leftMax, rightMax)</code> is 0.</li>
+<li>Notice that if the amount of water is negative, we just skip it. It happens when <code>height[i]</code> is greater than <code>min(leftMax, rightMax)</code>, which means no water is stored on it.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">trap</span><span class="params">(<span class="type">int</span>[] height)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> height.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">totalWater</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> <span class="number">0</span>; k &lt; n; ++k) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">leftMax</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt;= k - <span class="number">1</span>; ++i) &#123;</span><br><span class="line">      leftMax = Math.max(leftMax, height[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> <span class="variable">rightMax</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> k + <span class="number">1</span>; i &lt; n; ++i) &#123;</span><br><span class="line">      rightMax = Math.max(rightMax, height[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> <span class="variable">water</span> <span class="operator">=</span> Math.min(leftMax, rightMax) - height[k];</span><br><span class="line">    totalWater += (water &gt; <span class="number">0</span>) ? water : <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> totalWater;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^2)$ since computing <code>leftMax</code> and <code>rightMax</code> in each round takes $O(N)$.<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="DP-pre-compute"><a href="#DP-pre-compute" class="headerlink" title="DP (pre-compute)"></a>DP (pre-compute)</h3><p>Based on the brute-force approach, we can pre-compute all <code>leftMax</code> and <code>rightMax</code> in advance, which reduces time complexity to $O(N)$.</p>
+<p>We denote <code>leftMax[i]</code> as the highest bar in <code>height[0...i]</code> and <code>rightMax[i]</code> as the highest bar in <code>height[i...n-1]</code>.</p>
+<p><strong>Note:</strong> Before pre-computation, <code>leftMax[0]</code> and <code>rightMax[n - 1]</code> are each initialized by <code>height[0]</code> and <code>height[n - 1]</code>. By doing this, the code in the loop is cleaner.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">trap</span><span class="params">(<span class="type">int</span>[] height)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> height.length;</span><br><span class="line">  <span class="keyword">if</span> (n &lt;= <span class="number">2</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="comment">// pre-compute</span></span><br><span class="line">  <span class="type">int</span>[] leftMax = <span class="keyword">new</span> <span class="title class_">int</span>[n];</span><br><span class="line">  <span class="type">int</span>[] rightMax = <span class="keyword">new</span> <span class="title class_">int</span>[n];</span><br><span class="line">  leftMax[<span class="number">0</span>] = height[<span class="number">0</span>]; <span class="comment">// init</span></span><br><span class="line">  rightMax[n - <span class="number">1</span>] = height[n - <span class="number">1</span>];</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>, j = n - <span class="number">2</span>; i &lt; n; ++i, --j) &#123;</span><br><span class="line">    leftMax[i] = Math.max(leftMax[i - <span class="number">1</span>], height[i]);</span><br><span class="line">    rightMax[j] = Math.max(rightMax[j + <span class="number">1</span>], height[j]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// water</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">totalWater</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> <span class="number">1</span>; k &lt; n - <span class="number">1</span>; ++k) &#123; <span class="comment">// do not consider the first and the last places</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">water</span> <span class="operator">=</span> Math.min(leftMax[k - <span class="number">1</span>], rightMax[k + <span class="number">1</span>]) - height[k];</span><br><span class="line">    totalWater += (water &gt; <span class="number">0</span>) ? water : <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> totalWater;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="Divide-and-Conquer"><a href="#Divide-and-Conquer" class="headerlink" title="Divide and Conquer"></a>Divide and Conquer</h3><p>We can also solve this problem by divide-and-conquer approach.</p>
+<p>Initially, <code>leftMax</code> is <code>height[0]</code> and <code>rightMax</code> is <code>height[n - 1]</code>. We recursively compute the amount of trapping water in the problem <code>subTrap[1, n - 2]</code> with <code>leftMax</code> and <code>rightMax</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7nxzy.jpg"></p>
+<p><strong>Divide:</strong> We use <code>findMax</code> to find the highest bar <code>i</code> in <code>height[lo, hi]</code>, then divide into three subproblems <code>p1</code>, <code>p2</code>, and <code>p3</code>.<br><strong>Conquer:</strong> We compute <code>p1</code> and <code>p2</code> recursively. <code>p3</code> can be computed by <code>height[i] - min(leftMax, rightMax)</code> (remember to skip negative results).<br><strong>Combine:</strong> Returns <code>p1 + p2 + p3</code>.</p>
+<p>In each step, we update <code>rightMax</code> for the left subproblem <code>p1</code> and update <code>leftMax</code> for the right subproblem <code>p2</code> if they are greater than <code>height[findMax[i]]</code>.</p>
+<p><strong>Base Case:</strong> When there is one position (<code>lo == hi</code>), just solve it as we did for <code>p3</code>. If there is no place (<code>lo &gt; hi</code>), returns <code>0</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">trap</span><span class="params">(<span class="type">int</span>[] height)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> height.length;</span><br><span class="line">  <span class="keyword">if</span> (n &lt; <span class="number">3</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">return</span> subTrap(height, <span class="number">1</span>, n - <span class="number">2</span>, height[<span class="number">0</span>], height[n - <span class="number">1</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">subTrap</span><span class="params">(<span class="type">int</span>[] height, <span class="type">int</span> lo, <span class="type">int</span> hi, <span class="type">int</span> leftMax, <span class="type">int</span> rightMax)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (lo &gt; hi) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>; <span class="comment">// no water</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (lo == hi) &#123; <span class="comment">// one element</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">water</span> <span class="operator">=</span> Math.min(leftMax, rightMax) - height[lo];</span><br><span class="line">    <span class="keyword">return</span> (water &gt;= <span class="number">0</span>) ? water : <span class="number">0</span>; <span class="comment">// return 0 if it is negative</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">max</span> <span class="operator">=</span> findMax(height, lo, hi); <span class="comment">// O(N)</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 3 cases (p1, p2, p3)</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">p1</span> <span class="operator">=</span> subTrap(height, lo, max - <span class="number">1</span>, leftMax, Math.max(height[max], rightMax));</span><br><span class="line">  <span class="type">int</span> <span class="variable">p2</span> <span class="operator">=</span> subTrap(height, max + <span class="number">1</span>, hi, Math.max(height[max], leftMax), rightMax);</span><br><span class="line">  <span class="type">int</span> <span class="variable">p3</span> <span class="operator">=</span> Math.min(leftMax, rightMax) - height[max];</span><br><span class="line">  <span class="keyword">if</span> (p3 &lt; <span class="number">0</span>) p3 = <span class="number">0</span>; <span class="comment">// if p3 is negative, set it 0</span></span><br><span class="line">  <span class="comment">// combine</span></span><br><span class="line">  <span class="keyword">return</span> p1 + p2 + p3;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">findMax</span><span class="params">(<span class="type">int</span>[] height, <span class="type">int</span> lo, <span class="type">int</span> hi)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (height.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">maxVal</span> <span class="operator">=</span> height[lo];</span><br><span class="line">  <span class="type">int</span> <span class="variable">maxIdx</span> <span class="operator">=</span> lo;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> lo + <span class="number">1</span>; i &lt;= hi; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (height[i] &gt; maxVal) &#123;</span><br><span class="line">      maxVal = height[i];</span><br><span class="line">      maxIdx = i;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> maxIdx;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong></p>
+<ul>
+<li>Best case: $O(N\log{N})$ where $T(N) &#x3D; 2T(N&#x2F;2) + O(N)$</li>
+<li>Worst case: $O(N^2)$ where $T(N) &#x3D; T(N-1) + O(N)$</li>
+</ul>
+<p><strong>Space:</strong></p>
+<ul>
+<li>Best case: $O(\log{N})$</li>
+<li>Worst case: $O(N)$</li>
+</ul>
+<p>It depends on how the problem is divided into two subproblems by the highest bar.</p>
+<p><strong>Note:</strong> Time complexity can be reduced to $O(N)$ if the divide step <code>findMax()</code> takes $O(1)$ (pre-compute), no matter how the problem is divided.</p>
+<h3 id="Two-Pointers-no-extra-space-clever"><a href="#Two-Pointers-no-extra-space-clever" class="headerlink" title="Two Pointers (no extra space, clever)"></a>Two Pointers (no extra space, clever)</h3><p><strong>Note:</strong> We have <code>leftMax</code> and <code>rightMax</code> that record the largest heights <code>lo</code> and <code>hi</code> have seen so far.</p>
+<p>As in DP approach, instead of computing each <code>leftMax</code> and <code>rightMax</code> separately, we can actually consider one bar at each time as our <code>min(leftMax, rightMax)</code> since we only care about the bar with a smaller height.</p>
+<p>We denote two pointers <code>lo</code> and <code>hi</code> starting from two ends of the array. In the loop, we update <code>leftMax</code> and <code>rightMax</code> first.</p>
+<p>If the current <code>leftMax</code> is less than <code>rightMax</code>, we can correctly compute the water at <code>lo</code>, but not the water at <code>hi</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/eixvt.jpg"></p>
+<p>Let’s examine the case <code>leftMax &lt; rightMax</code>. We assume a <code>leftMax</code> in <code>height[0, lo]</code>. Since we do update first, <code>height[lo]</code> should be <strong>less than or equal to</strong> <code>leftMax</code> (it means that <code>leftMax</code> could have been just updated by <code>height[lo]</code>).</p>
+<p>Since <code>leftMax &lt; rightMax</code>, the amount of water at <code>lo</code> can be determined at this time, no matter what the heights between <code>[lo + 1, hi - 1]</code> are. For example, if there is an <code>e</code> higher than <code>b</code> but lower than <code>leftMax</code>, it still works because there is <code>rightMax</code> on the right that can eliminate the effect of <code>e</code>. In terms of <code>f</code>, it is more obvious that it is right. (it is hard to explain well T_T)</p>
+<p><strong>However</strong>, it does not always hold true if we compute the amount of water at <code>hi</code> in this case (<code>leftMax &lt; rightMax</code>). Consider <code>d</code> that is less than <code>rightMax</code>:</p>
+<ul>
+<li><p>If we use <code>leftMax</code> to compute the amount (<code>leftMax - d</code>), there could be an <code>f</code> that gives a larger result (<code>min(f, rightMax) - d</code>).</p>
+</li>
+<li><p>If we use <code>rightMax</code> to compute the amount (<code>rightMax - d</code>), there could be an <code>e</code> that gives a smaller result (<code>min(e, rightMax) - d</code> if <code>e &gt; leftMax</code> or <code>min(leftMax, rightMax) - d</code> if <code>e &lt; leftMax</code>).</p>
+</li>
+</ul>
+<p>Here is the code:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">trap</span><span class="params">(<span class="type">int</span>[] height)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> height.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">lo</span> <span class="operator">=</span> <span class="number">0</span>, hi = n - <span class="number">1</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">leftMax</span> <span class="operator">=</span> <span class="number">0</span>, rightMax = <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">water</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (lo &lt; hi) &#123;</span><br><span class="line">    <span class="comment">// update</span></span><br><span class="line">    <span class="keyword">if</span> (height[lo] &gt; leftMax)  leftMax = height[lo];</span><br><span class="line">    <span class="keyword">if</span> (height[hi] &gt; rightMax) rightMax = height[hi];</span><br><span class="line">    <span class="comment">// compute</span></span><br><span class="line">    <span class="keyword">if</span> (leftMax &lt; rightMax) &#123; <span class="comment">// consider the min</span></span><br><span class="line">        water += (leftMax - height[lo]); <span class="comment">// leftMax &gt;= height[lo]</span></span><br><span class="line">        ++lo;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        water += (rightMax - height[hi]);</span><br><span class="line">        --hi;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> totalWater;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Two-Pointers-my-first-attempt"><a href="#Two-Pointers-my-first-attempt" class="headerlink" title="Two Pointers (my first attempt)"></a>Two Pointers (my first attempt)</h3><p>Here is the solution I first came up with… It just uses <code>two pointers</code> to keep track of two bars and compute the water by levels constrained by the minimum height of two bars. (a bit similar to Skyline problem…)</p>
+<p>Left&#x2F;right pointers are both aiming for higher bars when they move on to the center. It is not intuitive because each time we should not add computed amount of water (minus <code>wateredHt</code> in the code).</p>
+<p>How could I write such a solution instead of brute-force at first?</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bufdh.png"></p>
+<p><strong>See a better approach below.</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">trap</span><span class="params">(<span class="type">int</span>[] height)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> height.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>, j = n - <span class="number">1</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">wateredHt</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">leftHt</span> <span class="operator">=</span> <span class="number">0</span>, rightHt = <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">totalWater</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (i &lt; j) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">currHt</span> <span class="operator">=</span> Math.min(height[i], height[j]); <span class="comment">// consider beginning case when currHt = 0</span></span><br><span class="line">    <span class="comment">// Water</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">water</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> i + <span class="number">1</span>; k &lt;= j - <span class="number">1</span>; ++k) &#123;</span><br><span class="line">      water += currHt - Math.max(Math.min(height[k], currHt), wateredHt);</span><br><span class="line">    &#125;</span><br><span class="line">    totalWater += water;</span><br><span class="line">    wateredHt = currHt;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Move i and J</span></span><br><span class="line">    <span class="keyword">if</span> (height[i] &lt;= height[j]) &#123; <span class="comment">// move i</span></span><br><span class="line">      <span class="type">int</span> <span class="variable">oldHt</span> <span class="operator">=</span> height[i];</span><br><span class="line">      <span class="keyword">while</span> (i &lt; j &amp;&amp; height[i] &lt;= oldHt) ++i;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// move j</span></span><br><span class="line">      <span class="type">int</span> <span class="variable">oldHt</span> <span class="operator">=</span> height[j];</span><br><span class="line">      <span class="keyword">while</span> (i &lt; j &amp;&amp; height[j] &lt;= oldHt) --j;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> totalWater;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^2)$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

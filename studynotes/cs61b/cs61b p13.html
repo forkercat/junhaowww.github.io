@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Bubble SortIdeaReference: wiki Bubble sort (or sinking sort) is a simple sorting algorithm that repeatedly steps through the list, compares adjacent pairs and swaps them if they are in the wrong or">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CS 61B | Part 13 | Bubble &amp; Quick Sort, Stability, Bounds, Radix Sort, Comparisons">
+<meta property="og:url" content="https://junhaow.com/studynotes/cs61b/cs61b%20p13.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Bubble SortIdeaReference: wiki Bubble sort (or sinking sort) is a simple sorting algorithm that repeatedly steps through the list, compares adjacent pairs and swaps them if they are in the wrong or">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2tky7.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zzxwh.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jvmly.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xffvx.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6395y.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ta3ez.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/k4or5.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4bgzo.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8ngic.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/d5fwd.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2g5ch.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/q5i2f.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/a02r9.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/e90qy.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8ycfi.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/nxi9i.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/iy8zi.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1c7f8.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4nizg.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bkfii.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vy4zl.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6rzqs.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3kdeo.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ugimc.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/mnx0k.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gjo8y.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bewwh.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ve6pv.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/pf7ay.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sbzf8.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/27fus.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/0txq7.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9zjte.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/n5o4e.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/37coc.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/z3pal.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/b6z82.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/0udcz.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/d4tnh.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6zbr4.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qo277.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6t06e.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/je98v.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5yf57.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ss2us.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ui5tb.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/y0q9w.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/kg7oe.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dz3hv.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/34ljo.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1fq6y.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/g8dws.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/lsxoz.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/j3j4r.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9eos1.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/di03u.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xsfr4.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/742dn.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/iqfob.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/755lz.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.195Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.195Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2tky7.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CS 61B | Part 13 | Bubble &amp; Quick Sort, Stability, Bounds, Radix Sort, Comparisons</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+
+<h2 id="Bubble-Sort"><a href="#Bubble-Sort" class="headerlink" title="Bubble Sort"></a>Bubble Sort</h2><h3 id="Idea"><a href="#Idea" class="headerlink" title="Idea"></a>Idea</h3><p>Reference: <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Bubble_sort">wiki</a></p>
+<p>Bubble sort (or sinking sort) is a simple sorting algorithm that repeatedly steps through the list, <code>compares adjacent pairs and swaps</code> them if they are in the wrong order. The pass through the list is repeated until the list is sorted.</p>
+<p>Although the algorithm is simple, it is <code>too slow and impractical</code> for most problems even when compared to <code>insertion sort</code>. </p>
+<p>Bubble sort can be practical if the input is in <code>mostly sorted order</code> with some out-of-order elements nearly in position.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/* Bubble Sort */</span><br><span class="line">                      N-1</span><br><span class="line">Pivot:     &lt;-----------i</span><br><span class="line">Index:  0 [1] 2  3  4 [5]</span><br><span class="line">Data:   3  9  5  2  1  8</span><br><span class="line">        j-----------&gt;</span><br><span class="line">        j&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">bubbleSort</span><span class="params">(<span class="type">int</span>[] a)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">N</span> <span class="operator">=</span> a.length;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> N - <span class="number">1</span>; i &gt; <span class="number">0</span>; --i) &#123; <span class="comment">// i &gt;= 0 --&gt; OK</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; i; ++j) &#123;</span><br><span class="line">      <span class="keyword">if</span> (a[j] &gt; a[j + <span class="number">1</span>]) &#123;</span><br><span class="line">        swap(a, j, j + <span class="number">1</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Quick-Sort"><a href="#Quick-Sort" class="headerlink" title="Quick Sort"></a>Quick Sort</h2><h3 id="Backstory"><a href="#Backstory" class="headerlink" title="Backstory"></a>Backstory</h3><blockquote>
+<p>Invented by Sir Tony Hoare in 1960, at the time a novice programmer.</p>
+</blockquote>
+<p>Quicksort was the name chosen by Tony Hoare for <code>Partition Sort</code>. For most common situations, it is empirically the <code>fastest</code> sort. He was lucky that the name was correct.</p>
+<p>Problem:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2tky7.png" alt="The cat wore a beautiful hat."></p>
+<p>Limitation at the time:</p>
+<ul>
+<li>Dictionary stored on long piece of tapes, sentence is an array in RAM.<ul>
+<li>Binary search of tapes is not log time (requires physical movement).</li>
+</ul>
+</li>
+<li>Better Approach: <code>Sort the sentence</code> and scan dictionary tape once. Takes $N\log{N} + D$ time.<ul>
+<li>Bubble Sort</li>
+<li>Quick Sort</li>
+</ul>
+</li>
+</ul>
+<h3 id="Partitioning"><a href="#Partitioning" class="headerlink" title="Partitioning"></a>Partitioning</h3><p>Interview Question:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zzxwh.png" alt="Interview Question"></p>
+<p><strong>Approach 1:</strong> Scan from the right edge of the list.</p>
+<ul>
+<li>If anything is smaller, stick it in the leftmost.</li>
+<li>If anything is larger, skip it.</li>
+<li>Very natural use for a double ended queue.</li>
+</ul>
+<p><strong>Approach 2:</strong> Insert $6$ into a BST, then 8, 3, …, 4.</p>
+<ul>
+<li>All the smaller items are on the left.</li>
+<li>All the larger items are on the right.</li>
+</ul>
+<p><strong>Approach 3:</strong> Create another array. Scan the original array 3 times.</p>
+<ul>
+<li>1st Scan: Copy all red items to the first $R$ spaces.</li>
+<li>2nd Scan: Copy the white item.</li>
+<li>3rd Scan: Copy all blue items to the last $B$ spaces.</li>
+</ul>
+<h3 id="Idea-1"><a href="#Idea-1" class="headerlink" title="Idea"></a>Idea</h3><p>Quicksorting $N$ items:</p>
+<ul>
+<li>Partition on <code>leftmost</code> item. (one of many versions)</li>
+<li>Quicksort left half.</li>
+<li>Quicksort right half.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jvmly.png" alt="After doing Quicksort left half"></p>
+<p>Demo: <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1QjAs-zx1i0_XWlLqsKtexb-iueao9jNLkN-gW9QxAD0/edit#slide=id.g463de7561_042">link</a></p>
+<h3 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h3><h4 id="Fastest-Sort"><a href="#Fastest-Sort" class="headerlink" title="Fastest Sort"></a>Fastest Sort</h4><p>Partitioning takes $\Theta(K)$ time, where $K$ is the number of elements being partitioned.</p>
+<p><strong>Interesting Twist:</strong> Overall runtime will depend crucially on <code>where pivot ends up</code>.</p>
+<p><strong>Best Case:</strong> Pivot Always Lands in the Middle. &#x3D;&#x3D;&gt; $\Theta(N\log{N})$</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xffvx.png" alt="Best Case: Pivot Always Lands in the Middle"></p>
+<p><strong>Worst Case:</strong> Pivot Always Lands at the Beginning. &#x3D;&#x3D;&gt; $\Theta(N^2)$</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6395y.png" alt="Worst Case: Pivot Always Lands at the Beginning"></p>
+<p>In summary:</p>
+<ul>
+<li>Best Case: $\Theta(N\log{N})$</li>
+<li>Worst Case: $\Theta(N^2)$<ul>
+<li>For our pivot strategy: Sorted or almost sorted.<ul>
+<li>It can be improved by randomly pick the pivot.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Randomly chosen array case: $\Theta(N\log{N})$<ul>
+<li>With extremely high probability!</li>
+</ul>
+</li>
+</ul>
+<p>Compare this to Mergesort:</p>
+<ul>
+<li>Best Case: $\Theta(N\log{N})$</li>
+<li>Worst Case: $\Theta(N\log{N})$</li>
+</ul>
+<p>Recall that <code>linearithmic</code> vs. <code>quadratic</code> is a really big deal. So how can Quicksort be the fastest sort empirically?</p>
+<p>The answer: It takes $\Theta(N\log{N})$ <code>on average</code>.</p>
+<p>Note: Rigorous proof requires probability theory + calculus, but <code>intuition</code> + <code>empirical analysis</code> will be convincible.</p>
+<h4 id="Argument"><a href="#Argument" class="headerlink" title="Argument"></a>Argument</h4><p><strong>Argument 1:</strong> 10% Case</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ta3ez.png" alt="Argument 1: 10% Case"></p>
+<p><strong>Punchline:</strong> Even if you are unlucky enough to have a pivot that never lands anywhere near the middle, but at least always <code>10%</code> from the edge, runtime is still $O(N\log{N})$.</p>
+<p><strong>Argument 2:</strong> Quicksort is BST sort (Gez!)</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/k4or5.png" alt="Argument 2: Quicksort is BST sort"></p>
+<p><strong>Note:</strong> Whenever comparison happens in your partition, think of the comparison and insertion processes in BST. Also, notice that the worst case in BST insertion is $\Theta(N)$.</p>
+<p><strong>Argument 3:</strong> Empirical Quicksort Runtimes</p>
+<p>For $N$ items:</p>
+<ul>
+<li>Average number of compares to complete Quicksort: $\sim 2N \ln{N}$</li>
+<li>Standard deviation: $\sqrt{(21-2\pi^2)&#x2F;3}N \approx 0.6482776N$</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4bgzo.png" alt="Runtime Histogram"></p>
+<p><strong>Note:</strong> It means the probability of worst case is quite low.</p>
+<h4 id="Avoid-Worst-Case"><a href="#Avoid-Worst-Case" class="headerlink" title="Avoid Worst Case"></a>Avoid Worst Case</h4><p>If pivot always lands somewhere “good”, Quicksort is $\Theta(N\log{N})$. However, the very rare $\Theta(N^2)$ cases do happen in practice.</p>
+<ul>
+<li><code>Bad Ordering</code>: Array already in sorted order (or almost sorted order).</li>
+<li><code>Bad Elements</code>: Array with all duplicates.</li>
+</ul>
+<p>Based on our version of Quicksort, we have the two properties:</p>
+<ul>
+<li>Leftmost item is always chosen as the <code>pivot</code>.</li>
+<li>Our <code>partitioning</code> algorithm preserves the relative order of $\leq$ and $\geq$ items.</li>
+</ul>
+<p>Actually, we can embrace these <code>four philosophies</code>:</p>
+<ol>
+<li><code>Randomness</code>: Pick a random pivot or shuffle before sorting (good!).</li>
+<li><code>Smarter pivot selection</code>: Calculate or approximate the median.</li>
+<li><code>Introspection</code>: Switch to a safer sort if recursion goes to deep.</li>
+<li><code>Preprocess the array</code>: Could analyze array to see if Quicksort will be slow, but no obvious way to do this.</li>
+</ol>
+<p><strong>1. Randomness</strong></p>
+<p>Dealing with bad ordering:</p>
+<ul>
+<li><code>Strategy #1</code>: Pick pivots randomly.</li>
+<li><code>Strategy #2</code>: Shuffle before you sort.<ul>
+<li>The 2nd strategy requires care in partitioning code to avoid $\Theta(N^2)$ behavior on arrays of duplicates.</li>
+<li>Common bug in textbooks! See A level problems.</li>
+</ul>
+</li>
+</ul>
+<p><strong>2. Smarter Pivot Selection</strong></p>
+<p><strong>Constant time pivot pick:</strong></p>
+<p>What about:</p>
+<ul>
+<li>Picking the 8th pivot?</li>
+<li>Picking the first, last, and the middle pivots, and compute the median?</li>
+</ul>
+<p>Sounds good. However, for any pivot selection procedure that is:</p>
+<ul>
+<li>Deterministic</li>
+<li>Constant time</li>
+</ul>
+<p>There exists an input that will cause that Quicksort to take $\Theta(N^2)$.</p>
+<p><strong>Note:</strong> In fact, Java Quicksort is <code>non-random</code>. You can give an array of integers and cause it to crash because the <code>recursion depth</code> goes too deep.</p>
+<p>But it happens rarely and getting random numbers can be expensive.</p>
+<p><strong>Linear time pivot pick:</strong></p>
+<p>We could calculate the <code>actual median</code> in $\Theta(N)$.</p>
+<p>It turns out the worst case is $\Theta(N\log{N})$, but it is slower than Mergesort, according to computational experiments.</p>
+<p><strong>3. Introspection</strong></p>
+<p>We can also simply watch the <code>recursion depth</code>. If it exceeds some critical value (say $10\ln{N}$), switch to Mergesort or Selection Sort.</p>
+<p>Perfectly reasonable approach, though not super common in practice.</p>
+<p><strong>4. Preprocess the Array</strong></p>
+<p>There may be no obvious way to do this.</p>
+<p><strong>Sorting Summary (So far):</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8ngic.png" alt="Sorting Summary (So far)"></p>
+<p>Note: Heapsort has <code>bad caching performance</code>, basically because it’s jumping all over the place (sinking) to find children or parents.</p>
+<h3 id="In-place-Partition"><a href="#In-place-Partition" class="headerlink" title="In-place Partition"></a>In-place Partition</h3><p><strong>Better Scheme:</strong> Tony originally proposed a scheme called <code>Hoare&#39;s Partitioning</code> where two pointers walk towards each other.</p>
+<p>Hoare’s Partitioning:</p>
+<p>Two Pointers: Left and right pointers work for the <code>pivot</code>.</p>
+<ul>
+<li>Left pointer <code>i</code> loves small items, and hates large or equal items.</li>
+<li>Right pointer <code>j</code> loves large items, hates small or equal items.</li>
+<li><code>Stop</code> at a hated item.</li>
+</ul>
+<p>Walk towards each other, <code>swapping</code> anything they hate.</p>
+<ul>
+<li>When both pointers have stopped, swap and move pointers by one.</li>
+<li>When pointers cross, it’s done.</li>
+<li>Swap pivot with the right pointer <code>j</code>.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/d5fwd.png" alt="L = i; G = j"></p>
+<p>Note: </p>
+<ul>
+<li><code>Hating equal items</code> is necessary when we have an array of many duplicate items.<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">piv                  j&lt;-j</span><br><span class="line">6  6  6  6  6  6  6  6  6</span><br><span class="line">   i-------------------&gt;i</span><br><span class="line">^                    ^</span><br><span class="line">---------------------- Swap  </span><br></pre></td></tr></table></figure></li>
+<li>The partition scheme is <code>independent</code> of the choice of the pivot. If we pick a pivot in the middle, we can just swap it with the leftmost item at the beginning.</li>
+</ul>
+<blockquote>
+<p>If you find yourself in a funny case, get yourself into a case you understand and then it’ll be okay.</p>
+</blockquote>
+<p>Demo: <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1DOnWS59PJOa-LaBfttPRseIpwLGefZkn450TMSSUiQY/pub?start=false&loop=false&delayms=3000&slide=id.g463de7561_042">link</a></p>
+<p><strong>Compare to Mergesort:</strong></p>
+<p>Using Tony Hoare’s two pointer scheme, Quicksort is better than Mergesort!</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/2g5ch.png" alt="Mergesort vs. Quicksort"></p>
+<h3 id="Code-1"><a href="#Code-1" class="headerlink" title="Code"></a>Code</h3><h4 id="Okay-Version"><a href="#Okay-Version" class="headerlink" title="Okay Version"></a>Okay Version</h4><p><strong>Caveat:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">         i/j</span><br><span class="line">data: 2  5 </span><br><span class="line">         j  i    // i moves first</span><br><span class="line">data: 2  5</span><br></pre></td></tr></table></figure>
+
+<p>Note: It’s not good. Bad Case: Duplicate items &#x3D;&gt; O(N^2)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">quicksort</span><span class="params">(<span class="type">int</span>[] a)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (a == <span class="literal">null</span> || a.length == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">  <span class="comment">// StdRandom.shuffle(a);</span></span><br><span class="line">  quicksort(a, <span class="number">0</span>, a.length - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//  0  1  2  3  4        0  1  2  3  4        0  1  2  3  4</span></span><br><span class="line"><span class="comment">//  1  9  3  4  6   =&gt;   1  9  3  4  6   =&gt;   1  6  3  4  9</span></span><br><span class="line"><span class="comment">//  p  i        j           p  i     j           p  i  j</span></span><br><span class="line"><span class="comment">//  j&lt;-----------              --------&gt;i           -----&gt;i</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">quicksort</span><span class="params">(<span class="type">int</span>[] a, <span class="type">int</span> lo, <span class="type">int</span> hi)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (lo &gt;= hi) <span class="keyword">return</span>;  <span class="comment">// size == 1</span></span><br><span class="line"></span><br><span class="line">  <span class="type">int</span> <span class="variable">p</span> <span class="operator">=</span> lo;  <span class="comment">// pivot</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> lo + <span class="number">1</span>, j = hi;</span><br><span class="line">  <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">while</span> (i &lt;= j &amp;&amp; a[i] &lt;= a[p]) ++i;  <span class="comment">// i moves</span></span><br><span class="line">    <span class="keyword">while</span> (i &lt;= j &amp;&amp; a[j] &gt;= a[p]) --j;  <span class="comment">// j moves</span></span><br><span class="line">    <span class="keyword">if</span>(i &gt; j) <span class="keyword">break</span>;</span><br><span class="line">    swap(a, i, j);             <span class="comment">// swap i, j</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  swap(a, p, j);  <span class="comment">// swap pivot, j</span></span><br><span class="line">  quicksort(a, lo, j - <span class="number">1</span>);</span><br><span class="line">  quicksort(a, j + <span class="number">1</span>, hi);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Algs4-Version"><a href="#Algs4-Version" class="headerlink" title="Algs4 Version"></a>Algs4 Version</h4><p><strong>Caveat:</strong></p>
+<p>Some of them are from algs4.</p>
+<ul>
+<li>Two pointers should <code>move first</code> and then compare. For example, if we’ve exchanged i and j, we want to move on to new values in the next round.</li>
+<li><code>Staying in bounds</code>. If the smallest item or the largest item in the array is the partitioning item, we have to take care that the pointers do not run off the left or right ends of the array, respectively. <ul>
+<li>Our <code>partition()</code> implementation has explicit tests to guard against this circumstance. The test <code>(j == lo)</code> is redundant, since the partitioning item is at <code>a[lo]</code> and not less than itself.</li>
+</ul>
+</li>
+<li><code>Duplicate Keys</code>: Handling items with keys equal to the partitioning item’s key. It is best to stop the left scan for items with keys <code>greater than or equal to</code> the partitioning item’s key and the right scan for items with key <code>less than or equal to</code> the partitioning item’s key. Even though this policy might seem to create unnecessary exchanges involving items with keys equal to the partitioning item’s key, it is crucial to avoiding quadratic running time in certain typical applications.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">qsort</span><span class="params">(<span class="type">int</span>[] a)</span> &#123;</span><br><span class="line">  qsort(a, <span class="number">0</span>, a.length - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">qsort</span><span class="params">(<span class="type">int</span>[] a, <span class="type">int</span> lo, <span class="type">int</span> hi)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (lo &gt;= hi) <span class="keyword">return</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> partition(a, lo, hi);</span><br><span class="line">  qsort(a, lo, j - <span class="number">1</span>);</span><br><span class="line">  qsort(a, j + <span class="number">1</span>, hi);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">partition</span><span class="params">(<span class="type">int</span>[] a, <span class="type">int</span> lo, <span class="type">int</span> hi)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">p</span> <span class="operator">=</span> a[lo];</span><br><span class="line">  <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> lo; <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> hi + <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">while</span> (a[++i] &lt; p) &#123;  <span class="comment">// move i</span></span><br><span class="line">      <span class="keyword">if</span> (i == hi) <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> (a[--j] &gt; p) &#123;  <span class="comment">// move j</span></span><br><span class="line">      <span class="keyword">if</span> (j == lo) <span class="keyword">break</span>; </span><br><span class="line">      <span class="comment">// redundant since a[lo] acts as sentinel</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (i &gt;= j) <span class="keyword">break</span>; <span class="comment">// check if pointers cross</span></span><br><span class="line">    swap(a, i, j);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  swap(a, left, j);</span><br><span class="line">  <span class="keyword">return</span> j;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="Pivot-Scheme-Median"><a href="#Pivot-Scheme-Median" class="headerlink" title="Pivot Scheme (Median)"></a>Pivot Scheme (Median)</h3><p>More recent pivot &#x2F; partitioning schemes do somewhat better. Best known Quicksort uses a <code>two-pivot</code> scheme. This version was introduced to the world by a previously unknown guy, in a Java developers forum (<a target="_blank" rel="noopener" href="https://web.archive.org/web/20100428064017/http://permalink.gmane.org/gmane.comp.java.openjdk.core-libs.devel/2628">link</a>).</p>
+<p>More Improvement: A much better approach could be to use the <code>median</code> as our pivot.</p>
+<ul>
+<li><strong>Approach 1:</strong> Create a min heap and a max heap, and insert some yadda yadda.</li>
+<li><strong>Approach 2:</strong> Build a balanced BST, and take the root, but it only works if the tree is perfectly balanced.</li>
+<li><strong>Approach 3:</strong> Sort and take the middle. (X)</li>
+</ul>
+<h4 id="PICK"><a href="#PICK" class="headerlink" title="PICK"></a>PICK</h4><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/q5i2f.png" alt="Median Identification (BFPRT / PICK)"></p>
+<p>What happens if we use this algorithm in Quicksort?</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/a02r9.png"></p>
+<p>Cost to compute medians is too high. So, we have to live with worst case $\Theta(N^2)$ if we want good practical performance.</p>
+<h4 id="Quick-Select"><a href="#Quick-Select" class="headerlink" title="Quick Select"></a>Quick Select</h4><p>It turns out that <code>partitioning</code> can be used to find the exact median. The resulting algorithm is the <code>best</code> known median identification algorithm.</p>
+<p>Demo:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/e90qy.png" alt="Quick Select"></p>
+<p>Runtime:</p>
+<p>Worst case: $\Theta(N^2)$ occurs if array is in sorted order.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8ycfi.png" alt="Worst Case"></p>
+<p>On average, Quick Select will take $\Theta(N)$ time.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/nxi9i.png" alt="Expected Performance"></p>
+<p>Although it is bound by $\Theta(N^2)$, it is better than PICK on average (just like Mergesort vs. Quicksort).</p>
+<p>However, if we apply Quick Select to Quicksort, resulting algorithm is <code>still quite slow</code>. It is <code>strange</code> to do a bunch of partitions to identify the optimal item to partition around.</p>
+<h2 id="Property-Stability"><a href="#Property-Stability" class="headerlink" title="Property: Stability"></a>Property: Stability</h2><p>Stable: <code>Order of equivalent</code> items is preserved.</p>
+<p>Stable Example:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/iy8zi.png" alt="Stable Example"></p>
+<p>Note: Equivalent items don’t <code>cross over</code> when being stably sorted.</p>
+<p>Unstable Example:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1c7f8.png" alt="Unstable Example"></p>
+<p>Sorting instability can be really annoying.</p>
+<ul>
+<li><p>Is insertion sort stable?</p>
+<p>Yes. Equivalent items never move past their equivalent brethren (&#x3D; brothers).</p>
+</li>
+<li><p>Is Quicksort stable?</p>
+<p>Depends on your partitioning strategy. Quicksort LTHS is not stable.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/4nizg.png" alt="Quicksort LTHS"></p>
+</li>
+</ul>
+<p>Besides, Heapsort is not stable. Mergesort is stable.</p>
+<p><strong>Java’s Example:</strong></p>
+<p>In Java, <code>Arrays.sort()</code> uses:</p>
+<ul>
+<li>Mergesort (specifically the TimSort variant) if someArray consists of Objects.</li>
+<li>Quicksort if someArray consists of primitives.</li>
+</ul>
+<p>Why?</p>
+<ul>
+<li>When you are using a primitive value, they are the same. A <code>4</code> is a <code>4</code>. <code>Unstable sort</code> has no observable effect.</li>
+<li>By contrast, objects can have many properties, e.g. section and name, so equivalent items can be differentiated.</li>
+</ul>
+<h2 id="Optimizing-Sort-Tricks"><a href="#Optimizing-Sort-Tricks" class="headerlink" title="Optimizing Sort Tricks"></a>Optimizing Sort Tricks</h2><p>There are some additional tricks we can play:</p>
+<ul>
+<li>Switch to Insertion Sort:<ul>
+<li>When a subproblem reaches size 15 or lower, use insertion sort.</li>
+</ul>
+</li>
+<li>Mark sort <code>adaptive</code>: Exploit existing order in array (<code>Insertion Sort</code>, <code>Smoothsort</code>, <code>Timsort</code>)<ul>
+<li>Timsort is a hybrid stable sorting algorithm derived from Mergesort and Insertion Sort. It is used in Python and Java.</li>
+</ul>
+</li>
+<li>Exploit restrictions on set of keys. If number of keys is some constant, e.g. [3, 4, 1, 2, 4, 3, …, 2, 2, 2, 1, 4, 3, 2, 3], we can sort faster using <code>3-way quicksort</code>.<ul>
+<li>Idea: Process all occurrences of pivot based on <code>Duntch national flag</code> (DNF) problem.</li>
+</ul>
+</li>
+</ul>
+<p>By the way:</p>
+<p>Sorting is a fundamental problem on which many other problems rely.</p>
+<ul>
+<li>Sorting improves <code>duplicate finding</code> from a naive $N^2$ to $N\log{N}$.</li>
+<li>Sorting improves <code>3SUM</code> from a naive $N^3$ to $N^2$.</li>
+</ul>
+<h2 id="Factorial-Linearithmic"><a href="#Factorial-Linearithmic" class="headerlink" title="Factorial &amp; Linearithmic"></a>Factorial &amp; Linearithmic</h2><p>Consider the functions $N!$ and $(N&#x2F;2)^{N&#x2F;2}$:</p>
+<p>Is $N! \in \Omega((N&#x2F;2)^{N&#x2F;2})$?</p>
+<p>Note: </p>
+<ul>
+<li>$\in \Omega$ can be informally interpreted as $\geq$.</li>
+<li>Or it means: Does factorial grow at least as quickly as $(N&#x2F;2)^{N&#x2F;2}$?</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bkfii.png"></p>
+<p>Given $N! &gt; (N&#x2F;2)^{N&#x2F;2}$, show that $\log{(N!)} \in \Omega(N\log{N})$.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vy4zl.png"></p>
+<p>Now, show that $N\log{N} \in \Omega(\log{(N!)})$.</p>
+<ul>
+<li>$\log{(N!)} &#x3D; \log{(N)} + \log{(N - 1)} + \log{(N-2)} + \ldots + \log{(1)}$</li>
+<li>$N\log{N} &#x3D; \log{(N)} + \log{(N)} + \log{(N)} + \ldots + \log{(N)}$</li>
+<li>Therefore, $N\log{N} \in \Omega(\log{(N!)})$</li>
+</ul>
+<p>Finally, we can say:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6rzqs.png"></p>
+<p>So, these two functions grow at the same rate asymptotically.</p>
+<h2 id="Algorithmic-Bounds"><a href="#Algorithmic-Bounds" class="headerlink" title="Algorithmic Bounds"></a>Algorithmic Bounds</h2><h3 id="Bound-Definition"><a href="#Bound-Definition" class="headerlink" title="Bound Definition"></a>Bound Definition</h3><p>We have shown several sorts to require $\Theta(N\log{N})$ worst case time. Can we build a better sorting algorithm?</p>
+<p>Let the ultimate comparison sort (TUCS) be the asymptotically <code>fastest</code> possible comparison sorting algorithm, possibly yet to be discovered.</p>
+<p>Let $R(N)$ be its worst case runtime in $\Theta$ notation.</p>
+<ul>
+<li>Worst case runtime of TUCS, $R(N)$ is $O(N\log{N})$. Why? Because we have <code>Mergesort</code>.</li>
+</ul>
+<p>We can also say:</p>
+<ul>
+<li>Worst case runtime of TUCS, $R(N)$ is $\Omega(1)$.</li>
+</ul>
+<p>The problem doesn’t get easier with $N$. Can we make a stronger statement than $\Omega(1)$?</p>
+<ul>
+<li>Worst case runtime of TUCS, $R(N)$ is also $\Theta(N)$.</li>
+</ul>
+<p>TUCS has to at least look at every item.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3kdeo.png"></p>
+<p>Can we make an even stronger statement on the lower bound of the worst case performance of TUCS?</p>
+<p>With a clever statement, yes. It is $\Omega(N\log{N})$.</p>
+<p>This lower bound means that across the infinite space of all possible ideas that any human might ever have for sorting  using sequential comparison, <code>none</code> has a worst case runtime that is better than $N\log{N}$.</p>
+<p>The intuitive explanation is as followed.</p>
+<h3 id="Game-of-Puppy-Cat-Dog"><a href="#Game-of-Puppy-Cat-Dog" class="headerlink" title="Game of Puppy, Cat, Dog"></a>Game of Puppy, Cat, Dog</h3><p>Suppose we have a puppy, a cat, and a dog, each in an opaque soundproof box labeled A, B, and C. We want to figure out which is which using a scale.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ugimc.png"></p>
+<p>Notice that if we ask the first two questions <code>a &lt; b</code> and <code>b &lt; c</code>, and the answers are <code>Yes</code> and <code>No</code>, we can’t know the sorted order.</p>
+<p>We can see the decision tree here:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/mnx0k.png" alt="Puppy, Cat, Dog - A Graphical Picture for N = 3"></p>
+<p>How many questions would you need to ask to definitely solve the “puppy, cat, dog, walrus” problem?</p>
+<p>The answer is 5.</p>
+<ul>
+<li>If $N &#x3D; 4$, there are $4! &#x3D; 24$ permutations.</li>
+<li>So we need a binary tree with 24 leaves.<ul>
+<li>How many levels <code>minimum</code>? $lg(24) &#x3D; 4.58$, so 5 is the minimum. (some leaves are at level 6)</li>
+</ul>
+</li>
+</ul>
+<p>Let’s generalize the problem for $N$ items.</p>
+<p>The answer is: $\Omega(\log{N!})$</p>
+<ul>
+<li>Decision tree needs $N!$ leaves.</li>
+<li>So we need $lg(N!)$ rounded up levels, which is $\Omega(\log{N!})$.</li>
+</ul>
+<h3 id="Generalization"><a href="#Generalization" class="headerlink" title="Generalization"></a>Generalization</h3><p>Finding an optimal decision tree for the generalized version of this game is an <code>open problem</code> in mathematics.</p>
+<p>Deriving a sequence of yes&#x2F;no questions to identify these animals is hard, but we can use <code>sorting</code> to solve the problem.</p>
+<p>In other words, this problem can reduce to sorting problem. Thus, <code>any lower bound</code> on difficulty of this game must also apply to sorting.</p>
+<p>Since we have a lower bound on this game that it takes $\Omega(\log{(N!)})$ comparisons to solve such a puzzle in the worst case, sorting with comparisons also takes $\Omega(\log{(N!)})$ comparisons in the worst case.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gjo8y.png" alt="Sorting Lower Bound"></p>
+<p>Since we have $\log{(N!)} \in \Omega(N\log{N})$, $\log{(N!)}$ grows at least quickly as $N\log{N}$, we can say the lower bound of TUCS is  $\Omega(N\log{N})$.</p>
+<p>Finally, any comparison based sort requires at least order $N\log{N}$ comparisons in its worst case.</p>
+<p>Informally, we can say: TUCS &gt;&#x3D; Puppy, cat, dog &gt;&#x3D; $\log{(N!)}$ &gt;&#x3D; $N\log{N}$</p>
+<p>Remember our goal is to try to bound the worst case runtime of sorting as close as possible.</p>
+<h3 id="Optimality"><a href="#Optimality" class="headerlink" title="Optimality"></a>Optimality</h3><p><strong>Note:</strong> In terms of sequential comparisons rather than parallel comparisons.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bewwh.png"></p>
+<p><strong>The punchline:</strong> Our best sorts have achieved <code>absolute asymptotic optimality</code>.</p>
+<ul>
+<li>Mathematically impossible to sort using <code>fewer comparisons</code>.</li>
+<li>Notice that randomized quicksort is only probabilistically optimal, but the probability is extremely high for even modest $N$. Are you worried about <code>quantum teleportation</code>? Then don’t worry about Quicksort.</li>
+</ul>
+<p>Question: If we avoid comparing anything, can we do better in $\Theta(N)$ time?</p>
+<h2 id="Dodge-The-Bounds"><a href="#Dodge-The-Bounds" class="headerlink" title="Dodge The Bounds"></a>Dodge The Bounds</h2><p>We know that the ultimate comparison based sorting algorithm has a worst case runtime of $\Theta(N\log{N})$. But what if we don’t compare at all?</p>
+<h3 id="Sleep-Sort"><a href="#Sleep-Sort" class="headerlink" title="Sleep Sort"></a>Sleep Sort</h3><p>Example #1: Sleep Sort (for sorting integers, not good)</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ve6pv.png" alt="Sleep Sort"></p>
+<h3 id="Counting-Sort"><a href="#Counting-Sort" class="headerlink" title="Counting Sort"></a>Counting Sort</h3><h4 id="Simplest-Case"><a href="#Simplest-Case" class="headerlink" title="Simplest Case"></a>Simplest Case</h4><p>Example #2: Counting Sort (Exploiting Space Instead of Time)</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/pf7ay.png" alt="Counting Sort"></p>
+<p>We just sorted $N$ items in $\Theta(N)$ worst case time, avoiding answer yes&#x2F;no questions.</p>
+<p>Simplest Case: Keys are unique integers from $0$ to $N-1$.</p>
+<p>However, we may have some <code>complex cases</code>:</p>
+<ul>
+<li>Non-unique keys</li>
+<li>Non-consecutive keys</li>
+<li>Non-numerical keys</li>
+</ul>
+<h4 id="Alphabet-Case"><a href="#Alphabet-Case" class="headerlink" title="Alphabet Case"></a>Alphabet Case</h4><p>Alphabet Case: Keys belong to a <code>finite ordered alphabet</code>.</p>
+<ul>
+<li>Count number of occurrences of each item.</li>
+<li>Iterate through list, using <code>count array</code> to decide where to put everything.</li>
+<li>Based on the <code>count array</code>, initialize the <code>starting point array</code>.</li>
+<li>Iterate through list, guided by the <code>starting point array</code> to insert item into the <code>sorted array</code>, and update the <code>starting point array</code>.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/sbzf8.png" alt="Alphabet Case"></p>
+<p>Demo: <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1vmVKHRSwb5WN1rHvktplbPGecHChxOwWa7ovRuiLzbA/edit#slide=id.g582f6c5a07_0_0">link</a></p>
+<h4 id="Runtime-1"><a href="#Runtime-1" class="headerlink" title="Runtime"></a>Runtime</h4><p>Question: For sorting an array of the 100 largest cities by population, which sort do you think has a better expected worst case runtime in seconds, <code>Counting Sort</code> or <code>Quicksort</code>?</p>
+<p>The answer is <code>Quicksort</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/27fus.png" alt="Sorting Cities"></p>
+<p>Question: What is the runtime for counting sort on $N$ keys with alphabet of size $R$?</p>
+<p><strong>Note:</strong> Treat $R$ as a variable, not a constant.</p>
+<p>Runtime Analysis: Total runtime is $\Theta(N + R)$.</p>
+<ul>
+<li>Create an array of size $R$ to store counts: $\Theta(R)$</li>
+<li>Count number of each item: $\Theta(N)$</li>
+<li>Calculate target positions of each item: $\Theta(R)$</li>
+<li>Create an array of size $N$ to store ordered data: $\Theta(N)$</li>
+<li>Copy items from original array to ordered array, do $N$ times:<ul>
+<li>Check target position: $\Theta(1)$</li>
+<li>Update target position: $\Theta(1)$</li>
+</ul>
+</li>
+<li>Copy items from ordered array back to original array: $\Theta(N)$</li>
+</ul>
+<p>Memory Usage: $\Theta(N + R)$</p>
+<ul>
+<li>$\Theta(N)$ is for ordered array.</li>
+<li>$\Theta(R)$ is for count and starting point arrays.</li>
+</ul>
+<p><strong>Bottom Line:</strong> If $N \geq R$, then we can expect reasonable performance.</p>
+<p>So, if we want to sort <code>really really big</code> collections of items from <code>some</code> alphabet, counting sort is better.</p>
+<p><strong>Sort Summary (So Far):</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/0txq7.png" alt="Sort Summary (So Far)"></p>
+<p><strong>Note:</strong> Counting sort is nice, but alphabetic restriction limits usefulness. Also, it is not practical to store things like strings which have an infinite collection of keys.</p>
+<h2 id="Radix-Sort"><a href="#Radix-Sort" class="headerlink" title="Radix Sort"></a>Radix Sort</h2><p>Although strings belong to an infinite collection of keys, they consist of characters from a <code>finite alphabet</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9zjte.png" alt="Strings consist of characters from a finite alphabet"></p>
+<h3 id="LSD-Radix-Sort"><a href="#LSD-Radix-Sort" class="headerlink" title="LSD Radix Sort"></a>LSD Radix Sort</h3><p>LSD stands for <code>Least Significant Digit</code>, which is from rightmost digit towards left.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/n5o4e.png" alt="LSD"></p>
+<p><strong>Note:</strong> The LSD is stable.</p>
+<p>Runtime: $\Theta(WN + WR)$, where $W$ is the width fo .each item in # digits.</p>
+<p>Non-Equal Key Lengths:</p>
+<p>When keys are of different lengths, we can treat empty spaces as less than all other characters.</p>
+<h3 id="MSD-Radix-Sort"><a href="#MSD-Radix-Sort" class="headerlink" title="MSD Radix Sort"></a>MSD Radix Sort</h3><p>MSD stands for <code>Most Significant Digit</code>, which is from leftmost digit towards right.</p>
+<p><strong>Problem:</strong> If we treat MSD as what LSD did previously, it will end up a bad result.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/37coc.png" alt="MSD Problem"></p>
+<p><strong>Solution:</strong> Sort each subproblem separately.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/z3pal.png" alt="MSD Solution"></p>
+<p>Runtime:</p>
+<p><strong>Best Case:</strong> We finish in one counting sort pass (the top digit is unique), looking only at the top digit: $\Theta(N + R)$.</p>
+<p><strong>Worst Case:</strong> We have to look at every character, <code>degenerating</code> to LSD sort: $\Theta(WN + WR)$.</p>
+<p><strong>Note:</strong> MSD has <code>bad caching performance</code>.</p>
+<p><strong>Sorting Runtime Summary:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/b6z82.png" alt="Sorting Runtime Summary"></p>
+<h2 id="Radix-vs-Comparison"><a href="#Radix-vs-Comparison" class="headerlink" title="Radix vs. Comparison"></a>Radix vs. Comparison</h2><h3 id="Intuitive-Look"><a href="#Intuitive-Look" class="headerlink" title="Intuitive Look"></a>Intuitive Look</h3><p><strong>Question:</strong> Mergesort requires $\Theta(N\log{N})$ compares. What is Mergesort’s runtime  on strings of length $W$?</p>
+<p>It depends.</p>
+<ul>
+<li>$\Theta(N\log{N})$ if each comparison takes $\Theta(1)$ time.<ul>
+<li>Example: Strings are all different at the leftmost character.</li>
+</ul>
+</li>
+<li>$\Theta(WN\log{N})$ if each comparison takes $\Theta(W)$ time.<ul>
+<li>Example: Strings are all equal.</li>
+</ul>
+</li>
+</ul>
+<p><strong>LSD vs. Mergesort:</strong></p>
+<p>Assume that alphabet size is constant:</p>
+<ul>
+<li>LSD Sort has runtime $\Theta(WN + WR) &#x3D; \Theta(WN)$.</li>
+<li>Mergesort has runtime between $\Theta(N\log{N})$ and $\Theta(WN\log{N})$.</li>
+</ul>
+<p>Which one is better? It depends.</p>
+<p>LSD is faster:</p>
+<ul>
+<li>Sufficiently large $N$.<ul>
+<li>$W$ is relatively small and we can treat it as a constant. Then LSD is <code>linear</code> and Mergesort is <code>linearithmic</code>.</li>
+</ul>
+</li>
+<li>If strings are very <code>similar</code> to each other.<ul>
+<li>Each Mergesort comparison takes $\Theta(W)$ time.<br><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/0udcz.png" alt="Mergesort hates this case"></li>
+</ul>
+</li>
+</ul>
+<p>Mergesort is faster:</p>
+<ul>
+<li>Strings are highly dissimilar from each other.<ul>
+<li>Each Mergesort comparison may finish early which costs constant time $\Theta(1)$.<br><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/d4tnh.png" alt="Mergesort lives this case"></li>
+</ul>
+</li>
+</ul>
+<h3 id="Cost-Model-Look"><a href="#Cost-Model-Look" class="headerlink" title="Cost-Model Look"></a>Cost-Model Look</h3><p>An alternate approach is to pick a cost model. Here we apply a cost model of <code>character examination</code>.</p>
+<ul>
+<li>Radix Sort: Calling <code>charAt</code> in order to count occurrences of each character.</li>
+<li>Mergesort: Calling <code>charAt</code> in order to compare two strings.</li>
+</ul>
+<p><strong>MSD vs. Mergesort:</strong></p>
+<p>Suppose we have 100 equal strings of 1000 characters each. Estimate the total number of characters examined.:</p>
+<ul>
+<li><p>MSD: </p>
+<p>In the worst case (all strings are equal), every character is examined exactly once. </p>
+<p>So we have exactly $100 \times 1000 &#x3D; 100,000$ total character examinations.</p>
+</li>
+<li><p>Mergesort:</p>
+<p>Let’s first consider <code>merge(100)</code>.</p>
+<p>Note: Merging 100 equal items results in <code>always picking left</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6zbr4.png" alt="Merging 100 items"></p>
+<ul>
+<li>Comparing <code>A[0]</code> to <code>A[50]</code>: 2000 character examinations.</li>
+<li>Comparing <code>A[1]</code> to <code>A[50]</code>: 2000 character examinations.</li>
+<li>…</li>
+<li>Comparing <code>A[49]</code> to <code>A[50]</code>: 2000 character examinations.</li>
+<li>At last, the right half requires no comparison.</li>
+<li>Total character examinations: $50 \times 2000 &#x3D; 100,000$.</li>
+</ul>
+<p>So, merging $N$ strings of 1000 equal characters requires $1000N$ examinations.</p>
+<p>Since we have this recursive structure:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qo277.png" alt="Merging Structure"></p>
+<p>$100000 + 50000 \times 2 + 25000 \times 4 + \ldots + merge(1) \times 100000 &#x3D; ~660000$ characters.</p>
+<p>In total, we will examine approximately $1000N \times \log{N}$ characters.</p>
+</li>
+</ul>
+<p>In summary, if character examinations are an appropriate cost model, we’d expect Mergesort to be slower by a factor of $\log{N}$. To see if we’re right, we’ll need to do a <code>computational experiment</code>.</p>
+<h3 id="Empirical-Study"><a href="#Empirical-Study" class="headerlink" title="Empirical Study"></a>Empirical Study</h3><p>Computational experiment for $W &#x3D; 100$.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6t06e.png"></p>
+<ul>
+<li>MSD and Mergesort implementations are highly optimized versions.</li>
+<li>The data <code>does not match</code> our runtime hypothesis.<ul>
+<li>Our cost model isn’t representative of everything that is happening.</li>
+<li>One particularly thorny issue: The <code>Just-In-Time</code> Compiler.</li>
+</ul>
+</li>
+</ul>
+<h3 id="The-Just-In-Time-Compiler"><a href="#The-Just-In-Time-Compiler" class="headerlink" title="The Just-In-Time Compiler"></a>The Just-In-Time Compiler</h3><p>Java’s Just-In-Time Compiler secretly optimizes your code when it runs, which means:</p>
+<ul>
+<li>The code you write is not necessarily the code will run.</li>
+<li>As code runs, the <code>interpreter</code> is watching everything that happens.<ul>
+<li>If some segment of code is called many times, the interpreter actually <code>studies and re-implements your code</code> based on what it learned by watching while running.</li>
+</ul>
+</li>
+</ul>
+<p>Example: The code below creates Linked List, 1000 at a time. Then repeat this 500 times yields an interesting result.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JITDemo1</span> &#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">NUM_LISTS</span> <span class="operator">=</span> <span class="number">1000</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">500</span>; ++i) &#123;</span><br><span class="line">      <span class="type">long</span> <span class="variable">startTime</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">      <span class="comment">// Create 1000 linked lists</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; NUM_LISTS; ++j) &#123;</span><br><span class="line">        LinkedList&lt;Integer&gt; L = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="type">long</span> <span class="variable">endTime</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">      System.out.println(i + <span class="string">&quot;: &quot;</span> + endTime - startTime);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/je98v.png" alt="Runtime Graph"></p>
+<ul>
+<li><code>1st Optimization</code>: Not sure what it does.</li>
+<li><code>2nd Optimization</code>: Stops creating linked lists since we’re not actually using them.</li>
+</ul>
+<p>Note: Add <code>-Xint</code> to VM options can discard the JIT feature.</p>
+<h3 id="Re-Run-Experiments"><a href="#Re-Run-Experiments" class="headerlink" title="Re-Run Experiments"></a>Re-Run Experiments</h3><p>Results with JIT disabled:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5yf57.png"></p>
+<ul>
+<li>Both sorts are much much slower than before.</li>
+<li>This time, Mergesort is slower than MSD (though not by as much as we predicted).</li>
+</ul>
+<p>So, the JIT was somehow able to massively optimize the <code>compareTo</code> calls. It might know that comparing <code>AAA...A</code> to <code>AAA...A</code> over and over is redundant.</p>
+<p>Also, the JIT seems to optimize Mergesort more than it does to MSD.</p>
+<p>Plus, there are many possible cases to consider:</p>
+<ul>
+<li>Almost equal strings</li>
+<li>Randomized strings</li>
+<li>Real world data from some dataset of interest</li>
+</ul>
+<h2 id="Radix-Sorting-Integers"><a href="#Radix-Sorting-Integers" class="headerlink" title="Radix Sorting Integers"></a>Radix Sorting Integers</h2><p>In the very large $N$ limit, Radix Sort is simply faster.</p>
+<ul>
+<li>Treat alphabet size as constant, LSD Sort has runtime $\Theta(WN)$.</li>
+<li>Comparison sorts have runtime $\Theta(N\log{N})$ in the worst case.</li>
+</ul>
+<p>Issue: How do Radix Sort manage integer numbers?</p>
+<ul>
+<li>Option 1: Make them into a String. (Reduction Style)</li>
+<li>Option 2: Mods and floorMods and division operations to get the particular digit for integer. (faster and more general)</li>
+</ul>
+<p>Note: Using the option 2, there’s no reason to stick with the base 10. We could instead treat as a base 16, 256, 65536 number.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ss2us.png" alt="LSD Radix Sort on Integers with Different Base"></p>
+<p>Runtime depends on the alphabet size.</p>
+<ul>
+<li>Size of the counting array $\Theta(R)$.</li>
+<li>Size of the width of the number $\Theta(W)$.</li>
+</ul>
+<p>According to a computational experiment, a result of sorting 100,000,000 integers is as followed:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ui5tb.png" alt="Sorting 100,000,000 Integers"></p>
+<h2 id="Sorting-Summary"><a href="#Sorting-Summary" class="headerlink" title="Sorting Summary"></a>Sorting Summary</h2><p>Three basic flavors: Comparison, Alphabet, and Radix based.</p>
+<p>Each can be useful in different circumstances, but the important part was the analysis and the deep thought.</p>
+<p><strong>Sort vs. Search:</strong></p>
+<p>Search problem data structures:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/y0q9w.png" alt="Search Problem Data Structures"></p>
+<p>There are some interesting connections between sorting and searching (retrieval of interested data).</p>
+<p>Connection:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/kg7oe.png" alt="Connection Between Sorting and Searching"></p>
+<p>Questions:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dz3hv.png"></p>
+<h2 id="Ex-Guide"><a href="#Ex-Guide" class="headerlink" title="Ex (Guide)"></a>Ex (Guide)</h2><h3 id="Ex-1-Which-Sort"><a href="#Ex-1-Which-Sort" class="headerlink" title="Ex 1 (Which Sort?)"></a>Ex 1 (Which Sort?)</h3><p>My Fall 2013 midterm, <a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/fall13/cos226/exams/mid-f13.pdf">problem 7</a>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/34ljo.png"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1fq6y.png"></p>
+<ol>
+<li><strong>Quicksort</strong>. If we want to sort a set of <code>randomly ordered</code> items such that we get the best performance and don’t care about the <code>stability</code>, we should use Quicksort.</li>
+<li><strong>Quicksort or Insertion Sort</strong>. Don’t care about <code>stability</code>. Each of two is for randomly ordered or nearly sorted case.</li>
+<li><strong>Mergesort</strong>. We care about <code>speed</code> and <code>stability</code> this time. And the objects are randomly ordered.</li>
+<li><strong>Insertion Sort</strong>. Almost ordered.</li>
+</ol>
+<h3 id="Ex-2-Possible"><a href="#Ex-2-Possible" class="headerlink" title="Ex 2 (Possible?)"></a>Ex 2 (Possible?)</h3><p>Hug’s Spring 2013 midterm, <a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spr13/cos226/exams/mid-s13.pdf">problem 7</a>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/g8dws.png"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/lsxoz.png"></p>
+<h2 id="Ex-Examprep"><a href="#Ex-Examprep" class="headerlink" title="Ex (Examprep)"></a>Ex (Examprep)</h2><h3 id="Ex-1-Identifying-Sorts"><a href="#Ex-1-Identifying-Sorts" class="headerlink" title="Ex 1 (Identifying Sorts)"></a>Ex 1 (Identifying Sorts)</h3><p>Below you will find intermediate steps in performing various sorting algorithms on the same input list. The steps are not necessarily represent consecutive steps.</p>
+<p>Choices: insertion sort, selection sort, mergesort, quicksort (first element as pivot), and heapsort.</p>
+<p>Input list: 1429, 3291, 7683, 1337, 192, 594, 4242, 9001, 4392, 129, 1000</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/j3j4r.png"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9eos1.png"></p>
+<h3 id="Ex-2-Reverse-Engineering"><a href="#Ex-2-Reverse-Engineering" class="headerlink" title="Ex 2 (Reverse Engineering)"></a>Ex 2 (Reverse Engineering)</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/di03u.png"></p>
+<h3 id="Ex-3-Conceptual-Sorts"><a href="#Ex-3-Conceptual-Sorts" class="headerlink" title="Ex 3 (Conceptual Sorts)"></a>Ex 3 (Conceptual Sorts)</h3><p>Choices:</p>
+<p>A. Quicksort<br>B. Mergesort<br>C. Selection Sort<br>D. Insertion Sort<br>E. Heapsort<br>N. (None of the above)</p>
+<ul>
+<li><code>A B E</code>: Bounded by $\Omega(N\log{N})$ lower bound.</li>
+<li><code>B E</code>: Has a worst case runtime that is asymptotically better than Quicksort’s worstcase runtime.</li>
+<li><code>C</code>: In the worst case, performs $\Theta(N)$ pairwise swaps of elements.</li>
+<li><code>A B D</code>: Never compares the same two elements twice.</li>
+<li><code>N</code>: Runs in the best case $\Theta(\log{N})$ time for certain inputs.</li>
+</ul>
+<h3 id="Ex-4-Quickselect"><a href="#Ex-4-Quickselect" class="headerlink" title="Ex 4 (Quickselect)"></a>Ex 4 (Quickselect)</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xsfr4.png"></p>
+<p>(b) What is the best and worst case runtime of Quickselect?</p>
+<p>Best: $O(N)$, the first pivot is the one we want.<br>Worst: $O(N^2)$</p>
+<p>(c) Assume we use Quickselect to find the median of an array and always choose the median as the pivot. In this case, what would be the best and worst case runtime of Quicksort?</p>
+<p>Best: $O(N\log{N})$<br>Worst: $O(N^2)$</p>
+<ul>
+<li>Quickselect in worst case: $O(N^2)$</li>
+<li>Quicksort now in best case: $O(N\log{N})$</li>
+</ul>
+<h3 id="Ex-5-Radix-Sorts"><a href="#Ex-5-Radix-Sorts" class="headerlink" title="Ex 5 (Radix Sorts)"></a>Ex 5 (Radix Sorts)</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/742dn.png"></p>
+<blockquote>
+<p>Marked</p>
+</blockquote>
+<p>Answer: M</p>
+<h3 id="Ex-7-N-is-large"><a href="#Ex-7-N-is-large" class="headerlink" title="Ex 7 (N is large)"></a>Ex 7 (N is large)</h3><p>Note: $N$ is very large.</p>
+<p>Choosing from among:</p>
+<ol>
+<li>Insertion Sort</li>
+<li>Mergesort</li>
+<li>Quicksort (with Hoare Partitioning)</li>
+<li>LSD Radix Sort</li>
+</ol>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/iqfob.png"></p>
+<blockquote>
+<p>No. 2 and 5 are marked.</p>
+</blockquote>
+<h3 id="Ex-8-Monotonically-Improving"><a href="#Ex-8-Monotonically-Improving" class="headerlink" title="Ex 8 (Monotonically Improving)"></a>Ex 8 (Monotonically Improving)</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/755lz.png"></p>
+<blockquote>
+<p>Heapsort and Quicksort are marked.</p>
+</blockquote>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

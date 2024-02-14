@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode EPI 7.1Difficulty: Medium Problem Given a binary tree, determine if it is a valid binary search tree (BST).  Assume a BST is defined as follows:  The left subtree of a node conta">
+<meta property="og:type" content="website">
+<meta property="og:title" content="98. Validate Binary Search Tree">
+<meta property="og:url" content="https://junhaow.com/lc/problems/tree/bst/98_validate-binary-search-tree.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode EPI 7.1Difficulty: Medium Problem Given a binary tree, determine if it is a valid binary search tree (BST).  Assume a BST is defined as follows:  The left subtree of a node conta">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.144Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.144Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>98. Validate Binary Search Tree</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/validate-binary-search-tree/">LeetCode</a> <span class="gray">EPI 7.1</span><br>Difficulty: <span class="orange">Medium</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a binary tree, determine if it is a valid binary search tree (BST).</p>
+</blockquote>
+<p>Assume a BST is defined as follows:</p>
+<ul>
+<li>The left subtree of a node contains only nodes with keys <code>less than</code> the node’s key.</li>
+<li>The right subtree of a node contains only nodes with keys <code>greater than</code> the node’s key.</li>
+<li>Both the left and right subtrees must also be binary search trees.</li>
+</ul>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    <span class="number">2</span></span><br><span class="line">   / \</span><br><span class="line">  <span class="number">1</span>   <span class="number">3</span></span><br><span class="line">Input: [<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>]</span><br><span class="line">Output: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> $O(1)$ Space? No. Iteration methods need stacks too.</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p><strong>Methods:</strong></p>
+<p>The naive approach would be to calculate the <code>lower</code> and <code>upper</code> values when visiting each node, but it turns out to be very inefficient because it does a lot of repeated calculation. In the worst case, time complexity would be $O(N^2)$.</p>
+<p>One alternative might be to cache the largest and smallest keys at each node using a HashMap, which requires $O(N)$ additional storage for the cache.</p>
+<ol>
+<li>Recursion<ul>
+<li>For a node $x$, all nodes in its left subtree should be satisfy the constraint <code>[L, x.val)</code> and all nodes in the other side should be satisfy <code>(x.val, R]</code>.</li>
+<li><strong>Time:</strong> $O(N)$ since we visit each node exactly once.</li>
+<li><strong>Space:</strong><ul>
+<li>Best: $O(\log{N})$ when the tree is bushy.</li>
+<li>Worst: $O(N)$</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Iteration<ul>
+<li>The above recursion could be converted into iteration with the help of three stacks.</li>
+<li><strong>Time:</strong> $O(N)$</li>
+<li><strong>Space:</strong> $O(N)$</li>
+</ul>
+</li>
+<li>Inorder Traversal<ul>
+<li>We can use the fact that an inorder traversal visits keys in sorted order. We can compare each node we visit with the previous node during the inorder traversal.<ul>
+<li>Recursion</li>
+<li>Iteration</li>
+</ul>
+</li>
+<li><strong>Time:</strong> $O(N)$</li>
+<li><strong>Space:</strong> $O(N)$ or $O(\log{N})$</li>
+</ul>
+</li>
+<li>BFS Manner<ul>
+<li>When the property is violated at a node whose depth is small (close to the root), we can use this manner. Specifically, we use a queue, where each queue entry contains a node, as well as an upper bound and a lower bound on the keys.</li>
+<li><strong>Time:</strong> $O(N)$</li>
+<li><strong>Space:</strong> $O(N)$</li>
+</ul>
+</li>
+</ol>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><strong>Test Case:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>]</span><br><span class="line"><span class="literal">true</span></span><br><span class="line">[<span class="number">1</span>,<span class="number">1</span>]</span><br><span class="line"><span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Recursion"><a href="#Recursion" class="headerlink" title="Recursion"></a>Recursion</h3><p><strong>Note:</strong></p>
+<ul>
+<li>Use <code>Long.MIN_VALUE</code> rather than <code>Integer.MAX_VALUE</code>. But it’s better to use <code>null</code>.</li>
+<li>Be careful of the traversal order. When invalidity is detected, we should return immediately.</li>
+<li>Notice the condition of the problem description: <code>Equality</code> is not allowed.</li>
+</ul>
+<p><strong>My original bad code:</strong></p>
+<p>It is not efficient because it is a <code>postorder</code> traversal. If <code>isValid</code> is <code>false</code>, we should return immediately.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isValidBST</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> isBSTHelper(root, Long.MIN_VALUE, Long.MAX_VALUE);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isValidBST</span><span class="params">(TreeNode x, <span class="type">long</span> lower, <span class="type">long</span> upper)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">boolean</span> <span class="variable">isValid</span> <span class="operator">=</span> (x.val &lt; upper &amp;&amp; x.val &gt; lower);</span><br><span class="line">  <span class="type">boolean</span> <span class="variable">isLeftValid</span> <span class="operator">=</span> isValidBST(x.left, lower, x.val);</span><br><span class="line">  <span class="type">boolean</span> <span class="variable">isRightValid</span> <span class="operator">=</span> isValidBST(x.right, x.val, upper);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> isValid &amp;&amp; isLeftValid &amp;&amp; isRightValid; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Improvement:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isBSTHelper</span><span class="params">(TreeNode x, <span class="type">long</span> lower, <span class="type">long</span> upper)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (x.val &lt;= lower || x.val &gt;= upper) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> isBSTHelper(x.left, lower, x.val) &amp;&amp; isBSTHelper(x.right, x.val, upper);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>More Improvement:</strong></p>
+<p><strong>Note:</strong> Rather than using extreme constants, we can use <code>null</code> and modify the conditions.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isValidBST</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> isBSTHelper(root, <span class="literal">null</span>, <span class="literal">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isBSTHelper</span><span class="params">(TreeNode x, Integer lower, Integer upper)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (lower != <span class="literal">null</span> &amp;&amp; x.val &lt;= lower) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125; <span class="keyword">if</span> (upper != <span class="literal">null</span> &amp;&amp; x.val &gt;= upper) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> isBSTHelper(x.left, lower, x.val) &amp;&amp; isBSTHelper(x.right, x.val, upper);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Iteration"><a href="#Iteration" class="headerlink" title="Iteration"></a>Iteration</h3><p><strong>Note:</strong></p>
+<ul>
+<li>Check the stack before pushing values into it.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">Stack&lt;TreeNode&gt; stack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">Stack&lt;Long&gt; lowers = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">Stack&lt;Long&gt; uppers = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isValidBST</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Init Stack</span></span><br><span class="line">  update(root, Long.MIN_VALUE, Long.MAX_VALUE);</span><br><span class="line">  <span class="keyword">while</span> (!stack.isEmpty()) &#123;</span><br><span class="line">    <span class="type">TreeNode</span> <span class="variable">p</span> <span class="operator">=</span> stack.pop();</span><br><span class="line">    <span class="type">long</span> <span class="variable">lower</span> <span class="operator">=</span> lowers.pop();</span><br><span class="line">    <span class="type">long</span> <span class="variable">upper</span> <span class="operator">=</span> uppers.pop();</span><br><span class="line">    <span class="keyword">if</span> (p.val &lt;= lower || p.val &gt;= upper) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (p.right != <span class="literal">null</span>) &#123;</span><br><span class="line">      update(p.right, p.val, upper);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (p.left != <span class="literal">null</span>) &#123;</span><br><span class="line">      update(p.left, lower, p.val);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">update</span><span class="params">(TreeNode x, <span class="type">long</span> lower, <span class="type">long</span> upper)</span> &#123;</span><br><span class="line">  stack.add(x);</span><br><span class="line">  lowers.add(lower);</span><br><span class="line">  uppers.add(upper);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="Inorder-Traversal"><a href="#Inorder-Traversal" class="headerlink" title="Inorder Traversal"></a>Inorder Traversal</h3><h4 id="Recursion-1"><a href="#Recursion-1" class="headerlink" title="Recursion"></a>Recursion</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isValidBST</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  prev = Long.MIN_VALUE;</span><br><span class="line">  <span class="keyword">return</span> inorder(root);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">TreeNode</span> <span class="variable">prev</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">inorder</span><span class="params">(TreeNode x)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// go left</span></span><br><span class="line">  <span class="keyword">if</span> (inorder(x.left) == <span class="literal">false</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="comment">// check x</span></span><br><span class="line">  <span class="keyword">if</span> (prev != <span class="literal">null</span> &amp;&amp; x.val &lt;= prev.val) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  prev = x;</span><br><span class="line">  <span class="comment">// go right</span></span><br><span class="line">  <span class="keyword">if</span> (inorder(x.right) == <span class="literal">false</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Iteration-1"><a href="#Iteration-1" class="headerlink" title="Iteration"></a>Iteration</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">inorderItr</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">prev</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">  Stack&lt;TreeNode&gt; stack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">p</span> <span class="operator">=</span> root;</span><br><span class="line">  <span class="keyword">while</span> (p != <span class="literal">null</span> || stack.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">null</span>) &#123;</span><br><span class="line">      stack.push(p);</span><br><span class="line">      p = p.left;</span><br><span class="line">    &#125; <span class="comment">// when p reaches the leftmost</span></span><br><span class="line">    <span class="comment">// visit</span></span><br><span class="line">    p = stack.pop();</span><br><span class="line">    <span class="keyword">if</span> (prev != <span class="literal">null</span> &amp;&amp; p.val &lt;= prev.val) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    prev = p;</span><br><span class="line">    <span class="comment">// go right</span></span><br><span class="line">    p = p.right;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

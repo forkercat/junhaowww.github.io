@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Tree TraversalA tree consists of:  A set of nodes. A set of edges that connect those nodes. Constraint: There is an exactly one path between any two nodes.    Trees are a more general concept.  Orga">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CS 61B | Part 9 | Tree and Graph Traversals (DFS &#x2F; BFS)">
+<meta property="og:url" content="https://junhaow.com/studynotes/cs61b/cs61b%20p9.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Tree TraversalA tree consists of:  A set of nodes. A set of edges that connect those nodes. Constraint: There is an exactly one path between any two nodes.    Trees are a more general concept.  Orga">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/k3r1h.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yrliy.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/z8mhi.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/07vom.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ffdeh.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/o3su9.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/l1bno.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vji51.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ncoka.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/02a68.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/so9lo.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tzkhz.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/l5d79.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/izo6x.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8tvhi.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tjpuz.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/atnj3.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/kzgb2.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6vzwc.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/60wi8.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/92ddn.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9eo9i.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/k0rtl.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bxnb5.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/i80dc.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rn0zr.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/34f0e.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/p0xsi.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5o8u5.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tish8.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wlc7w.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rj1dv.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/f5s56.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/edfq9.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/cvy9g.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/uns2j.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/lzdl4.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/uyxli.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/86znb.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jid68.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wpgy2.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/nqzzt.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/u1d7b.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/b66hf.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/b6cd9.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/10i16.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ajouf.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9deg4.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6diw2.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.198Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.198Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/k3r1h.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CS 61B | Part 9 | Tree and Graph Traversals (DFS / BFS)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<h2 id="Tree-Traversal"><a href="#Tree-Traversal" class="headerlink" title="Tree Traversal"></a>Tree Traversal</h2><p>A tree consists of:</p>
+<ul>
+<li>A set of nodes.</li>
+<li>A set of edges that connect those nodes.<ul>
+<li>Constraint: There is an <code>exactly one path</code> between any two nodes.</li>
+</ul>
+</li>
+</ul>
+<p>Trees are a more general concept.</p>
+<ul>
+<li>Organization charts</li>
+<li>Family lineages</li>
+<li>File system trees</li>
+</ul>
+<p>Sometimes you want to iterate over a tree. For example, suppose you want to find the total size of all files in a folder.</p>
+<ul>
+<li>What one might call <code>tree iteration</code> is preferably called <code>tree traversal</code>.</li>
+<li>Unlike lists, there are <code>many orders</code> in which we might visit the nodes. Each ordering is useful in different ways.<br><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/k3r1h.png"><ul>
+<li>Level Order: <code>DBFACEG</code></li>
+<li>Depth First Traversals (DFS):<ul>
+<li><strong>Pre-order:</strong> Visit the node, then traverse its children. <code>DBACFEG</code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">preOrder(BSTNode x) &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">return</span>;</span><br><span class="line">  print(x.key);</span><br><span class="line">  preOrder(x.left);</span><br><span class="line">  preOrder(x.right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>In-order:</strong> Traverse left child, visit the node, then traverse right child. <code>ABCDEFG</code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">inOrder(BSTNode x) &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) <span class="keyword">return</span>;</span><br><span class="line">  inOrder(x.left);</span><br><span class="line">  print(x.key);</span><br><span class="line">  inOrder(x.right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Post-order:</strong> Traverse left child, traverse right child, then visit the node. <code>ACBEGFD</code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">postOrder(BSTNode x) &#123;</span><br><span class="line">  postOrder(x.left);</span><br><span class="line">  postOrder(x.right);</span><br><span class="line">  print(x.key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Pre-order and post-order generalize naturally to trees with arbitrary numbers of children. However, in-order only makes sense for binary trees.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/yrliy.png" alt="A Useful Visual Trick"></p>
+<p><strong>What Good Are All These Traversals?</strong></p>
+<p>Pre-order:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/z8mhi.png" alt="Directory Listing (Pre-order)"></p>
+<p>Post-order:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/07vom.png" alt="Gathering File Sizes (Post-order)"></p>
+<h2 id="Graphs"><a href="#Graphs" class="headerlink" title="Graphs"></a>Graphs</h2><h3 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h3><p>A <code>graph</code> consists of:</p>
+<ul>
+<li>A set of nodes.</li>
+<li>A set of zero or more edges, each of which connects two nodes.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ffdeh.png"></p>
+<p>A <code>simple graph</code> (vs. multigraphs) is a graph with:</p>
+<ul>
+<li><code>No Loops</code>: No edges that connect a vertex to itself.</li>
+<li><code>No Parallel Edges</code>: No two edges that connect the same vertices.</li>
+</ul>
+<p><strong>Note:</strong> Trees are also graphs, but not all graphs are trees.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/o3su9.png"></p>
+<p>Since simple graph is more often in usage. In 61B, all graphs will be simple and we call them just “graphs” rather than “simple graphs”.</p>
+<p><strong>Graph Types:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/l1bno.png" alt="Graph Types"></p>
+<p><strong>More Graph Terminology:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vji51.png" alt="Graph Terminology"></p>
+<p>Note that the <code>length of a path</code> is determined by the <code>number of edges</code>.</p>
+<h3 id="Graph-Problems"><a href="#Graph-Problems" class="headerlink" title="Graph Problems"></a>Graph Problems</h3><p>There are lots of interesting questions we can ask about a graph:</p>
+<ul>
+<li>What is the shortest route from $S$ to $T$? What is the longest without cycles?</li>
+<li>Are there cycles?</li>
+<li>Is there a tour that only uses each node exactly once?</li>
+<li>Is there a tour that only uses each edge exactly once?</li>
+</ul>
+<p>More Queries More Theoretically:</p>
+<ul>
+<li><code>S-T Path</code>: Is there a path between vertices $S$ and $T$?</li>
+<li><code>Connectivity</code>: Is the graph connected, i.e. is there a path between all vertices?</li>
+<li><code>Biconnectivity</code>: Is there a vertex whose removal disconnects the graph?</li>
+<li><code>Shortest S-T Path</code>: What is the shortest path between vertices $S$ and $T$?</li>
+<li><code>Cycle Detection</code>: Does the graph contain any cycles?</li>
+<li><code>Euler Tour</code>: Is there a cycle that uses every edge exactly once?</li>
+<li><code>Hamilton Tour</code>: Is there a cycle that uses every vertex exactly once?</li>
+<li><code>Planarity</code>: Can you draw the graph on paper with no crossing edges?</li>
+<li><code>Isomorphism</code>: Are two graphs isomorphic (the same graph in disguise)?</li>
+</ul>
+<p>Often can’t tell how difficult a graph problem is without very deep consideration.</p>
+<p>Some well-known graphs problems: <code>Euler Tour</code> and <code>Hamilton Tour</code>. An efficient Euler tour algorithm $O(\text{number of edges})$ was found as early as 1873. Despite decades of intense study, no efficient algorithm for a Hamilton tour exists. Best algorithms are exponential time.</p>
+<h3 id="S-T-Connectivity"><a href="#S-T-Connectivity" class="headerlink" title="S-T Connectivity"></a>S-T Connectivity</h3><p>Given a source vertex $S$ and a target vertex $T$, is there a path between $S$ and $T$?</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ncoka.png"></p>
+<p>It is an algorithm based on DFS.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">boolean</span> <span class="title function_">isConnected</span><span class="params">(Node s, Node t)</span> &#123;</span><br><span class="line">  mark(s); <span class="comment">// visit</span></span><br><span class="line">  <span class="keyword">if</span> (s == t) &#123; <span class="comment">// consider the base case! Only one vertex.</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> v in <span class="title function_">neighbors</span><span class="params">(s)</span> &#123;</span><br><span class="line">    <span class="comment">// recursive call</span></span><br><span class="line">    <span class="keyword">if</span> (!isMarked(v) &amp;&amp; isConnected(v, t)) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Follow the example in these <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1OHRI7Q_f8hlwjRJc8NPBUc1cMu5KhINH1xGXWDfs_dA/edit#slide=id.g76e0dad85_2_380">slides</a> to see how.</p>
+<h3 id="Traversal-DFS"><a href="#Traversal-DFS" class="headerlink" title="Traversal: DFS"></a>Traversal: DFS</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/02a68.png" alt="BFS vs. DFS from Discussion 11, 2018 Spring"></p>
+<p>The idea of exploring a <code>neighbor&#39;s entire subgraph</code> before moving on to the next neighbor is known as <code>Depth First Traversal/Search</code>. It is called “depth first” because you go as deep as possible.</p>
+<p>Explore $1$’s subgraph completely before using the edge $0-3$.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/so9lo.png"></p>
+<p>DFS is not good for date preparation (<a target="_blank" rel="noopener" href="https://xkcd.com/761/">why</a>).</p>
+<p>DFS is a very powerful technique that can be used for many types of graph problems.</p>
+<p>Let’s discuss an algorithm that computes a path to every vertex. (DepthFirstPaths)</p>
+<p><strong>DepthFirstPaths Demo:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tzkhz.png" alt="DepthFirstPaths Demo"></p>
+<p>Demo: <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1lTo8LZUGi3XQ1VlOmBUF9KkJTW_JWsw_DOPq8VBiI3A/edit#slide=id.g76e0dad85_2_380">link (important)</a></p>
+<p>We just developed a depth-first traversal (like pre-order, in-order, post-order) but for graphs.</p>
+<p><strong>Intuitively</strong>, we’re going deep (i.e., down our family tree to our first child, our first child’s first child a.k.a. our first grandchild, our first grandchild’s first child, and so on… visiting this entire lineage), <code>before we even touch our second child</code>.</p>
+<p><strong>Example:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/l5d79.png" alt="DFS Pre-order &amp; Post-order, BFS order"></p>
+<h3 id="Traversal-BFS"><a href="#Traversal-BFS" class="headerlink" title="Traversal: BFS"></a>Traversal: BFS</h3><p><strong>Note:</strong> BFS pseudocode is exactly the same as DFS except with a <code>queue</code> instead of a <code>stack</code>.</p>
+<p>BFS has the cool feature of <code>finding the shortest path</code> from one node to all other nodes in terms of number of edges.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/izo6x.png" alt="Shortest Paths Challenge"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8tvhi.png" alt="Breadth First Search"></p>
+<p>Demo: <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1JoYCelH4YE6IkSMq_LfTJMzJ00WxDj7rEa49gYmAtc4/edit?usp=sharing">Breadth First Paths</a></p>
+<p>Example: <a target="_blank" rel="noopener" href="https://oracleofbacon.org/">The Oracle of Bacon</a></p>
+<h3 id="API-Integer-Vertices"><a href="#API-Integer-Vertices" class="headerlink" title="API: Integer Vertices"></a>API: Integer Vertices</h3><p>Our choices can have profound implications on:</p>
+<ul>
+<li>Runtime.</li>
+<li>Memory usage.</li>
+<li>Difficulty of implementing various graph algorithms.</li>
+</ul>
+<p>For example, using a map to store labels &#x2F; weights (String to Integer):</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tjpuz.png" alt="Integer Vertices"></p>
+<p><strong>Graph API:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/atnj3.png" alt="API from the optional textbook"></p>
+<p>Some features:</p>
+<ul>
+<li><code>Number of vertices</code> $V$ must be specified in advance.</li>
+<li>Does not support <code>weights</code> (labels) on nodes or edges.</li>
+<li>Has no method for getting the number of edges for a vertex (i.e. its <code>degree</code>).<ul>
+<li><code>adj(int v).size()</code> does the work.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// return the degree of a vertex</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">degree</span><span class="params">(Graph G, <span class="type">int</span> v)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">degree</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> w : G.adj(v)) &#123;</span><br><span class="line">    degree += <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> degree;</span><br><span class="line">  <span class="comment">// or just return G.adj(v).size()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Try to write a client method called <code>print</code> that prints out a graph.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// print all edges of a graph</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">print</span><span class="params">(Graph G)</span> &#123;</span><br><span class="line">  <span class="comment">// for each vertex v</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">v</span> <span class="operator">=</span> <span class="number">0</span>; v &lt; G.V(); v += <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="comment">// for each neighbor w of the vertex v</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> w : G.adj(v)) &#123; <span class="comment">// Iterable</span></span><br><span class="line">      System.out.println(v + <span class="string">&quot; - &quot;</span> + w);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The runtime is $O(V + E)$. The first loop takes $O(V)$ since each vertex is visited once; the print statement takes $O(E)$ in total.</p>
+<p>So, our choice of Graph API has deep implications on the implementation of DFS, BFS, print, and other graph “clients”.</p>
+<h3 id="Graph-Representations"><a href="#Graph-Representations" class="headerlink" title="Graph Representations"></a>Graph Representations</h3><h4 id="Adjacency-Matrix"><a href="#Adjacency-Matrix" class="headerlink" title="Adjacency Matrix"></a>Adjacency Matrix</h4><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/kzgb2.png" alt="Adjacency Matrix"></p>
+<p><code>G.adj(2)</code> would return an iterator where we can call <code>next()</code> up to two times:</p>
+<ul>
+<li>returns $1$</li>
+<li>returns $3$</li>
+</ul>
+<p>Total runtime to iterate over all neighbors of $v$ is $\Theta(V)$. Underlying code has to iterate through entire array to handle <code>next()</code> and <code>hasNext()</code> calls.</p>
+<p>So the <code>print()</code> takes $\Theta(V^2)$ time. Again, the inner loop takes $O(V)$ time because each vertex is visited.</p>
+<h4 id="Edge-Sets"><a href="#Edge-Sets" class="headerlink" title="Edge Sets"></a>Edge Sets</h4><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6vzwc.png" alt="Edge Sets"></p>
+<p>So the <code>print()</code> takes $O(E)$ time.</p>
+<h4 id="Adjacency-Lists"><a href="#Adjacency-Lists" class="headerlink" title="Adjacency Lists"></a>Adjacency Lists</h4><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/60wi8.png" alt="Adjacency Lists"></p>
+<p>So what is the runtime of <code>print()</code>?</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/92ddn.png" alt="Graph Printing Runtime"></p>
+<p><strong>The answer:</strong></p>
+<p>Best case: $O(V)$<br>Worst case: $O(V^2)$</p>
+<p><strong>Note:</strong> They can be expressed as $O(V + E)$.</p>
+<p>Examples:</p>
+<ul>
+<li><code>Sparse Graph</code>: Where $E$ grows very slowly, e.g. every vertex is connected to its square: 2 - 4, 3 - 9, 4 - 16, 5 - 25, etc.<ul>
+<li>$E$ is $\Theta(sqrt(V))$. Runtime is $\Theta(V + sqrt(V))$, which is just $\Theta(V)$.</li>
+</ul>
+</li>
+<li><code>Dense Graph</code>: Where $E$ grows very quickly, e.g. every vertex connected to every other.<ul>
+<li>$E$ is $\Theta(V^2)$. Runtime is $\Theta(V + V^2)$, which is just $\Theta(V^2)$.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Best <span class="keyword">case</span>:</span><br><span class="line">Each vertex has <span class="number">2</span> or <span class="number">0</span> edges. So the inner loop takes constant time.</span><br><span class="line">A ------ B        A       B</span><br><span class="line">|        |</span><br><span class="line">|        |   OR  </span><br><span class="line">|        |</span><br><span class="line">C ------ D        C       D</span><br><span class="line"></span><br><span class="line">Worst <span class="title function_">case</span> <span class="params">(fully connected)</span>:</span><br><span class="line">Each vertex <span class="title function_">has</span> <span class="params">(V - <span class="number">1</span>)</span> edges. So the inner loop takes ~V time.</span><br><span class="line">A ------ B</span><br><span class="line">| \    / |</span><br><span class="line">|   \    |</span><br><span class="line">| /   \  |</span><br><span class="line">C ------ D</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Explanation:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">v</span> <span class="operator">=</span> <span class="number">0</span>; v &lt; G.V(); v += <span class="number">1</span>) &#123; <span class="comment">// V times</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> w : G.adj(v) &#123; <span class="comment">// Cost model: next()</span></span><br><span class="line">    System.out.println(v + <span class="string">&quot; - &quot;</span> + w); <span class="comment">// # next() = # println</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The total times (we don’t know the times in each loop) of calling <code>next()</code> is $2E$, not relevant to number of vertices $V$. So in total we have $O(2E)$.</p>
+<p>Additionally, each loop we have to call <code>G.adj(v)</code> or <code>v += 1</code>, which in total takes $O(V)$.</p>
+<p>Therefore, the runtime is $O(V + E)$.</p>
+<p><strong>Summary:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9eo9i.png" alt="Runtime of some basic operations for each representation"></p>
+<p><strong>Note:</strong> <code>print()</code> and <code>hasEdge(s, t)</code> operations are not part of the Graph class’s API.</p>
+<p>In practice, adjacency lists are most common. </p>
+<ul>
+<li>Many graph algorithms rely heavily on <code>adj(s)</code>.</li>
+<li>Most graphs are <code>sparse</code> (not many edges in each bucket).</li>
+</ul>
+<p><strong>Bare-Bones Undirected Graph Implementation:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Graph</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> V;</span><br><span class="line">  <span class="keyword">private</span> List&lt;Integer&gt;[] adj;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">Graph</span><span class="params">(<span class="type">int</span> V)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.V = V;</span><br><span class="line">    adj = (List&lt;Integer&gt;[]) <span class="keyword">new</span> <span class="title class_">ArrayList</span>[V];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; V; i += <span class="number">1</span>) &#123;</span><br><span class="line">      adj[i] = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addEdge</span><span class="params">(<span class="type">int</span> v, <span class="type">int</span> w)</span> &#123;</span><br><span class="line">    adj[v].add(w);  adj[w].add(v);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> Iterable&lt;Integer&gt; <span class="title function_">adj</span><span class="params">(<span class="type">int</span> v)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> adj[v];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Code-DFS"><a href="#Code-DFS" class="headerlink" title="Code: DFS"></a>Code: DFS</h3><p><strong>Note:</strong> Check mark before DFS. (Both DFS and BFS require checking when iterating neighbors)<br><strong>Note:</strong> Mark when <code>visited</code> or at the beginning of DFS or before looping.<br><strong>Note:</strong> Update <code>edgeTo</code> after checking and before <code>dfs()</code> when iterating. (Need the information of the previous vertex)<br><strong>Note:</strong> Output when doing <code>dfs()</code> or <code>popping</code> from the stack (not marked). Additionally, in post-order, output should be placed in the end of <code>dfs()</code>.</p>
+<p><strong>Common Design of Graph Problems:</strong></p>
+<p>Common design pattern in graph algorithms: <code>Decouple type</code> from processing algorithm.</p>
+<ul>
+<li>Create a graph object.</li>
+<li>Pass the graph to a graph-processing method (or constructor) in a client class.</li>
+<li>Query the client class for information.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/k0rtl.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Paths</span> <span class="variable">P</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Paths</span>(G, <span class="number">0</span>); <span class="comment">// source is vertex 0</span></span><br><span class="line">P.hasPathTo(<span class="number">3</span>); <span class="comment">// returns true</span></span><br><span class="line">P.pathTo(<span class="number">3</span>); returns &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Constructor</code> &amp; <code>dfs(Graph G, int v)</code>:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bxnb5.png"></p>
+<p><strong>Iteration Version:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Using a stack</span></span><br><span class="line">Initialize the stack;</span><br><span class="line">  push the starting vertex on the stack;</span><br><span class="line">  <span class="keyword">while</span> stack is not empty:</span><br><span class="line">    pop a vertex off the stack;</span><br><span class="line">    <span class="keyword">if</span> vertex is not marked:</span><br><span class="line">      <span class="comment">// since the stack may contain same nodes</span></span><br><span class="line">      <span class="comment">// then it is safe to visit!</span></span><br><span class="line">      mark the vertex; <span class="comment">// mark when visited or before loop</span></span><br><span class="line">      visit the vertex; <span class="comment">// edgeTo couldn&#x27;t be here</span></span><br><span class="line">      <span class="keyword">for</span> each neighbor of vertex:</span><br><span class="line">        <span class="keyword">if</span> the neighbor is not marked: <span class="comment">// check mark before dfs</span></span><br><span class="line">          <span class="comment">// update edgeTo[neighbor] = vertex</span></span><br><span class="line">          push the neighbor to stack.</span><br></pre></td></tr></table></figure>
+
+<p>Note however that DFS and BFS differ in more than just their fringe data structure. <strong>They differ in the order of marking nodes</strong>:</p>
+<ul>
+<li><code>Mark When Visiting/Popping</code>: For DFS, we mark nodes only once we visit a node (a.k.a. pop it from the stack). As a result, it’s possible to have multiple instances of the <code>same node</code> on the stack at a time if that node has been queued but not visited yet.</li>
+<li><code>Mark When Enqueuing</code>: For BFS, we mark nodes as soon as we add them to the fringe so that the above situation is not possible.</li>
+</ul>
+<p><code>pathTo(int v)</code> &amp; <code>hasPathTo(int v)</code>:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/i80dc.png"></p>
+<p><strong>What is the runtime of the constructor?</strong></p>
+<p>Refer to the demo for visualization: <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1lTo8LZUGi3XQ1VlOmBUF9KkJTW_JWsw_DOPq8VBiI3A/edit#slide=id.g76e0dad85_2_380">Demo</a></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rn0zr.png" alt="T means 2 times"></p>
+<ul>
+<li>The number of <code>if (!marked[w])</code> calls is $\sim{2E}$.</li>
+<li>The number of <code>dfs()</code> calls is $V$.</li>
+</ul>
+<p>Note that just similar to the <code>print()</code> runtime, whose outer loop takes $V$ times, here we count how many times we call <code>dfs()</code>. We call <code>dfs()</code> when the vertex is not marked, so it should be $V$ times. It’s very important!</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">dfs</span><span class="params">(Graph G, <span class="type">int</span> v)</span> &#123;</span><br><span class="line">  marked[v] = <span class="literal">true</span>;</span><br><span class="line">  <span class="type">int</span>[] ns = adj[v]; <span class="comment">// O(1), or using the call G.adj(v)</span></span><br><span class="line">  <span class="comment">// how many times we call dfs() * O(1) = O(V)</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">w</span> <span class="operator">=</span> <span class="number">0</span>; w &lt; ns.length; w += <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!marked[w]) &#123; <span class="comment">// O(1), or using the call next(). In total, 2E times.</span></span><br><span class="line">      <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>So the runtime is $O(V + E)$.</p>
+<ul>
+<li>Each vertex is visited (being an active vertex) at most <code>once</code> ($O(V)$).</li>
+<li>Each edge is considered at most <code>twice</code> ($O(2E)$).<ul>
+<li>Maybe some are not reachable.</li>
+</ul>
+</li>
+</ul>
+<p>We can’t just use only one cost model like <code>marked[w]</code>. Consider the case that there are no vertices and it still takes $O(V)$ time because each vertex is checked.</p>
+<p><strong>Note:</strong> Can’t say $\Theta(V + E)$, e.g. graph with no edges touching source.</p>
+<p>Space is $\Theta(V)$. Need arrays of length $V$ to store information.</p>
+<h3 id="Code-BFS"><a href="#Code-BFS" class="headerlink" title="Code: BFS"></a>Code: BFS</h3><p><strong>Note:</strong> Check mark before enqueued (after forlooping neighbors).<br><strong>Note:</strong> Mark when <code>enqueued</code>.<br><strong>Note:</strong> Update <code>edgeTo</code> after checking and when enqueued (in forlooping).<br><strong>Note:</strong> Output when <code>dequeued</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/34f0e.png" alt="BreathFirstPaths Implementation"></p>
+<p>Notice that after dequeuing a vertex we don’t check if it is marked, because according to <code>mark when enqueuing</code> the vertex must have been marked.</p>
+<p>Cost model: </p>
+<ul>
+<li><code>dequeue()</code> or <code>G.adj(v)</code></li>
+<li><code>if (!marked[w]) checks</code> or <code>next()</code></li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/p0xsi.png" alt="Runtime Summary (Adjacency Lists)"></p>
+<p><strong>What happens if we use adjacency matrix?</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5o8u5.png"></p>
+<p>It takes $O(V^2)$.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tish8.png" alt="Runtime Summary (Adjacency Matrix)"></p>
+<h2 id="Ex-Guide"><a href="#Ex-Guide" class="headerlink" title="Ex (Guide)"></a>Ex (Guide)</h2><h3 id="Tree-Traversal-1"><a href="#Tree-Traversal-1" class="headerlink" title="Tree Traversal"></a>Tree Traversal</h3><h4 id="Ex-1-Pre-order-In-order"><a href="#Ex-1-Pre-order-In-order" class="headerlink" title="Ex 1 (Pre-order &#x3D; In-order)"></a>Ex 1 (Pre-order &#x3D; In-order)</h4><p><a target="_blank" rel="noopener" href="http://inst.eecs.berkeley.edu/~cs61b/fa14/ta-materials/discussion7.pdf">Question 1</a> from the Fall 2014 discussion worksheet.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wlc7w.png"></p>
+<p>Pre-order: <code>10, 2, 5, 7, 8, 3, 0, 2</code><br>In-order: <code>5, 2, 7, 8, 10, 3, 0, 2</code><br>Post-order: <code>5, 8, 7, 2, 2, 0, 3, 10</code></p>
+<p>Bonus: The height in this case is $N - 1$ (I think the answer is incorrect). It means all nodes have only right children.</p>
+<p>Height is the number of edges along the path. And this is the version used in CS 61B.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rj1dv.jpg" alt="depth vs. height"></p>
+<p>Source: <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/2603692/what-is-the-difference-between-tree-depth-and-height">link</a></p>
+<h4 id="Ex-2-Diameter"><a href="#Ex-2-Diameter" class="headerlink" title="Ex 2 (Diameter)"></a>Ex 2 (Diameter)</h4><blockquote>
+<p>Very interesting!</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://d1b10bmlvqabco.cloudfront.net/attach/hx9h4t96ea8qv/h32s1vxe6mb5o0/i7vkubmrxjn0/fa14_mt2.pdf">Question 4</a> from the Fall 2014 midterm.</p>
+<p>The <code>diameter</code> of a tree (for this problem, a binary tree) is the maximum <code>number of edges</code> on any path connecting two nodes of the tree. For example, here are two sample trees and their diameters. Also, the nodes along the longest path are starred.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/f5s56.png"></p>
+<p>Draw a graph with small cases to get intuition!</p>
+<p><strong>Note:</strong></p>
+<ul>
+<li>The diameter of an empty tree or a tree with one node is $0$.</li>
+<li><code>height(null)</code> returns <code>-1</code>.</li>
+</ul>
+<p>(The code in the picture is not correct.)</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/edfq9.png"></p>
+<p><strong>Idea:</strong> Assume we have a current node <code>x</code>. Its left subtree’s diameter is <code>l</code> and its right subtree’s diameter is <code>r</code>. Note that the left child or the right child need not to be the connecting node along the longest path. For example, in the above 2nd tree, assuming <code>A</code> is a left child of a tree, the <code>A</code> node itself is not along the longest path.</p>
+<p>When connecting <code>x</code> to its two subtrees, is it possible that <code>x</code> as a connecting node generating a longer list whose height is <code>l + r + 2</code>? (Consider subtree is <code>null</code>).</p>
+<p>Since <code>x</code>‘s left or right child might not be the connecting node, we cannot use their maximum diameters instead of their maximum heights.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// postorder style - O(N)</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">height</span><span class="params">(BinTree T)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (T == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> Math.max(height(T.left), height(T.right)) + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">diameter</span><span class="params">(BinTree T)</span> &#123;</span><br><span class="line">  <span class="comment">// Base Case: T == null OR T has no children =&gt; 0</span></span><br><span class="line">  <span class="keyword">if</span> (T == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>; <span class="comment">// remember: number of edges!</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (T.left == <span class="literal">null</span> &amp;&amp; T.right == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">leftResult</span> <span class="operator">=</span> diameter(T.left); <span class="comment">// postorder</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">rightResult</span> <span class="operator">=</span> diameter(T.right);</span><br><span class="line">  <span class="type">int</span> <span class="variable">childBest</span> <span class="operator">=</span> Math.max(leftResult, rightResult);</span><br><span class="line">  <span class="comment">/*</span></span><br><span class="line"><span class="comment">     O               O               O</span></span><br><span class="line"><span class="comment">    / \             /</span></span><br><span class="line"><span class="comment">   O   O           O</span></span><br><span class="line"><span class="comment">   0 + 0 + 2 = 2  0 + -1 + 2 = 1   -1 + -1 + 2 = 0</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">currBest</span> <span class="operator">=</span> height(T.left) + height(T.right) + <span class="number">2</span>;</span><br><span class="line">  <span class="comment">// connecting the current node T - O(N)</span></span><br><span class="line">  <span class="keyword">return</span> Math.max(childBest, currBest);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong></p>
+<ul>
+<li>Best: $O(N\log{N})$</li>
+<li>Worst: $O(N^2)$</li>
+</ul>
+<p><strong>Space:</strong></p>
+<ul>
+<li>Best: $O(\log{N})$</li>
+<li>Worst: $O(N)$</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/cvy9g.jpg"></p>
+<h4 id="Ex-3-Drawing"><a href="#Ex-3-Drawing" class="headerlink" title="Ex 3 (Drawing)"></a>Ex 3 (Drawing)</h4><p><a target="_blank" rel="noopener" href="http://datastructur.es/sp15/materials/guerrilla/guerrilla2.pdf">Question 7</a> from the guerrilla section worksheet #2 from Spring 2015.</p>
+<p>(a) Draw a full binary tree that has a pre-order of $C, T, U, W, X, S, A, Z, O$ and a post-order of $W, X, U, S, T, Z, O, A, C$. Each node should contain exactly one letter.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/uns2j.png"></p>
+<p>(b) What is the in-order of this tree?</p>
+<p>In-order: $W, U, X, T, S, C, Z, A, O$</p>
+<h3 id="C-level"><a href="#C-level" class="headerlink" title="C level"></a>C level</h3><h4 id="Ex-1-BFS"><a href="#Ex-1-BFS" class="headerlink" title="Ex 1 (BFS)"></a>Ex 1 (BFS)</h4><p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spring15/cos226/exams/fin-f09.pdf">Problem 2a</a> from Princeton’s Fall 2009.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/lzdl4.png"></p>
+<p>List the vertices in the order in which the vertices are enqueued on the FIFO queue. (BFS)</p>
+<p>A  B  C  D  G  E  F  I  H</p>
+<h4 id="Ex-2-Shortest"><a href="#Ex-2-Shortest" class="headerlink" title="Ex 2 (Shortest?)"></a>Ex 2 (Shortest?)</h4><p>Suppose we run BFS from a vertex $s$. The <code>edgeTo[]</code> array we get back is sometimes known as a “Breadth First Search Tree”. What, if anything, does the BFS tree tell us about the shortest path $(v,w)$ from $v$ to $w$, assuming that neither is the source?</p>
+<p><strong>Conclusion:</strong></p>
+<p>$(s,v)$ and $(s,w)$ are the shortest paths.</p>
+<p>If $v$ is on the path $(s, w)$, $(v, w)$ is the shortest path from  $v$ to $w$.</p>
+<p>$$(s,w) &#x3D; (s,v) + (v,w)$$</p>
+<p><strong>Contradiction:</strong></p>
+<p>Assume $(v,w)$ is not the shortest path. So there has to be a shorter path $(v,w)’$ which is shorter than $(v,w)$. Then we have:</p>
+<p>$$(s,v) + (v,w)’ &#x3D; (s,w)’ &lt; (s,v) + (v,w) &#x3D; (s,w)$$</p>
+<p>There is a shorter path $(s,w)’$ between $s$ and $w$, which contradicts the condition that $(s,w)$ is the shortest one.</p>
+<h4 id="Ex-3-DFS-Pre-Post"><a href="#Ex-3-DFS-Pre-Post" class="headerlink" title="Ex 3 (DFS Pre &amp; Post)"></a>Ex 3 (DFS Pre &amp; Post)</h4><p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spring15/cos226/exams/fin-f10.pdf">Problem 3a</a> from Princeton’s Fall 2010 final.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/uyxli.png"></p>
+<p>Pre-order:  <code>A  B  G  D  F  C  E  H  I</code><br>Post-order: <code>G  B  E  C  I  H  F  D  A</code></p>
+<p>Pre-order: <code>A  B  G  C  D  F  E  H  I</code><br>Post-order: <code>G  B  E  I  H  F  D  C  A</code></p>
+<h3 id="B-level"><a href="#B-level" class="headerlink" title="B level"></a>B level</h3><h4 id="Ex-1-BFS-Simultaneous"><a href="#Ex-1-BFS-Simultaneous" class="headerlink" title="Ex 1 (BFS Simultaneous)"></a>Ex 1 (BFS Simultaneous)</h4><p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spring15/cos226/exams/fin-f09.pdf">Problem 2b</a> from Princeton’s Fall 2009 final.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/86znb.png"></p>
+<p>The answer is (d). I don’t know why II is correct.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jid68.jpg"></p>
+<h4 id="Ex-2-Application"><a href="#Ex-2-Application" class="headerlink" title="Ex 2 (Application)"></a>Ex 2 (Application)</h4><p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spring15/cos226/exams/fin-s08.pdf">Problem 1c</a> from Princeton’s Spring 2008 final.</p>
+<p>Application:</p>
+<ul>
+<li><code>BFS</code>: Shortest path (fewest number of edges) from $s$ to $t$.</li>
+<li><code>DFS</code>: Topological sort, strongly connected components, Euler tour.</li>
+</ul>
+<h4 id="Ex-3-DFS-Simultaneous"><a href="#Ex-3-DFS-Simultaneous" class="headerlink" title="Ex 3 (DFS Simultaneous)"></a>Ex 3 (DFS Simultaneous)</h4><p><a target="_blank" rel="noopener" href="http://www.cs.princeton.edu/courses/archive/spring15/cos226/exams/fin-f10.pdf">Problem 3b</a> from Princeton’s Fall 2010 final.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/wpgy2.png"></p>
+<p>The function-call stack always contains a sequence of vertices on a directed path from $s$ to current vertex (with $s$ at the bottom and the current vertex at the top).</p>
+<p>I, II</p>
+<blockquote>
+<p>What if I pop s and push x and y?<br>    x<br>  &#x2F;<br>s<br>  <br>    y<br>Don’t understand why II must be true.</p>
+</blockquote>
+<h4 id="Ex-4-Bipartite-Graphs"><a href="#Ex-4-Bipartite-Graphs" class="headerlink" title="Ex 4 (Bipartite Graphs)"></a>Ex 4 (Bipartite Graphs)</h4><p><a target="_blank" rel="noopener" href="http://datastructur.es/sp16/materials/discussion/discussion11sol.pdf">Problems 4</a> from Spring 2016’s discussion worksheet.</p>
+<p>An undirected graph is said to be <code>bipartite</code> if all of its vertices can be divided into two disjoint sets $U$ and $V$ such that every edge connects an item in $U$ to an item in $V$. For example, the graph on the right is bipartite, whereas on the graph on the left is not. Provide an algorithm which determines whether or not a graph is bipartite. What is the runtime of your algorithm?</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/nqzzt.png"></p>
+<p>To solve this problem, we simply run a special version of <code>DFS</code> or <code>BFS</code> from any vertex. This special version marks the <code>start vertex</code> with a $U$, then each of its children with a $V$, and each of <code>their children</code> with a $U$, and so forth.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/u1d7b.png" alt="Not bipartite"></p>
+<p>If any vertex already has a $U$ and the visited vertex has a $V$ (or vice-versa), then the graph is not bipartite. <code>In other words</code>, if any vertex which is marked $U$ finds a neighbor which is already marked $U$, <code>break</code>, and the graph is not bipartite.</p>
+<p>If the algorithm completes, marking every vertex in the graph, then it is bipartite.</p>
+<p>If the graph is not connected, we repeat this process for each connected component.</p>
+<p><strong>Note:</strong> If a graph $G$ is bipartite, then it cannot contain an <code>odd cycle</code>.</p>
+<p>Consider the DFS tree:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/b66hf.jpg"></p>
+<h5 id="Clab-9-Party"><a href="#Clab-9-Party" class="headerlink" title="Clab 9 (Party)"></a>Clab 9 (Party)</h5><p>Guide: <a target="_blank" rel="noopener" href="https://sp19.datastructur.es/materials/clab/clab9/clab9">link</a><br>Code: <a target="_blank" rel="noopener" href="https://github.com/junhaowww/cs61b-sp18/blob/master/clab9/Graph.java">Graph.java</a> &amp; <a target="_blank" rel="noopener" href="https://github.com/junhaowww/cs61b-sp18/blob/master/clab9/SeparableEnemySolver.java">SeparableEnemySolver.java</a></p>
+<p>Need consider:</p>
+<ul>
+<li>Disconnected graph</li>
+<li>Divide into 2 groups</li>
+<li>Divide into 3 groups (optional)<ul>
+<li>When encounter V - V, we modify the target node to Q</li>
+<li>When encounter Q - Q, we modify the source node to U</li>
+<li>When encounter U - U, return false</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/b6cd9.png"></p>
+<h4 id="Ex-5-Shortest-Directed-Circle"><a href="#Ex-5-Shortest-Directed-Circle" class="headerlink" title="Ex 5 (Shortest Directed Circle)"></a>Ex 5 (Shortest Directed Circle)</h4><p><a target="_blank" rel="noopener" href="http://datastructur.es/sp16/materials/discussion/discussion11sol.pdf">Problems 4</a> from Spring 2016’s discussion worksheet.</p>
+<p>Provide an algorithm that finds the shortest directed cycle in a graph in $O(EV)$ time and $O(E)$ space, assuming $E &gt; V$.</p>
+<p>The <code>key realization</code> here is that the shortest directed cycle involving a particular source vertex is just some shortest path <code>plus one edge</code> back to $s$. Using <code>this</code> knowledge, we can create a <code>shortestCycleFromSource(s)</code> subroutine. This subroutine first runs BFS on $s$, then checks every edge in the graph to see if it points at $s$. For each such edge originating at vertex $v$, it computes the cycle length by adding one to <code>distTo(x)</code> (which was computed by BFS).</p>
+<p>This subroutine takes $O(E +V)$ time because it is BFS. To find the shortest cycle in the entire graph, we simply call <code>shortestCycleFromSource()</code> for each vertex, resulting in an $V \times O(E + V) &#x3D; O(EV + V^2)$ runtime. Since $E &gt; V$, this is just $O(EV)$.</p>
+<h4 id="Ex-6-sumDescendants"><a href="#Ex-6-sumDescendants" class="headerlink" title="Ex 6 (sumDescendants)"></a>Ex 6 (sumDescendants)</h4><p><a target="_blank" rel="noopener" href="https://tbp.berkeley.edu/exams/5239/download/">Problem 4c</a> from Hug’s Spring 2015 Midterm 2.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/10i16.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Notice the class is TreeNode</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TreeNode</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> TreeNode left, right;</span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> value;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">TreeNode</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">    value = n;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Replaces value with sum of all of its descendants&#x27; values.</span></span><br><span class="line"><span class="comment">   *  Changed by sum of descendants</span></span><br><span class="line"><span class="comment">   *  Returns original value + sum of descendants</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">sumDescendants</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (left == <span class="literal">null</span> &amp;&amp; right == <span class="literal">null</span>) &#123; <span class="comment">// this is not null</span></span><br><span class="line">      <span class="type">int</span> <span class="variable">oldVal</span> <span class="operator">=</span> value;</span><br><span class="line">      value = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">return</span> oldVal;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// ------ Bug: left or right is null -------</span></span><br><span class="line">      <span class="comment">// sumDescendants() returns the sum of original value + sum of descendants</span></span><br><span class="line">      <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> left.sumDescendants() + right.sumDescendants(); <span class="comment">// 36 = 4 + (8) + 8 + (16)</span></span><br><span class="line">      <span class="comment">// -----------------------------------------</span></span><br><span class="line">      </span><br><span class="line">      <span class="type">int</span> <span class="variable">leftSum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">      <span class="type">int</span> <span class="variable">rightSum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (left != <span class="literal">null</span>) &#123;</span><br><span class="line">        leftSum = left.sumDescendants();</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (right != <span class="literal">null</span>) &#123;</span><br><span class="line">        rightSum = right.sumDescendants();</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="type">int</span> <span class="variable">oldVal</span> <span class="operator">=</span> value;</span><br><span class="line">      value = leftSum + rightSum;</span><br><span class="line">      <span class="keyword">return</span> oldVal + value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="A-level"><a href="#A-level" class="headerlink" title="A level"></a>A level</h3><h4 id="Ex-1-Eulerian-tour"><a href="#Ex-1-Eulerian-tour" class="headerlink" title="Ex 1 (Eulerian tour)"></a>Ex 1 (Eulerian tour)</h4><p>Develop an algorithm that <strong>determines whether or not</strong> a <code>directed</code> graph contains an Eulerian Tour (Eulerian Path), i.e. a tour that visits every vertex exactly once.</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/eulerian-path-and-circuit/">From GeeksforGeeks</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/euler-circuit-directed-graph/">From GeeksforGeeks</a></li>
+<li><a target="_blank" rel="noopener" href="https://math.stackexchange.com/questions/1871065/euler-path-for-directed-graph">From StackExchange</a></li>
+</ul>
+<p><code>Eulerian Path</code> is a path in graph that visits <code>every edge</code> exactly once. <code>Eulerian Circuit</code> is an Eulerian Path which starts and ends on the same vertex.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ajouf.jpg"></p>
+<p>A graph is called <code>Eulerian</code> if it has an Eulerian Cycle and called <code>Semi-Eulerian</code> if it has an Eulerian Path.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9deg4.jpg"></p>
+<p>The problem is same as following question. “Is it possible to draw a given graph without lifting pencil from the paper and without tracing any of the edges more than once”.</p>
+<p><strong>Properties (Undirected Graph):</strong></p>
+<ul>
+<li>Eulerian Cycle:<ul>
+<li>All vertices with non-zero degree are connected. (We don’t care about vertices with zero degree because they don’t belong to Eulerian Cycle or Path)</li>
+<li>All vertices have even degree.</li>
+</ul>
+</li>
+<li>Eulerian Path:<ul>
+<li>Same as the first condition of Eulerian Cycle.</li>
+<li>If two vertices have odd degree and all other vertices have even degree.</li>
+</ul>
+</li>
+</ul>
+<p>Note that: Only one vertex with odd degree is not possible in an undirected graph (sum of all degrees is <code>always even</code> in an undirected graph).</p>
+<p>Note that: A graph <code>with no edges</code> is considered Eulerian because there are no edges to traverse.</p>
+<p><strong>Properties (Directed Graph):</strong></p>
+<ul>
+<li>Eulerian Cycle:<ul>
+<li>All vertices with nonzero degree belong to a single strongly connected component.</li>
+<li>In degree and out degree of every vertex is same.</li>
+</ul>
+</li>
+<li>Eulerian Path:<ul>
+<li>Same as the first condition of Eulerian Cycle.</li>
+<li>There should be a single vertex in graph which has $D_{in} + 1 &#x3D; D_{out}$ and another vertex which has $D_{in} &#x3D; D_{out} + 1$.</li>
+<li>Rest of vertices should have $D_{in} &#x3D; D_{out}$.</li>
+</ul>
+</li>
+</ul>
+<p>We can detect singly connected component using <code>Kosaraju&#39;s DFS based simple algorithm</code>.</p>
+<p>To compare $D_{in}$ and $D_{out}$ degree, we need to store $D_{in}$ and $D_{out}$ of every vertex. $D_{out}$ can be obtained by size of adjacency list. $D_{in}$ can be stored by creating an array of size equal to number of vertices.</p>
+<h2 id="Ex-Examprep-9"><a href="#Ex-Examprep-9" class="headerlink" title="Ex (Examprep 9)"></a>Ex (Examprep 9)</h2><h3 id="Ex-1-K-th-Ancestor"><a href="#Ex-1-K-th-Ancestor" class="headerlink" title="Ex 1 (K-th Ancestor)"></a>Ex 1 (K-th Ancestor)</h3><p>(a) Consider the Tree class below. Suppose we would like to write a method for this Tree class, <code>getAncestor(int k, Node target)</code>. This method takes in an integer $k$ and a Node <code>target</code>, and returns the k-th ancestor of <code>target</code> in our tree (you may assume such an ancestor exists). You may also assume that $k &gt;&#x3D; 0$, that <code>target != null</code>, and that there are no cycles in our tree before we call this method.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6diw2.png"></p>
+<p>(b) Give a bound on the runtime of <code>getAncestor(int k, Node target)</code> in the best and worst case in $\Theta(\cdot)$ notation in terms of $N$ and $k$, for a tree with $N$ nodes. How does our choice of list implementation on line 10 affect our runtime?</p>
+<ul>
+<li>Best case: When the root is the target. The runtime is $\Theta(1)$.</li>
+<li>Worst case: The tree is a complete tree or a list. We need to traverse the entire tree, so the runtime is $\Theta(N)$.</li>
+</ul>
+<p>The answer: A <code>LinkedList</code> is optimal since we only add&#x2F;remove from the end of the list. <code>return list.get(list.sie() - 1 - k)</code> takes $\Theta(k)$. The problem with <code>ArrayList</code> is the it has resizing penalties.</p>
+<h3 id="Ex-2-Contact"><a href="#Ex-2-Contact" class="headerlink" title="Ex 2 (Contact)"></a>Ex 2 (Contact)</h3><p>We’re going to make our own <code>Contacts</code> application! The application must perform two operations: <code>addName(String name)</code>, which stores a new contact, and <code>countPartial(String partial)</code>, which returns the number of contacts whose names begin with <code>partial</code>. Implement both of these methods in the <code>Contacts</code> class below. You may find the work already done in the private <code>Node</code> class, as well as the method <code>charAt(int index)</code> useful.</p>
+<p>Code: <a target="_blank" rel="noopener" href="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gisof.png">link</a></p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

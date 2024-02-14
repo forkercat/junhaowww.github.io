@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Easy My Post: Java Solution with Comments and Explanation (BF, Divide and Conquer, One-Pass) Problem Say you have an array for which the ith element is the price of a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="121. Best Time to Buy and Sell Stock">
+<meta property="og:url" content="https://junhaow.com/lc/problems/array/buy-and-sell-stocks-and-similar-problems/121_best-time-to-buy-and-sell-stock.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Easy My Post: Java Solution with Comments and Explanation (BF, Divide and Conquer, One-Pass) Problem Say you have an array for which the ith element is the price of a">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ve19b.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.093Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.093Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ve19b.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>121. Best Time to Buy and Sell Stock</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock/">LeetCode</a><br>Difficulty: <span class="green">Easy</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock/discuss/389855/">Java Solution with Comments and Explanation (BF, Divide and Conquer, One-Pass)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Say you have an array for which the ith element is the price of a given stock on day <code>i</code>.</p>
+</blockquote>
+<blockquote>
+<p>If you were only permitted to complete at most one transaction (i.e., buy one and sell one share of the stock), design an algorithm to find the maximum profit.</p>
+</blockquote>
+<p><strong>Constraint:</strong> Note that you cannot sell a stock before you buy one.</p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input: [<span class="number">7</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">4</span>]</span><br><span class="line">Output: <span class="number">5</span></span><br><span class="line">Explanation: Buy on day <span class="number">2</span> (price = <span class="number">1</span>) and sell on day <span class="number">5</span> (price = <span class="number">6</span>), profit = <span class="number">6</span>-<span class="number">1</span> = <span class="number">5.</span></span><br><span class="line">             Not <span class="number">7</span>-<span class="number">1</span> = <span class="number">6</span>, as selling price needs to be larger than buying price.</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: [<span class="number">7</span>,<span class="number">6</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">1</span>]</span><br><span class="line">Output: <span class="number">0</span></span><br><span class="line">Explanation: In <span class="built_in">this</span> <span class="keyword">case</span>, no transaction is done, i.e. <span class="type">max</span> <span class="variable">profit</span> <span class="operator">=</span> <span class="number">0.</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p>For each day <code>i</code>, compare its prices with the following price of each day <code>j</code>, and update the maximum profit.</p>
+<p><strong>Note:</strong></p>
+<ul>
+<li><code>j</code> should starts from <code>0</code>.</li>
+<li><code>maxProfit</code> should be initialized with $0$.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxProfit</span><span class="params">(<span class="type">int</span>[] prices)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">maxProfit</span> <span class="operator">=</span> <span class="number">0</span>;  <span class="comment">// profit can&#x27;t be negative</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; prices.length; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i; j &lt; prices.length; ++j) &#123;</span><br><span class="line">      maxProfit = Math.max(maxProfit, prices[j] - prices[i]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> maxProfit;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^2)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Divide-and-Conquer"><a href="#Divide-and-Conquer" class="headerlink" title="Divide and Conquer"></a>Divide and Conquer</h3><p>We divide the problem into two subproblems <code>left</code> and <code>right</code>. Then we calculate:</p>
+<ul>
+<li>The best buy time <code>B1</code> and the best sell time <code>S1</code> from <code>left</code>.</li>
+<li>The best buy time <code>B2</code> and the best sell time <code>S2</code> from <code>right</code>.</li>
+<li>The time <code>M1</code> of minimum price and the time <code>X1</code> of maximum price in <code>left</code>.</li>
+<li>The time <code>M2</code> of minimum price and the time <code>X2</code> of maximum price in <code>right</code>.</li>
+</ul>
+<p>In the <code>combine</code> step, we have three cases to consider:</p>
+<ul>
+<li><strong>Case 1:</strong> In <code>left</code>, we buy at <code>B1</code> and sell at <code>S1</code>.</li>
+<li><strong>Case 2:</strong> In <code>right</code>, we buy at <code>B2</code> and sell at <code>S2</code>.</li>
+<li><strong>Case 3:</strong> In <code>left</code> and <code>right</code>, we buy at <code>M1</code> and sell at <code>X2</code>.<ul>
+<li>We cannot use <code>B1</code> and <code>S2</code> because <code>B1</code> may not be the time of minimum price and <code>S2</code> may not be the time of maximum price. Check out the illustration below.</li>
+</ul>
+</li>
+<li>Beside, we need to update the time of minimum price and maximum price.</li>
+</ul>
+<p>Here is an illustration of the text above. Notice the <code>left</code> is <code>P1</code> and <code>right</code> is <code>P2</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ve19b.jpg"></p>
+<p>The following solution uses a helper class <code>BuySell</code> to encapsulate variables passed across recursive levels.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">BuySell</span> &#123;</span><br><span class="line">  <span class="type">int</span> buyTime; <span class="type">int</span> sellTime;</span><br><span class="line">  <span class="type">int</span> minTime; <span class="type">int</span> maxTime;</span><br><span class="line">  </span><br><span class="line">  BuySell(<span class="type">int</span> b, <span class="type">int</span> s, <span class="type">int</span> min, <span class="type">int</span> max) &#123;</span><br><span class="line">    buyTime = b; sellTime = s;</span><br><span class="line">    minTime = min; maxTime = max;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Here is the main part of the solution. Notice that it is a good approach to separate the combining code from the recursive function. It makes code more readable.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxProfit</span><span class="params">(<span class="type">int</span>[] prices)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (prices == <span class="literal">null</span> || prices.length == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">BuySell</span> <span class="variable">result</span> <span class="operator">=</span> maxProfit(prices, <span class="number">0</span>, prices.length - <span class="number">1</span>);</span><br><span class="line">  <span class="keyword">return</span> prices[result.sellTime] - prices[result.buyTime];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// helper</span></span><br><span class="line"><span class="keyword">private</span> BuySell <span class="title function_">maxProfit</span><span class="params">(<span class="type">int</span>[] prices, <span class="type">int</span> lo, <span class="type">int</span> hi)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (lo &gt;= hi) &#123; <span class="comment">// base case: only one time</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">BuySell</span>(lo, lo, lo, lo);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> lo + (hi - lo) / <span class="number">2</span>; <span class="comment">// divide</span></span><br><span class="line">  <span class="type">BuySell</span> <span class="variable">left</span> <span class="operator">=</span> maxProfit(prices, lo, mid); <span class="comment">//conquer</span></span><br><span class="line">  <span class="type">BuySell</span> <span class="variable">right</span> <span class="operator">=</span> maxProfit(prices, mid + <span class="number">1</span>, hi);</span><br><span class="line">  <span class="keyword">return</span> combine(prices, left, right);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> BuySell <span class="title function_">combine</span><span class="params">(<span class="type">int</span>[] prices, BuySell left, BuySell right)</span> &#123;</span><br><span class="line">  <span class="comment">// case 1: left</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">maxProfit</span> <span class="operator">=</span> prices[left.sellTime] - prices[left.buyTime];</span><br><span class="line">  <span class="type">int</span> <span class="variable">bestBuyTime</span> <span class="operator">=</span> left.buyTime;</span><br><span class="line">  <span class="type">int</span> <span class="variable">bestSellTime</span> <span class="operator">=</span> left.sellTime;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// case 2: right</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">case2Profit</span> <span class="operator">=</span> prices[right.sellTime] - prices[right.buyTime];</span><br><span class="line">  <span class="keyword">if</span> (case2Profit &gt; maxProfit) &#123;</span><br><span class="line">    maxProfit = case2Profit;</span><br><span class="line">    bestBuyTime = right.buyTime;</span><br><span class="line">    bestSellTime = right.sellTime;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// case 3: left.minTime, right.maxTime</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">case3Profit</span> <span class="operator">=</span> prices[right.maxTime] - prices[left.minTime];</span><br><span class="line">  <span class="keyword">if</span> (case3Profit &gt; maxProfit) &#123;</span><br><span class="line">    maxProfit = case3Profit;</span><br><span class="line">    bestBuyTime = left.minTime;</span><br><span class="line">    bestSellTime = right.maxTime;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// update min and max</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">newMinTime</span> <span class="operator">=</span> (prices[left.minTime] &lt; prices[right.minTime]) ? left.minTime : right.minTime;</span><br><span class="line">  <span class="type">int</span> <span class="variable">newMaxTime</span> <span class="operator">=</span> (prices[left.maxTime] &gt; prices[right.maxTime]) ? left.maxTime : right.maxTime;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">BuySell</span>(bestBuyTime, bestSellTime, newMinTime, newMaxTime);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$ since $T(N) &#x3D; 2T(N) + O(1)$<br><strong>Space:</strong> $O(\log{N})$ because of the call stack.</p>
+<h3 id="One-Pass"><a href="#One-Pass" class="headerlink" title="One-Pass"></a>One-Pass</h3><p>Notice that the maximum profit that can be made by selling on a specific day is <strong>determined</strong> by the <code>minimum</code> of the stock prices over the previous days. Thus, we can loop over each price in <code>prices</code>, and keep updating the minimum price and at the same update the maximum profit.</p>
+<p><strong>Note:</strong> The ordering of updating <code>maxProfit</code> and <code>minPrice</code> does not matter.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxProfit</span><span class="params">(<span class="type">int</span>[] prices)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">maxProfit</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">minPrice</span> <span class="operator">=</span> Integer.MAX_VALUE;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> price : prices) &#123;</span><br><span class="line">    maxProfit = Math.max(maxProfit, price - minPrice);</span><br><span class="line">    minPrice = Math.min(minPrice, price);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> maxProfit;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

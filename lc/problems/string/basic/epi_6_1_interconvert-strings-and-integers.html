@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Problem Implement two functions: intToString() and stringToInt().  Example:  12345678910111213141516171819&#x2F;&#x2F; intToString()Input: 0Output: &quot;0&quot;Input: 123Output: &quot;123&quot;Input: -123">
+<meta property="og:type" content="website">
+<meta property="og:title" content="EPI 6.1 | Integer Convert Strings and Integers">
+<meta property="og:url" content="https://junhaow.com/lc/problems/string/basic/epi_6_1_interconvert-strings-and-integers.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Problem Implement two functions: intToString() and stringToInt().  Example:  12345678910111213141516171819&#x2F;&#x2F; intToString()Input: 0Output: &quot;0&quot;Input: 123Output: &quot;123&quot;Input: -123">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.138Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.138Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>EPI 6.1 | Integer Convert Strings and Integers</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<!-- Reference: [LeetCode]() -->
+<!-- Difficulty:  -->
+
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Implement two functions: <code>intToString()</code> and <code>stringToInt()</code>.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// intToString()</span></span><br><span class="line">Input: <span class="number">0</span></span><br><span class="line">Output: <span class="string">&quot;0&quot;</span></span><br><span class="line">Input: <span class="number">123</span></span><br><span class="line">Output: <span class="string">&quot;123&quot;</span></span><br><span class="line">Input: -<span class="number">123</span></span><br><span class="line">Output: <span class="string">&quot;-123&quot;</span></span><br><span class="line">Input: -<span class="number">120</span></span><br><span class="line">Output: <span class="string">&quot;-120&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// stringToInt()</span></span><br><span class="line">Input: <span class="string">&quot;0&quot;</span></span><br><span class="line">Output: <span class="number">0</span></span><br><span class="line">Input: <span class="string">&quot;123&quot;</span></span><br><span class="line">Output: <span class="number">123</span></span><br><span class="line">Input: <span class="string">&quot;-123&quot;</span></span><br><span class="line">Output: -<span class="number">123</span></span><br><span class="line">Input: <span class="string">&quot;-120&quot;</span></span><br><span class="line">Output: -<span class="number">120</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="intToString"><a href="#intToString" class="headerlink" title="intToString()"></a>intToString()</h3><p>Also refer to <a target="_blank" rel="noopener" href="https://leetcode.com/problems/reverse-integer">7. Reverse Integer</a>.</p>
+<p>Let’s first analyze the incorrect version. Here are <code>two tiny errors</code> in the following code.</p>
+<p>The basic idea is to record the negative sign, sum up from LSD to MSD, and finally reverse the whole string.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">intToString</span><span class="params">(<span class="type">int</span> x)</span> &#123;</span><br><span class="line">  <span class="type">boolean</span> <span class="variable">isNegative</span> <span class="operator">=</span> (x &lt; <span class="number">0</span>);</span><br><span class="line">  x = Math.abs(x);</span><br><span class="line"></span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  <span class="keyword">while</span> (x &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">digit</span> <span class="operator">=</span> x % <span class="number">10</span>;</span><br><span class="line">    sb.append(digit);</span><br><span class="line">    x /= <span class="number">10</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> sb.append(isNegative ? <span class="string">&quot;-&quot;</span> : <span class="string">&quot;&quot;</span>).reverse().toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Error #1:</strong> </p>
+<p>When <code>x == 0</code>, the StringBuilder remains empty. Two solutions:</p>
+<ul>
+<li>Use <code>do-while</code>.</li>
+<li>Add <code>if (x == 0) return 0;</code> special case handler.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">digit</span> <span class="operator">=</span> x % <span class="number">10</span>;</span><br><span class="line">  sb.append(digit);</span><br><span class="line">&#125; <span class="keyword">while</span> (x &gt; <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>Error #2:</strong></p>
+<ul>
+<li>Why can’t we do <code>x = Math.abs(x)</code> at the beginning?</li>
+<li>Why should we use <code>x != 0</code> rather than <code>x &gt; 0</code>?</li>
+</ul>
+<p>Consider the case when <code>x = -2147483648</code>, which is <code>Integer.MIN_VALUE</code>. If we extract the numeric part and process it as a positive number, it would overflows.</p>
+<p>Solutions:</p>
+<ul>
+<li><p>Do <code>Math.abs</code> inside <code>while</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">intToString</span><span class="params">(<span class="type">int</span> x)</span> &#123;</span><br><span class="line">  <span class="type">boolean</span> <span class="variable">isNegative</span> <span class="operator">=</span> (x &lt; <span class="number">0</span>);</span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">digit</span> <span class="operator">=</span> Math.abs(x % <span class="number">10</span>);</span><br><span class="line">    sb.append(digit);</span><br><span class="line">    x /= <span class="number">10</span>;</span><br><span class="line">  &#125; <span class="keyword">while</span> (x != <span class="number">0</span>);</span><br><span class="line">  <span class="keyword">return</span> sb.append(isNegative ? <span class="string">&quot;-&quot;</span> : <span class="string">&quot;&quot;</span>).reverse().toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Use a long integer to store <code>x</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">intToString</span><span class="params">(<span class="type">int</span> x)</span> &#123;</span><br><span class="line">  <span class="type">long</span> <span class="variable">y</span> <span class="operator">=</span> x;</span><br><span class="line">  <span class="type">boolean</span> <span class="variable">isNegative</span> <span class="operator">=</span> (y &lt; <span class="number">0</span>);</span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  y = Math.abs(y);</span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">digit</span> <span class="operator">=</span> y % <span class="number">10</span>;</span><br><span class="line">    sb.append(digit);</span><br><span class="line">    y /= <span class="number">10</span>;</span><br><span class="line">  &#125; <span class="keyword">while</span> (y != <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> sb.append(isNegative ? <span class="string">&quot;-&quot;</span> : <span class="string">&quot;&quot;</span>).reverse().toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="stringToInt"><a href="#stringToInt" class="headerlink" title="stringToInt()"></a>stringToInt()</h3><p>Assume the input is valid. It can be extended if <code>s</code> could be a very large number, then we should use long type.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s.replace(<span class="string">&quot;-&quot;</span>, <span class="string">&quot;&quot;</span>);      <span class="comment">// s will not change!</span></span><br><span class="line">s = s.replace(<span class="string">&quot;-&quot;</span>, <span class="string">&quot;&quot;</span>);  <span class="comment">// we must update s</span></span><br></pre></td></tr></table></figure>
+
+<p>Remember <code>String</code> in Java is immutable.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Assume the input is valid</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">stringToInt</span><span class="params">(String s)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">sign</span> <span class="operator">=</span> s.startsWith(<span class="string">&quot;-&quot;</span>) ? -<span class="number">1</span> : +<span class="number">1</span>;</span><br><span class="line">  s = s.replace(<span class="string">&quot;-&quot;</span>, <span class="string">&quot;&quot;</span>); <span class="comment">// remove the &quot;-&quot; (immutable!)</span></span><br><span class="line">  <span class="comment">// conversion (from MSD to LSD)</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">num</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; s.length(); ++i) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">digit</span> <span class="operator">=</span> s.charAt(i) - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">    num = num * <span class="number">10</span> + digit;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> sign * num;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

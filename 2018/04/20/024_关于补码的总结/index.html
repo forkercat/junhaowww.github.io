@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="原码：true code补码：complemental code反码：ones-complement 符号位都是用 0 表示「正」，用 1 表示「负」，而数值位，三种表示方法各不相同。 在计算机系统中，数值一律用补码来表示和存储。原因在于：  可以将 符号位 和 数值位 统一处理 加法 和 减法 也可以统一处理 此外，补码与原码可以 相互转换，其运算过程是相同的，不需要额外的硬件电路">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于补码的总结">
+<meta property="og:url" content="https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="原码：true code补码：complemental code反码：ones-complement 符号位都是用 0 表示「正」，用 1 表示「负」，而数值位，三种表示方法各不相同。 在计算机系统中，数值一律用补码来表示和存储。原因在于：  可以将 符号位 和 数值位 统一处理 加法 和 减法 也可以统一处理 此外，补码与原码可以 相互转换，其运算过程是相同的，不需要额外的硬件电路">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ptvt9.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/0mwcm.jpg">
+<meta property="article:published_time" content="2018-04-21T00:30:55.000Z">
+<meta property="article:modified_time" content="2024-02-13T16:19:53.970Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="补码">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ptvt9.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>关于补码的总结</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Posts</a></li><!--
+     --><!--
+       --><li><a href="/studynotes/">Notes</a></li><!--
+     --><!--
+       --><li><a href="/lc/">Leetcode</a></li><!--
+     --><!--
+       --><li><a href="/games/">Games</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">Me</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/05/06/025_%E5%85%B3%E4%BA%8E%20unsigned%20%E5%92%8C%20signed%20%E7%B1%BB%E5%9E%8B%E7%9B%B8%E4%BA%92%E8%BD%AC%E6%8D%A2%E7%9A%84%E7%90%86%E8%A7%A3/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/04/12/023_%E5%B8%B8%E8%A7%81%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%A4%A7%E5%B0%8F%E7%9A%84%E6%80%BB%E7%BB%93/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/&text=关于补码的总结"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于补码的总结"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/&is_video=false&description=关于补码的总结"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=关于补码的总结&body=Check out this article: https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于补码的总结"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于补码的总结"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于补码的总结"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于补码的总结"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/&name=关于补码的总结&description=&lt;p&gt;原码：true code&lt;br&gt;补码：complemental code&lt;br&gt;反码：ones-complement&lt;/p&gt;
+&lt;p&gt;符号位都是用 0 表示「正」，用 1 表示「负」，而数值位，三种表示方法各不相同。&lt;/p&gt;
+&lt;p&gt;在计算机系统中，数值一律用&lt;strong&gt;补码&lt;/strong&gt;来表示和存储。原因在于：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;可以将 &lt;code&gt;符号位&lt;/code&gt; 和 &lt;code&gt;数值位&lt;/code&gt; 统一处理&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;加法&lt;/code&gt; 和 &lt;code&gt;减法&lt;/code&gt; 也可以统一处理&lt;/li&gt;
+&lt;li&gt;此外，补码与原码可以 &lt;code&gt;相互转换&lt;/code&gt;，其运算过程是相同的，不需要额外的硬件电路&lt;/li&gt;
+&lt;/ul&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/&t=关于补码的总结"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A5%E7%A0%81%E7%9A%84%E7%89%B9%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text">补码的特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B4%E6%95%B0%E7%9A%84%E8%A1%A5%E7%A0%81"><span class="toc-number">2.</span> <span class="toc-text">整数的补码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E6%95%B0"><span class="toc-number">2.1.</span> <span class="toc-text">正数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%9F%E6%95%B0"><span class="toc-number">2.2.</span> <span class="toc-text">负数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E5%87%8F%E6%B3%95"><span class="toc-number">2.3.</span> <span class="toc-text">加减法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%8D%E6%80%9D%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">再思考</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        关于补码的总结
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Junhao Wang</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-04-21T00:30:55.000Z" class="dt-published" itemprop="datePublished">2018-04-20</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/C/">C</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E8%A1%A5%E7%A0%81/" rel="tag">补码</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>原码：true code<br>补码：complemental code<br>反码：ones-complement</p>
+<p>符号位都是用 0 表示「正」，用 1 表示「负」，而数值位，三种表示方法各不相同。</p>
+<p>在计算机系统中，数值一律用<strong>补码</strong>来表示和存储。原因在于：</p>
+<ul>
+<li>可以将 <code>符号位</code> 和 <code>数值位</code> 统一处理</li>
+<li><code>加法</code> 和 <code>减法</code> 也可以统一处理</li>
+<li>此外，补码与原码可以 <code>相互转换</code>，其运算过程是相同的，不需要额外的硬件电路</li>
+</ul>
+<span id="more"></span>
+
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ptvt9.jpg" alt="补码示意图"></p>
+<p>可以理解为一个循环圈。</p>
+<h2 id="补码的特性"><a href="#补码的特性" class="headerlink" title="补码的特性"></a>补码的特性</h2><ol>
+<li>一个负整数的原码与其补码相加，和为模</li>
+<li>对一个整数的补码再求补码，等于该整数自身</li>
+<li>补码的正零与负零表示方法相同</li>
+</ol>
+<h2 id="整数的补码"><a href="#整数的补码" class="headerlink" title="整数的补码"></a>整数的补码</h2><p>求给定数值的补码分以下两种情况：</p>
+<h3 id="正数"><a href="#正数" class="headerlink" title="正数"></a>正数</h3><p>正整数的补码是其二进制表示，与原码相同。</p>
+<blockquote>
+<p>【例 1】+9 的补码是 00001001。（备注：这个 +9 的补码是用 8 位 二进制来表示的，补码表示方式很多，还有 16 位二进制补码表示形式，以及 32 位二进制补码表示形式吗，64 位进制补码表示形式等。每一种补码表示形式都只能表示有限的数字。）</p>
+</blockquote>
+<h3 id="负数"><a href="#负数" class="headerlink" title="负数"></a>负数</h3><p><strong>求负整数的补码，将其对应正数二进制表示所有位取反（包括符号位，0 变 1，1 变 0）后加 1。</strong><br>同一个数字在不同的补码表示形式中是不同的。比如 -15 的补码，在8 位二进制中是 11110001，然而在 16 位二进制补码表示中，就是 1111111111110001。（以下都使用 8 位二进制来表示）</p>
+<p><strong>记住：</strong>对正数的补码做处理，得到负数的补码；对负数的补码做处理，得到正数的补码。</p>
+<blockquote>
+<p>【例 2】求 -5 的补码。<br>-5 对应正数 5（00000101）→ 所有位取反（11111010）→ 加1（11111011）<br>所以 -5 的补码是 11111011。</p>
+</blockquote>
+<blockquote>
+<p>【例 3】数 0 的补码表示是唯一的。<br>[+0]补 &#x3D; [+0]反 &#x3D; [+0]原 &#x3D; 00000000<br>[-0]补 &#x3D; 11111111+1 &#x3D; 00000000</p>
+</blockquote>
+<blockquote>
+<p>-1 的补码表示为：对应正数 1（0000 0001），取反得（1111 1110），加 1 得（1111 1111）<br>-127 的补码表示为：对应正数 127（0111 1111），取反得（1000 0000），加 1 得（1000 0001）<br>-128 的补码表示为：对应正数 128（1000 0000），取反得（0111 1111），加 1 得（1000 0000）负数里面最小的数，即 -128</p>
+</blockquote>
+<h3 id="加减法"><a href="#加减法" class="headerlink" title="加减法"></a>加减法</h3><p>补码加法：<code>[X+Y]补 = [X]补 + [Y]补</code></p>
+<p>补码减法：<code>[X-Y]补 = [X]补 - [Y]补 = [X]补 + [-Y]补</code></p>
+<h2 id="再思考"><a href="#再思考" class="headerlink" title="再思考"></a>再思考</h2><p>求补码为什么要反码 +1 ？</p>
+<p>目的就是为了正负相加值溢出后归为 0 啊。（原码 + 反码 &#x3D; 1111 1111）</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/0mwcm.jpg" alt="某大神的数学解释，我觉得记住上面那句话就好了，还有最上面那个示意图"></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Posts</a></li>
+        
+          <li><a href="/studynotes/">Notes</a></li>
+        
+          <li><a href="/lc/">Leetcode</a></li>
+        
+          <li><a href="/games/">Games</a></li>
+        
+          <li><a href="/links/">Links</a></li>
+        
+          <li><a href="/about/">Me</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A5%E7%A0%81%E7%9A%84%E7%89%B9%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text">补码的特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B4%E6%95%B0%E7%9A%84%E8%A1%A5%E7%A0%81"><span class="toc-number">2.</span> <span class="toc-text">整数的补码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E6%95%B0"><span class="toc-number">2.1.</span> <span class="toc-text">正数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%9F%E6%95%B0"><span class="toc-number">2.2.</span> <span class="toc-text">负数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E5%87%8F%E6%B3%95"><span class="toc-number">2.3.</span> <span class="toc-text">加减法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%8D%E6%80%9D%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">再思考</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/&text=关于补码的总结"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于补码的总结"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/&is_video=false&description=关于补码的总结"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=关于补码的总结&body=Check out this article: https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于补码的总结"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于补码的总结"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于补码的总结"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于补码的总结"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/&name=关于补码的总结&description=&lt;p&gt;原码：true code&lt;br&gt;补码：complemental code&lt;br&gt;反码：ones-complement&lt;/p&gt;
+&lt;p&gt;符号位都是用 0 表示「正」，用 1 表示「负」，而数值位，三种表示方法各不相同。&lt;/p&gt;
+&lt;p&gt;在计算机系统中，数值一律用&lt;strong&gt;补码&lt;/strong&gt;来表示和存储。原因在于：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;可以将 &lt;code&gt;符号位&lt;/code&gt; 和 &lt;code&gt;数值位&lt;/code&gt; 统一处理&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;加法&lt;/code&gt; 和 &lt;code&gt;减法&lt;/code&gt; 也可以统一处理&lt;/li&gt;
+&lt;li&gt;此外，补码与原码可以 &lt;code&gt;相互转换&lt;/code&gt;，其运算过程是相同的，不需要额外的硬件电路&lt;/li&gt;
+&lt;/ul&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/04/20/024_%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/&t=关于补码的总结"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

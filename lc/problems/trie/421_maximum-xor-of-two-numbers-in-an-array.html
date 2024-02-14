@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium My Post: Using a Trie… (accepted) Problem Given a non-empty array of numbers, $a_0$, $a_1$, $a_2$, … , $a_{n-1}$, where $0$ ≤ $a_i$ &lt; $2^{31}$.   Find the ma">
+<meta property="og:type" content="website">
+<meta property="og:title" content="421. Maximum XOR of Two Numbers in an Array">
+<meta property="og:url" content="https://junhaow.com/lc/problems/trie/421_maximum-xor-of-two-numbers-in-an-array.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium My Post: Using a Trie… (accepted) Problem Given a non-empty array of numbers, $a_0$, $a_1$, $a_2$, … , $a_{n-1}$, where $0$ ≤ $a_i$ &lt; $2^{31}$.   Find the ma">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5dhef.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.154Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.154Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5dhef.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>421. Maximum XOR of Two Numbers in an Array</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/discuss/407424">Using a Trie… (accepted)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a non-empty array of numbers, $a_0$, $a_1$, $a_2$, … , $a_{n-1}$, where $0$ ≤ $a_i$ &lt; $2^{31}$.</p>
+</blockquote>
+<blockquote>
+<p>Find the maximum result of $a_i$ XOR $a_j$, where <code>0 ≤ i</code>, <code>j &lt; n</code>.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Input: [<span class="number">3</span>, <span class="number">10</span>, <span class="number">5</span>, <span class="number">25</span>, <span class="number">2</span>, <span class="number">8</span>]</span><br><span class="line">Output: <span class="number">28</span></span><br><span class="line">Explanation: The maximum result is <span class="number">5</span> ^ <span class="number">25</span> = <span class="number">28.</span></span><br><span class="line"></span><br><span class="line">Input: [<span class="number">8</span>,<span class="number">10</span>,<span class="number">2</span>]</span><br><span class="line">Output: <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> Could you do this in $O(n)$ runtime?</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">findMaximumXOR</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="keyword">if</span> (n == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">maxVal</span> <span class="operator">=</span> Integer.MIN_VALUE;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n - <span class="number">1</span>; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i + <span class="number">1</span>; j &lt; n; ++j) &#123;</span><br><span class="line">      maxVal = Math.max(maxVal, nums[i] ^ nums[j]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> maxVal;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^2)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Use-Trie"><a href="#Use-Trie" class="headerlink" title="Use Trie"></a>Use Trie</h3><p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/solution/">LeetCode Solution</a></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5dhef.jpg"></p>
+<p>A good practice for using tries to solve problems. It took me a long time to write the code… but still learned some handy string manipulations too.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// trie</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">R</span> <span class="operator">=</span> <span class="number">2</span>;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TrieNode</span> &#123;</span><br><span class="line">  TrieNode[] next;</span><br><span class="line">  TrieNode() &#123;</span><br><span class="line">    next = <span class="keyword">new</span> <span class="title class_">TrieNode</span>[R];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">findMaximumXOR</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (nums.length &lt;= <span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">maxNum</span> <span class="operator">=</span> getMax(nums);</span><br><span class="line">  <span class="comment">// 1000 8  log2(8)  = 3 --&gt; 4</span></span><br><span class="line">  <span class="comment">// 1001 9  log2(9)  &gt; 3 --&gt; 4  ---&gt; (int) log2(num) + 1 (equivalent to Math.floor)</span></span><br><span class="line">  <span class="comment">// 1111 15 log2(15) &gt; 3 --&gt; 4</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">maxLen</span> <span class="operator">=</span> (<span class="type">int</span>)(Math.log(maxNum) / Math.log(<span class="number">2</span>)) + <span class="number">1</span>;</span><br><span class="line">  String[] numsArr = getStringArray(nums, maxLen);</span><br><span class="line">  <span class="type">TrieNode</span> <span class="variable">root</span> <span class="operator">=</span> generateTrie(numsArr);</span><br><span class="line">  <span class="keyword">return</span> findTheOtherInTrie(root, nums, numsArr);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">getMax</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (nums.length == <span class="number">0</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>();</span><br><span class="line">  <span class="type">int</span> <span class="variable">maxVal</span> <span class="operator">=</span> nums[<span class="number">0</span>];</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">    maxVal = Math.max(maxVal, val);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> maxVal;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> String[] getStringArray(<span class="type">int</span>[] nums, <span class="type">int</span> maxLen) &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  String[] result = <span class="keyword">new</span> <span class="title class_">String</span>[n];</span><br><span class="line">  <span class="type">String</span> <span class="variable">format</span> <span class="operator">=</span> <span class="string">&quot;%&quot;</span> + maxLen + <span class="string">&quot;s&quot;</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    result[i] = getBinaryString(nums[i], format); </span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> String <span class="title function_">getBinaryString</span><span class="params">(<span class="type">int</span> num, String format)</span> &#123;</span><br><span class="line">  <span class="comment">// or use toString(?, 2)</span></span><br><span class="line">  <span class="keyword">return</span> String.format(format, Integer.toBinaryString(num)).replace(<span class="string">&#x27; &#x27;</span>, <span class="string">&#x27;0&#x27;</span>); </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> TrieNode <span class="title function_">generateTrie</span><span class="params">(String[] numsArr)</span> &#123;</span><br><span class="line">  <span class="type">TrieNode</span> <span class="variable">root</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TrieNode</span>();</span><br><span class="line">  <span class="keyword">for</span> (String s : numsArr) &#123; <span class="comment">// for each string</span></span><br><span class="line">    <span class="type">TrieNode</span> <span class="variable">p</span> <span class="operator">=</span> root; <span class="comment">// p must be here!!!!</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; s.length(); ++i) &#123;  <span class="comment">// for each char</span></span><br><span class="line">      <span class="type">int</span> <span class="variable">num</span> <span class="operator">=</span> s.charAt(i) == <span class="string">&#x27;0&#x27;</span> ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">      <span class="keyword">if</span> (p.next[num] == <span class="literal">null</span>) &#123;</span><br><span class="line">        p.next[num] = <span class="keyword">new</span> <span class="title class_">TrieNode</span>();</span><br><span class="line">      &#125;</span><br><span class="line">      p = p.next[num];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">findTheOtherInTrie</span><span class="params">(TrieNode root, <span class="type">int</span>[] nums, String[] numsArr)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">maxXOR</span> <span class="operator">=</span> Integer.MIN_VALUE;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> numsArr[i];</span><br><span class="line">    <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">    <span class="type">TrieNode</span> <span class="variable">maxP</span> <span class="operator">=</span> root;</span><br><span class="line">    <span class="type">TrieNode</span> <span class="variable">otherP</span> <span class="operator">=</span> root;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; s.length(); ++j) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">num</span> <span class="operator">=</span> s.charAt(j) == <span class="string">&#x27;0&#x27;</span> ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">      maxP = maxP.next[num];</span><br><span class="line">      <span class="comment">// try to go to the opposite if possible</span></span><br><span class="line">      <span class="type">int</span> <span class="variable">direction</span> <span class="operator">=</span> otherP.next[num ^ <span class="number">1</span>] != <span class="literal">null</span> ? (num ^ <span class="number">1</span>) : num;</span><br><span class="line">      sb.append(direction);</span><br><span class="line">      otherP = otherP.next[direction];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> <span class="variable">otherNum</span> <span class="operator">=</span> Integer.parseInt(sb.toString(), <span class="number">2</span>); <span class="comment">// convert binary string to integer</span></span><br><span class="line">    maxXOR = Math.max(maxXOR, nums[i] ^ otherNum);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> maxXOR;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

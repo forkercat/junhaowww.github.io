@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Data in JavaYes, Java has pointers - they are called references - however, Java references are much more constrained than C’s general pointers  Pointers in C can point to any memory address Referenc">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CSAPP &#x2F; CSE 351 学习笔记（Java vs. C）">
+<meta property="og:url" content="https://junhaow.com/studynotes/csapp/010_CSAPP%20:%20CSE351%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88Java%20vs.%20C%EF%BC%89.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Data in JavaYes, Java has pointers - they are called references - however, Java references are much more constrained than C’s general pointers  Pointers in C can point to any memory address Referenc">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/uzweq.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/46h5j.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/oajs5.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xtlyd.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tpmiz.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xeg2b.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/stg90.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/q4ta0.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1gaok.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.199Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.199Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/uzweq.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CSAPP / CSE 351 学习笔记（Java vs. C）</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<h2 id="Data-in-Java"><a href="#Data-in-Java" class="headerlink" title="Data in Java"></a>Data in Java</h2><p>Yes, Java has pointers - they are called <code>references</code> - however, Java references are much more constrained than C’s general pointers</p>
+<ul>
+<li>Pointers in C can point to any memory address</li>
+<li>References in Java can only point to an object<ul>
+<li>And only to its first element - not to the middle of it</li>
+</ul>
+</li>
+</ul>
+<p>Strings are bounded by hidden length field at beginning of string.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/uzweq.jpg" alt="Java String (CSE 351 - Java vs. C, Video 1: Data)"></p>
+<p>Java Array:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/46h5j.jpg" alt="Java Array (CSE 351 - Java vs. C, Video 1: Data)"></p>
+<p>So, it can triggers a bounds-check.</p>
+<p>In Java, <code>all variables are references to objects.</code></p>
+<p>Casting</p>
+<ul>
+<li>In C, we can cast any pointer into any other pointer.</li>
+<li>In Java, we can only cast compatible object references.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/oajs5.jpg" alt="Creating objects in Java (CSE 351 - Java vs. C, Video 2: Implementation)"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xtlyd.jpg" alt="Initialization in Java (CSE 351 - Java vs. C, Video 2: Implementation)"><br><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tpmiz.jpg" alt="Subclassing Java (CSE 351 - Java vs. C, Video 2: Implementation)"><br><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xeg2b.jpg" alt="Interpreted vs. Compiled (CSE 351 - Java vs. C, Video 3: JVM)"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/stg90.jpg" alt="Virtual Machine Model (CSE 351 - Java vs. C, Video 3: JVM)"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/q4ta0.jpg" alt="Java Virtual Machine (CSE 351 - Java vs. C, Video 3: JVM)"></p>
+<p><strong>JVM Operand Stack Example:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">iload 1  // push 1st argument from table onto stack</span><br><span class="line">iload 2  // push 2nd argument from table onto stack</span><br><span class="line">iadd     // pop top 2 elements from stack, add together, and</span><br><span class="line">         // push result back onto stack</span><br><span class="line">istore 3 // pop result and put it into third slot in table</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>i</code> stands for integer</li>
+<li><code>a</code> stands for reference</li>
+<li><code>b</code> stands for byte</li>
+<li><code>c</code> stands for char</li>
+<li><code>d</code> stands for double</li>
+</ul>
+<p>We have no knowledge of registers or memory locations (each instruction is 1 byte - bytecode)</p>
+<p>We leave many information (address) to the C program that interprets bytecode.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1gaok.jpg" alt="A Simple Java Method (CSE 351 - Java vs. C, Video 3: JVM)"></p>
+<p><strong>Class File Format</strong></p>
+<ul>
+<li>Magic number</li>
+<li>Version of class file format</li>
+<li>Constant pool</li>
+<li>Access flags</li>
+<li>This class</li>
+<li>Super class</li>
+<li>Interfaces</li>
+<li>Fields</li>
+<li>Methods</li>
+<li>Attributes</li>
+</ul>
+<p>Other languages for JVMs</p>
+<p>JVMs run on so many computes that compilers have been built to translate many other languages to Java bytecode:</p>
+<p>(just using Java bytecode)</p>
+<ul>
+<li>AspectJ</li>
+<li>JRuby</li>
+<li>Jython</li>
+<li>Scale</li>
+<li>And many others, even including C</li>
+</ul>
+<p>Microsoft’s C# and .NET Framework</p>
+<ul>
+<li>C# has similar motivations as Java</li>
+<li>Virtual machine is called the <code>Common Language Runtime</code>; Common Intermediate Language is the bytecode for C# and other languages in the .NET framework (VB.NET, J#).</li>
+</ul>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

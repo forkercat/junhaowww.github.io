@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="多元函数多元函数：输入由多个变量构成的函数，是一个空间的点到另一个空间的点的映射。虽然输出由多个变量构成的函数也可被称为多元函数，但是它们通常被称为向量值函数。  导数（Derivatives）: the rate of change of a function as you slightly tweak its input.积分（Integrals）: how to add together i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="陷入多元微积「危机」分时写的笔记">
+<meta property="og:url" content="https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="多元函数多元函数：输入由多个变量构成的函数，是一个空间的点到另一个空间的点的映射。虽然输出由多个变量构成的函数也可被称为多元函数，但是它们通常被称为向量值函数。  导数（Derivatives）: the rate of change of a function as you slightly tweak its input.积分（Integrals）: how to add together i">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/29rpr.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/oz5zc.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1fntb.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/q7msq.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qu6f7.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/s5uyo.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vacjx.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tzwyf.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7qhsu.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zagcq.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jtf5z.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ufetu.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vhni5.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9e1a4.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8t1uz.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rui1m.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/lpw1h.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5sbf0.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ervs7.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gdzqk.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9erxj.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bo023.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/v5xph.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xzclb.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9p3dj.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/u47h3.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/nopv0.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zckmv.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jtho0.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tb1o1.jpg">
+<meta property="article:published_time" content="2018-01-28T05:12:50.000Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.062Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="多元微积分">
+<meta property="article:tag" content="Multivarible Calculus">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/29rpr.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>陷入多元微积「危机」分时写的笔记</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Posts</a></li><!--
+     --><!--
+       --><li><a href="/studynotes/">Notes</a></li><!--
+     --><!--
+       --><li><a href="/lc/">Leetcode</a></li><!--
+     --><!--
+       --><li><a href="/games/">Games</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">Me</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/03/12/020_Python%E4%B8%AD%E5%80%BC%E5%BE%97%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/01/04/019_Calculus/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/&text=陷入多元微积「危机」分时写的笔记"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/&title=陷入多元微积「危机」分时写的笔记"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/&is_video=false&description=陷入多元微积「危机」分时写的笔记"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=陷入多元微积「危机」分时写的笔记&body=Check out this article: https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/&title=陷入多元微积「危机」分时写的笔记"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/&title=陷入多元微积「危机」分时写的笔记"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/&title=陷入多元微积「危机」分时写的笔记"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/&title=陷入多元微积「危机」分时写的笔记"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/&name=陷入多元微积「危机」分时写的笔记&description=&lt;h2 id=&#34;多元函数&#34;&gt;&lt;a href=&#34;#多元函数&#34; class=&#34;headerlink&#34; title=&#34;多元函数&#34;&gt;&lt;/a&gt;多元函数&lt;/h2&gt;&lt;p&gt;多元函数：输入由&lt;code&gt;多个变量&lt;/code&gt;构成的函数，是一个空间的点到另一个空间的点的&lt;code&gt;映射&lt;/code&gt;。虽然输出由多个变量构成的函数也可被称为&lt;code&gt;多元函数&lt;/code&gt;，但是它们通常被称为&lt;code&gt;向量值函数&lt;/code&gt;。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;导数（Derivatives）:&lt;/strong&gt; the rate of change of a function as you &lt;code&gt;slightly tweak its input&lt;/code&gt;.&lt;br&gt;&lt;strong&gt;积分（Integrals）:&lt;/strong&gt; how to &lt;code&gt;add together infinitely infinitesimal&lt;/code&gt; quantities that make up a function’s output.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;研究多元函数可以告诉我们&lt;code&gt;在不同方向上&lt;/code&gt;函数值的变化情况，以及这些&lt;code&gt;变化间的关系&lt;/code&gt;。&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/&t=陷入多元微积「危机」分时写的笔记"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E5%85%83%E5%87%BD%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">多元函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91%E9%87%8F%E5%80%BC%E5%87%BD%E6%95%B0%EF%BC%88Vector-valued-Functions-or-Vector-Functions%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">向量值函数（Vector-valued Functions or Vector Functions）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%EF%BC%88Visualization%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">可视化（Visualization）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E5%85%83%E5%87%BD%E6%95%B0%E7%9A%84%E5%AF%BC%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">多元函数的导数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%81%8F%E5%AF%BC%E6%95%B0%EF%BC%88Partial-Derivatives%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">偏导数（Partial Derivatives）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A2%AF%E5%BA%A6%E5%92%8C%E6%96%B9%E5%90%91%E5%AF%BC%E6%95%B0%EF%BC%88Gradient-Directional-Derivatives%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">梯度和方向导数（Gradient &amp; Directional Derivatives）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E5%8F%82%E6%95%B0%E6%9B%B2%E7%BA%BF%E5%BE%AE%E5%88%86%E2%9D%93%EF%BC%88Differentiating-Parametric-Curves%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">对参数曲线微分❓（Differentiating Parametric Curves）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E5%85%83%E9%93%BE%E5%BC%8F%E6%B3%95%E5%88%99%EF%BC%88Multivariable-Chain-Rule%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">多元链式法则（Multivariable Chain Rule）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E5%AE%83%E6%A6%82%E5%BF%B5"><span class="toc-number">3.</span> <span class="toc-text">其它概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B2%E7%8E%87%EF%BC%88Curvature%EF%BC%89"><span class="toc-number">3.1.</span> <span class="toc-text">曲率（Curvature）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%A3%E5%BA%A6%EF%BC%88Divergence%EF%BC%89"><span class="toc-number">3.2.</span> <span class="toc-text">散度（Divergence）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%8B%E5%BA%A6%EF%BC%88Curl%EF%BC%89"><span class="toc-number">3.3.</span> <span class="toc-text">旋度（Curl）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF%E7%AE%97%E5%AD%90%EF%BC%88Laplacian%EF%BC%89"><span class="toc-number">3.4.</span> <span class="toc-text">拉普拉斯算子（Laplacian）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%85%E5%85%8B%E6%AF%94%E7%9F%A9%E9%98%B5%EF%BC%88Jacobian-Matrix%EF%BC%89"><span class="toc-number">3.5.</span> <span class="toc-text">雅克比矩阵（Jacobian Matrix）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E5%85%83%E5%AF%BC%E6%95%B0%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">多元导数的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%80%E9%83%A8%E7%BA%BF%E6%80%A7%E5%8C%96%E9%80%BC%E8%BF%91%EF%BC%88Local-Linearization%EF%BC%89"><span class="toc-number">4.1.</span> <span class="toc-text">局部线性化逼近（Local Linearization）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%80%E9%83%A8%E4%BA%8C%E6%AC%A1%E9%9D%9E%E7%BA%BF%E6%80%A7%E9%80%BC%E8%BF%91%EF%BC%88Quadratic-Approximations%EF%BC%89"><span class="toc-number">4.2.</span> <span class="toc-text">局部二次非线性逼近（Quadratic Approximations）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E5%85%83%E5%87%BD%E6%95%B0%E7%9A%84%E6%9C%80%E4%BC%98%E5%8C%96%EF%BC%88Optimizing-Multivariable-Functions%EF%BC%89"><span class="toc-number">4.3.</span> <span class="toc-text">多元函数的最优化（Optimizing Multivariable Functions）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95%E5%92%8C%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96%EF%BC%88Lagrange-Multipliers-lambda-and-Constrained-Optimization%EF%BC%89"><span class="toc-number">4.4.</span> <span class="toc-text">拉格朗日乘子法和约束优化（Lagrange Multipliers $\lambda$ and Constrained Optimization）</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        陷入多元微积「危机」分时写的笔记
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Junhao Wang</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-01-28T05:12:50.000Z" class="dt-published" itemprop="datePublished">2018-01-27</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Math/">Math</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Multivarible-Calculus/" rel="tag">Multivarible Calculus</a>, <a class="p-category" href="/tags/%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86/" rel="tag">多元微积分</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="多元函数"><a href="#多元函数" class="headerlink" title="多元函数"></a>多元函数</h2><p>多元函数：输入由<code>多个变量</code>构成的函数，是一个空间的点到另一个空间的点的<code>映射</code>。虽然输出由多个变量构成的函数也可被称为<code>多元函数</code>，但是它们通常被称为<code>向量值函数</code>。</p>
+<blockquote>
+<p><strong>导数（Derivatives）:</strong> the rate of change of a function as you <code>slightly tweak its input</code>.<br><strong>积分（Integrals）:</strong> how to <code>add together infinitely infinitesimal</code> quantities that make up a function’s output.</p>
+</blockquote>
+<p>研究多元函数可以告诉我们<code>在不同方向上</code>函数值的变化情况，以及这些<code>变化间的关系</code>。</p>
+<span id="more"></span>
+
+<h3 id="向量值函数（Vector-valued-Functions-or-Vector-Functions）"><a href="#向量值函数（Vector-valued-Functions-or-Vector-Functions）" class="headerlink" title="向量值函数（Vector-valued Functions or Vector Functions）"></a>向量值函数（Vector-valued Functions or Vector Functions）</h3><p>定义域：标量 or 矢量<br>值域：矢量</p>
+<p>可用向量场（Vector Field）表示该函数：$f(x,y)&#x3D;\left[\begin{aligned}F(x,y)\ G(x,y)\end{aligned}\right]$</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/29rpr.jpg" title="颜色表示向量的长度"></p>
+<h3 id="可视化（Visualization）"><a href="#可视化（Visualization）" class="headerlink" title="可视化（Visualization）"></a>可视化（Visualization）</h3><p>在多元函数中，我们并不总是对函数进行可视化，而且并不总是将导数看作是<code>斜率（Slope）</code>。但是，我们仍然可以通过以下几种方式进行可视化：</p>
+<ol>
+<li><p><strong>图形</strong>：通常只适用于<code>二对一</code>的函数，如 $f(x,y)&#x3D;e^{-(x^2+y^2)}$、$f(x,y)&#x3D;\cos(x)\sin(y)$。</p>
+<p> 在实际中，对于维度较高的函数如 $f(x,y,z)&#x3D;x^2+y^2+z^2$，人们通常先研究 $f(x,y)&#x3D;x^2+y^2$ 的性质（概念原型），并将发现的一些性质推广到原始的高维函数中。</p>
+<p> <img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/oz5zc.jpg" title="The Bell Curve &amp; Wave"></p>
+</li>
+<li><p><strong>等高线图</strong>：该图只显示输入空间，适用于<code>二对一</code>的函数。</p>
+<p> <img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1fntb.jpg" title="平面的等高线图"></p>
+</li>
+<li><p><strong>参数曲线&#x2F;平面</strong>：适用于输出空间维度<code>大于</code>输入空间的情况，如 $f(t)&#x3D;\left[\begin{aligned}2t\ 3t \end{aligned}\right]$、$f(t)&#x3D;\left[\begin{aligned}\sin(t)\  \cos(3t) \ 3t \end{aligned}\right]$。</p>
+<ul>
+<li><p>一个输入：$f(t)&#x3D;\left[\begin{aligned}t\cos(2\pi t)\ t\sin(2\pi t)\end{aligned}\right]$</p>
+<p>  <img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/q7msq.jpg"></p>
+</li>
+<li><p>两个输入：$f(s,t)&#x3D;\left[\begin{aligned}t^3-st\ s-t\ s+t\end{aligned}\right]$</p>
+<p>  <img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qu6f7.jpg" title="二维空间到三维空间的映射（和 3x2 矩阵一个道理）"></p>
+</li>
+</ul>
+</li>
+<li><p><strong>向量场</strong>：适用于输入空间维度与输出空间维度<code>相等</code>的函数，如 $f(x,y)&#x3D;\left[\begin{aligned}1\ y^2-y\end{aligned}\right]$。</p>
+<p> <img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/s5uyo.jpg"></p>
+</li>
+<li><p><strong>变换</strong>：可以用于任何函数，通过这种方法可以对函数有更直观的理解（非线性变换）。</p>
+<p> <img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vacjx.jpg"></p>
+</li>
+</ol>
+<h2 id="多元函数的导数"><a href="#多元函数的导数" class="headerlink" title="多元函数的导数"></a>多元函数的导数</h2><h3 id="偏导数（Partial-Derivatives）"><a href="#偏导数（Partial-Derivatives）" class="headerlink" title="偏导数（Partial Derivatives）"></a>偏导数（Partial Derivatives）</h3><blockquote>
+<p>In fact, this intuitive feel for the symbol is one of the most useful takeaways from single-variable calculus, and when you really start feeling it in your bones, most of the concepts around derivatives start to click. <strong>直观的理解很重要！</strong></p>
+</blockquote>
+<p>$\frac{\partial f}{\partial x}$（”$\partial$” 读作：&#x2F;del&#x2F; or partial）：tiny change of $f$ with respect to tiny change of $x$</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tzwyf.jpg" title="直观的理解之「每个方向对函数值的贡献」"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7qhsu.jpg" title="直观的理解之「在某个方向上的变化率」"></p>
+<h3 id="梯度和方向导数（Gradient-Directional-Derivatives）"><a href="#梯度和方向导数（Gradient-Directional-Derivatives）" class="headerlink" title="梯度和方向导数（Gradient &amp; Directional Derivatives）"></a>梯度和方向导数（Gradient &amp; Directional Derivatives）</h3><p><strong>方向导数：</strong>是某个方向（任意方向）上的<code>导数</code>，是一个数！$\nabla_{\vec{v}\ }f(x_0,y_0)&#x3D; \nabla f(x_0,y_0)\cdot \vec{v}$（点积）表示为在 $(x_0,y_0)$ 上沿 $\vec{v}$（不一定是单位向量）方向的变化率。</p>
+<p>可以仔细观察一下<code>偏导</code>和<code>方向导数</code>的定义式：</p>
+<p>$$\frac{\partial f}{\partial x}(\vec{a})&#x3D;\lim\limits_{h\rightarrow0}\frac{f(\vec{a}+h\hat{i})-f(\vec{a})}{h}$$</p>
+<p>$$\nabla_{\vec{v}\ }f(\vec{a})&#x3D;\lim\limits_{h\rightarrow0}\frac{f(\vec{a}+h\vec{v})-f(\vec{a})}{h}$$</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zagcq.jpg" title="方向导数的几何意义"></p>
+<p><strong>梯度：</strong>是一个矢量（向量），它所在方向（最陡峭的方向）的<code>方向导数</code>最大，表示为 $\nabla f &#x3D; \left[\begin{aligned}\frac{\partial}{\partial x}\\frac{\partial}{\partial y}\end{aligned}\right]$（可以读：nabla, del, grad）。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jtf5z.jpg" title="注意梯度的方向在底部平面上，即用 xy 平面上的一个向量表示方向"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ufetu.jpg" title="每个方向都有方向导数"></p>
+<p>$\nabla$ 可以看作是一个操作算子（Operator），其输入和输出均是函数 $f$，与 $\frac{d}{dx}$、$\frac{\partial}{\partial x}$ 类似。</p>
+<p><strong>其他问题：</strong></p>
+<ul>
+<li>计算方向导数时要不要将向量归一化？</li>
+</ul>
+<blockquote>
+<p>If the directional derivative is used to compute slope, either $\vec{v}$ must be a unit vector or you must remember to divide by $||\vec{v}||$ at the end. Then you will get $\nabla_{\vec{v}\ }f(\vec{x})&#x3D;\lim\limits_{h\rightarrow0}\frac{f(\vec{x}+h\vec{v})-f(\vec{x})}{h||\vec{v}||}$.<br>However, this definition puts too much emphasis on the particular use case of finding slope, so I (not me…) prefer to use the original definition and normalize $\vec{v}$ when necessary.</p>
+</blockquote>
+<ul>
+<li>为什么只有一个最大值（方向导数）？</li>
+</ul>
+<p>梯度定义中有「一阶连续偏导」的条件，其意味着可微，也就意味着 $f(x,y)$ 在各个方向的切线都在同一个平面上，即切平面。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vhni5.jpg"></p>
+<p>梯度与方向导数有这样的关系：</p>
+<p>$$\nabla_{\vec{v}\ }f(a,b)&#x3D;\nabla f(a,b)\cdot \vec{v}$$</p>
+<p>其中 $\nabla f(a,b)$ 是梯度。如 $\vec{v}$ 是与梯度同方向的单位向量，则方向导数取值最大，用公式可以表示为：</p>
+<p>$$\max_{||\vec{v}||&#x3D;1}\nabla f(a,b)\cdot \vec{v}$$</p>
+<p>根据点积的几何意义（投影）可知最大值只有一个，即在两个向量的方向相同的时。</p>
+<h3 id="对参数曲线微分❓（Differentiating-Parametric-Curves）"><a href="#对参数曲线微分❓（Differentiating-Parametric-Curves）" class="headerlink" title="对参数曲线微分❓（Differentiating Parametric Curves）"></a>对参数曲线微分❓（Differentiating Parametric Curves）</h3><p>直接上图看几何意义：</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9e1a4.jpg"></p>
+<h3 id="多元链式法则（Multivariable-Chain-Rule）"><a href="#多元链式法则（Multivariable-Chain-Rule）" class="headerlink" title="多元链式法则（Multivariable Chain Rule）"></a>多元链式法则（Multivariable Chain Rule）</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8t1uz.jpg" title="求导步骤示意图"></p>
+<p><strong>已知：</strong></p>
+<p>$$\vec{v}(t)&#x3D;\left[\begin{aligned}x(t)\y(t)\end{aligned}\right]、\vec{v}’(t)&#x3D;\frac{d\vec{v}}{dt}&#x3D;\left[\begin{aligned}\frac{dx}{dt}\\frac{dy}{dt}\end{aligned}\right]$$</p>
+<p>$$f &#x3D; f(\vec{v}(t))&#x3D;f(x(t),y(t))、\frac{df}{d\vec{v}}&#x3D;\nabla{f}&#x3D;\left[\begin{aligned}\frac{\partial{f}}{\partial{x}}\\frac{\partial{f}}{\partial{y}}\end{aligned}\right]$$</p>
+<p><strong>则有：</strong></p>
+<p>$$\begin{aligned}\frac{df}{dt}&amp;&#x3D;\frac{d}{dt}f(x(t),y(t))&#x3D;\nabla{f}\cdot\vec{v}’(t)&#x3D;\left[\begin{aligned}\frac{\partial{f}}{\partial{x}}\\frac{\partial{f}}{\partial{y}}\end{aligned}\right]\cdot\left[\begin{aligned}\frac{dx}{dt}\\frac{dy}{dt}\end{aligned}\right]\&amp;&#x3D;\frac{\partial{f}}{\partial{x}}\cdot\frac{dx}{dt}+\frac{\partial{f}}{\partial{y}}\cdot\frac{dy}{dt}\end{aligned}$$</p>
+<p><strong>几何意义：</strong>上面的 $\nabla{f}\cdot\vec{v}’(t)$ 可以写成 $\nabla_{\vec{v}’(t)\ }f(\vec{v})$，即 $f$ 在 $\vec{v}’(t)$ 方向上的方向导数。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rui1m.jpg" title="多元链式法则的几何意义"></p>
+<p><strong>正规的定义式：</strong>（对比<code>方向导数</code>的定义式）</p>
+<p>$$\begin{aligned}\lim\limits_{h\rightarrow0}\frac{f(\vec{v}(t+h)-f(\vec{v}(t))}{h}&amp;&#x3D;\lim\limits_{h\rightarrow0}\frac{f(\vec{v}(t)+\frac{d\vec{v}(t)}{dt}h + o(h))-f(\vec{v}(t))}{h}\&amp;&#x3D;\nabla_{\vec{v}’(t)\ }f(\vec{v})\end{aligned}$$</p>
+<h2 id="其它概念"><a href="#其它概念" class="headerlink" title="其它概念"></a>其它概念</h2><h3 id="曲率（Curvature）"><a href="#曲率（Curvature）" class="headerlink" title="曲率（Curvature）"></a>曲率（Curvature）</h3><blockquote>
+<p>how to describe how much you turn?</p>
+</blockquote>
+<p><strong>什么是<code>曲率</code>：</strong>用来描述曲线（在平面、空间上）弯曲程度的量。曲率越大，表示曲线的弯曲程度越大。表示为：$\kappa&#x3D;||\frac{dT}{d\vec{s}}||$，其中 $T$ 为改变的弧度、$\vec{s}$ 为改变的弧长。</p>
+<p><strong>几何意义：</strong>马住，有点难！</p>
+<p><strong>一般式：</strong>$\kappa &#x3D; \frac{|x’(t)y’’(t)-y’(t)x’’(t)|}{[x’(t)^2+y’(t^2)]^{\frac{3}{2}}}$。对于圆有：$\kappa &#x3D; \frac{1}{R}$。</p>
+<p><strong>螺旋线（Helix）：</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/lpw1h.jpg"></p>
+<p>对应的函数为：$\vec{s}(t)&#x3D;\left[\begin{aligned}\cos&amp;(t)\\sin&amp;(t)\\frac{t}{5}\end{aligned}\right]$；求导得：$\frac{d\vec{s}(t)}{dt}&#x3D;\left[\begin{aligned}-\sin&amp;(t)\\cos&amp;(t)\\frac{t}{5}\end{aligned}\right]$</p>
+<p>单位切线向量（Unit tangent vector）：$T(t)&#x3D;\frac{\vec{s}’(t)}{||\vec{s}’(t)||} &#x3D; \left[\begin{aligned}\frac{-\sin(t)}{\sqrt{26}&#x2F;5}\\frac{\cos(t)}{\sqrt{26}&#x2F;5}\\frac{t&#x2F;5}{\sqrt{26}&#x2F;5}\end{aligned}\right]$；求导得：$\frac{dT(t)}{dt}$</p>
+<p>最后求得：$\kappa&#x3D;||\frac{dT}{d\vec{s}}||&#x3D;||\frac{dT&#x2F;dt}{d\vec{s}&#x2F;dt}||$，代入即可。</p>
+<h3 id="散度（Divergence）"><a href="#散度（Divergence）" class="headerlink" title="散度（Divergence）"></a>散度（Divergence）</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/5sbf0.jpg" title="粒子在流动"></p>
+<p>适用函数：2D → 2D、3D → 3D。</p>
+<p><strong>定义</strong>：是向量分析中的一个<code>向量算子</code>，将向量空间上的一个<code>向量场</code>对应到一个<code>标量场</code>上。对于函数 $\vec{v}(x,y)&#x3D;\left[\begin{aligned}P(x,y)\ Q(x,y)\end{aligned}\right]$，其<code>散度</code>为 $\rm{div}\ \vec{v}&#x3D;\frac{\partial{P}}{\partial{x}}+\frac{\partial{Q}}{\partial{y}}$。</p>
+<p><strong>写法上的<code>Trick</code>：</strong> $\nabla\cdot\vec{v}&#x3D;\left[\begin{aligned}\frac{\partial}{\partial{x}}\ \frac{\partial}{\partial{y}}\ \frac{\partial}{\partial{z}}\end{aligned}\right]\cdot\left[\begin{aligned}P\ Q\ R\end{aligned}\right]$</p>
+<p><strong>几何上的意义：</strong>如<code>First Component</code>「即 $P(x,y)$」小于 $0$，则从左到右来看向量所指的方向往左边去一点：）</p>
+<h3 id="旋度（Curl）"><a href="#旋度（Curl）" class="headerlink" title="旋度（Curl）"></a>旋度（Curl）</h3><blockquote>
+<p>Curl measures the rotation in a fluid flowing along a vector field. Formally, curl only applies to 3D, but here we cover the concept in 2D to warmup.</p>
+</blockquote>
+<p><strong>2D 下<code>不正式</code>的旋度计算：</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ervs7.jpg"></p>
+<p><strong>3D 下的定义：</strong>可以表示<code>三维向量场</code>对某一点附近的微元造成的<code>旋转程度</code>。向量场每一点的旋度是一个向量，称为<code>旋度向量</code>，可表示为（运用了<code>Notational Trick</code>）：</p>
+<p>$$\begin{aligned}\rm{curl}\ \vec{v} &amp;&#x3D; \nabla\times\vec{v}&#x3D;\left[\begin{aligned}\frac{\partial}{\partial{x}}\ \frac{\partial}{\partial{y}}\ \frac{\partial}{\partial{z}}\end{aligned}\right]\times\left[\begin{aligned}P\ Q\ R\end{aligned}\right]&#x3D;det\left(\begin{array}\<br>\hat{i} &amp; \hat{j} &amp; \hat{k} \<br>\frac{\partial}{\partial{x}} &amp; \frac{\partial}{\partial{y}} &amp;  \frac{\partial}{\partial{z}} \<br>P &amp; Q &amp; R<br>\end{array}\right)\<br>&amp;&#x3D; (\frac{\partial{R}}{\partial{y}}-\frac{\partial{Q}}{\partial{z}})\hat{i} + (\frac{\partial{P}}{\partial{z}}-\frac{\partial{R}}{\partial{x}})\hat{j} + (\frac{\partial{Q}}{\partial{x}}-\frac{\partial{P}}{\partial{y}})\hat{k}<br>\end{aligned}$$</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gdzqk.jpg" title="还需要沿着 z 轴复制多份"></p>
+<p><strong>Interesting：</strong>旋度向量的大小等于改点上<code>角速度</code>的两倍。</p>
+<h3 id="拉普拉斯算子（Laplacian）"><a href="#拉普拉斯算子（Laplacian）" class="headerlink" title="拉普拉斯算子（Laplacian）"></a>拉普拉斯算子（Laplacian）</h3><p><strong>定义：</strong>是由<code>欧几里得空间</code>中的一个函数的<code>梯度的散度</code>给出的微分算子。</p>
+<p><strong>先看看 2D 下二阶导的情况：</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9erxj.jpg"></p>
+<p><strong>公式和几何意义：</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/bo023.jpg"></p>
+<p><strong>调和函数：</strong>一个二阶可导的函数，其满足拉普拉斯方程，即满足：$$\frac{\partial^2{f}}{\partial{x_1^2}}+\frac{\partial^2{f}}{\partial{x_2^2}}+\cdots+\frac{\partial^2{f}}{\partial{x_n^2}}&#x3D;0$$</p>
+<p>上式也经常写作：$\nabla^2f &#x3D;0$ 或 $\Delta{f}&#x3D;0$。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/v5xph.jpg"></p>
+<p><strong>所以</strong>，当 $f’’ &#x3D; 0$ 时，该点的值与其附近的点的平均值相等；当 $f’’ &gt; 0$ 时，附近的点的平均值大于该点的值；当 $f’’ &lt; 0$ 时，附件的点的平均值小于该点的值。</p>
+<h3 id="雅克比矩阵（Jacobian-Matrix）"><a href="#雅克比矩阵（Jacobian-Matrix）" class="headerlink" title="雅克比矩阵（Jacobian Matrix）"></a>雅克比矩阵（Jacobian Matrix）</h3><blockquote>
+<p>雅可比矩阵的重要性在于它体系那了一个可微方程与给出点的最优线性逼近，因此，雅可比矩阵类似于多元函数的导数。</p>
+</blockquote>
+<p>给出 $f(\left[\begin{aligned}x\ y\end{aligned}\right])&#x3D;\left[\begin{aligned}f_1(x,y)\ f_2(x,y)\end{aligned}\right]&#x3D;\left[\begin{aligned}x + \sin(y)\ y+\sin(x)\end{aligned}\right]$，其对应的<code>非线性变化</code>如下图所示。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xzclb.jpg"></p>
+<p>在以红点为原点的切空间中，该区域可以看成是<code>局部线性的</code>（Locally Linear）。该空间内的变换可以看成是<code>线性变换</code>，其<code>变换矩阵</code>如下：</p>
+<p>$$\left[<br>\begin{array}\<br>\frac{\partial{f_1}}{\partial{x}} &amp; \frac{\partial{f_1}}{\partial{y}}\<br>\frac{\partial{f_2}}{\partial{x}} &amp; \frac{\partial{f_2}}{\partial{y}}<br>\end{array}<br>\right]$$</p>
+<p>其中：第一列对应了<code>x nudge</code>的变化、第二列对应了<code>y nudge</code>的变化、$f_1$ 对应了水平方向上的移动、$f_2$ 对应了垂直方向上的移动。</p>
+<h2 id="多元导数的应用"><a href="#多元导数的应用" class="headerlink" title="多元导数的应用"></a>多元导数的应用</h2><h3 id="局部线性化逼近（Local-Linearization）"><a href="#局部线性化逼近（Local-Linearization）" class="headerlink" title="局部线性化逼近（Local Linearization）"></a>局部线性化逼近（Local Linearization）</h3><blockquote>
+<p>The idea is to approximate a function near one of its inputs with a <code>simpler function</code> that has the same value at that input.</p>
+</blockquote>
+<p><strong>2D 下的几何意义：</strong>如何控制这个切平面，如图所示。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9p3dj.jpg"></p>
+<p>令 $\vec{v} &#x3D; \left[\begin{aligned}x\ y\end{aligned}\right]$、$\vec{v}_0 &#x3D; \left[\begin{aligned}x_0\ y_0\end{aligned}\right]$，该切平面可以表示为（可以扩展至更高维）：</p>
+<p>$$\begin{aligned}L_f(x,y)&amp;&#x3D;f_x(x_0,y_0)(x-x_0)+f_y(x_0,y_0)(y-y_0)+f(x_0,y_0)\<br>&amp;&#x3D; \nabla{f(\vec{v}_0)}\cdot(\vec{v}-\vec{v}_0) + f(\vec{v}_0)<br>\end{aligned}$$</p>
+<h3 id="局部二次非线性逼近（Quadratic-Approximations）"><a href="#局部二次非线性逼近（Quadratic-Approximations）" class="headerlink" title="局部二次非线性逼近（Quadratic Approximations）"></a>局部二次非线性逼近（Quadratic Approximations）</h3><blockquote>
+<p>“Quadratic” means product of two variables. $x_0$ is read “x naught”.</p>
+</blockquote>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/u47h3.jpg"></p>
+<p>可以根据形如 $Q(x,y)&#x3D;a+bx+cy+dx^2+exy+fy^2$ 去推导，要近似点要满足如下条件：</p>
+<ul>
+<li><p>函数值相等，$f(x,y)&#x3D;Q(x,y)$</p>
+</li>
+<li><p>一阶偏导都相等，$f_x&#x3D;Q_x$、$f_y&#x3D;Q_y$</p>
+</li>
+<li><p>二阶偏导都相等，$f_{xx}&#x3D;Q_{xx}$、$f_{yy}&#x3D;Q_{yy}$、$f_{xy}&#x3D;Q_{yx}$</p>
+</li>
+</ul>
+<p>我就直接丢公式了（相当于线性逼近的扩展）：</p>
+<p>$$\begin{aligned}Q(x,y)&amp;&#x3D;f(x_0,y_0) + f_x(x_0,y_0)(x-x_0)+f_y(x_0,y_0)(y-y_0)\<br>&amp;+\frac{1}{2}f_{xx}(x_0,y_0)(x-x_0)^2+f_{xy}(x_0,y_0)(x-x_0)(y-y_0)\<br>&amp;+\frac{1}{2}f_{yy}(x_0,y_0)(y-y_0)^2\end{aligned}$$</p>
+<p><strong>海森矩阵（Hessian Matrix）：</strong></p>
+<p>$$H_f &#x3D; \left[\begin{array}\<br>\frac{\partial^2{f}}{\partial{x^2}} &amp; \frac{\partial^2{f}}{\partial{x}\partial{y}}\<br>\frac{\partial^2{f}}{\partial{y}\partial{x}} &amp; \frac{\partial^2{f}}{\partial{y^2}}<br>\end{array}\right]$$</p>
+<p>包装了关于函数 $f$ 的<code>所有二阶偏导</code>，还可以扩展到更高维。</p>
+<p><strong>用途：</strong>局部二次非线性逼近（方便<code>向量化</code>）、其行列式用于二次偏导检测</p>
+<p><strong>向量化：</strong></p>
+<p>我们用 $\vec{v}$ 表示 $[x, y]$，$\vec{v}_0$ 表示 $[x_0, y_0]$，则有</p>
+<p>$$\begin{aligned}\<br>Q(\vec{v})&amp;&#x3D;f(x_0,y_0) + \left[\begin{array}\ f_x(x_0)\ f_y(y_0)\end{array}\right]\cdot\left[\begin{array}\x-x_0\y-y_0\end{array}\right] + [x-x_0\ y-y_0]\left[\begin{array}\ \frac{1}{2}f_{xx} &amp; \frac{1}{2}f_{xy}\ \frac{1}{2}f_{yx} &amp; \frac{1}{2}f_{yy}\end{array}\right]\left[\begin{array}\ x-x_0\ y-y_0\end{array}\right]\<br>&amp;&#x3D;f(\vec{v}_0) + \nabla{f(\vec{v}_0)}\cdot(\vec{v}-\vec{v}_0) + \frac{1}{2}(\vec{v}-\vec{v}_0)^{T}H_f(\vec{v}-\vec{v}_0)<br>\end{aligned}$$</p>
+<p>总结的一些<code>对应关系</code>：</p>
+<ul>
+<li><p>一元：$\frac{df}{dx}$、$\frac{d^2f}{dx^2}$、$\frac{d^3f}{dx^3}$、…</p>
+</li>
+<li><p>多元：$\nabla{f}$、$H_f$、$\cal{Multilinear\ Algebra}$❓</p>
+</li>
+</ul>
+<h3 id="多元函数的最优化（Optimizing-Multivariable-Functions）"><a href="#多元函数的最优化（Optimizing-Multivariable-Functions）" class="headerlink" title="多元函数的最优化（Optimizing Multivariable Functions）"></a>多元函数的最优化（Optimizing Multivariable Functions）</h3><p><strong>鞍点（Saddle Points）：</strong>在微分方程中，沿着某一方向是稳定的，另一方向是不稳定的奇点，或者不是局部极值点的<code>驻点</code>「neither maxima nor minima」。从不用角度看该点，可以同时具有局部极大值和局部极小值。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/nopv0.jpg"></p>
+<p><strong>二阶偏导测试（Second Partial Derivative Test）：</strong></p>
+<p>我们可以用<code>二级导数</code>来判定某个点是否为<code>鞍点</code>。从上图看二阶导数一正一负，不能判断为局部极值点。当出现 $\nabla{f}(x_0,y_0)&#x3D;0$ 时（Critical Point），我们用以下式子判断是否出现鞍点：</p>
+<p>$$\cal{H}&#x3D;f_{xx}(x_0,y_0)\ f_{yy}(x_0,y_0)-f_{xy}(x_0,y_0)^2$$</p>
+<p>若 $\cal{H}&gt;0$，则该点是局部极值点；若 $\cal{H}&lt;0$，则该点是鞍点；若 $\cal{H}&#x3D;0$，无法判断。</p>
+<p>其中，$\cal{H}&#x3D;0$ 的情况与下图的情况类似：</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zckmv.jpg"></p>
+<p><strong>进一步思考：</strong></p>
+<p>$$f(x)\approx f(a)+f’(a)(x-a)+\frac{1}{2}f’’(a)(x-a)^2$$</p>
+<ul>
+<li><p>当 $f’(a)&#x3D;0$ 时，$f(x)\approx f(a)+\frac{1}{2}f’’(a)(x-a)^2$，因为 $(x-a)^2\geq 0$，所以 $f’’(a)$ 可以决定局部极小值和局部极大值。</p>
+</li>
+<li><p>当 $f’(a)&#x3D;0$、$f’’(a)&#x3D;0$ 时，$f(x)\approx f(a)$ 得到的是一个<code>常量</code>，无法决定是局部极大值还是局部极小值。</p>
+</li>
+</ul>
+<h3 id="拉格朗日乘子法和约束优化（Lagrange-Multipliers-lambda-and-Constrained-Optimization）"><a href="#拉格朗日乘子法和约束优化（Lagrange-Multipliers-lambda-and-Constrained-Optimization）" class="headerlink" title="拉格朗日乘子法和约束优化（Lagrange Multipliers $\lambda$ and Constrained Optimization）"></a>拉格朗日乘子法和约束优化（Lagrange Multipliers $\lambda$ and Constrained Optimization）</h3><p>举个例子：</p>
+<ul>
+<li><p>收入（Revenue）：$R(x,y)&#x3D;x^2e^yy$</p>
+</li>
+<li><p>预算&#x2F;成本（Budget）：$B(x,y)&#x3D;x^2+y^2$</p>
+</li>
+</ul>
+<p>约束问题可以表述：</p>
+<p>$$\max{R(x,y)&#x3D;x^2e^yy},\<br>\rm{s.t.\ }\mit{B}(x,y)&#x3D;x^2+y^2&#x3D;b$$</p>
+<p>解决该问题的本质是找到 $R(x,y)$ 与 $B(x,y)$ 的等高线相切的点，如下图所示。当 $B(x,y)&#x3D;b$ 时，红色圆是固定不变，可以调整 $R(x,y)$ 的大小以获得能够满足相切情况的等高线。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/jtho0.jpg" title="红线为 B"></p>
+<p>相切的情况意味着<code>梯度方向相同或者相反</code>：$\nabla{R}&#x3D;\lambda\nabla{B}$，结合以上三个式子就可以求出最优解。</p>
+<p>为了方便计算机计算，我们可以用<code>一个式子</code>表达上述的约束问题：</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tb1o1.jpg" title="Constrained Problem → Unconstrained Problem（计算机擅长这个）"></p>
+<p><strong>$\lambda$ 有什么含义：</strong></p>
+<p>将 $M^*$ 看成是 $b$ 的函数有 $M^*(b)&#x3D;R(x^*(b),y^*(b))$，此时 $x^*(b)$ 和 $x^*(b)$ 是隐式函数。此时，我们可以得出 $\lambda^*&#x3D;\frac{dM^*}{db}$，即 $M^*(b)$ 对于微小变化 $b$ 的变化率为 $\lambda^*$。</p>
+<p><strong>这说明：</strong>如果 $\lambda^* &gt; 0$，说明我们可以使 $b$ 变大，从而使得 $M^*$ 变大，具有应用价值（或者提高一点点 $b$，可以得到<code>大概的变化量</code>！）。</p>
+<p><strong>证明（Proof）：</strong></p>
+<p>$\cal{L}^*$ 和 $\cal{L}$ 不同，前者是四元函数（包含 $b$），后者是三元函数。</p>
+<p>$$\cal{L}^*(x^*(b),y^*(b),\lambda^*(b),b)&#x3D;R(x^*(b),y^*(b))-\lambda^*(B(x^*(b),y^*(b))-b)$$</p>
+<p>$$\frac{d\cal{L}^*}{db}&#x3D;\frac{\partial{\cal{L}^*}}{\partial{x}}\cdot \frac{dx^*}{db} + \frac{\partial{\cal{L}^*}}{\partial{y}}\cdot \frac{dy^*}{db} + \frac{\partial{\cal{L}^*}}{\partial{\lambda}}\cdot \frac{d\lambda^*}{db} + \frac{\partial{\cal{L}^*}}{\partial{b}}\cdot \frac{db}{db}$$</p>
+<p>其中：$\frac{\partial{\cal{L}^*}}{\partial{x}}$、$\frac{\partial{\cal{L}^*}}{\partial{y}}$、$\frac{\partial{\cal{L}^*}}{\partial{\lambda}}$ 均为 $0$（原因：看看上面图左边的公式），所以原式如下</p>
+<p>$$\frac{d\cal{L}^*}{db}&#x3D;\frac{\partial{\cal{L}^*}}{\partial{b}}&#x3D;\lambda^*(b)$$</p>
+<p><strong>多个条件：</strong>马住❗️</p>
+<p><strong>条件为不等式：</strong>马住❗️</p>
+<p><strong>KKT 条件：</strong>马住❗️</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Posts</a></li>
+        
+          <li><a href="/studynotes/">Notes</a></li>
+        
+          <li><a href="/lc/">Leetcode</a></li>
+        
+          <li><a href="/games/">Games</a></li>
+        
+          <li><a href="/links/">Links</a></li>
+        
+          <li><a href="/about/">Me</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E5%85%83%E5%87%BD%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">多元函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91%E9%87%8F%E5%80%BC%E5%87%BD%E6%95%B0%EF%BC%88Vector-valued-Functions-or-Vector-Functions%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">向量值函数（Vector-valued Functions or Vector Functions）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%EF%BC%88Visualization%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">可视化（Visualization）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E5%85%83%E5%87%BD%E6%95%B0%E7%9A%84%E5%AF%BC%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">多元函数的导数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%81%8F%E5%AF%BC%E6%95%B0%EF%BC%88Partial-Derivatives%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">偏导数（Partial Derivatives）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A2%AF%E5%BA%A6%E5%92%8C%E6%96%B9%E5%90%91%E5%AF%BC%E6%95%B0%EF%BC%88Gradient-Directional-Derivatives%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">梯度和方向导数（Gradient &amp; Directional Derivatives）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E5%8F%82%E6%95%B0%E6%9B%B2%E7%BA%BF%E5%BE%AE%E5%88%86%E2%9D%93%EF%BC%88Differentiating-Parametric-Curves%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">对参数曲线微分❓（Differentiating Parametric Curves）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E5%85%83%E9%93%BE%E5%BC%8F%E6%B3%95%E5%88%99%EF%BC%88Multivariable-Chain-Rule%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">多元链式法则（Multivariable Chain Rule）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E5%AE%83%E6%A6%82%E5%BF%B5"><span class="toc-number">3.</span> <span class="toc-text">其它概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B2%E7%8E%87%EF%BC%88Curvature%EF%BC%89"><span class="toc-number">3.1.</span> <span class="toc-text">曲率（Curvature）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%A3%E5%BA%A6%EF%BC%88Divergence%EF%BC%89"><span class="toc-number">3.2.</span> <span class="toc-text">散度（Divergence）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%8B%E5%BA%A6%EF%BC%88Curl%EF%BC%89"><span class="toc-number">3.3.</span> <span class="toc-text">旋度（Curl）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF%E7%AE%97%E5%AD%90%EF%BC%88Laplacian%EF%BC%89"><span class="toc-number">3.4.</span> <span class="toc-text">拉普拉斯算子（Laplacian）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%85%E5%85%8B%E6%AF%94%E7%9F%A9%E9%98%B5%EF%BC%88Jacobian-Matrix%EF%BC%89"><span class="toc-number">3.5.</span> <span class="toc-text">雅克比矩阵（Jacobian Matrix）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E5%85%83%E5%AF%BC%E6%95%B0%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">多元导数的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%80%E9%83%A8%E7%BA%BF%E6%80%A7%E5%8C%96%E9%80%BC%E8%BF%91%EF%BC%88Local-Linearization%EF%BC%89"><span class="toc-number">4.1.</span> <span class="toc-text">局部线性化逼近（Local Linearization）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%80%E9%83%A8%E4%BA%8C%E6%AC%A1%E9%9D%9E%E7%BA%BF%E6%80%A7%E9%80%BC%E8%BF%91%EF%BC%88Quadratic-Approximations%EF%BC%89"><span class="toc-number">4.2.</span> <span class="toc-text">局部二次非线性逼近（Quadratic Approximations）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E5%85%83%E5%87%BD%E6%95%B0%E7%9A%84%E6%9C%80%E4%BC%98%E5%8C%96%EF%BC%88Optimizing-Multivariable-Functions%EF%BC%89"><span class="toc-number">4.3.</span> <span class="toc-text">多元函数的最优化（Optimizing Multivariable Functions）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95%E5%92%8C%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96%EF%BC%88Lagrange-Multipliers-lambda-and-Constrained-Optimization%EF%BC%89"><span class="toc-number">4.4.</span> <span class="toc-text">拉格朗日乘子法和约束优化（Lagrange Multipliers $\lambda$ and Constrained Optimization）</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/&text=陷入多元微积「危机」分时写的笔记"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/&title=陷入多元微积「危机」分时写的笔记"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/&is_video=false&description=陷入多元微积「危机」分时写的笔记"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=陷入多元微积「危机」分时写的笔记&body=Check out this article: https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/&title=陷入多元微积「危机」分时写的笔记"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/&title=陷入多元微积「危机」分时写的笔记"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/&title=陷入多元微积「危机」分时写的笔记"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/&title=陷入多元微积「危机」分时写的笔记"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/&name=陷入多元微积「危机」分时写的笔记&description=&lt;h2 id=&#34;多元函数&#34;&gt;&lt;a href=&#34;#多元函数&#34; class=&#34;headerlink&#34; title=&#34;多元函数&#34;&gt;&lt;/a&gt;多元函数&lt;/h2&gt;&lt;p&gt;多元函数：输入由&lt;code&gt;多个变量&lt;/code&gt;构成的函数，是一个空间的点到另一个空间的点的&lt;code&gt;映射&lt;/code&gt;。虽然输出由多个变量构成的函数也可被称为&lt;code&gt;多元函数&lt;/code&gt;，但是它们通常被称为&lt;code&gt;向量值函数&lt;/code&gt;。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;导数（Derivatives）:&lt;/strong&gt; the rate of change of a function as you &lt;code&gt;slightly tweak its input&lt;/code&gt;.&lt;br&gt;&lt;strong&gt;积分（Integrals）:&lt;/strong&gt; how to &lt;code&gt;add together infinitely infinitesimal&lt;/code&gt; quantities that make up a function’s output.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;研究多元函数可以告诉我们&lt;code&gt;在不同方向上&lt;/code&gt;函数值的变化情况，以及这些&lt;code&gt;变化间的关系&lt;/code&gt;。&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/01/27/022_%E9%99%B7%E5%85%A5%E5%A4%9A%E5%85%83%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%94%E8%AE%B0/&t=陷入多元微积「危机」分时写的笔记"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

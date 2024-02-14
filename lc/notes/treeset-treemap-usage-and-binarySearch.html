@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="TreeSet and TreeMap in Java are implemented by Red-Black Trees. See my CS 61B notes.  Some solutions use TreeSet&#x2F;TreeMap to keep elements sorting in subarrays or sliding windows. Since their A">
+<meta property="og:type" content="website">
+<meta property="og:title" content="TreeSet&#x2F;TreeMap Usage &amp; binarySearch()">
+<meta property="og:url" content="https://junhaow.com/lc/notes/treeset-treemap-usage-and-binarySearch.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="TreeSet and TreeMap in Java are implemented by Red-Black Trees. See my CS 61B notes.  Some solutions use TreeSet&#x2F;TreeMap to keep elements sorting in subarrays or sliding windows. Since their A">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.092Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.092Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>TreeSet/TreeMap Usage &amp; binarySearch()</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<blockquote>
+<p><code>TreeSet</code> and <code>TreeMap</code> in Java are implemented by Red-Black Trees. See my CS 61B notes.</p>
+</blockquote>
+<p>Some solutions use <code>TreeSet</code>&#x2F;<code>TreeMap</code> to keep elements sorting in subarrays or sliding windows. Since their APIs are not common, I write this post to summarize some usage. Also, I will mention a bit about <code>binarySearch()</code> although most of the time we need to implement different binary search versions by ourselves.</p>
+<h2 id="TreeSet-TreeMap"><a href="#TreeSet-TreeMap" class="headerlink" title="TreeSet &#x2F; TreeMap"></a>TreeSet &#x2F; TreeMap</h2><p>When we want to keep entries sorted in a map, we use <code>TreeMap</code>. Major operations on a TreeMap takes $O(\log{N})$ time.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;Integer, String&gt; map = <span class="keyword">new</span> <span class="title class_">TreeMap</span>&lt;&gt;();</span><br><span class="line">TreeMap&lt;Integer, String&gt; map = <span class="keyword">new</span> <span class="title class_">TreeMap</span>&lt;&gt;();</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>If we use <code>get(K)</code> and <code>put(K, V)</code> only, we can use <code>Map</code> as the static type.</li>
+<li>If we want to use something not in the <code>Map</code> interface (e.g. <code>ceilingKey()</code> and <code>floorKey()</code>), we should use <code>TreeMap</code> as the static type.</li>
+</ul>
+<h3 id="Sorted-by-Keys"><a href="#Sorted-by-Keys" class="headerlink" title="Sorted by Keys"></a>Sorted by Keys</h3><p>Entries in TreeMap are sorted by keys. It is not natural to make them sorted by values, although it is possible (the code is more complex than we think).</p>
+<p>Imagine someone might write this code:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TreeMap&lt;Integer, String&gt; map = <span class="keyword">new</span> <span class="title class_">TreeMap</span>((k1, k2) -&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> map.get(k1) - map.get(k2);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>It turns out that there is a compiling error. You can try this out by yourself. It is actually a design problem. If you want to use the property in a map that we can access a key quickly and that keys are unique, we can’t sort items by values. It is because values are not unique, two keys might be corresponding with the same value. It is a tie case.</p>
+<blockquote>
+<p>Definition: A Map that further provides a total ordering on its keys.</p>
+</blockquote>
+<p>Further Reading: <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/2864840/treemap-sort-by-value">TreeMap sort by value</a></p>
+<p>Alternative: Use a hash map. Put keys in a list, and pass in a comparator based on <code>map.get(k1) - map.get(k2)</code>.</p>
+<h3 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">TreeMap&lt;Integer, String&gt; map = <span class="keyword">new</span> <span class="title class_">TreeMap</span>&lt;&gt;();</span><br><span class="line">map.put(<span class="number">2</span>, <span class="string">&quot;A&quot;</span>);</span><br><span class="line">map.put(<span class="number">5</span>, <span class="string">&quot;B&quot;</span>);</span><br><span class="line">map.put(<span class="number">6</span>, <span class="string">&quot;C&quot;</span>);</span><br><span class="line">map.put(<span class="number">8</span>, <span class="string">&quot;D&quot;</span>);</span><br><span class="line"><span class="comment">// print: [2: &quot;A&quot;, 5: &quot;B&quot;, 6: &quot;C&quot;, 8: &quot;D&quot;] (sorted)</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Lower Bound:</strong></p>
+<blockquote>
+<p>It is a lower-bound method since we specify a lower-bound value <code>K</code>.</p>
+</blockquote>
+<ul>
+<li><code>higherKey(K)</code> &#x2F; <code>higherEntry(K)</code></li>
+<li><code>ceilingKey(K)</code> &#x2F; <code>ceilingEntry(K)</code></li>
+</ul>
+<p>We use them when we want to find the <code>least</code> key greater than <code>K</code> (or equal for ceiling). </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">map.higherKey(<span class="number">1</span>);  <span class="comment">// 2</span></span><br><span class="line">map.ceilingKey(<span class="number">1</span>); <span class="comment">// 2</span></span><br><span class="line"></span><br><span class="line">map.higherKey(<span class="number">2</span>);  <span class="comment">// 5</span></span><br><span class="line">map.ceilingKey(<span class="number">2</span>); <span class="comment">// 2</span></span><br><span class="line"></span><br><span class="line">map.higherKey(<span class="number">8</span>);  <span class="comment">// null</span></span><br><span class="line">map.ceilingKey(<span class="number">8</span>); <span class="comment">// 8</span></span><br><span class="line"></span><br><span class="line">map.higherKey(<span class="number">9</span>);  <span class="comment">// null</span></span><br><span class="line">map.ceilingKey(<span class="number">9</span>); <span class="comment">// null</span></span><br></pre></td></tr></table></figure>
+
+<p><code>higherKey(K)</code> is more like <code>&gt;</code>, while <code>ceilingKey</code> is more like <code>&gt;=</code>.</p>
+<p><strong>Upper Bound:</strong></p>
+<blockquote>
+<p>It is an upper-bound method since we specify an upper-bound value <code>K</code>.</p>
+</blockquote>
+<ul>
+<li><code>lowerKey(K)</code> &#x2F; <code>lowerEntry(K)</code></li>
+<li><code>floorKey(K)</code> &#x2F; <code>floorEntry(K)</code></li>
+</ul>
+<p>We use them when we want to find the <code>greatest</code> key less than <code>K</code> (or equal for floor).</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">map.lowerKey(<span class="number">9</span>);  <span class="comment">// 8</span></span><br><span class="line">map.floorKey(<span class="number">9</span>);  <span class="comment">// 8</span></span><br><span class="line"></span><br><span class="line">map.lowerKey(<span class="number">8</span>);  <span class="comment">// 6</span></span><br><span class="line">map.floorKey(<span class="number">8</span>);  <span class="comment">// 8</span></span><br><span class="line"></span><br><span class="line">map.lowerKey(<span class="number">2</span>);  <span class="comment">// null</span></span><br><span class="line">map.floorKey(<span class="number">2</span>);  <span class="comment">// 2</span></span><br><span class="line"></span><br><span class="line">map.lowerKey(<span class="number">1</span>);  <span class="comment">// null</span></span><br><span class="line">map.floorKey(<span class="number">1</span>);  <span class="comment">// null</span></span><br></pre></td></tr></table></figure>
+
+<p><code>lowerKey(K)</code> is more like <code>&lt;</code>, while <code>floorKey</code> is more like <code>&lt;=</code>.</p>
+<p><strong>Others:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">TreeMap&lt;Integer, String&gt; map = <span class="keyword">new</span> <span class="title class_">TreeMap</span>&lt;&gt;();</span><br><span class="line">map.put(<span class="number">2</span>, <span class="string">&quot;A&quot;</span>);</span><br><span class="line">map.put(<span class="number">5</span>, <span class="string">&quot;B&quot;</span>);</span><br><span class="line">map.put(<span class="number">6</span>, <span class="string">&quot;C&quot;</span>);</span><br><span class="line">map.put(<span class="number">8</span>, <span class="string">&quot;D&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p><code>keySet()</code> &#x2F; <code>descendingKeySet()</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">map.keySet();           <span class="comment">// [2, 5, 6, 8] (ascending)</span></span><br><span class="line">map.descendingKeySet(); <span class="comment">// [8, 6, 5, 2]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>firstKey()</code> (<code>firstEntry()</code>) &#x2F; <code>lastKey()</code> (<code>lastEntry()</code>):</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">map.firstKey(); <span class="comment">// 2</span></span><br><span class="line">map.lastKey();  <span class="comment">// 8</span></span><br></pre></td></tr></table></figure>
+
+<p><code>pollFirstEntry()</code> &#x2F; <code>pollLastEntry()</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">map.pollFirstEntry(); <span class="comment">// &lt;2, &quot;A&quot;&gt;</span></span><br><span class="line">map.pollLastEntry();  <span class="comment">// &lt;8, &quot;D&quot;&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="TreeSet"><a href="#TreeSet" class="headerlink" title="TreeSet"></a>TreeSet</h3><p>Its method names are similar to <code>TreeMap</code>‘s.</p>
+<ul>
+<li><code>ceiling(K)</code> &#x2F; <code>higher(K)</code></li>
+<li><code>floor(K)</code> &#x2F; <code>lower(K)</code></li>
+<li><code>first()</code> &#x2F; <code>last()</code></li>
+<li><code>pollFirst()</code> &#x2F; <code>pollLast()</code></li>
+<li><code>headSet()</code>, <code>subSet()</code>, … skip:)</li>
+</ul>
+<h2 id="binarySearch"><a href="#binarySearch" class="headerlink" title="binarySearch()"></a>binarySearch()</h2><p>In Java, <code>Arrays</code> and <code>Collections</code> provide this method for binary search. It is trivial because it is a standard binary search method. It returns a negative number <code>res</code> where <code>-(res + 1)</code> is the position that the element would be inserted at; otherwise, it returns the index where the item is.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>[] arr = <span class="keyword">new</span> <span class="title class_">int</span>[] &#123; <span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span> &#125;; <span class="comment">// cannot specify the size</span></span><br><span class="line">Arrays.binarySearch(arr, <span class="number">0</span>); <span class="comment">// -1</span></span><br><span class="line">Arrays.binarySearch(arr, <span class="number">2</span>); <span class="comment">// -2</span></span><br><span class="line">Arrays.binarySearch(arr, <span class="number">1</span>); <span class="comment">// 0</span></span><br><span class="line">Arrays.binarySearch(arr, <span class="number">5</span>); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<p>When there are duplicates, it returns the one it first meets. It is not meant to be leftmost or rightmost.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>[] arr = <span class="keyword">new</span> <span class="title class_">int</span>[] &#123; <span class="number">1</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">7</span>, <span class="number">7</span> &#125;;</span><br><span class="line">Arrays.binarySearch(arr, <span class="number">3</span>); <span class="comment">// 1</span></span><br><span class="line">Arrays.binarySearch(arr, <span class="number">7</span>); <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong> If the list is not sorted, the binary search here is not meaningful at all.</p>
+<p>At last, <code>Collections.binarySearch(list, K)</code> has the same behavior as <code>Arrays.binarySearch(arr, K)</code> does.</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

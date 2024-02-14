@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Hard Problem Median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value. So the median is the mean of the two mid">
+<meta property="og:type" content="website">
+<meta property="og:title" content="295. Find Median from Data Stream">
+<meta property="og:url" content="https://junhaow.com/lc/problems/heap/295_find-median-from-data-stream.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Hard Problem Median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value. So the median is the mean of the two mid">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.126Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.126Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>295. Find Median from Data Stream</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/find-median-from-data-stream/">LeetCode</a><br>Difficulty: <span class="red">Hard</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value. So the median is the mean of the two middle value.</p>
+</blockquote>
+<p>For example,</p>
+<ul>
+<li><p><code>[2,3,4]</code>, the median is <code>3</code></p>
+</li>
+<li><p><code>[2,3]</code>, the median is <code>(2 + 3) / 2 = 2.5</code></p>
+</li>
+</ul>
+<p>Design a data structure that supports the following two operations:</p>
+<ul>
+<li><code>void addNum(int num)</code> - Add a integer number from the data stream to the data structure.</li>
+<li><code>double findMedian()</code> - Return the median of all elements so far.</li>
+</ul>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">addNum(<span class="number">1</span>)</span><br><span class="line">addNum(<span class="number">2</span>)</span><br><span class="line">findMedian() -&gt; <span class="number">1.5</span></span><br><span class="line">addNum(<span class="number">3</span>) </span><br><span class="line">findMedian() -&gt; <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> (Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/find-median-from-data-stream/discuss/275207/Solutions-to-follow-ups">Solutions to follow-ups</a>)</p>
+<ol>
+<li>If all integer numbers from the stream are between 0 and 100, how would you optimize it?</li>
+</ol>
+<ul>
+<li>We can maintain an integer array of length 100 to store the count of each number along with a total count. Then, we can iterate over the array to find the middle value to get our median. Time and space complexity would be <code>O(100) = O(1)</code>.</li>
+</ul>
+<ol start="2">
+<li>If 99% of all integer numbers from the stream are between 0 and 100, how would you optimize it?</li>
+</ol>
+<ul>
+<li>In this case, we can keep a counter for <code>lessThanHundred</code> and <code>greaterThanHundred</code>. As we know the solution will be definitely in 0-100 we don’t need to know those number which are &gt;100 or &lt;0, only count of them will be enough.</li>
+</ul>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/find-median-from-data-stream/solution/">Solution Post</a></p>
+<h3 id="Simple-Sorting"><a href="#Simple-Sorting" class="headerlink" title="Simple Sorting"></a>Simple Sorting</h3><p>Every time we add in a new value, we need to re-sort the array.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> List&lt;Integer&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addNum</span><span class="params">(<span class="type">int</span> num)</span> &#123;</span><br><span class="line">  list.add(num);</span><br><span class="line">  Collections.sort(list);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">double</span> <span class="title function_">findMedian</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> list.size();</span><br><span class="line">  <span class="keyword">if</span> (n % <span class="number">2</span> == <span class="number">0</span>) &#123; <span class="comment">// even</span></span><br><span class="line">    <span class="keyword">return</span> (list.get(n / <span class="number">2</span> - <span class="number">1</span>) + list.get(n / <span class="number">2</span>)) / <span class="number">2.0</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">// odd</span></span><br><span class="line">    <span class="keyword">return</span> list.get(n / <span class="number">2</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> <code>addNum()</code> takes $O(N\log{N})$ <code>462 ms</code><br><strong>Space:</strong> $O(N)$</p>
+<h3 id="Search-Insert-Binary-Search"><a href="#Search-Insert-Binary-Search" class="headerlink" title="Search + Insert (Binary Search)"></a>Search + Insert (Binary Search)</h3><p><strong>Linear Search:</strong></p>
+<p>When a new number comes, we have to add it to the list while maintaining the sorted nature of the list. This is achieved easily by finding the correct place to insert the incoming number.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> List&lt;Integer&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addNum</span><span class="params">(<span class="type">int</span> num)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> list.size();</span><br><span class="line">  <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (i &lt; n &amp;&amp; list.get(i) &lt; num) &#123;</span><br><span class="line">    ++i;</span><br><span class="line">  &#125; <span class="comment">// i stops at a value &gt;= num</span></span><br><span class="line">  list.add(i, num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">double</span> <span class="title function_">findMedian</span><span class="params">()</span> &#123; <span class="comment">// O(1)</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> list.size();</span><br><span class="line">  <span class="keyword">if</span> (n % <span class="number">2</span> == <span class="number">0</span>) &#123; <span class="comment">// even</span></span><br><span class="line">    <span class="keyword">return</span> (list.get(n / <span class="number">2</span> - <span class="number">1</span>) + list.get(n / <span class="number">2</span>)) / <span class="number">2.0</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">// odd</span></span><br><span class="line">    <span class="keyword">return</span> list.get(n / <span class="number">2</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$ <code>265 ms</code><br><strong>Space:</strong> $O(N)$</p>
+<p><span class="purple">Pop quiz</span> Can we use <code>binary search</code> to improve efficiency? <strong>Sure!</strong></p>
+<p>Since the list is always sorted, we can use binary search.</p>
+<p><strong>Binary Search:</strong> (improvement)</p>
+<p>Once the position is found, we need to shift all higher elements by one space to make room for the number, which takes $O(N)$.</p>
+<p><strong>Note:</strong> Here we use <code>lower bound</code> binary search since we need to find the position where the value is <code>&gt;= num</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> List&lt;Integer&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addNum</span><span class="params">(<span class="type">int</span> num)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> list.size();</span><br><span class="line">  <span class="type">int</span> <span class="variable">lo</span> <span class="operator">=</span> <span class="number">0</span>, hi = n - <span class="number">1</span>;</span><br><span class="line">  <span class="type">int</span> mid;</span><br><span class="line">  <span class="keyword">while</span> (lo &lt;= hi) &#123; <span class="comment">// takes O(logN)</span></span><br><span class="line">    mid = lo + (hi - lo) / <span class="number">2</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">val</span> <span class="operator">=</span> list.get(mid);</span><br><span class="line">    <span class="keyword">if</span> (val &gt;= mid) &#123;</span><br><span class="line">      hi = mid - <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      lo = mid + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  list.add(lo, num); <span class="comment">// takes O(N)</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">double</span> <span class="title function_">findMedian</span><span class="params">()</span> &#123; <span class="comment">// O(1)</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> list.size();</span><br><span class="line">  <span class="keyword">if</span> (n % <span class="number">2</span> == <span class="number">0</span>) &#123; <span class="comment">// even</span></span><br><span class="line">    <span class="keyword">return</span> (list.get(n / <span class="number">2</span> - <span class="number">1</span>) + list.get(n / <span class="number">2</span>)) / <span class="number">2.0</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">// odd</span></span><br><span class="line">    <span class="keyword">return</span> list.get(n / <span class="number">2</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$ <code>76 ms</code></p>
+<ul>
+<li>Binary search takes $O(\log{N})$ time.</li>
+<li>Insertion can take up to $O(N)$ time.</li>
+</ul>
+<p><strong>Space:</strong> $O(N)$</p>
+<h3 id="Two-Heaps"><a href="#Two-Heaps" class="headerlink" title="Two Heaps"></a>Two Heaps</h3><p><strong>Idea:</strong> We only need a consistent way to access the median elements. Keeping the entire input sorted is <code>not a requirement</code>.</p>
+<p>As it turns out there are two data structures for the job: <code>heaps</code> and <code>self-balancing binary search trees</code>.</p>
+<p>Our goal is to maintain two heaps (balancing) in the following way:</p>
+<ul>
+<li>A <code>max-heap</code> to store the smaller half of the input numbers.</li>
+<li>A <code>min-heap</code> to store the larger half of the input numbers.</li>
+<li><strong>Constraint:</strong> The max-heap is allowed to store, at most, <code>one more element</code> than the min-heap does.</li>
+</ul>
+<p><strong>Steps:</strong> Add the new number to <code>max-heap</code>. Since the <code>max-heap</code> received a new element, we must do a balancing step for the <code>min-heap</code>.</p>
+<ul>
+<li><strong>Size Check (maxPQ &gt; minPQ + 1):</strong> If the constraint is not satisfied, then remove the largest element from the <code>max-heap</code> and offer it to the <code>min-heap</code>.</li>
+<li><strong>Value Check (maxPQ.peek() &gt; minPQ.peek()):</strong> Check the max value and min value from two heaps where <code>maxVal &lt;= minVal</code>; otherwise, remove the largest element from the <code>max-heap</code> and offer it to the <code>min-heap</code>.</li>
+<li><strong>Size Check (maxPQ &lt; minPQ):</strong> If the <code>min-heap</code> then holds one more elements than the <code>max-heap</code> after the previous operation. We fix that by removing the smallest element from the <code>min-heap</code> and offering it to the <code>max-heap</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> PriorityQueue&lt;Integer&gt; maxPQ;</span><br><span class="line"><span class="keyword">private</span> PriorityQueue&lt;Integer&gt; minPQ;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">MedianFinder</span><span class="params">()</span> &#123;</span><br><span class="line">  maxPQ = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;((n1, n2) -&gt; (n2 - n1));</span><br><span class="line">  minPQ = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;((n1, n2) -&gt; (n1 - n2));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addNum</span><span class="params">(<span class="type">int</span> num)</span> &#123;</span><br><span class="line">  <span class="comment">// add num</span></span><br><span class="line">  maxPQ.offer(num);</span><br><span class="line">  <span class="comment">// size check (max)</span></span><br><span class="line">  <span class="keyword">if</span> (maxPQ.size() - minPQ.size() &gt; <span class="number">1</span>) &#123;</span><br><span class="line">    minPQ.offer(maxPQ.poll());</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// value check</span></span><br><span class="line">  <span class="keyword">if</span> (maxPQ.size() &gt; <span class="number">0</span> &amp;&amp; minPQ.size() &gt; <span class="number">0</span> &amp;&amp; maxPQ.peek() &gt; minPQ.peek()) &#123;</span><br><span class="line">    minPQ.offer(maxPQ.poll());</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// size check (min)</span></span><br><span class="line">  <span class="keyword">if</span> (maxPQ.size() &lt; minPQ.size()) &#123;</span><br><span class="line">    maxPQ.offer(minPQ.poll());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">double</span> <span class="title function_">findMedian</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (maxPQ.size() == <span class="number">0</span> &amp;&amp; minPQ.size() == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (maxPQ.size() &gt; minPQ.size()) &#123; <span class="comment">// odd</span></span><br><span class="line">    <span class="keyword">return</span> maxPQ.peek();</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">// even</span></span><br><span class="line">    <span class="keyword">return</span> (maxPQ.peek() + minPQ.peek()) / <span class="number">2.0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(5\log{N}) &#x3D;  O(\log{N})$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="Multiset-and-Two-Pointers"><a href="#Multiset-and-Two-Pointers" class="headerlink" title="Multiset and Two Pointers"></a>Multiset and Two Pointers</h3><p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/find-median-from-data-stream/solution/">LeetCode Solution</a></p>
+<p>It is based on self-balancing trees.</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

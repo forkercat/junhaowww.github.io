@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Hard Problem A move consists of taking a point (x, y) and transforming it to either (x, x+y) or (x+y, y).   Given a starting point (sx, sy) and a target point (tx, ty)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="780. Reaching Points">
+<meta property="og:url" content="https://junhaow.com/lc/problems/number-and-math/uncategorized/780_reaching-points.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Hard Problem A move consists of taking a point (x, y) and transforming it to either (x, x+y) or (x+y, y).   Given a starting point (sx, sy) and a target point (tx, ty)">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/v61ns.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/w33i3.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.135Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.135Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/v61ns.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>780. Reaching Points</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/reaching-points/">LeetCode</a><br>Difficulty: <span class="red">Hard</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>A move consists of taking a point <code>(x, y)</code> and transforming it to either <code>(x, x+y)</code> or <code>(x+y, y)</code>.</p>
+</blockquote>
+<blockquote>
+<p>Given a starting point <code>(sx, sy)</code> and a target point <code>(tx, ty)</code>, return <code>True</code> if and only if a sequence of moves exists to transform the point <code>(sx, sy)</code> to <code>(tx, ty)</code>. Otherwise, return <code>False</code>.</p>
+</blockquote>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/v61ns.jpg" alt="From Twitter OA"></p>
+<p><strong>Note:</strong> <code>sx</code>, <code>sy</code>, <code>tx</code>, ty will all be integers in the range <code>[1, 10^9]</code>.</p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Input: sx = <span class="number">1</span>, sy = <span class="number">1</span>, tx = <span class="number">3</span>, ty = <span class="number">5</span></span><br><span class="line">Output: True</span><br><span class="line">Explanation:</span><br><span class="line">One series of moves that transforms the starting point to the target is:</span><br><span class="line">(<span class="number">1</span>, <span class="number">1</span>) -&gt; (<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">(<span class="number">1</span>, <span class="number">2</span>) -&gt; (<span class="number">3</span>, <span class="number">2</span>)</span><br><span class="line">(<span class="number">3</span>, <span class="number">2</span>) -&gt; (<span class="number">3</span>, <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">Input: sx = <span class="number">1</span>, sy = <span class="number">1</span>, tx = <span class="number">2</span>, ty = <span class="number">2</span></span><br><span class="line">Output: False</span><br><span class="line"></span><br><span class="line">Input: sx = <span class="number">1</span>, sy = <span class="number">1</span>, tx = <span class="number">1</span>, ty = <span class="number">1</span></span><br><span class="line">Output: True</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">reachingPoints</span><span class="params">(<span class="type">int</span> sx, <span class="type">int</span> sy, <span class="type">int</span> tx, <span class="type">int</span> ty)</span> &#123;</span><br><span class="line">  <span class="comment">// Assume sx, sy, tx, ty &gt;= 1</span></span><br><span class="line">  <span class="keyword">return</span> dfs(sx, sy, tx, ty);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">dfs</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y, <span class="type">int</span> tx, <span class="type">int</span> ty)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x &gt; tx || y &gt; ty) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (x == tx &amp;&amp; y == ty) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (dfs(x, x + y, tx, ty)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">if</span> (dfs(x + y, y, tx, ty)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(2^{tx + ty})$, a loose bound found by considering every move as <code>(x, y) -&gt; (x + 1, y)</code> or <code>(x, y) -&gt; (x, y + 1)</code>.<br><strong>Space:</strong> $O(tx + ty)$, the size of call stack.</p>
+<h3 id="Work-Backwards-Naive-Variant"><a href="#Work-Backwards-Naive-Variant" class="headerlink" title="Work Backwards (Naive Variant)"></a>Work Backwards (Naive Variant)</h3><p>From LeetCode solution:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/w33i3.jpg"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//        / (x + y, y)</span></span><br><span class="line"><span class="comment">// (x, y)</span></span><br><span class="line"><span class="comment">//        \ (x, x + y)</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">reachingPoints</span><span class="params">(<span class="type">int</span> sx, <span class="type">int</span> sy, <span class="type">int</span> tx, <span class="type">int</span> ty)</span> &#123;</span><br><span class="line">  <span class="comment">// Assume sx, sy, tx, ty &gt;= 1</span></span><br><span class="line">  <span class="keyword">while</span> (tx &gt;= sx &amp;&amp; ty &gt;= sy) &#123;</span><br><span class="line">    <span class="keyword">if</span> (sx == tx &amp;&amp; sy == ty) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (tx &gt; ty) &#123;</span><br><span class="line">      tx -= ty;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      ty -= tx;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(\max{(tx, ty)})$. If say <code>ty = 1</code>, we could do subtraction for <code>tx</code> times.<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Work-Backwards-Modulo-Variant"><a href="#Work-Backwards-Modulo-Variant" class="headerlink" title="Work Backwards (Modulo Variant)"></a>Work Backwards (Modulo Variant)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">reachingPoints</span><span class="params">(<span class="type">int</span> sx, <span class="type">int</span> sy, <span class="type">int</span> tx, <span class="type">int</span> ty)</span> &#123;</span><br><span class="line">  <span class="comment">// Assume sx, sy, tx, ty</span></span><br><span class="line">  <span class="keyword">while</span> (tx &gt;= sx &amp;&amp; ty &gt;= sy) &#123;</span><br><span class="line">    <span class="keyword">if</span> (tx == ty) <span class="keyword">break</span>; <span class="comment">// impossible to move to reach sx, sy, if (tx,ty) != (sx,sy)</span></span><br><span class="line">    <span class="keyword">if</span> (tx &gt; ty) &#123;</span><br><span class="line">      <span class="keyword">if</span> (ty &gt; sy) tx %= ty;</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">return</span> (tx - sx) % ty == <span class="number">0</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (tx &gt; sx) ty %= tx;</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">return</span> (ty - sy) % tx == <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> (tx == sx &amp;&amp; ty == sy);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(\log{\max{(tx, ty)}})$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

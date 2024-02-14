@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: Problem I &amp; Problem IIDifficulty: Easy My Post: Summary of Ugly Number I &amp; II (dp, priority-queue) Problem Write a program to check whether a given number is an ugly number.   Ugl">
+<meta property="og:type" content="website">
+<meta property="og:title" content="263. Ugly Number I &amp; II">
+<meta property="og:url" content="https://junhaow.com/lc/problems/number-and-math/uncategorized/263_ugly-number.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: Problem I &amp; Problem IIDifficulty: Easy My Post: Summary of Ugly Number I &amp; II (dp, priority-queue) Problem Write a program to check whether a given number is an ugly number.   Ugl">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.134Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.134Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>263. Ugly Number I &amp; II</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/ugly-number/">Problem I</a> &amp; <a target="_blank" rel="noopener" href="https://leetcode.com/problems/ugly-number-ii/">Problem II</a><br>Difficulty: <span class="green">Easy</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/ugly-number-ii/discuss/408571">Summary of Ugly Number I &amp; II (dp, priority-queue)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Write a program to check whether a given number is an ugly number.</p>
+</blockquote>
+<blockquote>
+<p>Ugly numbers are <strong>positive numbers</strong> whose <code>prime factors</code> only include <code>2, 3, 5</code>.</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<ul>
+<li><code>Non-prime factors</code> are allowed, e.g. <code>8</code> is an ugly number.</li>
+<li><code>1</code> is typically treated as an ugly number.</li>
+<li>Input is within the 32-bit signed integer range: $[−2^{31},  2^{31} − 1]$.</li>
+</ul>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Input: -<span class="number">1</span>, <span class="number">0</span></span><br><span class="line">Output: <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">Input: <span class="number">1</span></span><br><span class="line">Output: <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">Input: <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span></span><br><span class="line">Output: <span class="literal">true</span></span><br><span class="line">Explanation: although they are primes, they are ugly.</span><br><span class="line"></span><br><span class="line">Input: <span class="number">7</span>, <span class="number">11</span></span><br><span class="line">Output: <span class="literal">false</span></span><br><span class="line">Explanation: They are primes, but they are not ugly. They are other prime factors themselves.</span><br><span class="line"></span><br><span class="line">Input: <span class="number">4</span></span><br><span class="line">Output: <span class="literal">true</span></span><br><span class="line">Explanation: <span class="number">4</span> = <span class="number">1</span> x <span class="number">4</span>, <span class="number">2</span> x <span class="number">2</span> (no other prime factors)</span><br><span class="line"></span><br><span class="line">Input: <span class="number">6</span></span><br><span class="line">Output: <span class="literal">true</span></span><br><span class="line">Explanation: <span class="number">6</span> = <span class="number">1</span> x <span class="number">6</span>, <span class="number">2</span> × <span class="number">3</span> (no other prime factors)</span><br><span class="line"></span><br><span class="line">Input: <span class="number">21</span></span><br><span class="line">Output: <span class="literal">false</span></span><br><span class="line">Explanation: <span class="number">21</span> = <span class="number">3</span> x <span class="number">7</span> (<span class="number">7</span> is the other prime factor)</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p>The brute-force solution is to check all prime factors of <code>num</code>. By examining prime factors, determining if the factor is a prime is costly.</p>
+<h3 id="Recursion"><a href="#Recursion" class="headerlink" title="Recursion"></a>Recursion</h3><p>The idea is that if a number <code>num</code> has factors <code>2, 3, 5</code> remove the effect of these factors by division. For example, <code>21</code> has a factor <code>3</code>, so we can determine if it is an ugly number by indirectly checking if <code>21 / 3</code> is an ugly number.</p>
+<p>If <code>num</code> is an ugly number, we will be at last examining <code>num = 1</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">30</span> / <span class="number">2</span> = <span class="number">15</span></span><br><span class="line"><span class="number">15</span> / <span class="number">3</span> = <span class="number">5</span></span><br><span class="line"> <span class="number">5</span> / <span class="number">5</span> = <span class="number">1</span> --&gt; <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>If not:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">31</span>         --&gt; <span class="literal">false</span> (cannot be divided by <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>)</span><br><span class="line"><span class="number">21</span> / <span class="number">3</span> = <span class="number">7</span> --&gt; <span class="literal">false</span> (cannot be divided by <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<p>Here is the code:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isUgly</span><span class="params">(<span class="type">int</span> num)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (num &lt;= <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">if</span> (num == <span class="number">1</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">if</span> (num % <span class="number">2</span> == <span class="number">0</span>) <span class="keyword">return</span> isUgly(num / <span class="number">2</span>);</span><br><span class="line">  <span class="keyword">if</span> (num % <span class="number">3</span> == <span class="number">0</span>) <span class="keyword">return</span> isUgly(num / <span class="number">3</span>);</span><br><span class="line">  <span class="keyword">if</span> (num % <span class="number">5</span> == <span class="number">0</span>) <span class="keyword">return</span> isUgly(num / <span class="number">5</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(\log{N})$ since the <code>num / 2</code> can only occur in $\log{N}$ times at most.<br><strong>Space:</strong> $O(\log{N})$</p>
+<h3 id="Iteration"><a href="#Iteration" class="headerlink" title="Iteration"></a>Iteration</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">isUgly</span><span class="params">(<span class="type">int</span> num)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (num &lt;= <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="type">int</span>[] divisors = &#123; <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span> &#125;;</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> d : divisors) &#123;</span><br><span class="line">    <span class="keyword">while</span> (num % d == <span class="number">0</span>) num /= d;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> num == <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(\log{N})$<br><strong>Space:</strong> $O(1)$</p>
+<h2 id="Ugly-Number-II"><a href="#Ugly-Number-II" class="headerlink" title="Ugly Number II"></a>Ugly Number II</h2><blockquote>
+<p>Write a program to find the <code>n-th</code> ugly number.</p>
+</blockquote>
+<blockquote>
+<p>Ugly numbers are <strong>positive numbers</strong> whose <code>prime factors</code> only include <code>2, 3, 5</code>.</p>
+</blockquote>
+<p><strong>Note:</strong></p>
+<ul>
+<li><code>1</code> is typically treated as an ugly number.</li>
+<li><code>n</code> does not exceed 1690.</li>
+</ul>
+<p><strong>Example:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: n = <span class="number">10</span></span><br><span class="line">Output: <span class="number">12</span></span><br><span class="line">Explanation: <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">12</span> is the sequence of the first <span class="number">10</span> ugly numbers.</span><br></pre></td></tr></table></figure>
+
+<h3 id="Brute-force"><a href="#Brute-force" class="headerlink" title="Brute-force"></a>Brute-force</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>[] divisors = <span class="keyword">new</span> <span class="title class_">int</span>[] &#123; <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span> &#125;;</span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isUgly</span><span class="params">(<span class="type">int</span> num)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (num &lt;= <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">if</span> (num == <span class="number">1</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> d : divisors) &#123;</span><br><span class="line">    <span class="keyword">while</span> (num % d == <span class="number">0</span>) &#123;</span><br><span class="line">      num /= d;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> num == <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">nthUglyNumber</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">num</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (n &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (isUgly(num)) &#123;</span><br><span class="line">      --n;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line">    ++num;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> num;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Priority-Queue"><a href="#Priority-Queue" class="headerlink" title="Priority Queue"></a>Priority Queue</h3><p>An ugly number must be multiplied by either <code>2, 3, 5</code> from a smaller ugly number. We can use a priority queue, but have to remove duplicates when polling elements from it.</p>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>Use <code>long</code> since we may put in very large elements in advance, say <code>val * 5</code>, although they are not within the range of <code>n</code>.</li>
+<li><code>(int) Long</code>, <code>(Integer) Long</code> are illegal.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">nthUglyNumber</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  PriorityQueue&lt;Long&gt; pq = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;();</span><br><span class="line">  pq.add(<span class="number">1l</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n - <span class="number">1</span>; ++i) &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">val</span> <span class="operator">=</span> pq.remove();</span><br><span class="line">    <span class="keyword">while</span> (pq.size() &gt; <span class="number">0</span> &amp;&amp; pq.peek() == val) pq.remove(); <span class="comment">// remove duplicates</span></span><br><span class="line">    pq.add(val * <span class="number">2</span>);</span><br><span class="line">    pq.add(val * <span class="number">3</span>);</span><br><span class="line">    pq.add(val * <span class="number">5</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// return (int) pq.remove();   // </span></span><br><span class="line">  <span class="keyword">return</span> pq.remove().intValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N\log{N})$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="DP-clever"><a href="#DP-clever" class="headerlink" title="DP (clever)"></a>DP (clever)</h3><p>Since <code>1 &lt;= n &lt;= 1690</code>, we can pre-compute <code>n</code> ugly numbers and return the result in constant time.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">BOUND</span> <span class="operator">=</span> <span class="number">1690</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">nthUglyNumber</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="comment">// dp[i] denote the i + 1 ugly numbers</span></span><br><span class="line">  <span class="type">int</span>[] dp = <span class="keyword">new</span> <span class="title class_">int</span>[BOUND];</span><br><span class="line">  dp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">  <span class="comment">// the smallest number that is not multiplied by 2, 3, 5</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">i2</span> <span class="operator">=</span> <span class="number">0</span>, i3 = <span class="number">0</span>, i5 = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; BOUND; ++i) &#123;</span><br><span class="line">    dp[i] = Math.min(dp[i2] * <span class="number">2</span>, Math.min(dp[i3] * <span class="number">3</span>, dp[i5] * <span class="number">5</span>));</span><br><span class="line">    <span class="keyword">if</span> (dp[i] == dp[i2] * <span class="number">2</span>) ++i2;</span><br><span class="line">    <span class="keyword">if</span> (dp[i] == dp[i3] * <span class="number">3</span>) ++i3;</span><br><span class="line">    <span class="keyword">if</span> (dp[i] == dp[i5] * <span class="number">5</span>) ++i5;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dp[n - <span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

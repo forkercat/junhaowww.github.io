@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: EasyTwo Pointers My Post: Java Solution Using Two Pointers, Half Reverse (easy-understand) Problem Given a singly linked list, determine if it is a palindrome.  Exampl">
+<meta property="og:type" content="website">
+<meta property="og:title" content="234. Palindrome Linked List">
+<meta property="og:url" content="https://junhaow.com/lc/problems/linked-list/uncategorized/234_palindrome-linked-list.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: EasyTwo Pointers My Post: Java Solution Using Two Pointers, Half Reverse (easy-understand) Problem Given a singly linked list, determine if it is a palindrome.  Exampl">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.131Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.131Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>234. Palindrome Linked List</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/palindrome-linked-list/">LeetCode</a><br>Difficulty: <span class="green">Easy</span><span class="blue">Two Pointers</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/palindrome-linked-list/discuss/316814/">Java Solution Using Two Pointers, Half Reverse (easy-understand)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a singly linked list, determine if it is a palindrome.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="number">1</span>-&gt;<span class="number">2</span></span><br><span class="line">Output: <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">Input: <span class="number">1</span>-&gt;<span class="number">2</span>-&gt;<span class="number">2</span>-&gt;<span class="number">1</span></span><br><span class="line">Output: <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">Input: <span class="number">1</span>-&gt;<span class="number">2</span>-&gt;<span class="number">3</span>-&gt;<span class="number">2</span>-&gt;<span class="number">1</span></span><br><span class="line">Output: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> Could you do it in $O(n)$ time and $O(1)$ space?</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Reverse-Whole"><a href="#Reverse-Whole" class="headerlink" title="Reverse Whole"></a>Reverse Whole</h3><p>Reverse the whole list and compare each element, but reversal should be <code>non-destructive</code> because we need to do comparison later.</p>
+<p><strong>Note:</strong> <code>Non-destructive</code> reversing can be tricky at the first glance.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isPalindrome</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">newHead</span> <span class="operator">=</span> reverseNew(head);</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">p1</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">p2</span> <span class="operator">=</span> newHead;</span><br><span class="line">  <span class="keyword">while</span> (p1 != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (p1.val != p2.val) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    p1 = p1.next;</span><br><span class="line">    p2 = p2.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// iteration</span></span><br><span class="line"><span class="keyword">private</span> ListNode <span class="title function_">reverseNew</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">dummy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(<span class="number">0</span>);</span><br><span class="line">  dummy.next = <span class="literal">null</span>;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="comment">// dummy  1   2   3   4</span></span><br><span class="line">  <span class="comment">//        p</span></span><br><span class="line">  <span class="keyword">while</span> (p != <span class="literal">null</span>) &#123; <span class="comment">// addFirst</span></span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">newNode</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(p.val);</span><br><span class="line">    newNode.next = dummy.next;</span><br><span class="line">    dummy.next = newNode;</span><br><span class="line">    p = p.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="Reverse-Half"><a href="#Reverse-Half" class="headerlink" title="Reverse Half"></a>Reverse Half</h3><p>The idea is to reverse the right half of the original list and then compare half elements. The difficulties lie in:</p>
+<ul>
+<li>Handle even and odd cases.</li>
+<li>How to get the right half.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// even</span></span><br><span class="line"><span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">3</span> -&gt; <span class="number">4</span></span><br><span class="line">left half:  <span class="number">1</span> -&gt; <span class="number">2</span></span><br><span class="line">right half: <span class="number">3</span> -&gt; <span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// odd</span></span><br><span class="line"><span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">3</span> -&gt; <span class="number">4</span> -&gt; <span class="number">5</span></span><br><span class="line">left half:  <span class="number">1</span> -&gt; <span class="number">2</span></span><br><span class="line">right half: <span class="number">4</span> -&gt; <span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<p>To get the right half, we have two ways: Traversal based on the length, Slow-fast pointers. Here we use the slow-fast pointers to find the middle point.</p>
+<p>In the examples above, which nodes do we want as heads of the right half? <code>3</code> (even case) and <code>4</code> (odd case).</p>
+<p>So we can find the <strong>left-leaning</strong> middle point <code>2</code> and the exact middle point <code>3</code> by slow-fast pointers. Finally, returns their the next node.</p>
+<p>In terms of <code>left-leaning</code> and <code>right-leaning</code>, check out the code and examples to get an intuition.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> ListNode <span class="title function_">getRightHalf</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">slow</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">fast</span> <span class="operator">=</span> head.next;  <span class="comment">// left-leaning</span></span><br><span class="line">  <span class="keyword">while</span> (fast != <span class="literal">null</span> &amp;&amp; fast.next != <span class="literal">null</span>) &#123;</span><br><span class="line">    slow = slow.next;</span><br><span class="line">    fast = fast.next.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> slow.next; <span class="comment">// important!</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> ListNode <span class="title function_">getRightHalf</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">slow</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">fast</span> <span class="operator">=</span> head;       <span class="comment">// right-leaning</span></span><br><span class="line">  <span class="keyword">while</span> (fast != <span class="literal">null</span> &amp;&amp; fast.next != <span class="literal">null</span>) &#123;</span><br><span class="line">    slow = slow.next;</span><br><span class="line">    fast = fast.next.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> slow.next; <span class="comment">// important!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In the code, the difference is in the initializations of <code>fast</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// left-leaning</span></span><br><span class="line"><span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">3</span> -&gt; <span class="number">4</span></span><br><span class="line">s    s</span><br><span class="line">     f         f</span><br><span class="line"><span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">3</span> -&gt; <span class="number">4</span> -&gt; <span class="number">5</span></span><br><span class="line">s    s    s</span><br><span class="line">f         f         f</span><br><span class="line"><span class="comment">// right-leaning</span></span><br><span class="line"><span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">3</span> -&gt; <span class="number">4</span></span><br><span class="line">s    s    s</span><br><span class="line">f         f         f</span><br><span class="line"><span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">3</span> -&gt; <span class="number">4</span> -&gt; <span class="number">5</span></span><br><span class="line">s    s    s</span><br><span class="line">f         f         f</span><br></pre></td></tr></table></figure>
+
+<p>By observation, we want to use <code>left-leaning</code> in this case because <code>slow</code> could finally stop at the left-leaning middle point.</p>
+<p>Here is the code:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isPalindrome</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">p1</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">p2</span> <span class="operator">=</span> reverse(getRightHalf(head));</span><br><span class="line">  <span class="keyword">while</span> (p2 != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (p1.val != p2.val) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    p1 = p1.next;</span><br><span class="line">    p2 = p2.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong> We use <code>p2</code> instead of <code>p1</code> as our while-condition because <code>p1</code> actually points to the list of all elements (<code>reverse</code> and <code>getRightHalf</code> do not disconnect the list). For example:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Example: <span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">3</span> -&gt; <span class="number">4</span> -&gt; <span class="number">5</span></span><br><span class="line"><span class="comment">// After reversal() and getRightHalf()</span></span><br><span class="line">p1 (left half):  <span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">5</span> -&gt; <span class="number">4</span> -&gt; <span class="number">3</span></span><br><span class="line">p2 (right half): <span class="number">5</span> -&gt; <span class="number">4</span> (although <span class="number">5</span> is linked by <span class="number">2</span>)</span><br><span class="line"><span class="comment">// We only care about the first two nodes in each list.</span></span><br></pre></td></tr></table></figure>
+
+<p>The remaining helper function <code>reverse()</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// iteration</span></span><br><span class="line"><span class="keyword">private</span> ListNode <span class="title function_">reverse</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">null</span> || head.next == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">while</span> (p != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">nextTemp</span> <span class="operator">=</span> p.next;</span><br><span class="line">    p.next = prev;</span><br><span class="line">    prev = p;</span><br><span class="line">    p = nextTemp;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> prev;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$ if not using recursion.</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

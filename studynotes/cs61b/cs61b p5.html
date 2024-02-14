@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Balanced BSTsDefinitionDefinition: definition-of-a-balanced-tree There are several ways to define “Balanced”. The main goal is to keep the heights of all nodes to be $O(\log{N})$ (whose height is of">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CS 61B | Part 5 | Self-Balancing Trees (B-Tree, Red Black Tree, AVL, Splay Tree)">
+<meta property="og:url" content="https://junhaow.com/studynotes/cs61b/cs61b%20p5.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Balanced BSTsDefinitionDefinition: definition-of-a-balanced-tree There are several ways to define “Balanced”. The main goal is to keep the heights of all nodes to be $O(\log{N})$ (whose height is of">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/s0ovz.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gaiv0.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/icck8.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9q6zw.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/def2y.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/uqfrf.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/o2frf.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/m0ifx.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/mi9m9.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/kn524.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xz8s8.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7lqru.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qcr55.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ik9fx.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3mmpr.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/phkcc.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/hhs40.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ct094.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/uqxpg.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1fwa1.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vq7re.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/f0uc8.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/kb7t0.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6fdhr.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/av0vj.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/uduos.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/kjhqs.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rkr6a.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/teyf1.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ys9c1.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dfrnz.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/83vmb.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xgu37.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1c14v.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tzbot.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/r36sa.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/a9pn7.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/03uwd.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/t748k.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/frxfu.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9vhu1.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vtdoe.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vv4ut.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/i7ft7.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3e6s3.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/39l4q.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6jwyr.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vek6e.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gu7z4.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/98tmw.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/n2n58.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/t1g7z.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qmgo1.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/31ze4.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fcjdy.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qaks5.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zp0vu.jpg">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/f5myq.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.197Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.197Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/s0ovz.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CS 61B | Part 5 | Self-Balancing Trees (B-Tree, Red Black Tree, AVL, Splay Tree)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<h2 id="Balanced-BSTs"><a href="#Balanced-BSTs" class="headerlink" title="Balanced BSTs"></a>Balanced BSTs</h2><h3 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h3><p>Definition: <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/8015630/definition-of-a-balanced-tree">definition-of-a-balanced-tree</a></p>
+<p>There are <code>several ways</code> to define “Balanced”. The main goal is to keep the heights of all nodes to be $O(\log{N})$ (whose height is of order of $\log{N}$).</p>
+<p>The constraint is generally applied <code>recursively</code> to every subtree. That is, the tree is only balanced if:</p>
+<ol>
+<li>The left and right subtrees’ heights differ by <code>at most one</code>, AND</li>
+<li>The left subtree is balanced, AND</li>
+<li>The right subtree is balanced.</li>
+</ol>
+<p><strong>Note:</strong> The specific constraint of the first point depends on the type of tree. The one listed below is the typical of AVL Trees. Red black trees, for instance, impose a <code>softer constraint</code>.</p>
+<p>Again, the definitions are followed by AVL trees. Since AVL trees are balanced but not all balanced trees are AVL trees, <strong>balanced trees don’t hold this definition and internal nodes can be unbalanced in them</strong>. However, AVL trees require all internal nodes to be balanced as well (Point 2 &amp; 3).</p>
+<p>Balanced Tree Examples:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">balanced</span><br><span class="line">     A</span><br><span class="line">   /   \</span><br><span class="line">  B     C  </span><br><span class="line"> /     / \  </span><br><span class="line">D     E   F  </span><br><span class="line">     /  </span><br><span class="line">    G  </span><br></pre></td></tr></table></figure>
+
+<p>Unbalanced Tree Examples (usually use “unbalanced” instead of “imbalanced”):</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// People define the height of an empty tree to be (-1).</span><br><span class="line">              A  (Height = 2)</span><br><span class="line">            /   \</span><br><span class="line">(height =-1)      B (Height = 1) &lt;-- Unbalanced because 1-(-1)=2 &gt;1</span><br><span class="line">                    \</span><br><span class="line">                     C (Height = 0)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">       A (h=3)</span><br><span class="line">     /   \</span><br><span class="line">B(h=0)     C (h=2)        &lt;-- Unbalanced: 2-0 =2 &gt; 1</span><br><span class="line">          /   \</span><br><span class="line">       E(h=1)  F (h=0)</span><br><span class="line">       /     \</span><br><span class="line">     H (h=0)   G (h=0) </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">     A</span><br><span class="line">   /   \</span><br><span class="line">  B     C   &lt;-- difference = 2</span><br><span class="line"> /     /</span><br><span class="line">D     E  </span><br><span class="line">     /  </span><br><span class="line">    G  </span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Runtime-Notations"><a href="#Runtime-Notations" class="headerlink" title="Runtime Notations"></a>Runtime Notations</h3><p>BST height is all four of these:</p>
+<ul>
+<li>$O(N)$</li>
+<li>$\Theta(\log{N})$ in the best case (“bushy”)</li>
+<li>$\Theta(N)$ in the worst case (“spindly”)</li>
+<li>$O(N^2)$ (technically true)</li>
+</ul>
+<p>The middle two statements are more informative. Big-O is NOT mathematically the same thing as “worst case”, but it’s often used as shorthand for “worst case”.</p>
+<h3 id="Height-and-Depth"><a href="#Height-and-Depth" class="headerlink" title="Height and Depth"></a>Height and Depth</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/s0ovz.jpg"></p>
+<ul>
+<li><code>Depth</code>: How far it is from the root, i.e. the number of <code>links</code> between a node and the root.</li>
+<li><code>Height</code>: The lowest depth of a tree &#x2F; The maximum depth of a tree.</li>
+<li><code>Average Depth</code>: $\frac{\sum^D_{i&#x3D;0}d_i n_i}{N}$ where $d_i$ is depth and $n_i$ is number of nodes at that depth.</li>
+</ul>
+<p>The <code>height</code> of the tree determines the worst-case runtime, because in the worst case the node we are looking for is at the bottom of the tree. Similarly, the <code>average depth</code> determines the average-case runtime.</p>
+<p><strong>Orders matter!</strong></p>
+<p>The order you insert nodes into a BST determines its height.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gaiv0.jpg" alt="BSTs in Practice - The Order We Add Nodes =&gt; Shape"></p>
+<p>What about trees that you’d build during real world applications? One way to approximate this is to consider randomized BSTs.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/icck8.jpg" alt="Simulation: Trees Built from Random Inserts (opt stands for the optimal BST&#39;s worst runtime)"></p>
+<p>Therefore, <code>Average Depth</code> is expected to be $\sim 2 \ln{N} &#x3D; \Theta(\log{N})$ with random inserts. </p>
+<p>Note: $\sim$ is the same thing as Big Theta, but you don’t drop the <code>multiplicative constants</code>.</p>
+<p>If $N$ distinct keys are inserted in random order, expected <code>tree heights</code> is $\sim 4.311 \ln{N}$. Thus, worst case runtime for <code>contains</code> operation is $\Theta(\log{N})$ on a tree built with random inserts.</p>
+<p>Random trees including <code>deletion</code> are still $\Theta(\log{N})$ height.</p>
+<p><strong>Bad News:</strong></p>
+<p>The fact is that we can’t always insert our items in a random order, because data comes in over time, don’t have all at once (e.g. dates of events).</p>
+<h2 id="B-Trees"><a href="#B-Trees" class="headerlink" title="B-Trees"></a>B-Trees</h2><p>Also called <code>2-3</code>, <code>2-3-4</code> Trees.</p>
+<h3 id="Crazy-Idea"><a href="#Crazy-Idea" class="headerlink" title="Crazy Idea"></a>Crazy Idea</h3><p>The problem with BST’s is that we always insert at a leaf node. This is what causes the height to increase.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9q6zw.jpg" alt="But this may lead to a runtime of $N$ again"></p>
+<blockquote>
+<p>Never add a leaf node!</p>
+</blockquote>
+<p><code>Solution</code>: Set a limit on the number of elements in a single node. Let’s say 4. If we need to add a new element to a node when it already has 4 elements, we will split the node <code>in half</code> by <code>bumping up the middle left node</code>.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/def2y.jpg"></p>
+<p>Notice that now the 15-17 node has 3 children now, and each child is either less than, between, or greater than 15 and 17.</p>
+<p>These trees are called <code>B-trees</code> or <code>2-3-4/2-3 Trees</code>. 2-3-4 (L&#x3D;3) and 2-3 (L&#x3D;2) refer to the number of children each node can have. So, a 2-3-4 tree can have 2, 3, or 4 children while a 2-3 tree can have 2 or 3.</p>
+<ul>
+<li><strong>2-node</strong>: has 2 children.</li>
+<li><strong>3-node</strong>: has 3 children.</li>
+<li><strong>4-node</strong>: has 4 children.</li>
+</ul>
+<p>This means that 2-3-4 trees split nodes when they have 3 nodes (4 children) and one more needs to be added. 2-3 trees split after they have 2 nodes (3 children) and one more needs to be added.</p>
+<p>Adding a node to a 2-3-4 tree:</p>
+<ul>
+<li>After adding the node to the leaf node, if the new node has 4 nodes, then pop up the <code>middle-left</code> node and re-arrange the children accordingly.</li>
+<li>If this results in the parent node having 4 nodes, then pop up the middle left node again, rearranging the children accordingly.</li>
+<li>Repeat this process until the parent node can accommodate or you get to the root.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/uqfrf.png" alt="Practice - Add 20, 21 to the tree"></p>
+<p><strong>Add: Chain Reaction</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/o2frf.png" alt="Practice - Add 25, 26 to the tree"></p>
+<p><strong>What Happens If The Root Is Too Full?</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/m0ifx.png" alt="Move 17 up, and split"></p>
+<p><strong>Observation:</strong> Splitting-trees (B-trees) have perfect balance.</p>
+<ul>
+<li>If we split the root, <code>every node</code> gets pushed down by exactly one level.</li>
+<li>If we split a leaf node or internal node, the height doesn’t change.</li>
+</ul>
+<blockquote>
+<p>The origin of “B-tree” has never been explained by the authors. As we shall see, “balanced,” “broad,” or “bushy” might apply. Others suggest that the “B” stands for Boeing. Because of his contributions, however, it seems appropriate to think of B-trees as “Bayer”-trees.<br>                 – Douglas Corner (The Ubiquitous B-Tree)</p>
+</blockquote>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/mi9m9.png" alt="A note on Terminology"></p>
+<p><strong>B-Trees Usage:</strong></p>
+<p>B-Trees are most popular in two specific contexts:</p>
+<ul>
+<li>Small $L$ ($L &#x3D; 2$ or $L &#x3D; 3$)<ul>
+<li>Used as a conceptually simple balanced search tree.</li>
+</ul>
+</li>
+<li>Very large $L$ (say thousands)<ul>
+<li>Used in practice for databases and file systems.</li>
+</ul>
+</li>
+</ul>
+<h3 id="Invariants"><a href="#Invariants" class="headerlink" title="Invariants"></a>Invariants</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/kn524.png" alt="Exercise 1 - Height = 2"></p>
+<p>Interactive demo: <a target="_blank" rel="noopener" href="https://tinyurl.com/balanceYD">link</a></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xz8s8.png" alt="Exercise 2 - Height = 1"></p>
+<p>No matter the insertion order you choose, resulting B-Tree is <code>always bushy</code>.</p>
+<p><strong>Why?</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7lqru.png"></p>
+<p>Because of the way B-Trees are constructed (growing from the root), we get two nice invariants:</p>
+<ul>
+<li>All leaves must be the <code>same distance</code> from the source. (growing from the root &amp; growing horizontally)</li>
+<li>A non-leaf node with $k$ items must have exactly $k + 1$ children. ($k + 1$ gaps between items)</li>
+</ul>
+<p>These invariants guarantee that trees are bushy.</p>
+<h3 id="Runtime-Analysis"><a href="#Runtime-Analysis" class="headerlink" title="Runtime Analysis"></a>Runtime Analysis</h3><h4 id="Height"><a href="#Height" class="headerlink" title="Height"></a>Height</h4><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qcr55.png" alt="Height of a B-Tree with Limit L"></p>
+<p>Thus, the height is between $\sim\log_{L+1}{(N)}$ and $\sim\log_2{(N)}$</p>
+<p>More items in a node &#x3D;&gt; More branches &#x3D;&gt; More stuff for the same height</p>
+<h4 id="contains"><a href="#contains" class="headerlink" title="contains"></a>contains</h4><ul>
+<li>Worst case number of nodes to inspect: $H+1$</li>
+<li>Worst case number of items to inspect per node: $L$</li>
+<li>Overall runtime: $O(HL) &#x3D; O(\log{N})$<ul>
+<li>Since $H &#x3D; \Theta(\log{N})$, overall runtime is $O(L\log{N})$.</li>
+<li>Since $L$ is a constant, runtime is therefore $O(\log{N})$.</li>
+</ul>
+</li>
+</ul>
+<h4 id="add"><a href="#add" class="headerlink" title="add"></a>add</h4><p>It is similar to <code>contains</code>.</p>
+<ul>
+<li>Worst case number of nodes to inspect: $H+1$</li>
+<li>Worst case number of items to inspect per node: $L$</li>
+<li>Worst case number of split operations: $H+1$</li>
+<li>Overall runtime: $O(HL) &#x3D; O(L)$</li>
+</ul>
+<p>So, runtime is $O(\log{N})$.</p>
+<p>B-trees are more complex, but they can efficiently handle <code>any insertion order</code>.</p>
+<h4 id="deletion"><a href="#deletion" class="headerlink" title="deletion"></a>deletion</h4><h5 id="History"><a href="#History" class="headerlink" title="History"></a>History</h5><p><strong>Random Insertions &amp; Deletions in BST:</strong></p>
+<p>$O(\sqrt{N})$ &#x2F; $\Theta(\log{N^2})$ average height after random insertions and deletions. Assumes you always pick the successor when deleting!</p>
+<p><strong>History:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ik9fx.png"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3mmpr.png"></p>
+<p>But, if you randomly pick between <code>successor and predecessor</code>, you get $\Theta(\log{N})$ height.</p>
+<h5 id="2-3-Deletion"><a href="#2-3-Deletion" class="headerlink" title="2-3 Deletion"></a>2-3 Deletion</h5><p>There are many possible deletion algorithms.</p>
+<p>In a 2-3 Tree, when we delete $\alpha$ from a node with two or more children, we:</p>
+<ul>
+<li><code>Swap</code> the value of the successor with $\alpha$</li>
+<li>Then we <code>delete</code> the successor value (always be in a leaf node, because the tree is bushy!)</li>
+</ul>
+<p>Example: <code>delete(17)</code></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/phkcc.png" alt="Swap 17 with its successor 18, then delete 17"></p>
+<p>If the leaf has multiple keys, the deletion is trivial. Just simply remove the item. <strong>What about Single-Key Leaves?</strong></p>
+<p>We need to keep the invariants (Any node with k items must have k + 1 children!). So, we’ll leave an empty node, which must be filled.</p>
+<p><strong>Note:</strong> It depends on the number of parent keys and sibling keys.</p>
+<p><strong>Filling in Empty Nodes (FIEN)</strong></p>
+<p>The hard part about deletion in 2-3 Trees is filling empty nodes.</p>
+<ul>
+<li><p>FIEN Case 1A: <code>Multi-Key Sibling</code></p>
+<ul>
+<li>$X$ steals parent’s item. Parent steals sibling’s item.</li>
+<li>If $X$ was not a leaf node, $X$ steals one of sibling’s subtrees.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/hhs40.png" alt="Try to fill in X in the diagram so that the result is a valid 2-3 tree"></p>
+<p>Another example: Try to delete 17 from the tree below.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ct094.png"></p>
+<p>Answer:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/uqxpg.png" alt="Swap 17 with 19, then delete 17; steal from sibling"></p>
+</li>
+<li><p>FIEN Case 2A: <code>Multi-Key Parent</code></p>
+<ul>
+<li>$X$ and right sibling steal parent’s keys. <code>Middle sibling</code> moves into the parent.</li>
+<li>Subtrees are passed along so that every node has the correct children.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1fwa1.png" alt="Example"></p>
+<p>Another example: Try to delete root 3</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vq7re.png"></p>
+</li>
+<li><p>FIEN Case 3: <code>Single-Key Parent and Sibling</code></p>
+<ul>
+<li>Combine 1 sibling and parent into a single node that replaces $X$. Send the blank $X$ up one level.</li>
+<li>If blank ends up as the new root, just delete the blank and we are done.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/f0uc8.png"></p>
+<p>Exercise 1: Delete 6</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/kb7t0.png"></p>
+<p>Exercise 2: Delete 4</p>
+<p>Notice that the combination is recursive.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6fdhr.png"></p>
+</li>
+</ul>
+<h3 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h3><p>My implementation: <a target="_blank" rel="noopener" href="https://github.com/junhaowww/cs61b-sp18/blob/master/classcode/w4/MyBTree.java">MyBTree.java</a></p>
+<p>Algs4: <a target="_blank" rel="noopener" href="https://algs4.cs.princeton.edu/code/edu/princeton/cs/algs4/BTree.java.html">BTree.java (I don’t quite understand the code)</a></p>
+<h2 id="Ex-Guide"><a href="#Ex-Guide" class="headerlink" title="Ex (Guide)"></a>Ex (Guide)</h2><p>The <code>key idea</code> of a B-Tree is to over stuff the nodes at the bottom to prevent increasing the height of the tree. This allows us to ensure a max height of $\log{N}$.</p>
+<h3 id="Ex-1"><a href="#Ex-1" class="headerlink" title="Ex 1"></a>Ex 1</h3><p><a target="_blank" rel="noopener" href="https://d1b10bmlvqabco.cloudfront.net/attach/hx9h4t96ea8qv/h32s1vxe6mb5o0/i7vkubmrxjn0/fa14_mt2.pdf">Problem 5</a> of the Fall 2014 midterm.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/av0vj.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">InnerNode2_4</span> <span class="keyword">extends</span> <span class="title class_">Node2_4</span> &#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="type">boolean</span> <span class="title function_">contains</span><span class="params">(String key)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; arity(); j++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (j &lt; arity() - <span class="number">1</span> &amp;&amp; key == key(j)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (j == arity() - <span class="number">1</span> || key &lt; key(j)) &#123;</span><br><span class="line">        <span class="keyword">return</span> kid(j).contains(key);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="Ex-2"><a href="#Ex-2" class="headerlink" title="Ex 2"></a>Ex 2</h3><p><a target="_blank" rel="noopener" href="https://tbp.berkeley.edu/exams/6137/download/">Problem 1c, e</a> of the Spring 2018 Midterm 2</p>
+<p>Draw a valid B-Tree of minimum height containing the keys 1, 2, 3, 7, 8, 5.</p>
+<p>In Order: 1, 2, 3, 5, 7, 8, 9<br>Drawing sequence: 1, 7, 9, 3, 5, 2, 8</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/uduos.png"></p>
+<h3 id="Ex-3"><a href="#Ex-3" class="headerlink" title="Ex 3"></a>Ex 3</h3><p><a target="_blank" rel="noopener" href="https://tbp.berkeley.edu/exams/5286/download/">Problem 8b</a> of the Spring 2016 Midterm 2</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/kjhqs.png"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rkr6a.png" alt="Possible Sequence: 1, 2, 3, 4, 5, 6, 7, 8, 9"></p>
+<p><a target="_blank" rel="noopener" href="https://www.cs.usfca.edu/~galles/visualization/BTree.html">Visual helper</a></p>
+<h2 id="Tree-Rotation"><a href="#Tree-Rotation" class="headerlink" title="Tree Rotation"></a>Tree Rotation</h2><h3 id="Issues-of-B-Trees"><a href="#Issues-of-B-Trees" class="headerlink" title="Issues of B-Trees"></a>Issues of B-Trees</h3><p>Wonderfully balanced as they are, B-Trees are really <code>difficult to implement</code>. We need to keep track of the different nodes and the splitting process is pretty complicated. As computer scientists who appreciate good code and a good challenge, let’s find another way to create a balanced tree.</p>
+<p>Issues:</p>
+<ul>
+<li>Maintaining different node types</li>
+<li>Interconversion of nodes between 2-nodes and 3-nodes</li>
+<li>Walking up the tree to split nodes</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// put method of B-Tree</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">put</span><span class="params">(Key key, Value val)</span> &#123;</span><br><span class="line">  <span class="type">Node</span> <span class="variable">x</span> <span class="operator">=</span> root;</span><br><span class="line">  <span class="keyword">while</span> (x.getTheCorrectChildKey(key) != <span class="literal">null</span>) &#123;</span><br><span class="line">    x = x.getTheCorrectChildKey(key);</span><br><span class="line">    <span class="keyword">if</span> (x.is2Node()) &#123;</span><br><span class="line">      x.make3Node(key, val);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (x.is3Node(<span class="number">0</span>)) &#123;</span><br><span class="line">      x.make4Node(key, val);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (x.is4Node()) &#123;</span><br><span class="line">      x.split();</span><br><span class="line">    &#125; <span class="comment">// should be put after?</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Beautiful algorithms are, unfortunately, not always the most useful. - Knuth</p>
+</blockquote>
+<h3 id="Rotation"><a href="#Rotation" class="headerlink" title="Rotation"></a>Rotation</h3><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/teyf1.png" alt="5 types of possible 3-node BSTs"></p>
+<p>Given any BST, it is possible to move to a different configuration using “rotation”.</p>
+<p>More generally, for $N$ items, there are <code>Catalan(N)</code> (number of states of many recursive data structures) different BSTs.</p>
+<p>In general, we can move from any configuration (bushy tree) to any other in <code>2n - 6</code> rotations.</p>
+<p><strong>The <code>formal definition</code> of rotation is:</strong></p>
+<p><code>rotateLeft(G)</code>: Let $x$ be the right child of $G$. Make $G$ the new left child of $x$. (also assign $P$’s left child to $G$ as its right child)</p>
+<ul>
+<li>Alternatively, merging $G$ and $P$, then sending $G$ down and left.</li>
+</ul>
+<p><code>rotateRight(G)</code>: Let $x$ be the left child of $G$. Make $G$ the new right child of $x$.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ys9c1.jpg" alt="rotateLeft(G)"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/dfrnz.jpg" alt="Rotate a subtree"></p>
+<p><strong>Practice: (make it bushy)</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/83vmb.png" alt="There are other correct answers as well!"></p>
+<p>Note: In the middle case, <code>rotate(3)</code> is undefined.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/xgu37.png" alt="Rotation Pattern"></p>
+<p><strong>Usage:</strong></p>
+<ul>
+<li>Can shorten (or lengthen) a tree.</li>
+<li>Preserves search tree property.</li>
+</ul>
+<p><strong>Code:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> TreeNode <span class="title function_">rotateRight</span><span class="params">(TreeNode x)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">newRoot</span> <span class="operator">=</span> x.left;</span><br><span class="line">  x.left = newRoot.right;</span><br><span class="line">  newRoot.right = x;</span><br><span class="line">  <span class="keyword">return</span> newRoot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">rotateLeft</span><span class="params">(TreeNode x)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">newRoot</span> <span class="operator">=</span> x.right;</span><br><span class="line">  x.right = newRoot.left;</span><br><span class="line">  newRoot.left = x;</span><br><span class="line">  <span class="keyword">return</span> newRoot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Red-Black-Trees"><a href="#Red-Black-Trees" class="headerlink" title="Red Black Trees"></a>Red Black Trees</h2><h3 id="LLRB-Definition"><a href="#LLRB-Definition" class="headerlink" title="LLRB Definition"></a>LLRB Definition</h3><p>So far, we’ve encountered two kinds of search trees:</p>
+<ul>
+<li>BST: Can be balanced by using rotation.</li>
+<li>2-3 Trees: Balanced by construction, i.e. no rotations required.</li>
+</ul>
+<p><strong>Goal:</strong> Build a BST that is structurally identical to a 2-3 tree.</p>
+<p>Left-Leaning Red Black trees have a <code>1-1 correspondence</code> with 2-3 trees.</p>
+<ul>
+<li>Every 2-3 tree has a unique <code>LLRB Red Black</code> tree associated with it.</li>
+<li>As for 2-3-4 trees, they maintain correspondence with <code>standard Red Black trees</code>.</li>
+</ul>
+<p><strong>Possibility 1:</strong> Create dummy “glue” nodes</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/1c14v.png"></p>
+<p><strong>Possibility 2:</strong> Create “glue” links with the smaller item <code>off to the left</code></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/tzbot.png"></p>
+<h3 id="LLRB-Properties"><a href="#LLRB-Properties" class="headerlink" title="LLRB Properties"></a>LLRB Properties</h3><p><strong>Left-Leaning Red Black Binary Search Tree (LLRB)</strong></p>
+<p>A BST with <code>left glue links</code> that represents a 2-3 tree is often called an LLRB (BST is omitted).</p>
+<ul>
+<li>There is a <code>1-1</code> correspondence between an LLRB and an equivalent 2-3 tree.</li>
+<li>The <code>red links</code> are just a convenient fiction. Red links don’t “do” anything special. They connect nodes within a 3-node.</li>
+<li>The <code>black links</code> connect 2-nodes or 3-nodes.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/r36sa.png"></p>
+<p>Consider what an LLRB might look like:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/a9pn7.png"></p>
+<p><strong>Note:</strong> Each 3-node becomes two nodes in the LLRB. So, <strong>in terms of height</strong>, an LLRB has no more than <code>~2 times</code> the height of its 2-3 tree.</p>
+<p>The worst case is that along the path each node is 3-node (<code>~2 times</code> in the worst case).</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/03uwd.png"></p>
+<p>Maximum comparison: $2H + 2$.</p>
+<p><strong>Some handy LLRB properties:</strong></p>
+<ul>
+<li>No node has <code>two red links</code> including the link to its parent (up) and links to children (down). Otherwise it’d be analogous to a 4-node.</li>
+<li><code>Every path</code> from root to a leaf has <code>same number of black links</code>, because 2-3 trees have the same number of links to every half (only number of red links vary). Therefore, LLRBs are balanced.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/t748k.png" alt="Do it again!"></p>
+<p><strong>Important Idea of Runtime:</strong> </p>
+<p>We know an LLRB’s height is no more than around double the height of its 2-3 tree. Since the 2-3 tree has the height that is logarithmic in the number of items, the LLRB is also logarithmic in the number of items.</p>
+<p><strong>One last question: Where do LLRBs come from?</strong></p>
+<p>It turns out we implement the LLRB insertion as follows:</p>
+<ul>
+<li>Insert as usual into a BST.</li>
+<li>Use <code>0 or more rotations</code> to maintain the 1-1 mapping.</li>
+</ul>
+<h3 id="Maintain-LLRB"><a href="#Maintain-LLRB" class="headerlink" title="Maintain LLRB"></a>Maintain LLRB</h3><p>Implementation of an LLRB is based on maintaining this 1-1 correspondence.</p>
+<ul>
+<li>When performing LLRB operations, <code>pretend</code> like you’re a 2-3 tree.</li>
+<li>Preservation of the correspondence will involve tree rotations.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/frxfu.png" alt="Horizontal Red Links"></p>
+<h4 id="Task-1-Insertion-Color"><a href="#Task-1-Insertion-Color" class="headerlink" title="Task #1: Insertion Color"></a>Task #1: Insertion Color</h4><p>Should we use a red or black link when inserting?</p>
+<p>Use <code>RED</code>! In 2-3 trees, new values are ALWAYS added to a leaf node (at first).</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/9vhu1.png"></p>
+<h4 id="Task-2-Insertion-on-the-Right"><a href="#Task-2-Insertion-on-the-Right" class="headerlink" title="Task #2: Insertion on the Right"></a>Task #2: Insertion on the Right</h4><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vtdoe.png"></p>
+<p>Right links aren’t allowed (because it is an LLRB). Use rotation. If we add one more node, we’ll have 2 red links.</p>
+<p><strong>New Rule:</strong> We need to represent the <code>temporary 4-nodes</code>.</p>
+<p>We will represent temporary <code>4-nodes</code> as BST nodes with <code>two red links</code>. This state is only temporary, so temporary violation of “left leaning” is OK.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vv4ut.png"></p>
+<h4 id="Task-3-Double-Insertion-on-the-Left"><a href="#Task-3-Double-Insertion-on-the-Left" class="headerlink" title="Task #3: Double Insertion on the Left"></a>Task #3: Double Insertion on the Left</h4><p>Suppose we have the LLRB below and insert $E$. We end up with the wrong representation for our temporary 4-node. We need to do some rotations.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/i7ft7.png" alt="rotateRight(Z)"></p>
+<h4 id="Task-4-Splitting-Temporary-4-Nodes"><a href="#Task-4-Splitting-Temporary-4-Nodes" class="headerlink" title="Task #4: Splitting Temporary 4-Nodes"></a>Task #4: Splitting Temporary 4-Nodes</h4><p>Suppose we have the LLRB below which includes a temporary 4-node. Flip the color of all edges touching B.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3e6s3.png" alt="Flip the colors of all edges touching B"></p>
+<h4 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h4><ul>
+<li>When inserting: <ul>
+<li>Use a <code>red link</code>.</li>
+</ul>
+</li>
+<li>If there is a right leaning “3-node”, it violates the <code>left-leaning violation</code>.<ul>
+<li><code>Rotate left</code> the appropriate node to fix.</li>
+</ul>
+</li>
+<li>If there are two consecutive left links, it violates the <code>incorrect 4-node violation</code>.<ul>
+<li><code>Rotate right</code> the appropriate node to fix.</li>
+</ul>
+</li>
+<li>If there are any nodes with two red children, we have a <code>temporary 4-node</code>.<ul>
+<li><code>Color flip</code> the node to emulate the split operation.</li>
+</ul>
+</li>
+</ul>
+<p>One last detail: <code>Cascading operations</code> (Just like 2-3 tree operations).</p>
+<ul>
+<li>It is possible that a rotation or flip operation will cause an additional violation that needs fixing.</li>
+</ul>
+<p>For example:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/39l4q.png" alt="Invalid representation"></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/6jwyr.png" alt="rotateLeft(B)"></p>
+<p><strong>Exercise:</strong></p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/vek6e.png" alt="Very interesting!"></p>
+<p>Answer: <a target="_blank" rel="noopener" href="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/3dr02.png">link (my drawing)</a></p>
+<p>What about inserting 1 through 7?</p>
+<p>Answer: <a target="_blank" rel="noopener" href="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/a0ogy.png">link (my drawing)</a></p>
+<h3 id="Implementation-1"><a href="#Implementation-1" class="headerlink" title="Implementation"></a>Implementation</h3><p>Insert is $O(\log{N})$:</p>
+<ul>
+<li>$O(\log{N})$: Add the new node.</li>
+<li>$O(\log{N})$: Rotation and color flip operations per insert.</li>
+</ul>
+<p>Turning a BST into an LLRB requires only 3 clever lines of code.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// How to represent RED?</span></span><br><span class="line"><span class="comment">//     |</span></span><br><span class="line"><span class="comment">//     y  (y&#x27;s color: BLACK)</span></span><br><span class="line"><span class="comment">//   // \</span></span><br><span class="line"><span class="comment">//  x    z  (x&#x27;s color: RED, z&#x27;s color: BLACK)</span></span><br><span class="line"><span class="keyword">private</span> Node <span class="title function_">put</span><span class="params">(Node h, Key key, Value val)</span> &#123;</span><br><span class="line">  <span class="comment">// Task #1: always insert RED</span></span><br><span class="line">  <span class="keyword">if</span> (h == <span class="literal">null</span>) &#123; <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Node</span>(key, val, RED); &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> key.compareTo(h.key);</span><br><span class="line">  <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    h.left = put(h.left, key, val);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    h.right = put(h.right, key, val);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    h.val = val;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* checking code should follow insertion code */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Invariant: h is not null</span></span><br><span class="line">  <span class="comment">// isRed(null) -&gt; return false</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Task #2: rotateLeft</span></span><br><span class="line">  <span class="keyword">if</span> (!isRed(h.left) &amp;&amp; isRed(h.right)) &#123;</span><br><span class="line">    h = rotateLeft(h);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Task #3: rotateRight</span></span><br><span class="line">  <span class="keyword">if</span> (h.left != <span class="literal">null</span> &amp;&amp; isRed(h.left) &amp;&amp; isRed(h.left.left)) &#123;</span><br><span class="line">    <span class="comment">// the first term in the condition is necessary, otherwise h.left.left may throw exception.</span></span><br><span class="line">    h = rotateRight(h);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Task #4: flipColors</span></span><br><span class="line">  <span class="keyword">if</span> (isRed(h.left) &amp;&amp; isRed(h.right)) &#123;</span><br><span class="line">    flipColors(h);</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * What about the link to h?</span></span><br><span class="line"><span class="comment">     * h.color is the color of the link to h&#x27;s parent</span></span><br><span class="line"><span class="comment">     * also set h.left.color &amp; h.right.color</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> h; <span class="comment">/* connect h to the prev */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Java’s <code>TreeMap</code> is a red black tree (not left-leaning).</p>
+<ul>
+<li>Maintain correspondence with 2-3-4 tree (not a 1-1 correspondence).</li>
+<li>Allow glue links on either side.</li>
+<li>More complex implementation, but significantly faster.</li>
+</ul>
+<p>There are many other types of search trees out there. Other self-balancing trees: <code>AVL trees</code>, <code>splay trees</code>, <code>treaps</code>, etc (at least hundreds of them).</p>
+<p>And there are other efficient ways to implement sets and maps entirely.</p>
+<ul>
+<li>Other linked structures: <code>Skip lists</code> are linked lists with express lanes.</li>
+<li>Other ideas entirely: <code>Hashing</code> is the most common alternative.</li>
+</ul>
+<p><strong>Skip List</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/skip-list/">Skip List | Set 1 (Introduction)</a></p>
+<p><code>Question</code>: Can we search in a sorted <code>linked list</code> (a sorted array can apply Binary Search because of random access) in better than $O(n)$ time?</p>
+<p><code>Idea</code>: Create multiple layers so that we can skip some nodes.</p>
+<p>The upper layer works as an <code>express lane</code> which connects only main outer stations, and the lower layer works as a <code>normal lane</code> which connects every station.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/gu7z4.jpg" alt="Skip List (Two layers)"></p>
+<p>Suppose we want to search for 50, we start from first node of “express lane” and keep moving on “express lane” till we find a node whose next is greater than 50. </p>
+<p>What is the time complexity with two layers?</p>
+<p>The worst case time complexity is number of nodes on “express lane” plus number of nodes in a segment (nodes between adjacent two “express lane” nodes). Suppose we have $n$ nodes on “normal lane”, $\sqrt{n}$ nodes on “express lane”, and we equally divide the “normal lane”, then there will be $\sqrt{n}$ nodes in every segment (interesting).</p>
+<p>Actually, $\sqrt{n}$ is the <code>optimal division</code> with two layers. With this arrangement, the number of nodes traversed for a search will be $O(\sqrt{n})$.</p>
+<p>Can we do better?</p>
+<p>The time complexity of skip lists can be reduced further by <code>adding more layers</code>. In fact, the time complexity of search, insert and delete can become $O(\log{n})$ in average case with $O(n)$ extra space.</p>
+<p><strong>Another Idea: Self Organizing List</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/self-organizing-list-set-1-introduction/">Self Organizing List | Set 1 (Introduction)</a></p>
+<p>Self Organizing List is to place more frequently accessed items close to head. There can be two possibilities:</p>
+<ul>
+<li><code>offline</code>: We know the complete search sequence in advance.</li>
+<li><code>online</code>: We don’t know the search sequence.</li>
+</ul>
+<p>In case of offline, we can put the nodes according to decreasing frequencies of search, which means that the element having maximum search count is put first.</p>
+<p>Following are different strategies used by Self Organizing Lists:</p>
+<ul>
+<li>Move-to-Front Method</li>
+<li>Count Method</li>
+<li>Transpose (Swap) Method</li>
+</ul>
+<p>The worst case time complexity of all methods is $O(n)$. In worst case, the searched element is always the last element in list. For average case analysis, we need probability distribution of search sequences which is not available many times.</p>
+<h2 id="AVL-Trees"><a href="#AVL-Trees" class="headerlink" title="AVL Trees"></a>AVL Trees</h2><p>They are self-balancing search trees.</p>
+<p><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/avl-tree-set-1-insertion/">AVL Tree | Set 1 (Insertion)</a></p>
+<p><strong>Definition:</strong> AVL (named after inventors Adelson-Velsky and Landis) tree is a self-balancing Binary Search Tree (BST) where the difference between heights of left and right subtrees cannot be more than one <code>for all nodes</code>.</p>
+<h3 id="Why-log-N"><a href="#Why-log-N" class="headerlink" title="Why log N?"></a>Why log N?</h3><p>The AVL tree always has at most 1-level difference between child subtrees for all nodes. If the difference is so big, you can imagine all nodes grow on the left side of a tree, which then increases the height of a tree.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/98tmw.png" alt="灵魂画手见笑了"></p>
+<p>Since the tree looks bushy with this constraint, the height of the AVL tree is $\log{N}$ and is balanced.</p>
+<p>Further, insertion takes $O(\log{N})$. Every time a node is added to the AVL tree, you need to update the height of the parents all the way up to the root. Since the tree is balanced, updating heights will traverse only the linked-list structure with the newly inserted node in the tail, which takes also $O(\log{N})$.</p>
+<p><a target="_blank" rel="noopener" href="https://people.csail.mit.edu/alinush/6.006-spring-2014/avl-height-proof.pdf">AVL trees height proof (optional)</a></p>
+<p><strong>AVL Rules</strong></p>
+<p><a target="_blank" rel="noopener" href="https://medium.com/@sarahzhao25/avl-trees-where-to-find-rotate-them-7b062e0a30f8">AVL Trees &amp; Where To Find (Rotate) Them</a></p>
+<ul>
+<li>A tree is height-balanced when the heights of its two subtrees differ by at most $1$.</li>
+<li>The <code>balance factor</code> is defined as an integer in the range of $\left[-1, 1\right]$ where $-1$ indicates that there is an extra node on the right subtree’s path of maximum depth.<ul>
+<li>$balance\ factor &#x3D; H_{left\ subtree} - H_{right\ subtree}$</li>
+</ul>
+</li>
+<li>A tree is considered <code>unbalanced</code> when the balance factor falls outside that range, say $-2$ or $2$.</li>
+</ul>
+<h3 id="Insert"><a href="#Insert" class="headerlink" title="Insert"></a>Insert</h3><h4 id="Idea"><a href="#Idea" class="headerlink" title="Idea"></a>Idea</h4><p>Let the newly inserted node be $w$:</p>
+<ul>
+<li>Perform standard BST insert for $w$.</li>
+<li>Starting from $w$, <code>travel up</code> and find the first unbalanced node, e.g. $z$ with the <code>child</code> $y$ and <code>grandchild</code> $x$ along the path.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// alphabet order: u v w x y z</span></span><br><span class="line">       z  -- height: <span class="number">3</span></span><br><span class="line">      / \</span><br><span class="line">     y   T4 -- height: <span class="number">2</span> &amp; <span class="number">0</span>, factor = <span class="number">2</span></span><br><span class="line">    / \</span><br><span class="line">   x   T3</span><br><span class="line">  / \</span><br><span class="line"> T1  T2</span><br></pre></td></tr></table></figure></li>
+<li>Re-balance the tree by <code>performing appropriate rotations</code> on the subtree rooted with $z$. There can be four possible cases that need to be handled:<ul>
+<li><strong>Left-Left (LL) &#x3D;&gt; Single Right Rotation</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// [z] is the unbalanced node.</span></span><br><span class="line">T1, T2, T3 and T4 are subtrees.</span><br><span class="line">      [z]                                     y </span><br><span class="line">      / \                                   /    \</span><br><span class="line">     y   T4      Right Rotate [z]          x      z</span><br><span class="line">    / \          - - - - - - - - -&gt;      /  \    /  \</span><br><span class="line">   x   T3                               T1  T2  T3  T4</span><br><span class="line">  / \</span><br><span class="line">T1   T2</span><br></pre></td></tr></table></figure>
+<img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/n2n58.jpg"><br>Note: The example uses difference between left-subtree’s height and right-subtree’s height.</li>
+<li><strong>Left-Right (LR) &#x3D;&gt; Double Left-Right Rotation</strong><br>Left Rotate <code>y</code> (pivot) &#x3D;&gt; Change it to Left-Left case<br>Right Rotate <code>z</code> (root)<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// [z] is the unbalanced node.</span></span><br><span class="line">     z                             [z]                         x</span><br><span class="line">    / \                           /   \                       /  \ </span><br><span class="line">  [y]  T4  Left Rotate [y]       x    T4  Right Rotate [z]   y     z</span><br><span class="line">  / \      - - - - - - - - &gt;    / \       - - - - - - - -&gt;  / \   / \</span><br><span class="line">T1   x                         y  T3                      T1  T2 T3  T4</span><br><span class="line">    / \                       / \</span><br><span class="line">  T2   T3                    T1  T2</span><br></pre></td></tr></table></figure>
+<img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/t1g7z.jpg"></li>
+<li><strong>Right-Right (RR) &#x3D;&gt; Single Right Rotation</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">  [z]                             y</span><br><span class="line"> /   \                          /   \ </span><br><span class="line">T1    y     Left Rotate [z]    z      x</span><br><span class="line">    /   \   - - - - - - - -&gt;  / \    / \</span><br><span class="line">   T2    x                   T1 T2  T3  T4</span><br><span class="line">        / \</span><br><span class="line">      T3   T4</span><br></pre></td></tr></table></figure>
+<img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qmgo1.jpg"></li>
+<li><strong>Right-Left (RL) &#x3D;&gt; Double Right-Left Rotation</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">   z                           [z]                            x</span><br><span class="line">  / \                          / \                          /   \ </span><br><span class="line">T1  [y]  Right Rotate [y]    T1   x      Left Rotate [z]   z      y</span><br><span class="line">    / \  - - - - - - - - -&gt;      /  \   - - - - - - - -&gt;  / \    / \</span><br><span class="line">   x   T4                       T2   y                  T1  T2  T3  T4</span><br><span class="line">  / \                               /  \</span><br><span class="line">T2   T3                            T3   T4</span><br></pre></td></tr></table></figure>
+<img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/31ze4.jpg"></li>
+</ul>
+</li>
+</ul>
+<h4 id="Implementation-2"><a href="#Implementation-2" class="headerlink" title="Implementation"></a>Implementation</h4><ul>
+<li>Perform the normal BST insertion.</li>
+<li>The current node must be one of the <code>ancestors</code> of the newly inserted node. Update the height of the current node.</li>
+<li>Get the <code>balance factor</code> (left subtree height - right subtree height) of the current node.<ul>
+<li>If <code>balance factor</code> is greater than $1$, the current node is unbalanced and we have either LL or LR case.<ul>
+<li>The <code>balance factor</code> of the left subtree &lt; 0 &#x3D;&gt; LR</li>
+<li>Or, compare the newly inserted key with the key in left subtree root.</li>
+</ul>
+</li>
+<li>If <code>balance factor</code> is less than $-1$, the current node is unbalanced and we have either RR or RL case.<ul>
+<li>The <code>balance factor</code> of the right subtree &gt; 0 &#x3D;&gt; RL</li>
+<li>Or, Compare the newly inserted key with the key in right subtree root.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/fcjdy.png"></p>
+<h4 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h4><p>Reference: <a target="_blank" rel="noopener" href="https://algs4.cs.princeton.edu/code/edu/princeton/cs/algs4/AVLTreeST.java.html">algs4 - AVLTreeST.java</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/junhaowww/cs61b-sp18/blob/master/classcode/w4/AVLTree.java">AVLTree.java</a></p>
+<ul>
+<li><p>Insert &#x2F; Put</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">put</span><span class="params">(Key key, Value val)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (key == <span class="literal">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;first argument to put() is null&quot;</span>);</span><br><span class="line">  <span class="keyword">if</span> (val == <span class="literal">null</span>) &#123;</span><br><span class="line">    delete(key); <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  root = put(root, key, val);</span><br><span class="line">  <span class="keyword">assert</span> <span class="title function_">check</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Node <span class="title function_">put</span><span class="params">(Node x, Key key, Value val)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Node</span>(key, val, <span class="number">0</span>, <span class="number">1</span>); <span class="comment">// with height 0 and size 1</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> key.compareTo(x.key);</span><br><span class="line">  <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    x.left = put(x.left, key, val);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    x.right = put(x.right, key, val);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">/* found &amp; update */</span></span><br><span class="line">    x.val = val;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">  &#125;</span><br><span class="line">  x.size = <span class="number">1</span> + size(x.left) + size(x.right);</span><br><span class="line">  x.height = <span class="number">1</span> + Math.max(height(x.left), height(x.right));</span><br><span class="line">  <span class="keyword">return</span> balance(x); <span class="comment">// the magic is here</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Balancing Methods:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Node <span class="title function_">balance</span><span class="params">(Node x)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">bf</span> <span class="operator">=</span> balanceFactor(x);</span><br><span class="line">  <span class="comment">// balanced</span></span><br><span class="line">  <span class="keyword">if</span> (bf &lt;= <span class="number">1</span> || bf &gt;= -<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// LL, LR</span></span><br><span class="line">  <span class="keyword">if</span> (bf(x) &gt; <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (bf(x.left) &lt; <span class="number">0</span>) &#123; <span class="comment">// or if (key &gt; x.left.key)</span></span><br><span class="line">      x.left = rotateLeft(x.left); <span class="comment">// LR</span></span><br><span class="line">    &#125;</span><br><span class="line">    x = rotateRight(x); <span class="comment">// LL</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// RR, RL</span></span><br><span class="line">  <span class="keyword">if</span> (bf(x) &lt; -<span class="number">1</span>) &#123;</span><br><span class="line">   <span class="keyword">if</span> (bf(x.right) &gt; <span class="number">0</span>) &#123; <span class="comment">// or if (key &lt; x.right.key)</span></span><br><span class="line">      x.right = rotateRight(x.right); <span class="comment">// RL</span></span><br><span class="line">    &#125;</span><br><span class="line">    x = rotateLeft(x); <span class="comment">// RR</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">balanceFactor</span><span class="params">(Node x)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> height(x.left) - height(x.right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Rotation</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Node <span class="title function_">rotateRight</span><span class="params">(Node x)</span> &#123;</span><br><span class="line">  <span class="comment">// notice the order</span></span><br><span class="line">  <span class="type">Node</span> <span class="variable">h</span> <span class="operator">=</span> x.left; <span class="comment">// new boss</span></span><br><span class="line">  x.left = h.right;</span><br><span class="line">  h.right = x;</span><br><span class="line">  <span class="comment">// update sizes</span></span><br><span class="line">  h.size = x.size;  <span class="comment">// new boss</span></span><br><span class="line">  x.size = <span class="number">1</span> + size(x.left) + size(x.right);</span><br><span class="line">  <span class="comment">// update heights</span></span><br><span class="line">  x.height = <span class="number">1</span> + Math.max(height(x.left), height(x.right));</span><br><span class="line">  h.height = <span class="number">1</span> + Math.max(height(h.left), height(h.right));</span><br><span class="line">  <span class="keyword">return</span> h;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Node <span class="title function_">rotateLeft</span><span class="params">(Node x)</span> &#123;</span><br><span class="line">  <span class="comment">// notice the order</span></span><br><span class="line">  <span class="type">Node</span> <span class="variable">h</span> <span class="operator">=</span> x.right; <span class="comment">// new boss</span></span><br><span class="line">  x.right = h.left;</span><br><span class="line">  h.left = x;</span><br><span class="line">  <span class="comment">// update sizes</span></span><br><span class="line">  h.size = x.size; <span class="comment">// new boss</span></span><br><span class="line">  x.size = <span class="number">1</span> + size(x.left) + size(x.right);</span><br><span class="line">  <span class="comment">// update heights;</span></span><br><span class="line">  x.height = <span class="number">1</span> + Math.max(height(x.left), height(x.right));</span><br><span class="line">  h.height = <span class="number">1</span> + Math.max(height(h.left), height(h.right));</span><br><span class="line">  <span class="keyword">return</span> h;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="AVL-vs-Red-Black"><a href="#AVL-vs-Red-Black" class="headerlink" title="AVL vs. Red Black"></a>AVL vs. Red Black</h3><p>The AVL tree and other self-balancing search trees like Red Black trees are useful to get all basic operations done in $O(\log{N})$ time. The AVL trees are <code>more balanced</code> compared to Red Black trees, but they may <code>cause more rotations</code> during insertion and deletion. </p>
+<ul>
+<li>So if your application involves many frequent insertions and deletions, then <code>Red Black trees</code> should be preferred. </li>
+<li>And if the insertions and deletions are less frequent and search is the more frequent operation, then <code>AVL trees</code> should be preferred over Red Black trees.</li>
+</ul>
+<h3 id="Delete"><a href="#Delete" class="headerlink" title="Delete"></a>Delete</h3><p>Similar processes to insertion. But note that, unlike insertion, fixing the node $z$ (the node that is unbalanced) won’t fix the complete AVL tree. After fixing $z$, we may have to fix ancestors of $z$ as well. Thus, we must <code>continue to trace</code> the path until we reach the root.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Node <span class="title function_">delete</span><span class="params">(Node x, Key key)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> key.compareTo(x.key);</span><br><span class="line">  <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    x.left = delete(x.left, key);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    x.right = delete(x.right, key);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (x.left == <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> x.right; <span class="comment">/* x.right might be null too */</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (x.right == <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> x.left;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="type">Node</span> <span class="variable">y</span> <span class="operator">=</span> x;</span><br><span class="line">      x = min(y.right);</span><br><span class="line">      x.left = y.left;</span><br><span class="line">      x.right = deleteMin(y.right);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  x.size = <span class="number">1</span> + size(x.left) + size(x.right);</span><br><span class="line">  x.height = <span class="number">1</span> + Math.max(height(x.left), height(x.right));</span><br><span class="line">  <span class="keyword">return</span> balance(x); <span class="comment">// magic here</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h2 id="Splay-Trees"><a href="#Splay-Trees" class="headerlink" title="Splay Trees"></a>Splay Trees</h2><p><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/splay-tree-set-1-insert/">Splay Tree | Set 1 (Search)</a></p>
+<p>They are self-balancing search trees.</p>
+<h3 id="Main-Idea"><a href="#Main-Idea" class="headerlink" title="Main Idea"></a>Main Idea</h3><p><code>Main Idea</code>: Bring the recently accessed item to root of the tree, which makes the recently searched item to be accessible in $O(1)$ time if accessed again.</p>
+<p>In other words, the idea is to use locality of reference (In a typical application, 80% of the access are to 20% of the items).</p>
+<p>All splay tree operations run in $O(\log{N})$ time on average, where $N$ is the number of entries in the tree. Any single operation can take $\Theta(N)$ time in the worst case.</p>
+<h3 id="Search"><a href="#Search" class="headerlink" title="Search"></a>Search</h3><p>The search operation in Splay tree does the standard BST search, in addition to search, it also <code>splays</code> (move a node to the root).</p>
+<ul>
+<li>If the search is successful, then the node that is found is <code>splayed and becomes the new root</code>. </li>
+<li>Else (not successful) the <code>last node</code> accessed prior to reaching the <code>null</code> is splayed and becomes the new root.</li>
+</ul>
+<p><strong>3 Cases:</strong></p>
+<ul>
+<li>Node is root. Simply return.</li>
+<li><strong>Zig:</strong> Node is child of root (the node has no grandparent). Do rotation.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">     y                             x</span><br><span class="line">    / \    Zig (Right Rotation)   /  \</span><br><span class="line">   x   T3  – - – - – - – - - -&gt;  T1   y </span><br><span class="line">  / \      &lt; - - - - - - - - -       / \</span><br><span class="line">T1  T2     <span class="title function_">Zag</span> <span class="params">(Left Rotation)</span>      T2   T3</span><br></pre></td></tr></table></figure></li>
+<li>Node has both parent and grandparent. There can be following subcases:<ul>
+<li>a) <code>Zig-Zig</code> and <code>Zag-Zag</code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Zig-Zig (Left-Left Case):</span><br><span class="line">       G                        P                           X       </span><br><span class="line">      / \                     /   \                        / \      </span><br><span class="line">     P  T4   <span class="title function_">rightRotate</span><span class="params">(G)</span>  X     G     <span class="title function_">rightRotate</span><span class="params">(P)</span>  T1   P     </span><br><span class="line">    / \      ============&gt;  / \   / \    ============&gt;       / \    </span><br><span class="line">   X  T3                   T1 T2 T3 T4                      T2  G</span><br><span class="line">  / \                                                          / \ </span><br><span class="line">T1  T2                                                        T3  T4 </span><br><span class="line"></span><br><span class="line">Zag-Zag (Right-Right Case):</span><br><span class="line">  G                          P                           X       </span><br><span class="line"> /  \                      /   \                        / \      </span><br><span class="line">T1   P     <span class="title function_">leftRotate</span><span class="params">(G)</span>  G     X     <span class="title function_">leftRotate</span><span class="params">(P)</span>    P   T4</span><br><span class="line">    / \    ============&gt; / \   / \    ============&gt;   / \   </span><br><span class="line">  T2    X               T1 T2 T3 T4                  G   T3</span><br><span class="line">       / \                                          / \ </span><br><span class="line">      T3 T4                                        T1  T2</span><br></pre></td></tr></table></figure></li>
+<li>b) <code>Zig-Zag</code> and <code>Zag-Zig</code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Zig-Zag (Left-Right Case):</span><br><span class="line">      G                        G                            X       </span><br><span class="line">     / \                     /   \                        /    \      </span><br><span class="line">    P   T4  <span class="title function_">leftRotate</span><span class="params">(P)</span>   X     T4    <span class="title function_">rightRotate</span><span class="params">(G)</span>   P      G     </span><br><span class="line">  /  \      ============&gt;  / \          ============&gt;   / \    / \    </span><br><span class="line">  T1   X                   P  T3                       T1  T2 T3  T4 </span><br><span class="line">      / \                 / \                                       </span><br><span class="line">    T2  T3              T1   T2                                     </span><br><span class="line"></span><br><span class="line">Zag-Zig (Right-Left Case):</span><br><span class="line">  G                          G                           X       </span><br><span class="line"> /  \                      /  \                        /   \      </span><br><span class="line">T1   P    <span class="title function_">rightRotate</span><span class="params">(P)</span>  T1   X     <span class="title function_">leftRotate</span><span class="params">(P)</span>    G     P</span><br><span class="line">    / \   =============&gt;      / \    ============&gt;   / \   / \   </span><br><span class="line">   X  T4                    T2   P                 T1  T2 T3  T4</span><br><span class="line">  / \                           / \                </span><br><span class="line">T2  T3                        T3  T4  </span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<p>Example:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">         <span class="number">100</span>                      <span class="number">100</span>                       [<span class="number">20</span>]</span><br><span class="line">         /  \                    /   \                        \ </span><br><span class="line">       <span class="number">50</span>   <span class="number">200</span>                <span class="number">50</span>    <span class="number">200</span>                      <span class="number">50</span></span><br><span class="line">      /          search(<span class="number">20</span>)    /          search(<span class="number">20</span>)         /  \  </span><br><span class="line">     <span class="number">40</span>          ======&gt;     [<span class="number">20</span>]         ========&gt;         <span class="number">30</span>   <span class="number">100</span></span><br><span class="line">    /            <span class="number">1.</span> Zig-Zig    \          <span class="number">2.</span> Zig-Zig         \     \</span><br><span class="line">   <span class="number">30</span>               at <span class="number">40</span>       <span class="number">30</span>            at <span class="number">100</span>         <span class="number">40</span>    <span class="number">200</span>  </span><br><span class="line">  /                               \     </span><br><span class="line">[<span class="number">20</span>]                              <span class="number">40</span></span><br></pre></td></tr></table></figure>
+
+<p>The important thing to note is, the search or splay operation not only brings the searched key to root, but also balances the tree.</p>
+<h3 id="Insert-1"><a href="#Insert-1" class="headerlink" title="Insert"></a>Insert</h3><p>Insert a new node (e.g. k):</p>
+<ul>
+<li><code>search(k)</code> &#x3D;&gt; splay the last node</li>
+<li><code>insert(k)</code> &#x3D;&gt; replace the root</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// k = 25</span></span><br><span class="line">          <span class="number">100</span>                  [<span class="number">20</span>]                             <span class="number">25</span>     </span><br><span class="line">          /  \                   \                             /  \</span><br><span class="line">        <span class="number">50</span>   <span class="number">200</span>                  <span class="number">50</span>                          <span class="number">20</span>   <span class="number">50</span> </span><br><span class="line">       /          insert(<span class="number">25</span>)     /  \        insert(<span class="number">25</span>)           /  \  </span><br><span class="line">      <span class="number">40</span>          ======&gt;      <span class="number">30</span>   <span class="number">100</span>      ========&gt;           <span class="number">30</span>  <span class="number">100</span>    </span><br><span class="line">     /          <span class="number">1.</span> Splay(<span class="number">25</span>)    \     \      <span class="number">2.</span> insert <span class="number">25</span>         \    \</span><br><span class="line">    <span class="number">30</span>                          <span class="number">40</span>    <span class="number">200</span>                         <span class="number">40</span>   <span class="number">200</span>   </span><br><span class="line">   /                                                          </span><br><span class="line"> [<span class="number">20</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong> <code>20</code> is the last node, so it should be promoted before inserting <code>25</code>.</p>
+<h2 id="ScapeGoat-Trees"><a href="#ScapeGoat-Trees" class="headerlink" title="ScapeGoat Trees"></a>ScapeGoat Trees</h2><p><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/scapegoat-tree-set-1-introduction-insertion/">ScapeGoat Tree | Set 1 (Introduction and Insertion)</a></p>
+<p><strong>Idea:</strong> Weight Balanced.</p>
+<p>Search time is $O(\log{N})$ in worst case. Time taken by deletion and insertion is amortized $O(\log{N})$</p>
+<p>The balancing idea is to make sure that nodes are $\alpha$ size balanced. Α size balanced means sizes of left and right subtrees are at most $\alpha \times N_{\text{size of node}}$. </p>
+<p>The idea is based on the fact that if a node is a <code>weight balanced</code>, then it is also <code>height balanced</code>:</p>
+<p>$$height &#x3D; \log_{\frac{1}{\alpha}}{(size)} + 1$$</p>
+<p>Unlike other self-balancing BSTs, a ScapeGoat tree doesn’t require extra space per node. For example, Red Black Tree nodes are required to have color fields.</p>
+<h2 id="Treaps"><a href="#Treaps" class="headerlink" title="Treaps"></a>Treaps</h2><p><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/treap-a-randomized-binary-search-tree/">Treap (A Randomized Binary Search Tree)</a></p>
+<p>Treap is a randomized binary search tree. Like Red-Black and AVL Trees, Treap is a Balanced Binary Search Tree, but <code>not guaranteed</code> to have height as $O(\log{N})$. The idea is to use <code>Randomization</code> and <code>Binary Heap property</code> to <strong>maintain balance with high probability</strong>. The expected time complexity of search, insert and delete is $O(\log{N})$.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/qaks5.jpg" alt="Treap"></p>
+<p><a target="_blank" rel="noopener" href="https://cp-algorithms.com/data_structures/treap.html#toc-tgt-0">More about Treap</a></p>
+<p><code>Priorities</code> allow to <code>uniquely</code> specify the tree that will be constructed (of course, it does not depend on the order in which values are added), which can be proved using the corresponding theorem.</p>
+<p>Obviously, if you <code>choose the priorities randomly</code>, you will get non-degenerate trees on average, which will ensure $O(\log{N})$ complexity for the main operations.</p>
+<p><strong>Insert: (e.g. x)</strong></p>
+<ul>
+<li>Create new node with key equals to $x$ and value equals to a <code>random</code> value.</li>
+<li>Perform standard BST insert.</li>
+<li>Use rotations to make sure that inserted node’s priority follows <code>max heap property</code>.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/zp0vu.jpg" alt="Example: insert(80)"></p>
+<p><strong>Delete: (e.g. x)</strong></p>
+<ul>
+<li>If node to be deleted is a leaf, delete it.</li>
+<li>Else replace node’s priority with <code>minus infinite</code> (-INF), and do appropriate rotations to bring the node down to a leaf.</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/f5myq.jpg" alt="Example: delete(50)"></p>
+<h2 id="Handle-Duplicate-Keys"><a href="#Handle-Duplicate-Keys" class="headerlink" title="Handle Duplicate Keys"></a>Handle Duplicate Keys</h2><p>A <code>simple solution</code> is to allow same keys on right side (also left side).</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">     <span class="number">12</span></span><br><span class="line">    /  \</span><br><span class="line">  <span class="number">10</span>   <span class="number">20</span></span><br><span class="line"> /  \   /</span><br><span class="line"><span class="number">9</span>   <span class="number">11</span> <span class="number">12</span> </span><br><span class="line">   /     \</span><br><span class="line">  <span class="number">10</span>      <span class="number">12</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Height may increase very fast.</li>
+</ul>
+<p>A <code>better solution</code> is to augment every tree node to <code>store count</code> together with regular fields like key, left and right pointers.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">       <span class="number">12</span>(<span class="number">3</span>)</span><br><span class="line">      /     \</span><br><span class="line">    <span class="number">10</span>(<span class="number">2</span>)   <span class="number">20</span>(<span class="number">1</span>)</span><br><span class="line">   /    \       </span><br><span class="line"><span class="number">9</span>(<span class="number">1</span>)   <span class="number">11</span>(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Height of tree is small irrespective of number of duplicates.</li>
+<li>Search, Insert, and Delete become easier to do. We can use same algorithms with small modification.</li>
+</ul>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

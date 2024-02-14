@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Generally, we prefer to write recursive solutions for tree, linked list, backtracking, and DFS&#x2F;BFS problems since the structure of these problems could be recursively defined.  Recursion is good">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A General Approach to Convert Recursion to Iteration">
+<meta property="og:url" content="https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Generally, we prefer to write recursive solutions for tree, linked list, backtracking, and DFS&#x2F;BFS problems since the structure of these problems could be recursively defined.  Recursion is good">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7zcka.jpg">
+<meta property="article:published_time" content="2019-09-21T18:33:03.000Z">
+<meta property="article:modified_time" content="2024-02-13T15:50:28.818Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="Recursion">
+<meta property="article:tag" content="Iteration">
+<meta property="article:tag" content="Stack">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7zcka.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>A General Approach to Convert Recursion to Iteration</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Posts</a></li><!--
+     --><!--
+       --><li><a href="/studynotes/">Notes</a></li><!--
+     --><!--
+       --><li><a href="/lc/">Leetcode</a></li><!--
+     --><!--
+       --><li><a href="/games/">Games</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">Me</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2019/11/12/049_Understand%20Interface%20and%20Abstract%20Class%20in%20Java/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2019/02/26/047_%E6%B3%A8%E6%84%8F%20Java%20%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E8%8C%83%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%8F%98%E6%80%A7%EF%BC%88Covariant%EF%BC%89/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/&text=A General Approach to Convert Recursion to Iteration"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/&title=A General Approach to Convert Recursion to Iteration"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/&is_video=false&description=A General Approach to Convert Recursion to Iteration"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=A General Approach to Convert Recursion to Iteration&body=Check out this article: https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/&title=A General Approach to Convert Recursion to Iteration"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/&title=A General Approach to Convert Recursion to Iteration"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/&title=A General Approach to Convert Recursion to Iteration"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/&title=A General Approach to Convert Recursion to Iteration"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/&name=A General Approach to Convert Recursion to Iteration&description=&lt;p&gt;Generally, we prefer to write recursive solutions for tree, linked list, backtracking, and DFS&amp;#x2F;BFS problems since the structure of these problems could be recursively defined.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Recursion is good choice for search, enumeration, and divide-and-conquer. — EPI&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Thus, the steps that lie in the recursive function correspond to the way we think of the problem. Later, we will see how the code of preorder traversal works and then convert it to an iterative version, and finally to an optimized iterative version that we usually write if an iterative version is required.&lt;/p&gt;
+&lt;figure class=&#34;highlight java&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;// Recursive version (Easy to Read)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;keyword&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;title function_&#34;&gt;preorder&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(TreeNode root)&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;keyword&#34;&gt;if&lt;/span&gt; (root == &lt;span class=&#34;literal&#34;&gt;null&lt;/span&gt;) &lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt;; &lt;span class=&#34;comment&#34;&gt;// base case&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  foo(root); &lt;span class=&#34;comment&#34;&gt;// print or ...&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  preorder(root.left);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  preorder(root.right);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/&t=A General Approach to Convert Recursion to Iteration"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#No-Stack-Tail-Recursion"><span class="toc-number">1.</span> <span class="toc-text">No Stack (Tail-Recursion)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-Return-Value-Tree-Traversal-by-Me"><span class="toc-number">2.</span> <span class="toc-text">No Return Value (Tree Traversal), by Me</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#General-Conversion"><span class="toc-number">2.1.</span> <span class="toc-text">General Conversion</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Further-Optimization"><span class="toc-number">2.2.</span> <span class="toc-text">Further Optimization</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#With-Return-Value-Symmetric-Tree-by-Elon-Xu"><span class="toc-number">3.</span> <span class="toc-text">With Return Value (Symmetric Tree), by Elon Xu</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        A General Approach to Convert Recursion to Iteration
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Junhao Wang</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-09-21T18:33:03.000Z" class="dt-published" itemprop="datePublished">2019-09-21</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Anything/">Anything</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Iteration/" rel="tag">Iteration</a>, <a class="p-category" href="/tags/Recursion/" rel="tag">Recursion</a>, <a class="p-category" href="/tags/Stack/" rel="tag">Stack</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>Generally, we prefer to write recursive solutions for tree, linked list, backtracking, and DFS&#x2F;BFS problems since the structure of these problems could be recursively defined.</p>
+<blockquote>
+<p>Recursion is good choice for search, enumeration, and divide-and-conquer. — EPI</p>
+</blockquote>
+<p>Thus, the steps that lie in the recursive function correspond to the way we think of the problem. Later, we will see how the code of preorder traversal works and then convert it to an iterative version, and finally to an optimized iterative version that we usually write if an iterative version is required.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Recursive version (Easy to Read)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">preorder</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) <span class="keyword">return</span>; <span class="comment">// base case</span></span><br><span class="line">  foo(root); <span class="comment">// print or ...</span></span><br><span class="line">  preorder(root.left);</span><br><span class="line">  preorder(root.right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h2 id="No-Stack-Tail-Recursion"><a href="#No-Stack-Tail-Recursion" class="headerlink" title="No Stack (Tail-Recursion)"></a>No Stack (Tail-Recursion)</h2><p>In the past, many people told me that every recursive function could be rewritten as an iterative function. It is true, but when I start writing the code I usually get confused of storing parameters and intermediate return values.</p>
+<p>As for the intermediate return values, I learned that recursion can be easily removed from a <strong>tail-recursive</strong> program by using a while-loop—no stack is needed (from EPI). Let’s take factorial computation as an example.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Not a tail-recursive version</span></span><br><span class="line"><span class="comment">// returns n * (n - 1) * ... * 1</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">factorial</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (n == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">return</span> n * factorial(n - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The above function is not tail-recursive because we store <code>n</code> in the stack frame along the way. Its value would be used after we get the returned value from <code>factorial(n - 1)</code>.</p>
+<p>One common way of converting a recursive function to a tail-recursive function is <strong>by passing the values we would have stored by parameters</strong>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(factorial(<span class="number">10</span>, <span class="number">1</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// A tail-recursive version</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">factorial</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> result)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (n == <span class="number">1</span>) <span class="keyword">return</span> result;</span><br><span class="line">  result *= n;</span><br><span class="line">  <span class="keyword">return</span> factorial(n - <span class="number">1</span>, result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>We can also implement it iteratively without much effort.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">factorial</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (n &gt;= <span class="number">1</span>) &#123;</span><br><span class="line">    result *= n;</span><br><span class="line">    n -= <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="No-Return-Value-Tree-Traversal-by-Me"><a href="#No-Return-Value-Tree-Traversal-by-Me" class="headerlink" title="No Return Value (Tree Traversal), by Me"></a>No Return Value (Tree Traversal), by Me</h2><h3 id="General-Conversion"><a href="#General-Conversion" class="headerlink" title="General Conversion"></a>General Conversion</h3><p>Now let’s go through the example of tree preorder traversal to illustrate how we convert a recursive function to an iterative one.</p>
+<p>First, we need to <code>mark states</code> in the recursive function. We mark states at the beginning of the function and after each call of recursive calls.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">preorder</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="comment">// S1: begin</span></span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) <span class="keyword">return</span>; <span class="comment">// base case</span></span><br><span class="line">  foo(root); <span class="comment">// print or ...</span></span><br><span class="line">  preorder(root.left);</span><br><span class="line">  <span class="comment">// S2: left done</span></span><br><span class="line">  preorder(root.right);</span><br><span class="line">  <span class="comment">// S3: finish</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Since we have one parameter, two stacks are required. The extra one is for states. In the while loop, we handle each state respectively. Here is the code:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">preorderItr</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="comment">// Init</span></span><br><span class="line">  Stack&lt;TreeNode&gt; nodeST = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">  Stack&lt;String&gt; stateST = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (nodeST.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// pop a node</span></span><br><span class="line">    <span class="type">TreeNode</span> <span class="variable">x</span> <span class="operator">=</span> nodeST.pop(); <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> stateST.pop();</span><br><span class="line">    <span class="comment">// handle each state respectively</span></span><br><span class="line">    <span class="keyword">if</span> (s.equals(<span class="string">&quot;S1: begin&quot;</span>)) &#123;</span><br><span class="line">      <span class="keyword">if</span> (x == <span class="literal">null</span>) &#123; <span class="comment">// base case</span></span><br><span class="line">        <span class="keyword">continue</span>; <span class="comment">// return --&gt; continue</span></span><br><span class="line">      &#125;</span><br><span class="line">      foo(root); <span class="comment">// print or ...</span></span><br><span class="line">      nodeST.push(x); stateST.push(<span class="string">&quot;S2: left done&quot;</span>);</span><br><span class="line">      nodeST.push(x.left); stateST.push(<span class="string">&quot;S1: begin&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (s.equals(<span class="string">&quot;S2: left done&quot;</span>)) &#123;</span><br><span class="line">      nodeST.push(x); stateST.push(<span class="string">&quot;S3: finish&quot;</span>);</span><br><span class="line">      nodeST.push(x.right); stateST.push(<span class="string">&quot;S1: begin&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// State 3: finish</span></span><br><span class="line">      <span class="comment">// at the end of the function, so do nothing</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The code is quite long, but it actually looks well-organized. After “stressful” examination, you might wonder how the two lines of code below work:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nodeST.push(x); stateST.push(<span class="string">&quot;S2: left done&quot;</span>);</span><br><span class="line">nodeST.push(x.left); stateST.push(<span class="string">&quot;S1: begin&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>Here is the idea. Before doing a recursive call, we should do two things:</p>
+<ol>
+<li>Save the current state (<code>stateST.push(S2: left done)</code>)</li>
+<li>Push the new state (<code>stateST.push(S1: begin)</code>)</li>
+</ol>
+<p>If you think it is difficult to understand how it works, consider the fact that the state helps direct us to the specific code segment in the loop. For example, the new state always goes with the state <code>S1: begin</code> because we will do it from the beginning of the function.</p>
+<p><strong>Note:</strong> The order matters! Since stack is an <code>FILO</code> structure, we should push the current state such that we could retrieve it later after we handle the new state.</p>
+<p>By now, you should have seen that the iterative version that works well. However, it looks pretty wordy to some extent. In the next section, you will see how it is converted to a version that we often encounter.</p>
+<h3 id="Further-Optimization"><a href="#Further-Optimization" class="headerlink" title="Further Optimization"></a>Further Optimization</h3><p>The iterative version we usually encounter is as follows:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">preorderItr</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="comment">// Init</span></span><br><span class="line">  Stack&lt;TreeNode&gt; nodeST = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">while</span> (nodeST.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// pop a node</span></span><br><span class="line">    <span class="type">TreeNode</span> <span class="variable">x</span> <span class="operator">=</span> nodeST.pop();</span><br><span class="line">    <span class="keyword">if</span> (x == <span class="literal">null</span>) &#123; <span class="comment">// base case</span></span><br><span class="line">      <span class="keyword">continue</span>; <span class="comment">// return --&gt; continue</span></span><br><span class="line">    &#125;</span><br><span class="line">    foo(root); <span class="comment">// print or ...</span></span><br><span class="line">    nodeST.push(x.right);</span><br><span class="line">    nodeST.push(x.left);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In fact, we will modify the wordy code in the previous section and get the above code.</p>
+<p>First, we can safely remove the last state <code>S3: finish</code> because there is no code inside the <code>else</code> branch. The statement <code>nodeST.push(x); stateST.push(&quot;S3: finish&quot;);</code> is also removed. Think about it why.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">while</span> (nodeST.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">  <span class="comment">// pop a node</span></span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">x</span> <span class="operator">=</span> nodeST.pop(); <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> stateST.pop();</span><br><span class="line">  <span class="comment">// handle each state respectively</span></span><br><span class="line">  <span class="keyword">if</span> (s.equals(<span class="string">&quot;S1: begin&quot;</span>)) &#123;</span><br><span class="line">    <span class="keyword">if</span> (x == <span class="literal">null</span>) &#123; <span class="comment">// base case</span></span><br><span class="line">      <span class="keyword">continue</span>; <span class="comment">// return --&gt; continue</span></span><br><span class="line">    &#125;</span><br><span class="line">    foo(root); <span class="comment">// print or ...</span></span><br><span class="line">    nodeST.push(x); stateST.push(<span class="string">&quot;S2: left done&quot;</span>); <span class="comment">// A</span></span><br><span class="line">    nodeST.push(x.left); stateST.push(<span class="string">&quot;S1: begin&quot;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">// S2: left done</span></span><br><span class="line">    nodeST.push(x.right); stateST.push(<span class="string">&quot;S1: begin&quot;</span>); <span class="comment">// B</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+
+<p>Then it comes to the most interesting part. We will delete <code>A</code> and put <code>B</code> into that spot. As mentioned before, we could safely remove the empty <code>else</code> if there is no code in it. <strong>Why?</strong></p>
+<p>Try to ponder it in this way. The intention of <code>A</code> is to execute the code in <code>S2: left done</code>. We can put the job in <code>B</code> over here. Notice that by doing <code>A</code> we actually create a signal that notifies us to do the job in <code>B</code>, which also creates a signal <code>S1: begin</code> inside the stack to notify some future execution. Therefore, we can cut the indirect process and integrate two parts. Here is the code after the modification.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">while</span> (nodeST.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">  <span class="comment">// pop a node</span></span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">x</span> <span class="operator">=</span> nodeST.pop(); <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> stateST.pop();</span><br><span class="line">  <span class="comment">// handle each state respectively</span></span><br><span class="line">  <span class="keyword">if</span> (s.equals(<span class="string">&quot;S1: begin&quot;</span>)) &#123;</span><br><span class="line">    <span class="keyword">if</span> (x == <span class="literal">null</span>) &#123; <span class="comment">// base case</span></span><br><span class="line">      <span class="keyword">continue</span>; <span class="comment">// return --&gt; continue</span></span><br><span class="line">    &#125;</span><br><span class="line">    foo(root); <span class="comment">// print or ...</span></span><br><span class="line">    nodeST.push(x.right); stateST.push(<span class="string">&quot;S1: begin&quot;</span>); <span class="comment">// B</span></span><br><span class="line">    nodeST.push(x.left); stateST.push(<span class="string">&quot;S1: begin&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+
+<p>Finally, since there is only one state, we can remove the outer <code>if statement</code> and also delete the <code>stateST</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">while</span> (nodeST.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">  <span class="comment">// pop a node</span></span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">x</span> <span class="operator">=</span> nodeST.pop(); <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> stateST.pop();</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span>) &#123; <span class="comment">// base case</span></span><br><span class="line">    <span class="keyword">continue</span>; <span class="comment">// return --&gt; continue</span></span><br><span class="line">  &#125;</span><br><span class="line">  foo(root); <span class="comment">// print or ...</span></span><br><span class="line">  nodeST.push(x.right); stateST.push(<span class="string">&quot;S1: begin&quot;</span>); <span class="comment">// B</span></span><br><span class="line">  nodeST.push(x.left); stateST.push(<span class="string">&quot;S1: begin&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+
+<p>By now, is there any difference between the code above and the iterative version we usually encounter?</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/7zcka.jpg"></p>
+<h2 id="With-Return-Value-Symmetric-Tree-by-Elon-Xu"><a href="#With-Return-Value-Symmetric-Tree-by-Elon-Xu" class="headerlink" title="With Return Value (Symmetric Tree), by Elon Xu"></a>With Return Value (Symmetric Tree), by Elon Xu</h2><p>Cont’d</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Posts</a></li>
+        
+          <li><a href="/studynotes/">Notes</a></li>
+        
+          <li><a href="/lc/">Leetcode</a></li>
+        
+          <li><a href="/games/">Games</a></li>
+        
+          <li><a href="/links/">Links</a></li>
+        
+          <li><a href="/about/">Me</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#No-Stack-Tail-Recursion"><span class="toc-number">1.</span> <span class="toc-text">No Stack (Tail-Recursion)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-Return-Value-Tree-Traversal-by-Me"><span class="toc-number">2.</span> <span class="toc-text">No Return Value (Tree Traversal), by Me</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#General-Conversion"><span class="toc-number">2.1.</span> <span class="toc-text">General Conversion</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Further-Optimization"><span class="toc-number">2.2.</span> <span class="toc-text">Further Optimization</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#With-Return-Value-Symmetric-Tree-by-Elon-Xu"><span class="toc-number">3.</span> <span class="toc-text">With Return Value (Symmetric Tree), by Elon Xu</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/&text=A General Approach to Convert Recursion to Iteration"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/&title=A General Approach to Convert Recursion to Iteration"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/&is_video=false&description=A General Approach to Convert Recursion to Iteration"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=A General Approach to Convert Recursion to Iteration&body=Check out this article: https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/&title=A General Approach to Convert Recursion to Iteration"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/&title=A General Approach to Convert Recursion to Iteration"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/&title=A General Approach to Convert Recursion to Iteration"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/&title=A General Approach to Convert Recursion to Iteration"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/&name=A General Approach to Convert Recursion to Iteration&description=&lt;p&gt;Generally, we prefer to write recursive solutions for tree, linked list, backtracking, and DFS&amp;#x2F;BFS problems since the structure of these problems could be recursively defined.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Recursion is good choice for search, enumeration, and divide-and-conquer. — EPI&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Thus, the steps that lie in the recursive function correspond to the way we think of the problem. Later, we will see how the code of preorder traversal works and then convert it to an iterative version, and finally to an optimized iterative version that we usually write if an iterative version is required.&lt;/p&gt;
+&lt;figure class=&#34;highlight java&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;// Recursive version (Easy to Read)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;keyword&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;title function_&#34;&gt;preorder&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(TreeNode root)&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;keyword&#34;&gt;if&lt;/span&gt; (root == &lt;span class=&#34;literal&#34;&gt;null&lt;/span&gt;) &lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt;; &lt;span class=&#34;comment&#34;&gt;// base case&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  foo(root); &lt;span class=&#34;comment&#34;&gt;// print or ...&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  preorder(root.left);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  preorder(root.right);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2019/09/21/048_A%20General%20Appraoch%20to%20Convert%20Recursion%20to%20Iteration/&t=A General Approach to Convert Recursion to Iteration"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode EPI 15.11Difficulty: Medium My Post: Java Solutions with Detailed Comments and Explanations (Backtracking, Prepending) Problem The gray code is a binary numeral system where two">
+<meta property="og:type" content="website">
+<meta property="og:title" content="89. Gray Code">
+<meta property="og:url" content="https://junhaow.com/lc/problems/backtracking/uncategorized/89_gray-code.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode EPI 15.11Difficulty: Medium My Post: Java Solutions with Detailed Comments and Explanations (Backtracking, Prepending) Problem The gray code is a binary numeral system where two">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.114Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.113Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>89. Gray Code</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/gray-code/">LeetCode</a> <span class="gray">EPI 15.11</span><br>Difficulty: <span class="orange">Medium</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/gray-code/discuss/400651">Java Solutions with Detailed Comments and Explanations (Backtracking, Prepending)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>The gray code is a binary numeral system where two successive values <strong>differ in only one bit</strong>.</p>
+</blockquote>
+<p>Given a non-negative integer <code>n</code> representing the total number of bits in the code, print the sequence of gray code. A gray code sequence must begin with <code>0</code>.</p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="number">2</span></span><br><span class="line">Output: [<span class="number">0</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">2</span>]</span><br><span class="line">Explanation:</span><br><span class="line"><span class="number">00</span> - <span class="number">0</span></span><br><span class="line"><span class="number">01</span> - <span class="number">1</span></span><br><span class="line"><span class="number">11</span> - <span class="number">3</span></span><br><span class="line"><span class="number">10</span> - <span class="number">2</span></span><br><span class="line"></span><br><span class="line">For a given n, a gray code sequence may not be uniquely defined.</span><br><span class="line">For example, [<span class="number">0</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>] is also a valid gray code sequence.</span><br><span class="line"></span><br><span class="line"><span class="number">00</span> - <span class="number">0</span></span><br><span class="line"><span class="number">10</span> - <span class="number">2</span></span><br><span class="line"><span class="number">11</span> - <span class="number">3</span></span><br><span class="line"><span class="number">01</span> - <span class="number">1</span></span><br><span class="line"></span><br><span class="line">Input: <span class="number">0</span></span><br><span class="line">Output: [<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">Input: <span class="number">1</span></span><br><span class="line">Output: [<span class="number">0</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Backtracking"><a href="#Backtracking" class="headerlink" title="Backtracking"></a>Backtracking</h3><p>Instead of enumerating all possible permutations, which takes $O(2^{n\times 2^n})$, we construct the gray code by a step-by-step approach.</p>
+<p>First, we design a function that checks if two numbers <code>n1</code> and <code>n2</code> differ only in one bit.</p>
+<ul>
+<li><code>n1 == n2</code>: <code>xor == 0</code>, returns false.</li>
+<li>Differ in more than one bit: <code>(xor &amp; (xor - 1)) != 0</code>, returns false.</li>
+<li>Differ in one bit: <code>(xor &amp; (xor - 1)) == 0</code>, returns true.</li>
+</ul>
+<p><strong>Note:</strong> <code>num &amp; (num - 1)</code> can remove the rightmost one-bit of <code>num</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isValid</span><span class="params">(<span class="type">int</span> n1, <span class="type">int</span> n2)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">xor</span> <span class="operator">=</span> n1 ^ n2;</span><br><span class="line">  <span class="keyword">return</span> xor != <span class="number">0</span> &amp;&amp; (xor &amp; (xor - <span class="number">1</span>)) == <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Consider we have a number <code>0110</code>. How many differ-in-one numbers can we have for <code>0110</code>? The answer is <code>[1110, 0010, 0100, 0111]</code>. We can write it out right away because we just need to do XOR operation for each bit. In other words, we XOR <code>0110</code> with <code>[1000, 0100, 0010, 0001]</code>.</p>
+<p>Based on this idea, we can take the latest generated number in the result list, and try out all differ-in-one possibilities. In order to know if the new candidate is qualified, we use a hash set to store all previously constructed numbers.</p>
+<p>If the candidate is not in the hash set, we add it to the hash set and also append it to the result list. Then we construct the next number based on the number we’ve just added.</p>
+<p>At last, when we have $2^n$ numbers in the result list, we need to check if the first and the last elements are compatible via <code>isValid(n1, n2)</code>. If yes, everything is done; if no, backtrack and construct a new possible number, and try again.</p>
+<p><strong>Note:</strong> $2^i$ can be computed by <code>1 &lt;&lt; i</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title function_">grayCode</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  List&lt;Integer&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(Arrays.asList(<span class="number">0</span>));</span><br><span class="line">  Set&lt;Integer&gt; history = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">  generateGrayCode(n, history, result);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">generateGrayCode</span><span class="params">(<span class="type">int</span> n, Set&lt;Integer&gt; history, List&lt;Integer&gt; result)</span> &#123;</span><br><span class="line">  <span class="comment">// base case</span></span><br><span class="line">  <span class="keyword">if</span> (result.size() == (<span class="number">1</span> &lt;&lt; n)) &#123;</span><br><span class="line">    <span class="comment">// check the first element and the last element</span></span><br><span class="line">    <span class="keyword">return</span> isValid(result.get(<span class="number">0</span>), result.get(result.size() - <span class="number">1</span>));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">prevCode</span> <span class="operator">=</span> result.get(result.size() - <span class="number">1</span>);</span><br><span class="line">    <span class="type">int</span> <span class="variable">candCode</span> <span class="operator">=</span> prevCode ^ (<span class="number">1</span> &lt;&lt; i);</span><br><span class="line">    <span class="keyword">if</span> (!history.contains(candCode)) &#123;</span><br><span class="line">      history.add(candCode);</span><br><span class="line">      result.add(candCode);</span><br><span class="line">      <span class="type">boolean</span> <span class="variable">found</span> <span class="operator">=</span> generateGrayCode(n, history, result);</span><br><span class="line">      <span class="keyword">if</span> (found) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">      history.remove(candCode);</span><br><span class="line">      result.remove(result.size() - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(2^N)$ <span class="purple">I don’t know how to get it~</span><br><strong>Space:</strong> $O(2^N)$</p>
+<h3 id="Prepending-0-and-1"><a href="#Prepending-0-and-1" class="headerlink" title="Prepending 0 and 1"></a>Prepending 0 and 1</h3><p>The idea is simple. Based on the <code>result</code> in <code>n = k</code>, we add $0$ before each element to get the first half; we add $1$ before each element of <code>result</code> and <strong>reverse</strong> the list to get the second half. Then concatenate them to get the result for <code>n = k + 1</code>. <strong>See the example below to understand it!</strong>.</p>
+<p>Consider how we generate gray codes from <code>n = 0</code> to <code>n = 3</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">n = <span class="number">0</span>, we have [<span class="number">0</span>].</span><br><span class="line"></span><br><span class="line">n = <span class="number">1</span>, we previously have [<span class="number">0</span>] and then construct [<span class="number">0</span>, <span class="number">1</span>].</span><br><span class="line"></span><br><span class="line">Just add <span class="number">1</span> (actually add <span class="number">1</span>, which is <span class="number">1</span> &lt;&lt; n = <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">n = <span class="number">2</span>, we previously have [<span class="number">0</span>, <span class="number">1</span>] and construct [<span class="number">00</span>, <span class="number">01</span>, <span class="number">11</span>, <span class="number">10</span>].</span><br><span class="line"></span><br><span class="line">By adding <span class="number">0</span> before each element, we get [<span class="number">00</span>, <span class="number">01</span>] (actually <span class="keyword">do</span> nothing in the code)</span><br><span class="line">By adding <span class="number">1</span> before each element, we get [<span class="number">10</span>, <span class="number">11</span>] (actually add <span class="number">10</span>, which is <span class="number">1</span> &lt;&lt; n = <span class="number">10</span>)</span><br><span class="line">Reverse [<span class="number">10</span>, <span class="number">11</span>] to get [<span class="number">11</span>, <span class="number">10</span>]</span><br><span class="line">Combine [<span class="number">00</span>, <span class="number">01</span>] and [<span class="number">11</span>, <span class="number">10</span>], we have [<span class="number">00</span>, <span class="number">01</span>, <span class="number">11</span>, <span class="number">10</span>].</span><br><span class="line"></span><br><span class="line">n = <span class="number">3</span>, we previously have [<span class="number">00</span>, <span class="number">01</span>, <span class="number">11</span>, <span class="number">10</span>].</span><br><span class="line"></span><br><span class="line">Add <span class="number">0</span>:   [<span class="number">000</span>, <span class="number">001</span>, <span class="number">011</span>, <span class="number">010</span>]</span><br><span class="line">Add <span class="number">1</span>:   [<span class="number">110</span>, <span class="number">111</span>, <span class="number">101</span>, <span class="number">100</span>] (reversed) (actually add <span class="number">100</span>, which is <span class="number">1</span> &lt;&lt; n = <span class="number">1</span> &lt;&lt; <span class="number">3</span> = <span class="number">100</span>)</span><br><span class="line">Combine: [<span class="number">000</span>, <span class="number">001</span>, <span class="number">011</span>, <span class="number">010</span>, <span class="number">110</span>, <span class="number">111</span>, <span class="number">101</span>, <span class="number">100</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong> Consider the corner cases when <code>n = 0</code> and <code>n = 1</code>, and then decide <code>i</code> should start from $0$.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title function_">grayCode</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  List&lt;Integer&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(Arrays.asList(<span class="number">0</span>));</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    List&lt;Integer&gt; res1 = result;</span><br><span class="line">    List&lt;Integer&gt; res2 = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(res1);</span><br><span class="line">    Collections.reverse(res2);</span><br><span class="line">    <span class="comment">// prepend &quot;1&quot;</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">prependVal</span> <span class="operator">=</span> (<span class="number">1</span> &lt;&lt; i);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; res2.size(); ++j) &#123;</span><br><span class="line">      res2.set(j, res2.get(j) + prependVal);</span><br><span class="line">    &#125;</span><br><span class="line">    res1.addAll(res2);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(2^N)$</p>
+<ul>
+<li><code>n = 0</code> (<code>[0]</code>), prepending “1” takes $1$ operation (<strong>allocating extra space takes $1$ operation and reversing takes $1$ operation, but they are proportional to number of prepending operations</strong>).</li>
+<li><code>n = 1</code> (<code>[0, 1]</code>), prepending “1” takes $2$ operations.</li>
+<li><code>n = 2</code> (<code>[00, 01, 11, 10]</code>), prepending “1” takes $4$ operations.</li>
+<li><code>n = 3</code> (<code>[000, 001, 011, 010, 110, 111, 101, 100]</code>), prepending “1” takes $8$ operations.</li>
+<li><code>n = k</code>, prepending “1” takes $2^k$ operations.</li>
+<li>In total, $T(N) &#x3D; 1 + 2 + 4 + 8 + \ldots + 2^N &#x3D; 2^N$.</li>
+</ul>
+<p><strong>Space:</strong> $O(2^N)$</p>
+<p><strong>Without allocating extra space (In-Place):</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title function_">grayCode</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">  List&lt;Integer&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(Arrays.asList(<span class="number">0</span>));</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">prependVal</span> <span class="operator">=</span> (<span class="number">1</span> &lt;&lt; i);</span><br><span class="line">    <span class="type">int</span> <span class="variable">oldSize</span> <span class="operator">=</span> result.size();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> oldSize - <span class="number">1</span>; j &gt;= <span class="number">0</span>; --j) &#123;</span><br><span class="line">      result.add(result.get(j) + prependVal);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Same complexity.</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

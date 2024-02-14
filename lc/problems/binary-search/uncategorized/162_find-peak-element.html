@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium Problem A peak element is an element that is greater than its neighbors.   Given an input array nums, where nums[i] ≠ nums[i+1], find a peak element and return">
+<meta property="og:type" content="website">
+<meta property="og:title" content="162. Find Peak Element">
+<meta property="og:url" content="https://junhaow.com/lc/problems/binary-search/uncategorized/162_find-peak-element.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium Problem A peak element is an element that is greater than its neighbors.   Given an input array nums, where nums[i] ≠ nums[i+1], find a peak element and return">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ghc61.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.117Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.117Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ghc61.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>162. Find Peak Element</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/find-peak-element/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>A peak element is an element that is greater than its neighbors.</p>
+</blockquote>
+<blockquote>
+<p>Given an input array nums, where <code>nums[i] ≠ nums[i+1]</code>, find a peak element and return its index.</p>
+</blockquote>
+<blockquote>
+<p>The array may contain multiple peaks, in that case return the index to any one of the peaks is fine.</p>
+</blockquote>
+<blockquote>
+<p>You may imagine that <code>nums[-1] = nums[n] = -∞</code>.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: nums = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>]</span><br><span class="line">Output: <span class="number">2</span></span><br><span class="line">Explanation: <span class="number">3</span> is a peak element and your function should <span class="keyword">return</span> the index number <span class="number">2.</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: nums = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">4</span>]</span><br><span class="line">Output: <span class="number">1</span> or <span class="number">5</span> </span><br><span class="line">Explanation: Your function can <span class="keyword">return</span> either index number <span class="number">1</span> where the peak element is <span class="number">2</span>, or index number <span class="number">5</span> where the peak element is <span class="number">6.</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> Your solution should be in logarithmic time complexity.</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p><strong>Note:</strong> Use <code>long</code> type.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">findPeakElement</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">left</span> <span class="operator">=</span> (i - <span class="number">1</span> &lt; <span class="number">0</span>) ? Long.MIN_VALUE : nums[i - <span class="number">1</span>];</span><br><span class="line">    <span class="type">long</span> <span class="variable">right</span> <span class="operator">=</span> (i + <span class="number">1</span> &gt; n - <span class="number">1</span>) ? Long.MIN_VALUE : nums[i + <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">if</span> (nums[i] &gt; left &amp;&amp; nums[i] &gt; right) &#123;</span><br><span class="line">      <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Another version in one <code>if</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">findPeakElement</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> ((i &lt;= <span class="number">0</span> || nums[i] &gt; nums[i - <span class="number">1</span>]) &amp;&amp; (i &gt;= n - <span class="number">1</span> || nums[i] &gt; nums[i + <span class="number">1</span>])) &#123;</span><br><span class="line">      <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>If we exploit all test cases, we know that the peak must occur in all cases. In other words, the peak is guaranteed.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/ghc61.jpg" alt="Illustration"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>]        <span class="comment">// only one element</span></span><br><span class="line">[<span class="number">1</span>  <span class="number">2</span>  <span class="number">3</span>]  <span class="comment">// in ascending order - last element</span></span><br><span class="line">[<span class="number">3</span>  <span class="number">2</span>  <span class="number">1</span>]  <span class="comment">// in descending order - first element</span></span><br><span class="line">[<span class="number">1</span>  <span class="number">2</span>  <span class="number">3</span>  <span class="number">1</span>] <span class="comment">// in the middle</span></span><br></pre></td></tr></table></figure>
+
+<p>So we just need to check whether there is <code>nums[i] &gt; nums[i + 1]</code> in the array. If not, return the last index as the answer.</p>
+<p>The solution version:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">findPeakElement</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n - <span class="number">1</span>; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (nums[i] &gt; nums[i + <span class="number">1</span>])</span><br><span class="line">      <span class="keyword">return</span> i;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> n - <span class="number">1</span>; <span class="comment">// last index</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Binary-Search"><a href="#Binary-Search" class="headerlink" title="Binary Search"></a>Binary Search</h3><p>The reason why we can use binary search for this problem is that when the current trend is ascending or descending we can determine which side to go.</p>
+<ul>
+<li><code>\</code> or <code>nums[mid] &gt; nums[mid + 1]</code> or <code>descending</code>: At least one peak lies on the left side, although there is possibly another one on the right side.</li>
+<li><code>/</code> or <code>nums[mid] &lt; nums[mid + 1]</code> or <code>ascending</code>: At least one peak lies on the right side, although there is possibly another one on the left side.</li>
+<li>Equal case is not possible.</li>
+</ul>
+<p>Why do we use <code>lo &lt; hi</code> and <code>hi = mid</code>?</p>
+<p>a. <code>lo &lt; hi</code>:</p>
+<ul>
+<li><code>lo</code> and <code>hi</code> will point to the same element at last.</li>
+<li>If it is <code>lo &lt;= hi</code>, <code>lo</code> will be eventually larger than <code>hi</code> and <code>lo</code> may be out of bound, which is not allowed in this problem.</li>
+<li>Consider the case <code>[1]</code>. If <code>lo &lt;= hi</code> is applied, the code inside the loop will be executed and <code>nums[mid + 1]</code> will be out of bound! So <code>lo &lt; hi</code> makes sure that this won’t happen.</li>
+</ul>
+<p>b. <code>hi = mid</code>:</p>
+<ul>
+<li>If <code>/</code> or <code>nums[mid] &lt; nums[mid + 1]</code>, we update <code>lo</code> by <code>mid + 1</code> since the element at <code>mid</code> cannot be the peak.</li>
+<li>If <code>\</code> or <code>nums[mid] &gt; nums[mid + 1]</code>, we update <code>hi</code> by <code>mid</code> instead of <code>mid - 1</code> since the element at <code>mid</code> could be the peak.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">findPeakElement</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">lo</span> <span class="operator">=</span> <span class="number">0</span>, hi = n - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (lo &lt; hi) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> lo + (hi - lo) / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (nums[mid] &gt; nums[mid + <span class="number">1</span>]) &#123; <span class="comment">// descending</span></span><br><span class="line">      hi = mid;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// ascending</span></span><br><span class="line">      lo = mid + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> lo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(\log{N})$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

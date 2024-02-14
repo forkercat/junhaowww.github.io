@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium My Post: [3ms] Java solution with comments (visual) Problem Sort a linked list using insertion sort.  Example:  12Input: 4-&gt;2-&gt;1-&gt;3Output: 1-&gt;2-&gt;">
+<meta property="og:type" content="website">
+<meta property="og:title" content="147. Insertion Sort List">
+<meta property="og:url" content="https://junhaow.com/lc/problems/linked-list/sort-list/147_insertion-sort-list.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium My Post: [3ms] Java solution with comments (visual) Problem Sort a linked list using insertion sort.  Example:  12Input: 4-&gt;2-&gt;1-&gt;3Output: 1-&gt;2-&gt;">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.130Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.130Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>147. Insertion Sort List</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/insertion-sort-list/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/insertion-sort-list/discuss/316329">[3ms] Java solution with comments (visual)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Sort a linked list using insertion sort.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="number">4</span>-&gt;<span class="number">2</span>-&gt;<span class="number">1</span>-&gt;<span class="number">3</span></span><br><span class="line">Output: <span class="number">1</span>-&gt;<span class="number">2</span>-&gt;<span class="number">3</span>-&gt;<span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Iteration"><a href="#Iteration" class="headerlink" title="Iteration"></a>Iteration</h3><p><strong>Original:</strong> <code>33 ms</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">insertionSortList</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">null</span> || head.next == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">dummy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(-<span class="number">1</span>);</span><br><span class="line">  dummy.next = head;</span><br><span class="line">  </span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> dummy;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">curr</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="comment">// 1    3    5    7    4    9</span></span><br><span class="line">  <span class="comment">//      p    p.n  pr   curr nT</span></span><br><span class="line">  <span class="keyword">while</span> (curr != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">nextTemp</span> <span class="operator">=</span> curr.next; <span class="comment">// record the next node to proceed</span></span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> dummy;</span><br><span class="line">    <span class="keyword">while</span> (p.next != curr &amp;&amp; p.next.val &lt;= curr.val) &#123;</span><br><span class="line">      p = p.next;</span><br><span class="line">    &#125; <span class="comment">// p.next stops at the node that is &gt; curr.val</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (p.next != curr) &#123; <span class="comment">// modify when p.next is not curr itself</span></span><br><span class="line">      prev.next = curr.next; <span class="comment">// remove</span></span><br><span class="line">      curr.next = p.next; <span class="comment">// add</span></span><br><span class="line">      p.next = curr;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      prev = curr; <span class="comment">// if p.next == curr, we need to update prev</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// update</span></span><br><span class="line">    curr = nextTemp;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Improvement:</strong> <code>3 ms</code></p>
+<p><strong>Note:</strong></p>
+<ul>
+<li><code>prev != dummy</code> is very important!!! Otherwise, <code>dummy</code> node would be compared.</li>
+<li>Or set <code>prev = head</code> and <code>curr = head.next</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">insertionSortList</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">null</span> || head.next == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">dummy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(-<span class="number">1</span>);</span><br><span class="line">  dummy.next = head;</span><br><span class="line">  </span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> dummy;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">curr</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="comment">// 1    3    5    7    4    9</span></span><br><span class="line">  <span class="comment">//      p    p.n  pr   curr nT</span></span><br><span class="line">  <span class="keyword">while</span> (curr != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">nextTemp</span> <span class="operator">=</span> curr.next;</span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> dummy;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (prev != dummy &amp;&amp; prev.val &gt; curr.val) &#123;</span><br><span class="line">      <span class="keyword">while</span> (p.next != curr &amp;&amp; p.next.val &lt;= curr.val) &#123;</span><br><span class="line">        p = p.next;</span><br><span class="line">      &#125; <span class="comment">// p.next stops at the node that is &gt; curr.val</span></span><br><span class="line">      prev.next = curr.next; <span class="comment">// remove</span></span><br><span class="line">      curr.next = p.next; <span class="comment">// add</span></span><br><span class="line">      p.next = curr;</span><br><span class="line">      <span class="comment">// do not need to update prev </span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      prev = curr; <span class="comment">// update prev, since curr is not modified</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// update</span></span><br><span class="line">    curr = nextTemp;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>The version I wrote at the first time:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// dummy  3    4    1    5</span></span><br><span class="line"><span class="comment">//  t     t.n       p    p.n</span></span><br><span class="line"><span class="comment">//             prev</span></span><br><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">insertionSortList</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">null</span> || head.next == <span class="literal">null</span>) &#123; <span class="comment">// size == 0 OR 1</span></span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">dummy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(-<span class="number">1</span>);</span><br><span class="line">  dummy.next = head;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> head.next; <span class="comment">// start from the second node</span></span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> head;   <span class="comment">// otherwise it would compare with dummy</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (p != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">t</span> <span class="operator">=</span> dummy;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (prev.val &gt; p.val) &#123; <span class="comment">// p needs swapping (better performance)</span></span><br><span class="line">      <span class="keyword">while</span> (t.next != p &amp;&amp; p.val &gt; t.next.val) &#123;</span><br><span class="line">        t = t.next;</span><br><span class="line">      &#125; <span class="comment">// stops at the right position</span></span><br><span class="line">      prev.next = p.next;</span><br><span class="line">      p.next = t.next;</span><br><span class="line">      t.next = p;</span><br><span class="line">      p = prev.next; <span class="comment">// set next (prev not changing)</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// p needs not swapping</span></span><br><span class="line">      prev = p;</span><br><span class="line">      p = p.next;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Time:</strong> $O(N^2)$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

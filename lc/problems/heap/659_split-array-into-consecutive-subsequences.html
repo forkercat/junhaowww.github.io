@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium My Post: All-In-One Java Solution (Map + PQ &amp; Two Maps) with Explanation, Examples, and Comments Problem You are given an integer array sorted in ascending">
+<meta property="og:type" content="website">
+<meta property="og:title" content="659. Split Array into Consecutive Subsequences">
+<meta property="og:url" content="https://junhaow.com/lc/problems/heap/659_split-array-into-consecutive-subsequences.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium My Post: All-In-One Java Solution (Map + PQ &amp; Two Maps) with Explanation, Examples, and Comments Problem You are given an integer array sorted in ascending">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.126Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.126Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>659. Split Array into Consecutive Subsequences</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/split-array-into-consecutive-subsequences/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/split-array-into-consecutive-subsequences/discuss/334733/">All-In-One Java Solution (Map + PQ &amp; Two Maps) with Explanation, Examples, and Comments</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>You are given an integer array sorted in ascending order (may contain duplicates), you need to split them into several subsequences, where each subsequences consist of at least 3 consecutive integers. Return whether you can make such a split.</p>
+</blockquote>
+<p><strong>Note:</strong> The length of the input is in range of <code>[1, 10000]</code>.</p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Input: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">Output: True</span><br><span class="line">Explanation:</span><br><span class="line">You can split them into two consecutive subsequences:</span><br><span class="line"><span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span></span><br><span class="line"><span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Input: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">5</span>]</span><br><span class="line">Output: True</span><br><span class="line">Explanation:</span><br><span class="line">You can split them into two consecutive subsequences:</span><br><span class="line"><span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span></span><br><span class="line"><span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Map-PriorityQueue"><a href="#Map-PriorityQueue" class="headerlink" title="Map + PriorityQueue"></a>Map + PriorityQueue</h3><p>Reference:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/fuxuemingzhu/article/details/82185011">LeetCode 659. Split Array into Consecutive Subsequences 解题报告（Python）</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/sunday0904/article/details/78174122">LeetCode[659]Split Array into Consecutive Subsequences(Java)</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.com/problems/split-array-into-consecutive-subsequences/discuss/106513/">Java O(n) time &amp; O(1) space solution – greedily extending shorter subsequence</a></li>
+</ul>
+<p>We use a <code>HashMap&lt;Integer, PriorityQueue&lt;Integer&gt;&gt;</code> to store the information we need to process the list. For current number <code>val</code>, we compare its value to its predecessor to see if their difference is $1$. </p>
+<p>By <code>map.get(val)</code>, we have a priority queue, which stores all available lengths of sequence ending with value <code>val</code>. The reason why we use a priority queue is that when we encounter a new value <code>val</code>, we want to append it to the shortest sequence that needs most “help”. We want all sequences we have to satisfy the requirement <code>&gt;= k</code>. For example, <code>[1, 2, 3]</code> and <code>[2, 3]</code>: The next value is <code>4</code>, we will add it to <code>[2, 3]</code> and it becomes <code>[2, 3, 4]</code> rather than adding it to <code>[1, 2, 3]</code>. This is the idea of greedy algorithm, since we always go for the shortest length of sequence at each step.</p>
+<p>Algorithm:</p>
+<ul>
+<li>For each current value <code>val</code>:<ul>
+<li>If <code>val - 1</code> exists in the map, we get the priority queue by <code>map.get(val - 1)</code> and poll the shortest sequence’s length and offer it into the priority queue in <code>map.get(val)</code>.</li>
+<li>If <code>val - 1</code> does not exists in the map, or its priority queue is empty, we start over from this element and offer <code>1</code> into the <code>val</code>‘s priority queue.</li>
+</ul>
+</li>
+<li>Finally, we iterate the map’s values, and poll each sequence’s length by <code>pq.poll()</code> and check if all of then satisfy the requirement.</li>
+</ul>
+<p>For example, we have a sequence <code>[1, 2, 3, 3, 4, 4, 5, 5]</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">val   map                                             <span class="keyword">case</span></span><br><span class="line"><span class="number">1</span>     &lt;<span class="number">1</span>, [<span class="number">1</span>]&gt;                                        not exist</span><br><span class="line"><span class="number">2</span>     &lt;<span class="number">2</span>, [<span class="number">2</span>]&gt;, &lt;<span class="number">1</span>, []&gt;                               exist</span><br><span class="line"><span class="number">3</span>     &lt;<span class="number">3</span>, [<span class="number">3</span>]&gt;, &lt;<span class="number">2</span>, []&gt;, &lt;<span class="number">1</span>, []&gt;                      exist</span><br><span class="line"><span class="number">3</span>     &lt;<span class="number">3</span>, [<span class="number">3</span>, <span class="number">1</span>]&gt;, &lt;<span class="number">2</span>, []&gt;, &lt;<span class="number">1</span>, []&gt;                   exist but no more length</span><br><span class="line"><span class="number">4</span>     &lt;<span class="number">4</span>, [<span class="number">2</span>]&gt;, &lt;<span class="number">3</span>, [<span class="number">3</span>]&gt;, &lt;<span class="number">2</span>, []&gt;, &lt;<span class="number">1</span>, []&gt;            exist</span><br><span class="line"><span class="number">4</span>     &lt;<span class="number">4</span>, [<span class="number">2</span>, <span class="number">4</span>]&gt;, &lt;<span class="number">3</span>, []&gt;, &lt;<span class="number">2</span>, []&gt;, &lt;<span class="number">1</span>, []&gt;          exist</span><br><span class="line"><span class="number">5</span>     &lt;<span class="number">5</span>, [<span class="number">3</span>]&gt;, &lt;<span class="number">4</span>, [<span class="number">4</span>]&gt;, &lt;<span class="number">3</span>, []&gt;, &lt;<span class="number">2</span>, []&gt;, &lt;<span class="number">1</span>, []&gt;   exist (remember! shortest length)</span><br><span class="line"><span class="number">5</span>     &lt;<span class="number">5</span>, [<span class="number">3</span>, <span class="number">5</span>]&gt;, &lt;<span class="number">4</span>, []&gt;, &lt;<span class="number">3</span>, []&gt;, &lt;<span class="number">2</span>, []&gt;, &lt;<span class="number">1</span>, []&gt; exist</span><br></pre></td></tr></table></figure>
+
+<p>Code with comments:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isPossible</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="comment">// Build map &lt;num, minPQ of length&gt;</span></span><br><span class="line">  Map&lt;Integer, PriorityQueue&lt;Integer&gt;&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">    <span class="keyword">if</span> (map.containsKey(val - <span class="number">1</span>) &amp;&amp; map.get(val - <span class="number">1</span>).size() &gt; <span class="number">0</span>) &#123; <span class="comment">// minPQ size &gt; 0</span></span><br><span class="line">      <span class="comment">// (num - 1) sequence exists</span></span><br><span class="line">      PriorityQueue&lt;Integer&gt; pq = map.get(val - <span class="number">1</span>);</span><br><span class="line">      <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> pq.poll();</span><br><span class="line">      <span class="keyword">if</span> (map.get(val) == <span class="literal">null</span>) &#123;</span><br><span class="line">        map.put(val, <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;());</span><br><span class="line">      &#125;</span><br><span class="line">      map.get(val).add(len + <span class="number">1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// (num - 1) sequence does not exist</span></span><br><span class="line">      <span class="keyword">if</span> (map.get(val) == <span class="literal">null</span>) &#123;</span><br><span class="line">        map.put(val, <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;());</span><br><span class="line">      &#125;</span><br><span class="line">      map.get(val).add(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Check each non-empty priority queue</span></span><br><span class="line">  <span class="keyword">for</span> (PriorityQueue&lt;Integer&gt; pq : map.values()) &#123;</span><br><span class="line">    <span class="keyword">while</span> (pq.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (pq.poll() &lt; <span class="number">3</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N\log{N})$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="Two-Maps"><a href="#Two-Maps" class="headerlink" title="Two Maps"></a>Two Maps</h3><p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/split-array-into-consecutive-subsequences/discuss/106496/">Java O(n) Time O(n) Space</a></p>
+<p>Thanks <code>marcohwlam</code> for the example that many post writers don’t even add to their posts. Not mention the code without comments. Drives me crazy!</p>
+<p><strong>Note:</strong> I still don’t know why it works though, but at least I now know how it works.</p>
+<p>This time, we have two hash maps: <code>freqMap</code> and <code>subMap</code>.</p>
+<ul>
+<li><code>freqMap</code>: Count the frequency of all numbers.</li>
+<li><code>subMap</code>: Store qualified (<code>&gt;= 3</code>) subsequences. It is not obvious though.<ul>
+<li>For example, <code>&lt;4, 1&gt;</code> means we have already <code>one</code> qualified subsequence (e.g. <code>[1, 2, 3]</code>) and it will continue from <code>4</code>. Then later when we encounter a value <code>4</code>, we can append <code>4</code> to the current subsequence and update the map to <code>&lt;4, 0&gt;, &lt;5, 1&gt;</code>.</li>
+</ul>
+</li>
+</ul>
+<p>Algorithm:</p>
+<ul>
+<li>Iterate through the array to get the frequency of all the elements.</li>
+<li>Iterate through the array once more to see:<ul>
+<li><code>Case 1</code>: If <code>val</code>‘s frequency is used up? Yes &#x3D;&gt; <code>continue;</code> to the next <code>val</code>.</li>
+<li><code>Case 2</code>: If each element can be appended to a previously constructed consecutive subsequence.</li>
+<li><code>Case 3</code>: If it can be the start of a new consecutive sequence.</li>
+<li><code>Case 4</code>: Returns <code>false</code>.</li>
+<li>Remember to decrement the frequency of <code>val</code> in <code>freqMap</code> at each time.</li>
+</ul>
+</li>
+</ul>
+<p>For example, we have a sequence <code>[1, 2, 3, 3, 4, 4, 5, 5]</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Init: freqMap = &lt;<span class="number">1</span>, <span class="number">1</span>&gt;, &lt;<span class="number">2</span>, <span class="number">1</span>&gt;, &lt;<span class="number">3</span>, <span class="number">2</span>&gt;, &lt;<span class="number">4</span>, <span class="number">2</span>&gt;, &lt;<span class="number">5</span>, <span class="number">2</span>&gt;</span><br><span class="line">val   <span class="keyword">case</span>     subMap                   freqMap</span><br><span class="line"><span class="number">1</span>     <span class="number">3</span>        &lt;<span class="number">4</span>, <span class="number">1</span>&gt;                   &lt;<span class="number">1</span>, <span class="number">0</span>&gt;, &lt;<span class="number">2</span>, <span class="number">0</span>&gt;, &lt;<span class="number">3</span>, <span class="number">1</span>&gt;, &lt;<span class="number">4</span>, <span class="number">2</span>&gt;, &lt;<span class="number">5</span>, <span class="number">2</span>&gt;</span><br><span class="line"><span class="number">2</span>     <span class="number">1</span>        <span class="keyword">continue</span>;</span><br><span class="line"><span class="number">3</span>     <span class="number">3</span>        &lt;<span class="number">4</span>, <span class="number">1</span>&gt;, &lt;<span class="number">6</span>, <span class="number">1</span>&gt;           &lt;<span class="number">1</span>, <span class="number">0</span>&gt;, &lt;<span class="number">2</span>, <span class="number">0</span>&gt;, &lt;<span class="number">3</span>, <span class="number">0</span>&gt;, &lt;<span class="number">4</span>, <span class="number">1</span>&gt;, &lt;<span class="number">5</span>, <span class="number">1</span>&gt;</span><br><span class="line"><span class="number">3</span>     <span class="number">1</span>        <span class="keyword">continue</span>;</span><br><span class="line"><span class="number">4</span>     <span class="number">2</span>        &lt;<span class="number">4</span>, <span class="number">0</span>&gt;, &lt;<span class="number">5</span>, <span class="number">1</span>&gt;, &lt;<span class="number">6</span>, <span class="number">1</span>&gt;   &lt;<span class="number">1</span>, <span class="number">0</span>&gt;, &lt;<span class="number">2</span>, <span class="number">0</span>&gt;, &lt;<span class="number">3</span>, <span class="number">0</span>&gt;, &lt;<span class="number">4</span>, <span class="number">0</span>&gt;, &lt;<span class="number">5</span>, <span class="number">1</span>&gt;</span><br><span class="line"><span class="number">4</span>     <span class="number">1</span>        <span class="keyword">continue</span>;</span><br><span class="line"><span class="number">5</span>     <span class="number">3</span>        &lt;<span class="number">4</span>, <span class="number">0</span>&gt;, &lt;<span class="number">5</span>, <span class="number">0</span>&gt;, &lt;<span class="number">6</span>, <span class="number">2</span>&gt;   &lt;<span class="number">1</span>, <span class="number">0</span>&gt;, &lt;<span class="number">2</span>, <span class="number">0</span>&gt;, &lt;<span class="number">3</span>, <span class="number">0</span>&gt;, &lt;<span class="number">4</span>, <span class="number">0</span>&gt;, &lt;<span class="number">5</span>, <span class="number">0</span>&gt;</span><br><span class="line"><span class="number">5</span>     <span class="number">1</span>        <span class="keyword">continue</span>;</span><br><span class="line"><span class="keyword">return</span> <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+
+<p>Code with comments:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isPossible</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  Map&lt;Integer, Integer&gt; freqMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  Map&lt;Integer, Integer&gt; subMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Count the frequency</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">    freqMap.put(val, freqMap.getOrDefault(val, <span class="number">0</span>) + <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Scan the nums</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">    <span class="comment">// Case 1 - &quot;No available frequency&quot;</span></span><br><span class="line">    <span class="keyword">if</span> (freqMap.get(val) == <span class="number">0</span>) &#123; <span class="comment">// No more frequencies. It has been used up.</span></span><br><span class="line">      <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Case 2 - &quot;If val is where a subsequence in subMap could continue from&quot;</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (subMap.getOrDefault(val, <span class="number">0</span>) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      subMap.put(val, subMap.get(val) - <span class="number">1</span>); <span class="comment">// use this subsequence from this val</span></span><br><span class="line">      subMap.put(val + <span class="number">1</span>, subMap.getOrDefault(val + <span class="number">1</span>, <span class="number">0</span>) + <span class="number">1</span>); <span class="comment">// append val + 1, update the subsequence continuing from val + 1.</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Case 3 - &quot;Start of a new subsequence, 3 consecutive numbers&quot;</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (freqMap.getOrDefault(val + <span class="number">1</span>, <span class="number">0</span>) &gt; <span class="number">0</span> &amp;&amp; freqMap.getOrDefault(val + <span class="number">2</span>, <span class="number">0</span>) &gt; <span class="number">0</span>) &#123; <span class="comment">// Check if we still have frequencies</span></span><br><span class="line">      freqMap.put(val + <span class="number">1</span>, freqMap.get(val + <span class="number">1</span>) - <span class="number">1</span>); <span class="comment">// use: val + 1</span></span><br><span class="line">      freqMap.put(val + <span class="number">2</span>, freqMap.get(val + <span class="number">2</span>) - <span class="number">1</span>); <span class="comment">// use: val + 2</span></span><br><span class="line">      subMap.put(val + <span class="number">3</span>, subMap.getOrDefault(val + <span class="number">3</span>, <span class="number">0</span>) + <span class="number">1</span>); <span class="comment">// We have one more subsequence continuing from val + 3</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Case 4</span></span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    freqMap.put(val, freqMap.get(val) - <span class="number">1</span>); <span class="comment">// frequency of val--</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="Extra"><a href="#Extra" class="headerlink" title="Extra"></a>Extra</h3><p>$O(1)$ space: </p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/split-array-into-consecutive-subsequences/discuss/106495/">Java O(n) time &amp; O(1) space solution – greedily extending shorter subsequence</a></p>
+<p>The original code:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isPossible</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">pre</span> <span class="operator">=</span> Integer.MIN_VALUE, p1 = <span class="number">0</span>, p2 = <span class="number">0</span>, p3 = <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">cur</span> <span class="operator">=</span> <span class="number">0</span>, cnt = <span class="number">0</span>, c1 = <span class="number">0</span>, c2 = <span class="number">0</span>, c3 = <span class="number">0</span>;</span><br><span class="line">      </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums.length; pre = cur, p1 = c1, p2 = c2, p3 = c3) &#123;</span><br><span class="line">      <span class="keyword">for</span> (cur = nums[i], cnt = <span class="number">0</span>; i &lt; nums.length &amp;&amp; cur == nums[i]; cnt++, i++);</span><br><span class="line">          </span><br><span class="line">      <span class="keyword">if</span> (cur != pre + <span class="number">1</span>) &#123;</span><br><span class="line">          <span class="keyword">if</span> (p1 != <span class="number">0</span> || p2 != <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">          c1 = cnt; c2 = <span class="number">0</span>; c3 = <span class="number">0</span>;</span><br><span class="line">          </span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="keyword">if</span> (cnt &lt; p1 + p2) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">          c1 = Math.max(<span class="number">0</span>, cnt - (p1 + p2 + p3));</span><br><span class="line">          c2 = p1;</span><br><span class="line">          c3 = p2 + Math.min(p3, cnt - (p1 + p2));</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> (p1 == <span class="number">0</span> &amp;&amp; p2 == <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium Problem Given a linked list, rotate the list to the right by $k$ places, where $k$ is non-negative ($k \geq 0$).  Note:  Example:  12345Input: 1-&gt;2-&gt;3-&amp;gt">
+<meta property="og:type" content="website">
+<meta property="og:title" content="61. Rotate List">
+<meta property="og:url" content="https://junhaow.com/lc/problems/linked-list/uncategorized/61_rotate-list.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium Problem Given a linked list, rotate the list to the right by $k$ places, where $k$ is non-negative ($k \geq 0$).  Note:  Example:  12345Input: 1-&gt;2-&gt;3-&amp;gt">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.131Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.131Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>61. Rotate List</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/rotate-list/solution/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a linked list, rotate the list to the right by $k$ places, where $k$ is non-negative ($k \geq 0$).</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="number">1</span>-&gt;<span class="number">2</span>-&gt;<span class="number">3</span>-&gt;<span class="number">4</span>-&gt;<span class="number">5</span>-&gt;NULL, k = <span class="number">2</span></span><br><span class="line">Output: <span class="number">4</span>-&gt;<span class="number">5</span>-&gt;<span class="number">1</span>-&gt;<span class="number">2</span>-&gt;<span class="number">3</span>-&gt;NULL</span><br><span class="line"></span><br><span class="line">Input: <span class="number">0</span>-&gt;<span class="number">1</span>-&gt;<span class="number">2</span>-&gt;NULL, k = <span class="number">4</span></span><br><span class="line">Output: <span class="number">2</span>-&gt;<span class="number">0</span>-&gt;<span class="number">1</span>-&gt;NULL</span><br></pre></td></tr></table></figure>
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p><strong>Methods:</strong></p>
+<ul>
+<li>Calculate the <code>length</code>.</li>
+<li>Connect the last node to the head. Make a <code>ring</code>.</li>
+<li>Find the new <code>tail</code>, and return its next as a new head and set it <code>null</code> before returning.</li>
+<li><strong>Time:</strong> $O(N)$</li>
+<li><strong>Space:</strong> $O(1)$</li>
+</ul>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><strong>Test Case:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line"><span class="number">2</span></span><br><span class="line">[<span class="number">4</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>]</span><br><span class="line"><span class="number">0</span></span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>]</span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>]</span><br><span class="line"><span class="number">2</span></span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p>Original version (struggled with corner cases):</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">rotateRight</span><span class="params">(ListNode head, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">null</span> || head.next == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> getLength(head);</span><br><span class="line">  <span class="keyword">if</span> (k % n == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">  &#125;</span><br><span class="line">  k = n - k % n;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">dummy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(-<span class="number">1</span>);</span><br><span class="line">  dummy.next = head;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> dummy;</span><br><span class="line">  <span class="keyword">while</span> (k &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    prev = p;</span><br><span class="line">    p = p.next;</span><br><span class="line">    --k;</span><br><span class="line">  &#125;</span><br><span class="line">  prev.next = <span class="literal">null</span>;</span><br><span class="line">  dummy.next = p;</span><br><span class="line">  <span class="keyword">while</span> (p.next != <span class="literal">null</span>) p = p.next;</span><br><span class="line">  p.next = head;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">getLength</span><span class="params">(ListNode x)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (x != <span class="literal">null</span>) &#123;</span><br><span class="line">    ++count;</span><br><span class="line">    x = x.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Improvement:</strong></p>
+<p><strong>Note:</strong></p>
+<ul>
+<li><code>k</code> could be greater than the length of the list. Do <code>k % len</code>.</li>
+<li>I can add <code>if</code> statement to return immediately if <code>k</code> equals <code>0</code> or <code>len</code>.<ul>
+<li>But notice that you might have created the ring and you must <code>set it null</code>! Otherwise, it will return a ring causing infinitely looping. <code>Memory Limit Exceeded </code></li>
+</ul>
+</li>
+<li><code>Draw a graph</code> for a simple case to see how many steps to go. <strong>Don’t just think!</strong></li>
+<li>Counting templates:<ul>
+<li>for: <strong>Use this one!</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; count; ++i) &#123; <span class="comment">// or count - 1</span></span><br><span class="line">  <span class="comment">// do you job, e.g. tail = tail.next</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>while:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> N;</span><br><span class="line"><span class="keyword">while</span> (count &gt; <span class="number">0</span>) &#123; <span class="comment">// or count - 1 &gt; 0 or count &gt; 1</span></span><br><span class="line">  <span class="comment">// do your job, e.g. tail = tail.next</span></span><br><span class="line">  --count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">rotateRight</span><span class="params">(ListNode head, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">null</span> || head.next == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> <span class="number">1</span>; <span class="comment">// get the length and close the ring</span></span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="keyword">while</span> (p.next != <span class="literal">null</span>) &#123;</span><br><span class="line">    p = p.next;</span><br><span class="line">    ++len;</span><br><span class="line">  &#125; <span class="comment">// p stops at the tail</span></span><br><span class="line">  k = k % len;</span><br><span class="line">  p.next = head; <span class="comment">// close the list to make a ring</span></span><br><span class="line">  </span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">tail</span> <span class="operator">=</span> head; <span class="comment">// find the new tail</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> len - k - <span class="number">1</span>;</span><br><span class="line">  <span class="comment">//  1   2   3   4,  k = 1 =&gt; count = 4 - 1 - 1 = 2</span></span><br><span class="line">  <span class="comment">//  4   1   2   3</span></span><br><span class="line">  <span class="comment">// tail---&gt;tail (x2)</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; count; ++i) &#123;</span><br><span class="line">    tail = tail.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">newHead</span> <span class="operator">=</span> tail.next;</span><br><span class="line">  tail.next = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">return</span> newHead;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>Here is the code I wrote in the second time. Forgot to restore the ring (I removed the bug already). <code>Memory Limit Exceeded</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">rotateRight</span><span class="params">(ListNode head, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">  <span class="comment">// Assume k is valid</span></span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">null</span> || head.next == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="keyword">while</span> (p.next != <span class="literal">null</span>) &#123;</span><br><span class="line">    ++len;</span><br><span class="line">    p = p.next;</span><br><span class="line">  &#125;</span><br><span class="line">  p.next = head; <span class="comment">// make a ring</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// k mod length</span></span><br><span class="line">  k = k % len;</span><br><span class="line">  <span class="keyword">if</span> (k == <span class="number">0</span>) &#123;</span><br><span class="line">    p.next = <span class="literal">null</span>;         <span class="comment">//  &lt;---------------- Important!</span></span><br><span class="line">    <span class="keyword">return</span> head; <span class="comment">// just skip it</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//  1   2   3   4  , len = 4,  k = 2</span></span><br><span class="line">  <span class="comment">//  t--&gt;t</span></span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">tail</span> <span class="operator">=</span> head;  <span class="comment">// find the new tail</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; len - k - <span class="number">1</span>; ++i) &#123; <span class="comment">// 4 - 2 - 1 = 2 - 1 = 1 step</span></span><br><span class="line">    tail = tail.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">newHead</span> <span class="operator">=</span> tail.next;</span><br><span class="line">  tail.next = <span class="literal">null</span>; <span class="comment">// cut the ring</span></span><br><span class="line">  <span class="keyword">return</span> newHead;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode EPI 9.2Difficulty: Easy My Post: [isMirror] DFS (Recursion, One&#x2F;Two Stacks) + BFS (Queue) Solution in Java Problem Given a binary tree, check whether it is a mirror of itsel">
+<meta property="og:type" content="website">
+<meta property="og:title" content="101. Symmetric Tree">
+<meta property="og:url" content="https://junhaow.com/lc/problems/tree/equality-and-subtree/101_symmetric-tree.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode EPI 9.2Difficulty: Easy My Post: [isMirror] DFS (Recursion, One&#x2F;Two Stacks) + BFS (Queue) Solution in Java Problem Given a binary tree, check whether it is a mirror of itsel">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.145Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.145Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>101. Symmetric Tree</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/symmetric-tree/">LeetCode</a> <span class="gray">EPI 9.2</span><br>Difficulty: <span class="green">Easy</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/symmetric-tree/discuss/433170">[isMirror] DFS (Recursion, One&#x2F;Two Stacks) + BFS (Queue) Solution in Java</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<p><code>[1,2,2,3,4,4,3]</code> is symmetric:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    <span class="number">1</span></span><br><span class="line">   / \</span><br><span class="line">  <span class="number">2</span>   <span class="number">2</span></span><br><span class="line"> / \ / \</span><br><span class="line"><span class="number">3</span>  <span class="number">4</span> <span class="number">4</span>  <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>But the following <code>[1,2,2,null,3,null,3]</code> is not:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  <span class="number">1</span></span><br><span class="line"> / \</span><br><span class="line"><span class="number">2</span>   <span class="number">2</span></span><br><span class="line"> \   \</span><br><span class="line"> <span class="number">3</span>    <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> Bonus points if you could solve it both <code>recursively</code> and <code>iteratively</code>.</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p><strong>Idea:</strong> A tree is symmetric if it is a <code>mirror reflection</code> of itself.</p>
+<p><strong>Note:</strong> Distinguish the concept of <code>symmetric</code> (one tree) and <code>mirror reflection</code> (two trees).</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">    <span class="number">1</span></span><br><span class="line">   / \</span><br><span class="line">  <span class="number">2</span>   <span class="number">2</span>       t1 &amp; t2</span><br><span class="line"> / \ / \</span><br><span class="line"><span class="number">3</span>  <span class="number">4</span> <span class="number">4</span>  <span class="number">3</span></span><br><span class="line">|  | |  |</span><br><span class="line">---|-|-----&gt;  isMirror(t1.left, t2.right)</span><br><span class="line">   | |      </span><br><span class="line">   --------&gt;  isMirror(t1.right, t2.left)</span><br></pre></td></tr></table></figure>
+
+<p>The question is when are two trees a mirror reflection of each other? <strong>Three conditions:</strong></p>
+<ul>
+<li>Their two roots have the same value.</li>
+<li>The right subtree <code>t1.right</code> of each tree <code>t1</code> is a mirror reflection of the left subtree <code>t2.left</code> of the other tree <code>t2</code>.</li>
+<li>The left subtree <code>t1.left</code> of each tree <code>t1</code> is a mirror reflection of the right subtree <code>t2.right</code> of the other tree <code>t2</code>.</li>
+</ul>
+<p><strong>Bad Idea (the wrong direction):</strong></p>
+<p>A tree is symmetric if its left subtree is symmetric and its right subtree is symmetric. Consider this case:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    <span class="number">1</span></span><br><span class="line">   / \</span><br><span class="line">  <span class="number">2</span>   <span class="number">2</span></span><br><span class="line"> / \ / \</span><br><span class="line"><span class="number">3</span>  <span class="number">4</span> <span class="number">4</span>  <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>Two subtrees of root are not symmetric, but the root is symmetric.</p>
+<p>From EPI, swapping any subtrees of a tree and comparing with the original is also workable.</p>
+<h3 id="Recursion"><a href="#Recursion" class="headerlink" title="Recursion"></a>Recursion</h3><p>Come up with the recursive structure.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isSymmetric</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> isMirror(root, root);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isMirror</span><span class="params">(TreeNode t1, TreeNode t2)</span> &#123;</span><br><span class="line">  <span class="comment">// base case</span></span><br><span class="line">  <span class="keyword">if</span> (t1 == <span class="literal">null</span> &amp;&amp; t2 == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">if</span> (t1 == <span class="literal">null</span> || t2 == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="comment">// check values</span></span><br><span class="line">  <span class="keyword">if</span> (t1.val != t2.val) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="comment">// check left subtree and right subtree</span></span><br><span class="line">  <span class="keyword">return</span> isMirror(t1.right, t2.left) &amp;&amp; isMirror(t1.left, t2.right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Improvement:</strong></p>
+<p>Actually, there is not too much improvement since it is bounded by a constant $2$.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isSymmetric</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123; <span class="comment">// required</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> isMirror(root.left, root.right); <span class="comment">// so t1 and t2 are different trees</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$ because we traverse the entire input tree once ($\sim 2N$).<br><strong>Space:</strong> $O(h)$</p>
+<h3 id="Iteration-One-Two-Stacks"><a href="#Iteration-One-Two-Stacks" class="headerlink" title="Iteration (One&#x2F;Two Stacks)"></a>Iteration (One&#x2F;Two Stacks)</h3><p>Use two stacks to simulate the recursive method.</p>
+<p><strong>Note:</strong> Null check &#x3D;&gt; Value check</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isSymmetric</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123; <span class="comment">// need checking because we use root&#x27;s value</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  Stack&lt;TreeNode&gt; lStack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">  Stack&lt;TreeNode&gt; rStack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">  <span class="comment">// Preorder-like traversal</span></span><br><span class="line">  lStack.push(root.left); rStack.push(root.right);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">while</span> (lStack.size() &gt; <span class="number">0</span> &amp;&amp; rStack.size() &gt; <span class="number">0</span>)  &#123;</span><br><span class="line">    <span class="type">TreeNode</span> <span class="variable">t1</span> <span class="operator">=</span> lStack.pop();</span><br><span class="line">    <span class="type">TreeNode</span> <span class="variable">t2</span> <span class="operator">=</span> rStack.pop();</span><br><span class="line">    <span class="comment">// null check</span></span><br><span class="line">    <span class="keyword">if</span> (t1 == <span class="literal">null</span> &amp;&amp; t2 == <span class="literal">null</span>) <span class="keyword">continue</span>;</span><br><span class="line">    <span class="keyword">if</span> (t1 == <span class="literal">null</span> || t2 == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">// value check</span></span><br><span class="line">    <span class="keyword">if</span> (t1.val != t2.val) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">// push children</span></span><br><span class="line">    lStack.push(t1.right); lStack.push(t1.left); <span class="comment">// could be null</span></span><br><span class="line">    rStack.push(t2.left);  rStack.push(t2.right);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// One of the stack might be empty</span></span><br><span class="line">  <span class="keyword">return</span> lStack.size() == <span class="number">0</span> &amp;&amp; rStack.size() == <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Or just use one stack:</p>
+<ul>
+<li>Be careful of the ordering of pushing.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isSymmetric</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (root.left == <span class="literal">null</span> &amp;&amp; root.right == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">if</span> (root.left == <span class="literal">null</span> || root.right == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="comment">// children are not null</span></span><br><span class="line">  Stack&lt;TreeNode&gt; stack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">  stack.push(root.left);</span><br><span class="line">  stack.push(root.right);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">while</span> (stack.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="type">TreeNode</span> <span class="variable">t1</span> <span class="operator">=</span> stack.pop();</span><br><span class="line">    <span class="type">TreeNode</span> <span class="variable">t2</span> <span class="operator">=</span> stack.pop();</span><br><span class="line">    <span class="comment">// null check</span></span><br><span class="line">    <span class="keyword">if</span> (t1 == <span class="literal">null</span> &amp;&amp; t2 == <span class="literal">null</span>) <span class="keyword">continue</span>;</span><br><span class="line">    <span class="keyword">if</span> (t1 == <span class="literal">null</span> || t2 == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">// value check</span></span><br><span class="line">    <span class="keyword">if</span> (t1.val != t2.val) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">// push children</span></span><br><span class="line">    stack.push(t1.right); stack.push(t2.left); <span class="comment">// could be null</span></span><br><span class="line">    stack.push(t1.left); stack.push(t2.right);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(h)$</p>
+<h3 id="Iteration-BFS"><a href="#Iteration-BFS" class="headerlink" title="Iteration (BFS)"></a>Iteration (BFS)</h3><p>Compare nodes at each layer.</p>
+<ul>
+<li>Each two consecutive nodes in the queue should be equal.</li>
+<li>Each time, two nodes are extracted and their values are compared.</li>
+<li>Then their right and left children of the two nodes are enqueued in opposite order.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">    <span class="number">1</span></span><br><span class="line">   / \</span><br><span class="line">  <span class="number">2</span>   <span class="number">2</span>     queue: <span class="number">2</span>    <span class="number">2</span> (t1)</span><br><span class="line"> / \ / \</span><br><span class="line"><span class="number">3</span>  <span class="number">4</span> <span class="number">4</span>  <span class="number">3</span>   queue: <span class="number">4</span>    <span class="number">4</span>    <span class="number">3</span>    <span class="number">3</span></span><br><span class="line">                           t2.r t1.l</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isSymmetric</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  Queue&lt;TreeNode&gt; queue = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">  queue.offer(root.left);</span><br><span class="line">  queue.offer(root.right);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (queue.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="type">TreeNode</span> <span class="variable">t1</span> <span class="operator">=</span> queue.poll();</span><br><span class="line">    <span class="type">TreeNode</span> <span class="variable">t2</span> <span class="operator">=</span> queue.poll();</span><br><span class="line">    <span class="comment">// check</span></span><br><span class="line">    <span class="keyword">if</span> (t1 == <span class="literal">null</span> &amp;&amp; t2 == <span class="literal">null</span>) <span class="keyword">continue</span>;</span><br><span class="line">    <span class="keyword">if</span> (t1 == <span class="literal">null</span> || t2 == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (t1.val != t2.val) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">// offer children</span></span><br><span class="line">    queue.offer(t1.left);</span><br><span class="line">    queue.offer(t2.right);</span><br><span class="line"></span><br><span class="line">    queue.offer(t1.right);</span><br><span class="line">    queue.offer(t2.left);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(w)$ where $w$ is the maximum number nodes in a level of the tree.</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

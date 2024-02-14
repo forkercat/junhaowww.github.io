@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium My Post: Java Solution Using Two Stacks Problem You are given two non-empty linked lists representing two non-negative integers. The most significant digit come">
+<meta property="og:type" content="website">
+<meta property="og:title" content="445. Add Two Numbers II">
+<meta property="og:url" content="https://junhaow.com/lc/problems/linked-list/add-and-merge-two-lists/445_add-two-numbers-ii.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium My Post: Java Solution Using Two Stacks Problem You are given two non-empty linked lists representing two non-negative integers. The most significant digit come">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.128Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.128Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>445. Add Two Numbers II</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/add-two-numbers-ii/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/add-two-numbers-ii/discuss/316830/Java-Solution-Using-Two-Stacks">Java Solution Using Two Stacks</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>You are given two non-empty linked lists representing two <code>non-negative</code> integers. The most significant digit comes first and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.</p>
+</blockquote>
+<p><strong>Note:</strong> You may assume the two numbers do not contain any leading zero, except the number $0$ itself.</p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: (<span class="number">7</span> -&gt; <span class="number">2</span> -&gt; <span class="number">4</span> -&gt; <span class="number">3</span>) + (<span class="number">5</span> -&gt; <span class="number">6</span> -&gt; <span class="number">4</span>)</span><br><span class="line">Output: <span class="number">7</span> -&gt; <span class="number">8</span> -&gt; <span class="number">0</span> -&gt; <span class="number">7</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> </p>
+<p>What if you cannot modify the input lists? In other words, reversing the lists is not allowed.</p>
+<ul>
+<li>Use Stack.</li>
+</ul>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p>I’ve tried direct recursion without reversing, but couldn’t make it work.</p>
+<p><strong>Test Case:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// When one list is longer than the other.</span></span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>]</span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line">[<span class="number">0</span>, <span class="number">2</span>, <span class="number">2</span>]</span><br><span class="line"><span class="comment">// When one list is null, which means an empty list.</span></span><br><span class="line">[]</span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>]</span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>]</span><br><span class="line"><span class="comment">// When sum could have an extra carry of one at the end, which is easy to forget.</span></span><br><span class="line">[<span class="number">9</span>, <span class="number">9</span>]</span><br><span class="line">[<span class="number">1</span>]</span><br><span class="line">[<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Reverse-Simulation"><a href="#Reverse-Simulation" class="headerlink" title="Reverse + Simulation"></a>Reverse + Simulation</h3><p><strong>Note:</strong> </p>
+<ul>
+<li>Remember to reverse the <code>return node</code> before finishing.</li>
+<li>Notice the base case of <code>reverse</code>. Come up with some examples.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">reverseAndAdd</span><span class="params">(ListNode l1, ListNode l2)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (l1 == <span class="literal">null</span> || l2 == <span class="literal">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>();</span><br><span class="line">  l1 = reverse(l1);</span><br><span class="line">  l2 = reverse(l2);</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">L</span> <span class="operator">=</span> add(l1, l2, <span class="number">0</span>);</span><br><span class="line">  L = reverse(L);</span><br><span class="line">  <span class="keyword">return</span> L;</span><br><span class="line">  <span class="comment">// or return reverse(add(reverse(l1), reverse(l2), 0));</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1 - 2 - 3 - 4</span></span><br><span class="line"><span class="comment">// 1 - 4 - 3 - 2 </span></span><br><span class="line"><span class="comment">// x  head     x.next</span></span><br><span class="line"><span class="keyword">private</span> ListNode <span class="title function_">reverse</span><span class="params">(ListNode x)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (x == <span class="literal">null</span> || x.next == <span class="literal">null</span>) <span class="keyword">return</span> x; <span class="comment">// find new head</span></span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">head</span> <span class="operator">=</span> reverse(x.next);</span><br><span class="line">  x.next.next = x;</span><br><span class="line">  x.next = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">return</span> head;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> ListNode <span class="title function_">add</span><span class="params">(ListNode l1, ListNode l2, <span class="type">int</span> carry)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (l1 == <span class="literal">null</span> &amp;&amp; l2 == <span class="literal">null</span> &amp;&amp; carry &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// if (carry &gt; 0) return new ListNode(carry);</span></span><br><span class="line">    <span class="comment">// else           return null;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> (l1 == <span class="literal">null</span>) ? <span class="number">0</span> : l1.val;</span><br><span class="line">  <span class="type">int</span> <span class="variable">y</span> <span class="operator">=</span> (l2 == <span class="literal">null</span>) ? <span class="number">0</span> : l2.val;</span><br><span class="line">  <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> x + y + carry;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">newNode</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(sum % <span class="number">10</span>);</span><br><span class="line">  <span class="keyword">if</span> (l1 != <span class="literal">null</span>) l1 = l1.next;</span><br><span class="line">  <span class="keyword">if</span> (l2 != <span class="literal">null</span>) l2 = l2.next;</span><br><span class="line">  newNode.next = add(l1, l2, sum / <span class="number">10</span>);</span><br><span class="line">  <span class="keyword">return</span> newNode;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(M + N)$ <code>2 ms</code><br><strong>Space:</strong> $O(M + N)$</p>
+<h3 id="Use-Two-Stacks"><a href="#Use-Two-Stacks" class="headerlink" title="Use Two Stacks"></a>Use Two Stacks</h3><p>Use two stacks to simulate the add operation</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Use Two Stacks</span></span><br><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">useTwoStacks</span><span class="params">(ListNode l1, ListNode l2)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (l1 == <span class="literal">null</span> || l2 == <span class="literal">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>();</span><br><span class="line">  Stack&lt;ListNode&gt; s1 = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">  Stack&lt;ListNode&gt; s2 = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">while</span> (l1 != <span class="literal">null</span>) &#123;</span><br><span class="line">    s1.push(l1);</span><br><span class="line">    l1 = l1.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">while</span> (l2 != <span class="literal">null</span>) &#123;</span><br><span class="line">    s2.push(l2);</span><br><span class="line">    l2 = l2.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> addTwoStacks(s1, s2);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> ListNode <span class="title function_">addTwoStacks</span><span class="params">(Stack&lt;ListNode&gt; s1, Stack&lt;ListNode&gt; s2)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (s1 == <span class="literal">null</span>) s1 = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">if</span> (s2 == <span class="literal">null</span>) s2 = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">  </span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">dummy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(-<span class="number">1</span>);</span><br><span class="line">  <span class="type">int</span> <span class="variable">carry</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (!s1.isEmpty() || !s2.isEmpty() || carry &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> s1.isEmpty() ? <span class="number">0</span> : s1.pop().val;</span><br><span class="line">    <span class="type">int</span> <span class="variable">y</span> <span class="operator">=</span> s2.isEmpty() ? <span class="number">0</span> : s2.pop().val;</span><br><span class="line">    <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> x + y + carry;</span><br><span class="line">    carry = sum / <span class="number">10</span>;</span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">newNode</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(sum % <span class="number">10</span>);</span><br><span class="line">    newNode.next = dummy.next;</span><br><span class="line">    dummy.next = newNode; <span class="comment">// addFirst</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(M + N)$ <code>6 ms</code><br><strong>Space:</strong> $O(M + N)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

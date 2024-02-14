@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Easy Problem You are given a binary tree in which each node contains an integer value. Find the number of paths that sum to a given value.   The path does not need to">
+<meta property="og:type" content="website">
+<meta property="og:title" content="437. Path Sum III">
+<meta property="og:url" content="https://junhaow.com/lc/problems/tree/sum-and-path/437_path-sum-iii.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Easy Problem You are given a binary tree in which each node contains an integer value. Find the number of paths that sum to a given value.   The path does not need to">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/trddy.jpg">
+<meta property="article:published_time" content="2024-02-13T00:53:54.150Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.150Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/trddy.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>437. Path Sum III</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/path-sum-iii/">LeetCode</a><br>Difficulty: <span class="green">Easy</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>You are given a binary tree in which each node contains an integer value. Find the number of paths that sum to a given value.</p>
+</blockquote>
+<blockquote>
+<p>The path does not need to start or end at the root or a leaf, but it must go downwards (traveling only from parent nodes to child nodes).</p>
+</blockquote>
+<blockquote>
+<p>The tree has no more than 1,000 nodes and the values are in the range -1,000,000 to 1,000,000.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">root = [<span class="number">10</span>,<span class="number">5</span>,-<span class="number">3</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="literal">null</span>,<span class="number">11</span>,<span class="number">3</span>,-<span class="number">2</span>,<span class="literal">null</span>,<span class="number">1</span>], sum = <span class="number">8</span></span><br><span class="line"></span><br><span class="line">      <span class="number">10</span></span><br><span class="line">     /  \</span><br><span class="line">    <span class="number">5</span>   -<span class="number">3</span></span><br><span class="line">   / \    \</span><br><span class="line">  <span class="number">3</span>   <span class="number">2</span>   <span class="number">11</span></span><br><span class="line"> / \   \</span><br><span class="line"><span class="number">3</span>  -<span class="number">2</span>   <span class="number">1</span></span><br><span class="line"></span><br><span class="line">Return <span class="number">3.</span> The paths that sum to <span class="number">8</span> are:</span><br><span class="line"></span><br><span class="line"><span class="number">1.</span>  <span class="number">5</span> -&gt; <span class="number">3</span></span><br><span class="line"><span class="number">2.</span>  <span class="number">5</span> -&gt; <span class="number">2</span> -&gt; <span class="number">1</span></span><br><span class="line"><span class="number">3.</span> -<span class="number">3</span> -&gt; <span class="number">11</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> </p>
+<ul>
+<li>Reduce the time complexity.</li>
+</ul>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><blockquote>
+<p>By <a target="_blank" rel="noopener" href="https://leetcode.com/problems/path-sum-iii/discuss/91889/Simple-Java-DFS">fudonglai</a>:<br>写递归的技巧是：明白一个函数的作用并相信它能完成这个任务，千万不要跳进这个函数里面企图探究更多细节，否则就会陷入无穷的细节无法自拔。你就算浑身是铁，能压几个栈？<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzU0MDg5OTYyOQ==&mid=100000105&idx=1&sn=83337f6a4486d4433378491a2ae395dc&chksm=7b33612b4c44e83d7afe591454829ff3e26253bdebd8304e5eb87d4083668cb0712a2c0b8096#rd">more</a></p>
+<p>按照前面说的技巧，先来定义清楚每个递归函数应该做的事：</p>
+<p>pathSum 函数：给他一个节点和一个目标值，他返回以这个节点为根的树中，和为目标值的路径总数。<br>count 函数：给他一个节点和一个目标值，他返回以这个节点为根的树中，能凑出几个以该节点为路径开头，和为目标值的路径总数。</p>
+</blockquote>
+<p><strong>Methods:</strong></p>
+<ol>
+<li>Typical Recursion<ul>
+<li>First, we should define each recursive function’s job.</li>
+<li><code>pathSum(x, target)</code>: Return the number of paths that satisfy <code>target</code> requirement in a tree whose root is <code>x</code>.</li>
+<li><code>count(x, target)</code>: Return the number of paths that satisfy <code>target</code> requirement in a tree whose root <strong>must be</strong> <code>x</code>, the head of those paths.</li>
+<li><strong>Time:</strong> <code>11 ms</code><ul>
+<li>In each level in tree, as you go down, $N$ is halved, and finally you call <code>count(x, target)</code> for the leaves whose cost is $T(1)$ (not all the same $N$). Each layer does $O(N)$, and in the best case there are $\log{N}$ layers.</li>
+<li>According to the master theorem, <ul>
+<li><code>pathSum()</code>: $T(N) &#x3D; 2T(N&#x2F;2) + O(N) &#x3D; O(N\log{N})$</li>
+<li><code>count()</code>: $T(N) &#x3D; 2T(N&#x2F;2) + O(1)$</li>
+</ul>
+</li>
+<li>Best: $O(N\log{N})$</li>
+<li>Worst: $O(N^2)$</li>
+</ul>
+</li>
+<li><strong>Space:</strong> $O(h)$</li>
+</ul>
+</li>
+<li>HashMap + Prefix Sum (<a target="_blank" rel="noopener" href="https://leetcode.com/problems/path-sum-iii/discuss/91878/">tankztc &amp; kekezi</a>)<ul>
+<li><strong>Time:</strong> $O(N)$ <code>4 ms</code></li>
+<li><strong>Space:</strong> $O(N)$</li>
+<li>The idea is similar as Two Sum, using <code>HashMap</code> to store keys (the prefix sum) and values (how many ways to get to this prefix sum). </li>
+<li>The <code>prefix sum</code> stores the sum from the root to the current node in the recursion.</li>
+<li>Whenever we reach a node, we check if <code>prefix sum - target</code> exists in the HashMap. <ul>
+<li>If it does, we added up the ways of <code>prefix sum - target</code> into result.</li>
+<li>For example:<ul>
+<li>In one path we have: <code>[1, 2, -1, -1, 2]</code>,</li>
+<li>then the prefix sum will be: <code>[1, 3,  2,  1, 3]</code>.</li>
+<li>Let’s say we want to find target sum $2$, then we have $4$ paths which are <code>2</code>, <code>1,2,-1</code>, <code>2,-1,-1,2</code>, and <code>2</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>The sum from any node in the middle of the path to the current node<ul>
+<li>$&#x3D;$ (the sum from the root to the current node) $-$ (the prefix sum of the node in the middle)</li>
+</ul>
+</li>
+<li>We want the difference above equal to the target value. In addition, we need to know how many differences are equal to the target value.</li>
+<li>Use <code>HashMap</code>. The <code>value</code> of map stores the frequency of all possible sum in the path to the current node. If the difference we want exists, there must exist a node in the middle of the path, such that from this node to the current node, the sum is equal to the target value.</li>
+<li>There might be multiple nodes in the middle that satisfy the requirement. In each recursion, the map stores all information we need to calculate the number of ranges that sum up to target (start from a middle node and end by the current node).</li>
+<li>To get the total number of a path count, we add up the number of valid paths ended by <code>each</code> node in the tree.</li>
+<li>Each recursion returns the total count of valid paths in the subtree rooted at the current node. And this sum can be divided into three parts:<ul>
+<li>The total number of valid paths in the subtree rooted at the current node’s left child.</li>
+<li>The total number of valid paths in the subtree rooted at the current node’s right child.</li>
+<li>The number of valid paths ended by the current node.</li>
+</ul>
+</li>
+<li>The interesting part of this solution is that the prefix is counted from root to leaves, and the result of total count is calculated from the bottom to the top.</li>
+</ul>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><h3 id="Typical-Recursion"><a href="#Typical-Recursion" class="headerlink" title="Typical Recursion"></a>Typical Recursion</h3><h4 id="Incorrect-Version"><a href="#Incorrect-Version" class="headerlink" title="Incorrect Version"></a>Incorrect Version</h4><p>First, let’s examine <strong>an incorrect version</strong>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">pathSum</span><span class="params">(TreeNode root, <span class="type">int</span> sum)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> pathSum(root, sum, sum);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">pathSum</span><span class="params">(TreeNode root, <span class="type">int</span> sum, <span class="type">int</span> oldSum)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// root</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">r0</span> <span class="operator">=</span> root.val == sum ? <span class="number">1</span> : <span class="number">0</span>;</span><br><span class="line">  <span class="comment">// left</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">r1</span> <span class="operator">=</span> pathSum(root.left, sum - root.val, oldSum);</span><br><span class="line">  <span class="type">int</span> <span class="variable">r2</span> <span class="operator">=</span> pathSum(root.left, oldSum, oldSum); <span class="comment">// start from left</span></span><br><span class="line">  <span class="comment">// right</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">r3</span> <span class="operator">=</span> pathSum(root.right, sum - root.val, oldSum);</span><br><span class="line">  <span class="type">int</span> <span class="variable">r4</span> <span class="operator">=</span> pathSum(root.right, oldSum, oldSum);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> r0 + r1 + r2 + r3 + r4;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Example:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Input = [<span class="number">1</span>,<span class="literal">null</span>,<span class="number">2</span>,<span class="literal">null</span>,<span class="number">3</span>]</span><br><span class="line">Output = <span class="number">2</span> (the code outputs <span class="number">3</span>)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"> \</span><br><span class="line">  <span class="number">2</span></span><br><span class="line">   \</span><br><span class="line">    <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>Call Stack:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">p(<span class="number">1</span>, <span class="number">3</span>, <span class="number">3</span>)</span><br><span class="line">   r0=<span class="number">0</span>, r1=<span class="number">0</span>, r2=<span class="number">0</span></span><br><span class="line">   r3 = p(<span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>) <span class="comment">// continue with node 1</span></span><br><span class="line">           r0=<span class="number">1</span>, r1=<span class="number">0</span>, r2=<span class="number">0</span></span><br><span class="line">           r3 = p(<span class="number">3</span>, <span class="number">0</span>, <span class="number">3</span>)</span><br><span class="line">                   r0=<span class="number">0</span>, r1=<span class="number">0</span>, r2=<span class="number">0</span>, r3=<span class="number">0</span></span><br><span class="line">                   = <span class="number">0</span></span><br><span class="line">           r4 = p(<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>) <span class="comment">// here</span></span><br><span class="line">                   r0=<span class="number">1</span>, r1=<span class="number">0</span>, r2=<span class="number">0</span>, r3=<span class="number">0</span></span><br><span class="line">                   = <span class="number">1</span></span><br><span class="line">           = r0 + r4 = <span class="number">2</span></span><br><span class="line">   r4 = p(<span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>) <span class="comment">// start over at node 2</span></span><br><span class="line">           r0=<span class="number">0</span>, r1=<span class="number">0</span>, r2=<span class="number">0</span></span><br><span class="line">           r3 = p(<span class="number">3</span>, <span class="number">1</span>, <span class="number">3</span>)</span><br><span class="line">                   r0=<span class="number">0</span>,r1=<span class="number">0</span>,r2=<span class="number">0</span>,r3=<span class="number">0</span></span><br><span class="line">                   = <span class="number">0</span></span><br><span class="line">           r4 = p(<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>) <span class="comment">// here</span></span><br><span class="line">                   r0=<span class="number">1</span>, r1=<span class="number">0</span>, r2=<span class="number">0</span>, r3=<span class="number">0</span></span><br><span class="line">                   = <span class="number">1</span></span><br><span class="line">           = r4 = <span class="number">1</span></span><br><span class="line">   r3 + r4 = <span class="number">3</span></span><br><span class="line">= <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>We can see that there are repeated calculations.</p>
+<ul>
+<li><code>p(3, 3, 3)</code> called by <code>p(2, 2, 3)</code> called by <code>p(1, 3, 3)</code>.</li>
+<li><code>p(3, 3, 3)</code> called by <code>p(2, 3, 3)</code> called by <code>p(1, 3, 3)</code>.</li>
+</ul>
+<h4 id="Correct-Version"><a href="#Correct-Version" class="headerlink" title="Correct Version"></a>Correct Version</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// pathSum(): How many paths in a tree whose head is root satisfy?</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">pathSum</span><span class="params">(TreeNode root, <span class="type">int</span> sum)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">rootNum</span> <span class="operator">=</span> count(root, sum);  <span class="comment">// root as a leading head of any paths</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">leftNum</span> <span class="operator">=</span> pathSum(root.left, sum); <span class="comment">// don&#x27;t need to know the details</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">rightNum</span> <span class="operator">=</span> pathSum(root.right, sum);</span><br><span class="line">  <span class="keyword">return</span> rootNum + leftNum + rightNum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// count(): How many paths whose head is root satisfy?</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">count</span><span class="params">(TreeNode root, <span class="type">int</span> sum)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">rootNum</span> <span class="operator">=</span> (root.val == sum) ? <span class="number">1</span> : <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">leftNum</span> <span class="operator">=</span> count(root.left, sum - root.val);</span><br><span class="line">  <span class="type">int</span> <span class="variable">rightNum</span> <span class="operator">=</span> count(root.right, sum - root.val);</span><br><span class="line">  <span class="keyword">return</span> rootNum + leftNum + rightNum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+<h3 id="HashMap-Prefix-Sum"><a href="#HashMap-Prefix-Sum" class="headerlink" title="HashMap + Prefix Sum"></a>HashMap + Prefix Sum</h3><p><strong>Note:</strong></p>
+<ul>
+<li>I am dead.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">pathSum</span><span class="params">(TreeNode root, <span class="type">int</span> sum)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  HashMap&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  map.put(<span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">  <span class="keyword">return</span> findPathSum(root, <span class="number">0</span>, sum, map);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">findPathSum</span><span class="params">(TreeNode curr, <span class="type">int</span> sum, <span class="type">int</span> target, Map&lt;Integer, Integer&gt; map)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (curr == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// update the prefix sum by adding the current value</span></span><br><span class="line">  sum += curr.val;</span><br><span class="line">  <span class="comment">// get the number of valid paths, ended by the current node</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">numPathToCurr</span> <span class="operator">=</span> map.getOrDefault(sum - target, <span class="number">0</span>);</span><br><span class="line">  <span class="comment">// update the map with the current sum, so the map is good to be passed to the next recursion</span></span><br><span class="line">  map.put(sum, map.getOrDefault(sum, <span class="number">0</span>) + <span class="number">1</span>); <span class="comment">// prefix sum</span></span><br><span class="line">  <span class="comment">// add the 3 parts</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">res</span> <span class="operator">=</span> numPathToCurr + findPathSum(curr.left, sum, target, map) + findPathSum(curr.right, sum, target, map);</span><br><span class="line">  <span class="comment">// restore the map, as the recursion goes from the bottom to the top</span></span><br><span class="line">  map.put(sum, map.get(sum) - <span class="number">1</span>);</span><br><span class="line">  <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/trddy.jpg"></p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

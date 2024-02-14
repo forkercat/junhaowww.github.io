@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Easy Here is a nice article about Majority Voting Algorithm by Greg Grothaus. Problem Given an array of size $n$, find the majority element. The majority element is th">
+<meta property="og:type" content="website">
+<meta property="og:title" content="169. Majority Element">
+<meta property="og:url" content="https://junhaow.com/lc/problems/number-and-math/majority/169_majority-element.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Easy Here is a nice article about Majority Voting Algorithm by Greg Grothaus. Problem Given an array of size $n$, find the majority element. The majority element is th">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/0np1h.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.133Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.133Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/0np1h.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>169. Majority Element</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/majority-element/">LeetCode</a><br>Difficulty: <span class="green">Easy</span></p>
+<p>Here is a nice article about <a target="_blank" rel="noopener" href="https://gregable.com/2013/10/majority-vote-algorithm-find-majority.html">Majority Voting Algorithm</a> by Greg Grothaus.</p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given an array of size $n$, find the majority element. The majority element is the element that appears <strong>more than</strong> <code>⌊n/2⌋</code> times.</p>
+</blockquote>
+<p><strong>Note:</strong> You may assume that the array is non-empty and the majority element always exist in the array.</p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input: [<span class="number">3</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">Output: <span class="number">3</span></span><br><span class="line"></span><br><span class="line">Input: [<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>]</span><br><span class="line">Output: <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> Jesus. Many possible solutions.</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">majorityElement</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> curr : nums) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">      <span class="keyword">if</span> (curr == val) &#123;</span><br><span class="line">        count += <span class="number">1</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (count &gt; n / <span class="number">2</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> curr;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N^2)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h3><p>It reduces the runtime to $O(N)$ with some extra space $O(N)$.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Use Hash Map</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">majorityElement</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> map.getOrDefault(val, <span class="number">0</span>);</span><br><span class="line">    map.put(val, count + <span class="number">1</span>);</span><br><span class="line">    <span class="comment">// check</span></span><br><span class="line">    <span class="keyword">if</span> (count &gt; nums.length / <span class="number">2</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> val;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(N)$</p>
+<h3 id="Sorting"><a href="#Sorting" class="headerlink" title="Sorting"></a>Sorting</h3><p>If the elements are sorted, the majority element is guaranteed to be at right-leaning or left-leaning <code>mid</code>. Think of two extreme cases when the majority element starts at the beginning or reaches the tail.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/0np1h.png" alt="Source: LeetCode"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// sort first</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">majorityElement</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="comment">// Length / 2  =&gt;  right-leaning mid</span></span><br><span class="line">  <span class="comment">// even:  0  1  2  3</span></span><br><span class="line">  <span class="comment">//              ^        mid = 4 / 2 = 2</span></span><br><span class="line">  <span class="comment">//  odd:  0  1  2  3  4</span></span><br><span class="line">  <span class="comment">//              ^        mid = 5 / 2 = 2</span></span><br><span class="line">  Arrays.sort(nums);</span><br><span class="line">  <span class="keyword">return</span> nums[nums.length / <span class="number">2</span>];</span><br><span class="line">  <span class="comment">// actually you need to confirm the result</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N\log{N})$<br><strong>Space:</strong> $O(1)$ (in-place) or $O(N)$ (non-destructive)</p>
+<h3 id="Randomization"><a href="#Randomization" class="headerlink" title="Randomization"></a>Randomization</h3><p>Because more than <code>⌊n/2⌋</code> array indices are occupied by the majority element, a random array index is likely to contain the majority element.</p>
+<p><strong>Note:</strong> The commented lines are not allowed (<code>unreachable statement</code>), since the compiler knows that the condition of the loop is <code>true</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// randomization</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">majorityElement</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="type">Random</span> <span class="variable">rand</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Random</span>();</span><br><span class="line">  <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="comment">// pick a candidate</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">idx</span> <span class="operator">=</span> rand.nextInt(n);</span><br><span class="line">    <span class="type">int</span> <span class="variable">candidate</span> <span class="operator">=</span> nums[idx];</span><br><span class="line">    <span class="comment">// check the count</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">      <span class="keyword">if</span> (nums[i] == candidate) count += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// check if it is a majority element</span></span><br><span class="line">    <span class="keyword">if</span> (count &gt; n / <span class="number">2</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> candidate;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// throw new IllegalArgumentException();</span></span><br><span class="line">  <span class="comment">// return -1;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(\infty)$<br><strong>Space:</strong> $O(1)$</p>
+<p>It is theoretically possible for this algorithm to r un indefinitely, so the worst possible runtime is unbounded. But in fact the expected runtime is far better which is $O(N)$.</p>
+<h3 id="Divide-and-Conquer"><a href="#Divide-and-Conquer" class="headerlink" title="Divide and Conquer"></a>Divide and Conquer</h3><p><strong>Idea:</strong> If we know the majority element in the left and right halves of an array, we can determine which is the global majority element in $O(N)$.</p>
+<ul>
+<li>The base case of this problem is when the slice is length-1, and the majority element for this slice is just the only element.</li>
+<li>If the current slice is longer than length-1, we must combine the results from the left slice and right slice.<ul>
+<li>If they agree on the majority element, then this element is the global majority element.</li>
+<li>If they disagree, we need to count the occurrences of the left and right majority elements to get the answer since we know that only one of them can be right.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">majorityElement</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="keyword">return</span> majorityElement(nums, <span class="number">0</span>, n - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">majorityElement</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> lo, <span class="type">int</span> hi)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (lo == hi) &#123;</span><br><span class="line">    <span class="keyword">return</span> nums[lo];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> lo + (hi - lo) / <span class="number">2</span>; <span class="comment">// left-leaning</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> majorityElement(nums, lo, mid);</span><br><span class="line">  <span class="type">int</span> <span class="variable">right</span> <span class="operator">=</span> majorityElement(nums, mid + <span class="number">1</span>, hi);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (left == right) &#123; <span class="comment">// agree on</span></span><br><span class="line">    <span class="keyword">return</span> left;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// disagree on</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">leftCount</span> <span class="operator">=</span> countInRange(nums, left, lo, hi); <span class="comment">// O(N)</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">rightCount</span> <span class="operator">=</span> countInRange(nums, right, lo, hi); <span class="comment">// O(N)</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (leftCount &gt; rightCount) ? left : right;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">countInRange</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> val, <span class="type">int</span> lo, <span class="type">int</span> hi)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt;= hi; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (nums[i] == val) &#123;</span><br><span class="line">      count += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $T(N) &#x3D; 2T(N&#x2F;2) + 2N &#x3D; O(N\log{N})$<br><strong>Space:</strong> $O(\log{N})$</p>
+<h3 id="Boyer-Moore-Voting-Algorithm"><a href="#Boyer-Moore-Voting-Algorithm" class="headerlink" title="Boyer-Moore Voting Algorithm"></a>Boyer-Moore Voting Algorithm</h3><p>The idea is to count instances of the majority element as $+1$ and instances of any other element as $-1$, and then summing them would make the majority element obvious.</p>
+<ul>
+<li>We have a <code>count</code> variable initialized with $0$. We <strong>increment it by one</strong> whenever we see an instance of the candidate, and <strong>decrement it by one</strong> whenever we see something else.</li>
+<li>When <code>count</code> equals $0$, we effectively forget about everything before the current index. Also, we consider the element at the next index as a new candidate of the majority element.</li>
+<li>Eventually, a suffix will be found for which <code>count</code> does not hit <code>0</code>.</li>
+</ul>
+<p><strong>Note:</strong> It is still possible that there is no majority element at all (e.g. <code>1 4 1 1 3 5 9 8 7</code>, fake candidate is <code>7</code>). So actually we need a second pass to confirm the result.</p>
+<p>Example 1: (n &#x3D; 16, #7 &#x3D; 10, #5 &#x3D; 5, #1 &#x3D; 1)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">7</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">1</span> | <span class="number">5</span>, <span class="number">7</span> | <span class="number">5</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">7</span> | <span class="number">7</span>, <span class="number">7</span>, <span class="number">7</span>, <span class="number">7</span>]</span><br><span class="line"> <span class="number">1</span>  <span class="number">2</span>  <span class="number">1</span>  <span class="number">2</span>  <span class="number">1</span>  <span class="number">0</span>   <span class="number">1</span>  <span class="number">0</span>  -<span class="number">1</span> -<span class="number">2</span> -<span class="number">1</span>  <span class="number">0</span>   <span class="number">1</span>  <span class="number">2</span>  <span class="number">3</span>  <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p>Example 2: (n &#x3D; 16, #7 &#x3D; 6, #5 &#x3D; 9, #1 &#x3D; 1)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">7</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">1</span> | <span class="number">5</span>, <span class="number">7</span> | <span class="number">5</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">7</span> | <span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>]</span><br><span class="line"> <span class="number">1</span>  <span class="number">2</span>  <span class="number">1</span>  <span class="number">2</span>  <span class="number">1</span>  <span class="number">0</span>   <span class="number">1</span>  <span class="number">0</span>   <span class="number">1</span>  <span class="number">2</span>  <span class="number">1</span>  <span class="number">0</span>   <span class="number">1</span>  <span class="number">2</span>  <span class="number">3</span>  <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong> Check if <code>count == 0</code> before updating it.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">majorityElement</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">Integer</span> <span class="variable">candidate</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> val : nums) &#123;</span><br><span class="line">    <span class="keyword">if</span> (count = <span class="number">0</span>) &#123;</span><br><span class="line">      candidate = val;</span><br><span class="line">    &#125;</span><br><span class="line">    count += (val == candidate) ? +<span class="number">1</span> : -<span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// possible verification</span></span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

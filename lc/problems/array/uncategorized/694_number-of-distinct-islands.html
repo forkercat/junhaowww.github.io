@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Medium My Post: [Java] DFS with Hash Set of Shape &amp; Path Signature (detailed explanation) Problem Given a non-empty 2D array grid of 0‘s and 1‘s, an island is a gr">
+<meta property="og:type" content="website">
+<meta property="og:title" content="694. Number of Distinct Islands">
+<meta property="og:url" content="https://junhaow.com/lc/problems/array/uncategorized/694_number-of-distinct-islands.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Medium My Post: [Java] DFS with Hash Set of Shape &amp; Path Signature (detailed explanation) Problem Given a non-empty 2D array grid of 0‘s and 1‘s, an island is a gr">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.106Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.106Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>694. Number of Distinct Islands</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/number-of-distinct-islands/">LeetCode</a><br>Difficulty: <span class="orange">Medium</span></p>
+<p>My Post: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/number-of-distinct-islands/discuss/426166">[Java] DFS with Hash Set of Shape &amp; Path Signature (detailed explanation)</a></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a non-empty 2D array grid of <code>0</code>‘s and <code>1</code>‘s, an island is a group of 1’s (representing land) connected 4-directionally (horizontal or vertical.) You may assume all four edges of the grid are surrounded by water.</p>
+</blockquote>
+<blockquote>
+<p>Count the number of distinct islands. An island is considered to be the same as another if and only if one island <strong>can be translated (and not rotated or reflected)</strong> to equal the other.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">11000</span></span><br><span class="line"><span class="number">11000</span></span><br><span class="line"><span class="number">00011</span></span><br><span class="line"><span class="number">00011</span> <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line"><span class="number">11011</span></span><br><span class="line"><span class="number">10000</span></span><br><span class="line"><span class="number">00001</span></span><br><span class="line"><span class="number">11011</span> <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Explanation:</span></span><br><span class="line"><span class="number">11</span>   <span class="number">1</span></span><br><span class="line"><span class="number">1</span>   <span class="number">11</span>  <span class="comment">// are considered different island shapes</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="DFS-Shape"><a href="#DFS-Shape" class="headerlink" title="DFS (Shape)"></a>DFS (Shape)</h3><p>The idea is to convert each island’s lands to a form that is comparable. See the example below.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">0</span></span><br><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="comment">// for this shape we have [(2, 1), (3, 1), (3, 2)].</span></span><br><span class="line"><span class="comment">// we should convert these coordinates to the following coordinates.</span></span><br><span class="line"></span><br><span class="line"><span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="comment">// for this shape we have [(0, 0), (1, 0), (1, 1)].</span></span><br><span class="line"><span class="number">1</span> <span class="number">1</span> <span class="number">0</span></span><br><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line"><span class="comment">// then each &quot;L&quot; island has the same shape.</span></span><br></pre></td></tr></table></figure>
+
+<p>We also notice that a hash set list <code>[(0, 0), (1, 0), (1, 1)]</code> has the same hash code with a set list <code>[(1, 0), (1, 1), (0, 0)]</code>. The order does not count here.</p>
+<p>One more thing! We also need to convert a coordinate <code>(x, y)</code> to a unique integer number, say <code>shapeId</code>. An obvious way to do that is by this conversion: <code>x * n + y</code>. Does this guarantee unique integer numbers?</p>
+<p><strong>No</strong>. Consider the case below:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span>  <span class="comment">// shape 1</span></span><br><span class="line"><span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span>  <span class="comment">// shape 2</span></span><br><span class="line"><span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>Unfortunately, two shapes are hashed to the hash code. It occurs because negative results exist. Since we take <code>(0, 2)</code> as the first coordinate, <code>(1, 0), (1, 1)</code> in the second row would be transformed to negative coordinates, which are then hashed to <code>shapeId</code>s that collide with the <code>1</code> in the previous row. To solve this problem, we use this conversion: <code>x * n * 2 + y</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>[][] direction = &#123; &#123;-<span class="number">1</span>, <span class="number">0</span>&#125;, &#123;<span class="number">1</span>, <span class="number">0</span>&#125;, &#123;<span class="number">0</span>, -<span class="number">1</span>&#125;, &#123;<span class="number">0</span>, <span class="number">1</span>&#125; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">numDistinctIslands</span><span class="params">(<span class="type">int</span>[][] grid)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (grid == <span class="literal">null</span> || grid.length == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">m</span> <span class="operator">=</span> grid.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> grid[<span class="number">0</span>].length;</span><br><span class="line">  Set&lt;Set&lt;Integer&gt;&gt; allShapes = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">  <span class="type">boolean</span>[][] marked = <span class="keyword">new</span> <span class="title class_">boolean</span>[m][n];</span><br><span class="line">  <span class="comment">// dfs</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; m; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; n; ++j) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!marked[i][j] &amp;&amp; grid[i][j] == <span class="number">1</span>) &#123;</span><br><span class="line">        Set&lt;Integer&gt; shape = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">        dfs(i, j, i, j, grid, marked, shape);</span><br><span class="line">        <span class="keyword">if</span> (shape.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">          allShapes.add(shape); <span class="comment">// allShapes would do the checking for us</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> allShapes.size();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">dfs</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> j, <span class="type">int</span> i0, <span class="type">int</span> j0, <span class="type">int</span>[][] grid, <span class="type">boolean</span>[][] marked, Set&lt;Integer&gt; shape)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">m</span> <span class="operator">=</span> grid.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> grid[<span class="number">0</span>].length;</span><br><span class="line">  marked[i][j] = <span class="literal">true</span>; <span class="comment">// visit</span></span><br><span class="line">  <span class="comment">// transform to a top-left position</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">tx</span> <span class="operator">=</span> i - i0, ty = j - j0;</span><br><span class="line">  <span class="type">int</span> <span class="variable">shapeId</span> <span class="operator">=</span> tx * n * <span class="number">2</span> + ty; <span class="comment">// critical!</span></span><br><span class="line">  shape.add(shapeId);</span><br><span class="line">  <span class="comment">// for each neighbor</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span>[] dir : direction) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> i + dir[<span class="number">0</span>];</span><br><span class="line">    <span class="type">int</span> <span class="variable">y</span> <span class="operator">=</span> j + dir[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">if</span> (x &gt;= <span class="number">0</span> &amp;&amp; x &lt; m &amp;&amp; y &gt;= <span class="number">0</span> &amp;&amp; y &lt; n &amp;&amp; !marked[x][y] &amp;&amp; grid[x][y] == <span class="number">1</span>) &#123;</span><br><span class="line">      dfs(x, y, i0, j0, grid, marked, shape);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(MN)$<br><strong>Space:</strong> $O(MN)$</p>
+<h3 id="DFS-Path-Signature"><a href="#DFS-Path-Signature" class="headerlink" title="DFS (Path Signature)"></a>DFS (Path Signature)</h3><p>Use a similar idea but it is based on path signature. Let’s define something like <code>directional id</code> as follows:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">        <span class="number">1</span>/up</span><br><span class="line">         |</span><br><span class="line"><span class="number">3</span>/left -   - <span class="number">4</span>/right</span><br><span class="line">         |</span><br><span class="line">        <span class="number">2</span>/down</span><br></pre></td></tr></table></figure>
+
+<p>See the example below to know what it means:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span></span><br><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span></span><br><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span></span><br><span class="line"><span class="comment">// Notice that the order of examining each direction does not matter, but it should be consistent throughout the process.</span></span><br><span class="line"><span class="comment">// The path ID is [0, 4, 2, 2, 4]. (the first element is always assigned as 0)</span></span><br></pre></td></tr></table></figure>
+
+<p>Again, the above strategy has an underlying issue. Consider the following example:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="comment">// Path ID: [0, 4, 2, 4]</span></span><br><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">1</span></span><br><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line"><span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="comment">// Path ID: [0, 4, 2, 4]</span></span><br><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Add path.add(0)</span></span><br><span class="line"></span><br><span class="line"><span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="comment">// Path ID: [0, 4, 2, 4, 0, 0, 0]</span></span><br><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">1</span></span><br><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line"><span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="comment">// Path ID: [0, 4, 2, 0, 4, 0, 0]</span></span><br><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>This happens because of the order that we visit each node. It is not easy to understand why. The solution is to add <code>path.add(0)</code> to distinguish each call stack.</p>
+<p>Last but not least, the path ID should be contained in an array or array list since the ordering matters.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>[][] direction = &#123; &#123;-<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>&#125;, &#123;<span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>&#125;, &#123;<span class="number">0</span>, -<span class="number">1</span>, <span class="number">3</span>&#125;, &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">4</span>&#125; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">numDistinctIslands</span><span class="params">(<span class="type">int</span>[][] grid)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (grid == <span class="literal">null</span> || grid.length == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">m</span> <span class="operator">=</span> grid.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> grid[<span class="number">0</span>].length;</span><br><span class="line">  Set&lt;List&lt;Integer&gt;&gt; allPaths = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">  <span class="type">boolean</span>[][] marked = <span class="keyword">new</span> <span class="title class_">boolean</span>[m][n];</span><br><span class="line">  <span class="comment">// dfs</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; m; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; n; ++j) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!marked[i][j] &amp;&amp; grid[i][j] == <span class="number">1</span>) &#123;</span><br><span class="line">        List&lt;Integer&gt; path = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        dfs(i, j, <span class="number">0</span>, grid, marked, path);</span><br><span class="line">        <span class="keyword">if</span> (path.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">          allPaths.add(path); <span class="comment">// allPaths would do the checking for us</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> allPaths.size();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">dfs</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> j, <span class="type">int</span> pid, <span class="type">int</span>[][] grid, <span class="type">boolean</span>[][] marked, List&lt;Integer&gt; path)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">m</span> <span class="operator">=</span> grid.length;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> grid[<span class="number">0</span>].length;</span><br><span class="line">  marked[i][j] = <span class="literal">true</span>; <span class="comment">// visit</span></span><br><span class="line">  path.add(pid); <span class="comment">// add pid</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// for each neighbor</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span>[] dir : direction) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> i + dir[<span class="number">0</span>];</span><br><span class="line">    <span class="type">int</span> <span class="variable">y</span> <span class="operator">=</span> j + dir[<span class="number">1</span>];</span><br><span class="line">    <span class="type">int</span> <span class="variable">nextPid</span> <span class="operator">=</span> dir[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">if</span> (x &gt;= <span class="number">0</span> &amp;&amp; x &lt; m &amp;&amp; y &gt;= <span class="number">0</span> &amp;&amp; y &lt; n &amp;&amp; !marked[x][y] &amp;&amp; grid[x][y] == <span class="number">1</span>) &#123;</span><br><span class="line">      dfs(x, y, nextPid, grid, marked, path);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  path.add(<span class="number">0</span>); <span class="comment">// critical!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(MN)$<br><strong>Space:</strong> $O(MN)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

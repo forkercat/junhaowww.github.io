@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Easy Problem Given a binary search tree and the lowest and highest boundaries as L and R, trim the tree so that all its elements lies in [L, R] (R &gt;&#x3D; L). You m">
+<meta property="og:type" content="website">
+<meta property="og:title" content="669. Trim a Binary Search Tree">
+<meta property="og:url" content="https://junhaow.com/lc/problems/tree/pruning-and-trimming/669_trim-a-binary-search-tree.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Easy Problem Given a binary search tree and the lowest and highest boundaries as L and R, trim the tree so that all its elements lies in [L, R] (R &gt;&#x3D; L). You m">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/cyhnc.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.147Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.147Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/cyhnc.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>669. Trim a Binary Search Tree</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/trim-a-binary-search-tree/">LeetCode</a><br>Difficulty: <span class="green">Easy</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given a binary search tree and the lowest and highest boundaries as <code>L</code> and <code>R</code>, trim the tree so that all its elements lies in <code>[L, R]</code> (R &gt;&#x3D; L). You might need to change the root of the tree, so the result should return the new root of the trimmed binary search tree.</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Input: </span><br><span class="line">    <span class="number">1</span></span><br><span class="line">   / \</span><br><span class="line">  <span class="number">0</span>   <span class="number">2</span></span><br><span class="line"></span><br><span class="line">  L = <span class="number">1</span></span><br><span class="line">  R = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">Output: </span><br><span class="line">    <span class="number">1</span></span><br><span class="line">      \</span><br><span class="line">       <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Input: </span><br><span class="line">    <span class="number">3</span></span><br><span class="line">   / \</span><br><span class="line">  <span class="number">0</span>   <span class="number">4</span></span><br><span class="line">   \</span><br><span class="line">    <span class="number">2</span></span><br><span class="line">   /</span><br><span class="line">  <span class="number">1</span></span><br><span class="line"></span><br><span class="line">  L = <span class="number">1</span></span><br><span class="line">  R = <span class="number">3</span></span><br><span class="line"></span><br><span class="line">Output: </span><br><span class="line">      <span class="number">3</span></span><br><span class="line">     / </span><br><span class="line">   <span class="number">2</span>   </span><br><span class="line">  /</span><br><span class="line"> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Follow up:</strong> Provide an iterative solution that take $O(1)$ space.</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p><strong>Methods:</strong></p>
+<p>I tried using <code>inorder</code> traversal, but it does not work well because of the link connection.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/cyhnc.png"></p>
+<ol>
+<li>Recursion<ul>
+<li>If the <code>root</code> is not within <code>[L, R]</code>, we should replace it by the <code>left</code> or <code>right</code> child. (2 cases)</li>
+<li>If the <code>root</code> is within the range, we should keep the root node.</li>
+<li><strong>Time:</strong> $O(N)$ since each node is traversed.</li>
+<li><strong>Space:</strong> $O(h)$</li>
+</ul>
+</li>
+<li>Iteration<ul>
+<li>Iteration solution is tricky.</li>
+<li>We first find the root that is within the range and replace the invalid one.</li>
+<li>Then we check the children and replace them if necessary.</li>
+<li><strong>Time:</strong> $O(N)$</li>
+<li><strong>Space:</strong> $O(1)$</li>
+</ul>
+</li>
+</ol>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><strong>Test Case:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>,<span class="number">0</span>,<span class="number">2</span>]</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Recursion"><a href="#Recursion" class="headerlink" title="Recursion"></a>Recursion</h3><p><strong>Note:</strong></p>
+<ul>
+<li><code>else</code> is necessary since we have updated the <code>root</code>. We have to check the <code>root</code> again in the next <code>trimBST</code> call.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">trimBST</span><span class="params">(TreeNode root, <span class="type">int</span> L, <span class="type">int</span> R)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// trim</span></span><br><span class="line">  <span class="keyword">if</span> (root.val &lt; L || root.val &gt; R) &#123;</span><br><span class="line">    <span class="comment">// trim root node</span></span><br><span class="line">    root = (root.val &lt; L) ? root.right : root.left; <span class="comment">// cut</span></span><br><span class="line">    root = trimBST(root, L, R);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// root in [L, R]</span></span><br><span class="line">    root.left = trimBST(root.left, L, R);</span><br><span class="line">    root.right = trimBST(root.right, L, R);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Another version:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">trimBST</span><span class="params">(TreeNode root, <span class="type">int</span> L, <span class="type">int</span> R)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// val not in range, trim</span></span><br><span class="line">  <span class="keyword">if</span> (root.val &lt; L) <span class="keyword">return</span> trimBST(root.right, L, R);</span><br><span class="line">  <span class="keyword">if</span> (root.val &gt; R) <span class="keyword">return</span> trimBST(root.left, L, R);</span><br><span class="line">  <span class="comment">// val in [L, R] (done with root)</span></span><br><span class="line">  root.left = trimBST(root.left, L, R);</span><br><span class="line">  root.right = trimBST(root.right, L, R);</span><br><span class="line">  <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Iteration"><a href="#Iteration" class="headerlink" title="Iteration"></a>Iteration</h3><p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/trim-a-binary-search-tree/discuss/107026/Java-solution-iteration-version">Java solution, iteration version</a></p>
+<p>The code in the post has a null bug in the code of finding the root. Try out this test case to see the error.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>,<span class="number">0</span>,<span class="number">2</span>]</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong></p>
+<ul>
+<li>When looking for the new root, we may go left or right, so we can’t just separate two directions in two while loops.</li>
+<li>Draw a picture and you can get a more intuitive picture why we handle the children like this. Hone in the properties of BST.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">trimBST</span><span class="params">(TreeNode root, <span class="type">int</span> L, <span class="type">int</span> R)</span> &#123;</span><br><span class="line">  <span class="comment">// find the okay root</span></span><br><span class="line">  <span class="keyword">while</span> (root != <span class="literal">null</span> &amp;&amp; (root.val &lt; L || root.val &gt; R)) &#123;</span><br><span class="line">    <span class="keyword">if</span> (root.val &lt; L) &#123;</span><br><span class="line">      root = root.right;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (root.val &gt; R) &#123;</span><br><span class="line">      root = root.left;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="comment">// now the root is finalized.</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// find the left child</span></span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">curr</span> <span class="operator">=</span> root;</span><br><span class="line">  <span class="keyword">while</span> (curr != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">while</span> (curr.left != <span class="literal">null</span> &amp;&amp; curr.left.val &lt; L) &#123; <span class="comment">// if curr.left.val &gt; L: STOP</span></span><br><span class="line">      curr.left = curr.left.right;</span><br><span class="line">    &#125;</span><br><span class="line">    curr = curr.left;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// find the right child</span></span><br><span class="line">  curr = root;</span><br><span class="line">  <span class="keyword">while</span> (curr != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">while</span> (curr.right != <span class="literal">null</span> &amp;&amp; curr.right.val &gt; R) &#123;</span><br><span class="line">      curr.right = curr.right.left;</span><br><span class="line">    &#125;</span><br><span class="line">    curr = curr.right;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

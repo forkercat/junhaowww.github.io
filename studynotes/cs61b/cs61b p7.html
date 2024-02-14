@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="The Search ProblemThe problem we are presented: Given a stream of data, retrieve information of interest.   Website users post to personal pages. Serve content only to friends. Given logs for thousa">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CS 61B | Part 7 | Data Structures Summary">
+<meta property="og:url" content="https://junhaow.com/studynotes/cs61b/cs61b%20p7.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="The Search ProblemThe problem we are presented: Given a stream of data, retrieve information of interest.   Website users post to personal pages. Serve content only to friends. Given logs for thousa">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8vze3.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/c3z55.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rtgo0.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/s8wtj.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.197Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.197Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8vze3.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CS 61B | Part 7 | Data Structures Summary</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<h2 id="The-Search-Problem"><a href="#The-Search-Problem" class="headerlink" title="The Search Problem"></a>The Search Problem</h2><p>The problem we are presented: Given a stream of data, <code>retrieve information</code> of interest.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/8vze3.png" alt="Examples"></p>
+<ul>
+<li>Website users post to personal pages. Serve content only to friends.</li>
+<li>Given logs for thousands of weather stations, display weather map for specified date and time.</li>
+<li>Dog owners request the best pet store, choosing to define their best store either in price, quality, or atmosphere.</li>
+</ul>
+<p>All of the data structures we’ve discussed so far have been to solve the <code>search problem</code>. They are used for <code>storing information</code> in schemes that make searching efficient in specific scenarios.</p>
+<h2 id="Search-Data-Structures"><a href="#Search-Data-Structures" class="headerlink" title="Search Data Structures"></a>Search Data Structures</h2><p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/c3z55.png" alt="Abstract Data Types"></p>
+<p>Remember that these are <code>Abstract Data Types</code>. This means that we define the behavior, not the implementation.</p>
+<p>Also, we’ve defined many possible implementations. Let’s see how these implementations and ADTs interact:</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/rtgo0.png" alt="ADTs and Implementations"></p>
+<p>What does this diagram tell us?</p>
+<ul>
+<li>Many implementations can be used in implementing different ADTs.</li>
+<li>The red colored implementations (meaning poor performance) tell us that not all implementations are optimal for the behavior we are trying achieve.</li>
+</ul>
+<p>Exercise:</p>
+<p>Consider how each of these implementations can be modified in order to accommodate to the behavior attempting to be defined. For example, how would we use a Hash Table to function as a Priority Queue?</p>
+<h2 id="Abstraction"><a href="#Abstraction" class="headerlink" title="Abstraction"></a>Abstraction</h2><p><strong>Abstraction often happens in layers!</strong> Abstract Data Types can often contain two abstract ideas boiling down to one implementation. Let’s consider some examples:</p>
+<ul>
+<li><code>Priority Queue ADT</code>: We were attempting to find an implementation that would be efficient for <code>PQ operations</code>. We decided that our Priority Queue would be implemented using a <code>Heap Ordered Tree</code>, but as we saw we had several approaches (1A, 1B, 1C, 2, 3) of <code>representing a tree for heaps</code>.</li>
+<li><code>External Chaining Hash Table</code>: This data structure is implemented using an <code>array of buckets</code>, but these buckets can be done using either an ArrayList, Resizing Array, Linked List, or BST.</li>
+</ul>
+<p>These two examples tell us that we can often think of an ADT by the use of another ADT, and that ADTs have layers of abstraction, and each defining a behavior that is <code>more specific</code> than the idea that came before it.</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>When trying to manage complexity and write programs that are fast, it is important of knowing first of all:</p>
+<ul>
+<li>What the Abstract Data Types are that will make your life easy?</li>
+<li>Which implementation will make your implementation faster?<ul>
+<li>Usually a good implementation is good enough.</li>
+</ul>
+</li>
+</ul>
+<p>From Wikipedia:</p>
+<p>A data structure is a <code>collection of data values</code>, the <code>relationships</code> among them, and the <code>functions or operations</code> that can be applied to the data.</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/s8wtj.png"></p>
+<p>数据类型主要关心存储怎样的数据，怎样访问它；数据结构主要关心数据在内存中的组织形式。</p>
+<ul>
+<li>List, Stack, Queue 等是 Abstract Data Type（或者说是 Data Type？算法第四版交换使用 ADT 和 Data Type 这两个词，似乎不作区分）</li>
+<li>而 Array 和 Linked List 是 Data Structure，侧重的是数据的存储方式。</li>
+<li>每一种 ADT 都既可以用 Array 来实现，也可以用 Linked List 来实现。</li>
+</ul>
+<p>In computer science, a <code>tree</code> is a widely used abstract data type (ADT)—or data structure (like BSTs) implementing this ADT.</p>
+<p>Also, we can use Array or Linked List to store a tree.</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

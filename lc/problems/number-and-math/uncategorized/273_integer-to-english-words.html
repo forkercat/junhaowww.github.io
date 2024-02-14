@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCodeDifficulty: Hard Problem Convert a non-negative integer to its english words representation. Given input is guaranteed to be less than $2^{31} - 1$.  Note:  Example:  123456789101">
+<meta property="og:type" content="website">
+<meta property="og:title" content="273. Integer to English Words">
+<meta property="og:url" content="https://junhaow.com/lc/problems/number-and-math/uncategorized/273_integer-to-english-words.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCodeDifficulty: Hard Problem Convert a non-negative integer to its english words representation. Given input is guaranteed to be less than $2^{31} - 1$.  Note:  Example:  123456789101">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.135Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.135Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>273. Integer to English Words</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/integer-to-english-words/">LeetCode</a><br>Difficulty: <span class="red">Hard</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Convert a non-negative integer to its english words representation. Given input is guaranteed to be less than $2^{31} - 1$.</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="number">0</span></span><br><span class="line">Output: <span class="string">&quot;Zero&quot;</span></span><br><span class="line"></span><br><span class="line">Input: <span class="number">20</span></span><br><span class="line">Output: <span class="string">&quot;Twenty&quot;</span></span><br><span class="line"></span><br><span class="line">Input: <span class="number">100</span></span><br><span class="line">Output: <span class="string">&quot;One Hundred&quot;</span></span><br><span class="line"></span><br><span class="line">Input: <span class="number">123</span></span><br><span class="line">Output: <span class="string">&quot;One Hundred Twenty Three&quot;</span></span><br><span class="line"></span><br><span class="line">Input: <span class="number">12345</span></span><br><span class="line">Output: <span class="string">&quot;Twelve Thousand Three Hundred Forty Five&quot;</span></span><br><span class="line"></span><br><span class="line">Input: <span class="number">1234567</span></span><br><span class="line">Output: <span class="string">&quot;One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven&quot;</span></span><br><span class="line"></span><br><span class="line">Input: <span class="number">1234567891</span></span><br><span class="line">Output: <span class="string">&quot;One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Divide-and-Conquer"><a href="#Divide-and-Conquer" class="headerlink" title="Divide and Conquer"></a>Divide and Conquer</h3><p>Consider write a function that calculates the number below <code>1000</code>, which is used many places, e.g. <code>345 Billion</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">numberToWords</span><span class="params">(<span class="type">int</span> num)</span> &#123;</span><br><span class="line">  <span class="comment">// Assume num &gt; 0</span></span><br><span class="line">  <span class="keyword">if</span> (num == <span class="number">0</span>) &#123; <span class="comment">// Zero</span></span><br><span class="line">    <span class="keyword">return</span> digit2Str(<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  <span class="keyword">while</span> (num != <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// billion</span></span><br><span class="line">    <span class="keyword">if</span> (num &gt;= (<span class="type">int</span>) <span class="number">1e9</span>) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">d</span> <span class="operator">=</span> num / (<span class="type">int</span>) <span class="number">1e9</span>;</span><br><span class="line">      sb.append(stringBelowThousand(d) + <span class="string">&quot; Billion&quot;</span> + <span class="string">&quot; &quot;</span>);</span><br><span class="line">      num %= (<span class="type">int</span>) <span class="number">1e9</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// million</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (num &gt;= (<span class="type">int</span>) <span class="number">1e6</span>) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">d</span> <span class="operator">=</span> num / (<span class="type">int</span>) <span class="number">1e6</span>;</span><br><span class="line">      System.out.println(d);</span><br><span class="line">      sb.append(stringBelowThousand(d) + <span class="string">&quot; Million&quot;</span> + <span class="string">&quot; &quot;</span>);</span><br><span class="line">      num %= (<span class="type">int</span>) <span class="number">1e6</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// thousand</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (num &gt;= (<span class="type">int</span>) <span class="number">1e3</span>) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">d</span> <span class="operator">=</span> num / (<span class="type">int</span>) <span class="number">1e3</span>;</span><br><span class="line">      sb.append(stringBelowThousand(d) + <span class="string">&quot; Thousand&quot;</span> + <span class="string">&quot; &quot;</span>);</span><br><span class="line">      num %= (<span class="type">int</span>) <span class="number">1e3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// &lt; 1000</span></span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      sb.append(stringBelowThousand(num));</span><br><span class="line">      num = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> sb.toString().trim(); <span class="comment">// for last &quot; &quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> String <span class="title function_">stringBelowThousand</span><span class="params">(<span class="type">int</span> d)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (d &lt; <span class="number">100</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> tenth2Str(d / <span class="number">10</span>, d % <span class="number">10</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// hundreds</span></span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (d &gt;= <span class="number">100</span> &amp;&amp; d &lt; <span class="number">1000</span>) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">tenth</span> <span class="operator">=</span> (d % <span class="number">100</span>) / <span class="number">10</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">digit</span> <span class="operator">=</span> (d % <span class="number">100</span>) % <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">if</span> (tenth == <span class="number">0</span> &amp;&amp; digit == <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> digit2Str(d / <span class="number">100</span>) + <span class="string">&quot; Hundred&quot;</span>; <span class="comment">// 100, 200, 300, ...</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> digit2Str(d / <span class="number">100</span>) + <span class="string">&quot; Hundred &quot;</span> + tenth2Str(tenth, digit);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;invalid input in stringBelowThousand&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> String <span class="title function_">digit2Str</span><span class="params">(<span class="type">int</span> digit)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">0</span>) <span class="keyword">return</span> <span class="string">&quot;Zero&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">1</span>) <span class="keyword">return</span> <span class="string">&quot;One&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">2</span>) <span class="keyword">return</span> <span class="string">&quot;Two&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">3</span>) <span class="keyword">return</span> <span class="string">&quot;Three&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">4</span>) <span class="keyword">return</span> <span class="string">&quot;Four&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">5</span>) <span class="keyword">return</span> <span class="string">&quot;Five&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">6</span>) <span class="keyword">return</span> <span class="string">&quot;Six&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">7</span>) <span class="keyword">return</span> <span class="string">&quot;Seven&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">8</span>) <span class="keyword">return</span> <span class="string">&quot;Eight&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">9</span>) <span class="keyword">return</span> <span class="string">&quot;Nine&quot;</span>;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;invalid input in digit2Str&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> String <span class="title function_">tenth2Str</span><span class="params">(<span class="type">int</span> tenth, <span class="type">int</span> digit)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (tenth &lt; <span class="number">0</span> || tenth &gt; <span class="number">9</span> || digit &lt; <span class="number">0</span> || digit &gt; <span class="number">9</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;invalid input in tenth2Str&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (tenth == <span class="number">0</span>) <span class="keyword">return</span> digit2Str(digit);</span><br><span class="line">  <span class="keyword">if</span> (tenth == <span class="number">1</span>) <span class="keyword">return</span> tenth2StrHelper(digit);</span><br><span class="line">  <span class="type">String</span> <span class="variable">ret</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (tenth == <span class="number">2</span>) ret = <span class="string">&quot;Twenty&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (tenth == <span class="number">3</span>) ret = <span class="string">&quot;Thirty&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (tenth == <span class="number">4</span>) ret = <span class="string">&quot;Forty&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (tenth == <span class="number">5</span>) ret = <span class="string">&quot;Fifty&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (tenth == <span class="number">6</span>) ret = <span class="string">&quot;Sixty&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (tenth == <span class="number">7</span>) ret = <span class="string">&quot;Seventy&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (tenth == <span class="number">8</span>) ret = <span class="string">&quot;Eighty&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (tenth == <span class="number">9</span>) ret = <span class="string">&quot;Ninety&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (digit != <span class="number">0</span>) &#123; <span class="comment">// e.g. 20</span></span><br><span class="line">    <span class="keyword">return</span> ret + <span class="string">&quot; &quot;</span> + digit2Str(digit);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> String <span class="title function_">tenth2StrHelper</span><span class="params">(<span class="type">int</span> digit)</span> &#123; <span class="comment">// 11, 12, 13, 14, 15, 16, ...</span></span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">0</span>) <span class="keyword">return</span> <span class="string">&quot;Ten&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">1</span>) <span class="keyword">return</span> <span class="string">&quot;Eleven&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">2</span>) <span class="keyword">return</span> <span class="string">&quot;Twelve&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">3</span>) <span class="keyword">return</span> <span class="string">&quot;Thirteen&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">4</span>) <span class="keyword">return</span> <span class="string">&quot;Fourteen&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">5</span>) <span class="keyword">return</span> <span class="string">&quot;Fifteen&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">6</span>) <span class="keyword">return</span> <span class="string">&quot;Sixteen&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">7</span>) <span class="keyword">return</span> <span class="string">&quot;Seventeen&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">8</span>) <span class="keyword">return</span> <span class="string">&quot;Eighteen&quot;</span>;</span><br><span class="line">  <span class="keyword">if</span> (digit == <span class="number">9</span>) <span class="keyword">return</span> <span class="string">&quot;Nineteen&quot;</span>;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;invalid input in tenth2StrHelper&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$ where $N$ is the number of digits.<br><strong>Space:</strong> $O(1)$ or $O(N)$ if we count the output String Builder.</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

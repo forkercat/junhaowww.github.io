@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode EPI 14.8Difficulty: EasyMedium Problem Given an array where elements are sorted in ascending order, convert it to a height balanced BST.   For this problem, a height-balanced bin">
+<meta property="og:type" content="website">
+<meta property="og:title" content="108. Convert Sorted Array &#x2F; List to Binary Search Tree">
+<meta property="og:url" content="https://junhaow.com/lc/problems/tree/recovery-and-construction/108_convert-sorted-array-to-binary-search-tree.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode EPI 14.8Difficulty: EasyMedium Problem Given an array where elements are sorted in ascending order, convert it to a height balanced BST.   For this problem, a height-balanced bin">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-13T00:53:54.148Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.148Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>108. Convert Sorted Array / List to Binary Search Tree</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/">LeetCode</a> <span class="gray">EPI 14.8</span><br>Difficulty: <span class="green">Easy</span><span class="orange">Medium</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Given an array where elements are sorted in ascending order, convert it to a height balanced BST.</p>
+</blockquote>
+<blockquote>
+<p>For this problem, a height-balanced binary tree is defined as a binary tree in which the depth of the two subtrees of every node never differ by more than 1.</p>
+</blockquote>
+<p><strong>Example:</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Given the sorted array: [-<span class="number">10</span>,-<span class="number">3</span>,<span class="number">0</span>,<span class="number">5</span>,<span class="number">9</span>],</span><br><span class="line"></span><br><span class="line">One possible answer is: [<span class="number">0</span>,-<span class="number">3</span>,<span class="number">9</span>,-<span class="number">10</span>,<span class="literal">null</span>,<span class="number">5</span>], which represents the following height balanced BST:</span><br><span class="line"></span><br><span class="line">      <span class="number">0</span></span><br><span class="line">     / \</span><br><span class="line">   -<span class="number">3</span>   <span class="number">9</span></span><br><span class="line">   /   /</span><br><span class="line"> -<span class="number">10</span>  <span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p><strong>Methods:</strong></p>
+<ol>
+<li><p>Recursion</p>
+<ul>
+<li>Be careful of the base case.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">sortedArrayToBST</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (nums == <span class="literal">null</span> || nums.length == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> constructBST(nums, <span class="number">0</span>, nums.length - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> TreeNode <span class="title function_">constructBST</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> lo, <span class="type">int</span> hi)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (lo &gt; hi) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (lo == hi) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(nums[lo]);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> lo + (hi - lo) / <span class="number">2</span>;</span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">root</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(nums[mid]);</span><br><span class="line">  </span><br><span class="line">  root.left = constructBST(nums, lo, mid - <span class="number">1</span>);</span><br><span class="line">  root.right = constructBST(nums, mid + <span class="number">1</span>, hi);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong>Time:</strong> $O(N)$ since we need to create each node.<br><strong>Space:</strong> $O(\log{N})$</li>
+</ul>
+</li>
+<li><p>Iteration</p>
+<ul>
+<li>Just simulate the recursion process.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">sortedArrayToBST</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (nums == <span class="literal">null</span> || nums.length == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">  <span class="comment">// placeholder</span></span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">node</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(<span class="number">0</span>);</span><br><span class="line">  Stack&lt;TreeNode&gt; stack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">  Stack&lt;Integer&gt; loStack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">  Stack&lt;Integer&gt; hiStack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">  stack.push(node);</span><br><span class="line">  loStack.push(<span class="number">0</span>);</span><br><span class="line">  hiStack.push(n - <span class="number">1</span>);</span><br><span class="line">  <span class="keyword">while</span> (stack.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="type">TreeNode</span> <span class="variable">curr</span> <span class="operator">=</span> stack.pop();</span><br><span class="line">    <span class="type">int</span> <span class="variable">lo</span> <span class="operator">=</span> loStack.pop();</span><br><span class="line">    <span class="type">int</span> <span class="variable">hi</span> <span class="operator">=</span> hiStack.pop();</span><br><span class="line">    <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> lo + (hi - lo) / <span class="number">2</span>;</span><br><span class="line">    curr.val = nums[mid]; <span class="comment">///</span></span><br><span class="line">    <span class="comment">// left</span></span><br><span class="line">    <span class="keyword">if</span> (lo &lt;= mid - <span class="number">1</span>) &#123;</span><br><span class="line">      curr.left = <span class="keyword">new</span> <span class="title class_">TreeNode</span>(<span class="number">0</span>);</span><br><span class="line">      stack.push(curr.left);</span><br><span class="line">      loStack.push(lo);</span><br><span class="line">      hiStack.push(mid - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// right</span></span><br><span class="line">    <span class="keyword">if</span> (mid + <span class="number">1</span> &lt;= hi) &#123;</span><br><span class="line">      curr.right = <span class="keyword">new</span> <span class="title class_">TreeNode</span>(<span class="number">0</span>);</span><br><span class="line">      stack.push(curr.right);</span><br><span class="line">      loStack.push(mid + <span class="number">1</span>);</span><br><span class="line">      hiStack.push(hi);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(\log{N})$</li>
+</ul>
+</li>
+</ol>
+<h2 id="What-About-List"><a href="#What-About-List" class="headerlink" title="What About List?"></a>What About List?</h2><h3 id="Naive-Recursion"><a href="#Naive-Recursion" class="headerlink" title="Naive Recursion"></a>Naive Recursion</h3><p>Use right-leaning <code>findMid</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">sortedListToBST</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> construct(head);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> TreeNode <span class="title function_">construct</span><span class="params">(ListNode node)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (node == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (node.next == <span class="literal">null</span>) &#123; <span class="comment">// one item</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(node.val);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// split</span></span><br><span class="line">  <span class="comment">//   []   []</span></span><br><span class="line">  <span class="comment">//        mid</span></span><br><span class="line">  <span class="comment">//   </span></span><br><span class="line">  <span class="comment">//   []   []   []</span></span><br><span class="line">  <span class="comment">//        mid</span></span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">mid</span> <span class="operator">=</span> findMid(node); <span class="comment">// a left-leaning mid</span></span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">rest</span> <span class="operator">=</span> mid.next; <span class="comment">// mid.next = null; // optional</span></span><br><span class="line">  <span class="comment">// new mid node</span></span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">midNode</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(mid.val);</span><br><span class="line">  </span><br><span class="line">  midNode.left = construct(node);</span><br><span class="line">  midNode.right = construct(rest);   <span class="comment">// may be null</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> midNode;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// right-leaning</span></span><br><span class="line"><span class="keyword">private</span> ListNode <span class="title function_">findMid</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">null</span> || head.next == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">slow</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">fast</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">while</span> (fast != <span class="literal">null</span> &amp;&amp; fast.next != <span class="literal">null</span>) &#123;</span><br><span class="line">    prev = slow;</span><br><span class="line">    slow = slow.next;</span><br><span class="line">    fast = fast.next.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (prev != <span class="literal">null</span>) &#123;</span><br><span class="line">    prev.next = <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> slow;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> </p>
+<ul>
+<li>Best: $O(N\log{N})$</li>
+<li>Worst: $O(N^2)$</li>
+</ul>
+<p><strong>Space:</strong> $O(\log{N})$</p>
+<h3 id="Conversion-to-Array"><a href="#Conversion-to-Array" class="headerlink" title="Conversion to Array"></a>Conversion to Array</h3><p>Or use <strong>recursion</strong> and <strong>list-to-array conversion</strong>. This method increases the space to $O(N)$.</p>
+<h3 id="Inorder-Simulation"><a href="#Inorder-Simulation" class="headerlink" title="Inorder Simulation"></a>Inorder Simulation</h3><p>Or use the idea of <strong>inorder simulation</strong>:</p>
+<ul>
+<li>Calculate the length of the list.</li>
+<li>Calculate the middle node by <code>(lo + hi) / 2</code>, but actually we don’t need to use the middle node.</li>
+<li>We make recursive calls on the two halves.</li>
+<li>Recurse on the left half by using <code>lo, mid - 1</code>, until we meet the left most node.</li>
+<li>The <code>invariance</code> that we maintain is that whenever we are done building the left half of the BST, the head pointer in the linked list will point to the root node or the middle node. We update it by <code>head = head.next</code>.</li>
+<li>Then we recurse on the right hand side using <code>mid + 1, end</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> ListNode head;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">sortedListToBST</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">size</span> <span class="operator">=</span> findSize(head);</span><br><span class="line">  <span class="built_in">this</span>.head = head;</span><br><span class="line">  <span class="keyword">return</span> convertListToBST(<span class="number">0</span>, size - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Inorder Traversal</span></span><br><span class="line"><span class="keyword">private</span> TreeNode <span class="title function_">convertListToBST</span><span class="params">(<span class="type">int</span> lo, <span class="type">int</span> hi)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (lo &gt; hi) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> lo + (hi - lo) / <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Traverse left</span></span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">leftNode</span> <span class="operator">=</span> convertListToBST(lo, mid - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Once left half is traversed, process the current node</span></span><br><span class="line">  <span class="type">TreeNode</span> <span class="variable">root</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeNode</span>(<span class="built_in">this</span>.head.val);</span><br><span class="line">  root.left = leftNode; <span class="comment">// at first it is null</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Maintain the invariance mentioned in the algorithm</span></span><br><span class="line">  <span class="built_in">this</span>.head = <span class="built_in">this</span>.head.next;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Recurse on the right hand side</span></span><br><span class="line">  node.right = <span class="built_in">this</span>.convertListToBST(mid + <span class="number">1</span>, hi);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">findSize</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (p != <span class="literal">null</span>) &#123;</span><br><span class="line">    p = p.next;</span><br><span class="line">    count += <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(N)$<br><strong>Space:</strong> $O(\log{N})$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="Reference: LeetCode EPI 7.4Difficulty: EasyTwo Pointers Problem Write a program to find the node at which the intersection of two singly linked lists begins.  Note:   If the two linked lists have no">
+<meta property="og:type" content="website">
+<meta property="og:title" content="160. Intersection of Two Linked Lists">
+<meta property="og:url" content="https://junhaow.com/lc/problems/linked-list/uncategorized/160_intersection-of-two-linked-lists.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="Reference: LeetCode EPI 7.4Difficulty: EasyTwo Pointers Problem Write a program to find the node at which the intersection of two singly linked lists begins.  Note:   If the two linked lists have no">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/94acy.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/14dxw.png">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/cmxr0.png">
+<meta property="article:published_time" content="2024-02-13T00:53:54.131Z">
+<meta property="article:modified_time" content="2024-02-13T00:53:54.130Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="blog, junhaow, game">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/94acy.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>160. Intersection of Two Linked Lists</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <br>
+
+<p>Reference: <a target="_blank" rel="noopener" href="https://leetcode.com/problems/intersection-of-two-linked-lists/">LeetCode</a> <span class="gray">EPI 7.4</span><br>Difficulty: <span class="green">Easy</span><span class="blue">Two Pointers</span></p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><blockquote>
+<p>Write a program to find the node at which the intersection of two singly linked lists begins.</p>
+</blockquote>
+<p><strong>Note:</strong> </p>
+<ul>
+<li>If the two linked lists have no intersection at all, return <code>null</code>.</li>
+<li>The linked lists must retain their <code>original structure</code> after the function returns.</li>
+<li>You may assume there are <code>no cycles</code> anywhere in the entire linked structure.</li>
+<li>Your code should preferably run in $O(n)$ time and use only $O(1)$ memory.</li>
+</ul>
+<p><strong>Example:</strong> </p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/94acy.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: intersectVal = <span class="number">8</span>, listA = [<span class="number">4</span>,<span class="number">1</span>,<span class="number">8</span>,<span class="number">4</span>,<span class="number">5</span>], listB = [<span class="number">5</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">8</span>,<span class="number">4</span>,<span class="number">5</span>], skipA = <span class="number">2</span>, skipB = <span class="number">3</span></span><br><span class="line">Output: Reference of the node <span class="type">with</span> <span class="variable">value</span> <span class="operator">=</span> <span class="number">8</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/14dxw.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: intersectVal = <span class="number">0</span>, listA = [<span class="number">2</span>,<span class="number">6</span>,<span class="number">4</span>], listB = [<span class="number">1</span>,<span class="number">5</span>], skipA = <span class="number">3</span>, skipB = <span class="number">2</span></span><br><span class="line">Output: <span class="literal">null</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute-Force"></a>Brute-Force</h3><p>For each node in list $A$, traverse the entire list $B$ and check if any node in list<br>$B$ coincides with the node in list $A$.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">getIntersectionNode</span><span class="params">(ListNode headA, ListNode headB)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (headA == <span class="literal">null</span> || headB == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">pA</span> <span class="operator">=</span> headA;</span><br><span class="line">  <span class="keyword">while</span> (pA != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">pB</span> <span class="operator">=</span> headB;</span><br><span class="line">    <span class="keyword">while</span> (pB != <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (pB == pA) &#123;</span><br><span class="line">        <span class="keyword">return</span> pA;</span><br><span class="line">      &#125;</span><br><span class="line">      pB = pB.next;</span><br><span class="line">    &#125;</span><br><span class="line">    pA = pA.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(mn)$<br><strong>Space:</strong> $O(1)$</p>
+<h3 id="Hash-Table"><a href="#Hash-Table" class="headerlink" title="Hash Table"></a>Hash Table</h3><p>Traverse list $A$ and store the address to each node in a hash set.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">getIntersectionNode</span><span class="params">(ListNode headA, ListNode headB)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (headA == <span class="literal">null</span> || headB == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  Set&lt;ListNode&gt; seen = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">pA</span> <span class="operator">=</span> headA;</span><br><span class="line">  <span class="keyword">while</span> (pA != <span class="literal">null</span>) &#123;</span><br><span class="line">    seen.add(pA);</span><br><span class="line">    pA = pA.next;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">pB</span> <span class="operator">=</span> headB;</span><br><span class="line">  <span class="keyword">while</span> (pB != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (seen.contains(pB)) <span class="keyword">return</span> pB;</span><br><span class="line">    pB = pB.next;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(m + n)$<br><strong>Space:</strong> $O(m)$ or $O(n)$</p>
+<h3 id="Two-Pointers"><a href="#Two-Pointers" class="headerlink" title="Two Pointers"></a>Two Pointers</h3><p>Two pointers <code>pa</code> and <code>pb</code> respectively start from list $A$ and list $B$. </p>
+<ul>
+<li>If <code>pa</code> reaches the end, it then points to the head of list $B$.</li>
+<li>If <code>pb</code> reaches the end, it then points to the head of list $A$.</li>
+</ul>
+<p>We only change <code>pa</code> and <code>pb</code> in that way once.</p>
+<ul>
+<li>If they coincide later, return <code>true</code>.</li>
+<li>If one of them reaches <code>null</code>, return <code>false</code>.<ul>
+<li>Or we can implement without the <code>once</code> logic. See details below.</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/cmxr0.png" alt="Two Pointers Illustration"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// [] -&gt; []                  // return in the first round</span></span><br><span class="line"><span class="comment">// [] -&gt; []</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// [] -&gt; [] -&gt; []            // return in the second round</span></span><br><span class="line"><span class="comment">// [] -&gt; []</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="comment">// [] -&gt; [] \</span></span><br><span class="line"><span class="comment">//           [] -&gt; []        //  return in the first round</span></span><br><span class="line"><span class="comment">// [] -&gt; [] /</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line"><span class="comment">// [] -&gt; [] -&gt; [] \</span></span><br><span class="line"><span class="comment">//                 [] -&gt; []  // return in the second round</span></span><br><span class="line"><span class="comment">//       [] -&gt; [] /</span></span><br></pre></td></tr></table></figure>
+
+<p>Code:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">getIntersectionNode</span><span class="params">(ListNode headA, ListNode headB)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (headA == <span class="literal">null</span> || headB == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">pA</span> <span class="operator">=</span> headA;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">pB</span> <span class="operator">=</span> headB;</span><br><span class="line">  <span class="keyword">while</span> (pA != pB) &#123;</span><br><span class="line">    pA = (pA == <span class="literal">null</span>) ? headB : pA.next;</span><br><span class="line">    pB = (pB == <span class="literal">null</span>) ? headA : pB.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> pA;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(m + n)$<br><strong>Space:</strong> $O(1)$s</p>
+<h3 id="Length-Difference"><a href="#Length-Difference" class="headerlink" title="Length Difference"></a>Length Difference</h3><p>Get the length of each list and calculate the difference. According to this difference, one list moves in advance by steps. Then move in tandem and they will reach the intersection node if it exists; otherwise, one of them may reach the end and the program returns <code>null</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">getIntersectionNode</span><span class="params">(ListNode l1, ListNode l2)</span> &#123;</span><br><span class="line">  <span class="comment">// get the difference in length</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">diff</span> <span class="operator">=</span> getLenDiff(l1, l2);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (diff &gt;= <span class="number">0</span>) &#123; <span class="comment">// l1 is longer or the same</span></span><br><span class="line">    <span class="keyword">while</span> (diff &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      l1 = l1.next;</span><br><span class="line">      diff -= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">// l2 is longer or the same</span></span><br><span class="line">    <span class="keyword">while</span> (diff &lt; <span class="number">0</span>) &#123;</span><br><span class="line">      l2 = l2.next;</span><br><span class="line">      diff += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">while</span> (l1 != <span class="literal">null</span> &amp;&amp; l2 != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (l1 == l2) &#123;</span><br><span class="line">      <span class="keyword">return</span> l1;   <span class="comment">// intersection node exists</span></span><br><span class="line">    &#125;</span><br><span class="line">    l1 = l1.next;</span><br><span class="line">    l2 = l2.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">null</span>; <span class="comment">// no intersection node</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">getLenDiff</span><span class="params">(ListNode l1, ListNode l2)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">len1</span> <span class="operator">=</span> <span class="number">0</span>, len2 = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (l1 != <span class="literal">null</span> || l2 != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (l1 != <span class="literal">null</span>) &#123;</span><br><span class="line">      len1 += <span class="number">1</span>;</span><br><span class="line">      l1 = l1.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (l2 != <span class="literal">null</span>) &#123;</span><br><span class="line">      len2 += <span class="number">1</span>;</span><br><span class="line">      l2 = l2.next;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> len1 - len2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Time:</strong> $O(m + n)$<br><strong>Space:</strong> $O(1)$</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>
