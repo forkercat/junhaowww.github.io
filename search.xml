@@ -4,31 +4,6 @@
   
     
     <entry>
-      <title>Using Emacs-like Keybindings, not Emacs</title>
-      <link href="/2024/02/25/051_using_emacs_keybindings_not_emacs/"/>
-      <url>/2024/02/25/051_using_emacs_keybindings_not_emacs/</url>
-      
-        <content type="html"><![CDATA[<p>I am writing this post to share some thoughts about how I have been using Emacs-like keybindings in my Mac and Windows machines. I used Emacs in the past but now I am doing most of my development work in CLion, Visual Studio, and Vscode. I use Emacs occasionally when I want to quickly edit some files (e.g. config files).</p><p>Over time I realized that I would prefer using IDEs on projects rather than being a pure Emacs user. In addition, I developed my own keybinding schema that I really enjoyed, which came from experimentations and other people’s ideas from the Internet.</p><h2 id="What-is-Emacs-and-Why-Not"><a href="#What-is-Emacs-and-Why-Not" class="headerlink" title="What is Emacs and Why Not?"></a>What is Emacs and Why Not?</h2><p>Emacs is a popular text editor designed for POSIX operating systems and it is available on Linux, macOS, and Windows. We love Emacs because it is a powerful “system” that enables users setting up various commands to complete complex actions (keymaps).</p><p>Interestingly, almost all my friends and colleagues use Vim, not Emacs. I used Vim occasionally to edit config files, especially when I am working with a new EC2 instance that does not have a lot of stuff installed. Unfortunately, I decided to use Emacs very long ago and I still sticked to its keybindings that heavily depend on <code>Ctrl</code> and <code>Alt</code>.</p><p>Vim is a very powerful tool for processing texts. Emacs seems to be more than that and some people joke about saying Emacs is an “operating system” (no!) because it is extensible by Lisp and can do a lot of work that a text editor cannot do. In Chinese forums, people said Vim is the god of text editor, while Emacs is the editor of the god (which implies that it is a text editor used by the god). And indeed, using Emacs needs ten fingers (another joke about Emacs).</p><p>Here are the reasons why I stopped using the Emacs app:</p><ol><li><strong>Configuration takes time.</strong> To use Emacs efficiently, you have to put lots of efforts learning from others’ <code>.emacs</code>s and integrate the lines you want to your own config file. Installing extensions (or plugins) is not straightforward.</li><li><strong>Navigation is important in large projects.</strong> Graphical interfaces integrated in IDEs just make life much easier.</li><li><strong>Keybingings are only available in Emacs.</strong> Over time, I realized I wanted to use Emacs keybindings in other apps such as Chrome, Microsoft Word, Notion, etc. But apparently, Emacs cannot extend to that level. </li><li><strong>Emacs is not installed by default.</strong> This happened quite often during work when I had to set up a new burner cloud desktop that is running on an EC2 instance. It did not come with Emacs by default. Plus installation, I figured out how to upload my config files as well. Sigh.</li></ol><p>In the below sections, I will share how I use Emacs keybindings and some additions I came up with. In the end, I also share how it can be achieved on Windows 11. I use Windows 11 at work because I have to work on game engine code in Visual Studio.</p><h2 id="Taking-from-Emacs"><a href="#Taking-from-Emacs" class="headerlink" title="Taking from Emacs"></a>Taking from Emacs</h2><h3 id="A-general-idea"><a href="#A-general-idea" class="headerlink" title="A general idea"></a>A general idea</h3><p>NO Arrow keys</p><h3 id="Cursor-movement"><a href="#Cursor-movement" class="headerlink" title="Cursor movement"></a>Cursor movement</h3><p>Mark mode</p><h2 id="Extra-Keybindings"><a href="#Extra-Keybindings" class="headerlink" title="Extra Keybindings"></a>Extra Keybindings</h2><h3 id="Deletion"><a href="#Deletion" class="headerlink" title="Deletion"></a>Deletion</h3><h3 id="Text-selection"><a href="#Text-selection" class="headerlink" title="Text selection"></a>Text selection</h3><h3 id="Navigation-and-switching-tabs"><a href="#Navigation-and-switching-tabs" class="headerlink" title="Navigation and switching tabs"></a>Navigation and switching tabs</h3><h2 id=""><a href="#" class="headerlink" title="???"></a>???</h2><h2 id="Windows-Users"><a href="#Windows-Users" class="headerlink" title="Windows Users"></a>Windows Users</h2>]]></content>
-      
-      
-      <categories>
-          
-          <category> Emacs </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Emacs </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>Making Sky&#39;s Stylized Grass with Compute Shader in Unity</title>
       <link href="/2021/03/06/050_Stylized-Sky-grass-in-Unity/"/>
       <url>/2021/03/06/050_Stylized-Sky-grass-in-Unity/</url>
