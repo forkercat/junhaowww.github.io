@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="I am writing this post to share some thoughts about how I have been using Emacs-like keybindings in my Mac and Windows machines. I used Emacs in the past but now I am doing most of my development work">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Using Emacs-like Keybindings, not Emacs">
+<meta property="og:url" content="https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="I am writing this post to share some thoughts about how I have been using Emacs-like keybindings in my Mac and Windows machines. I used Emacs in the past but now I am doing most of my development work">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-25T18:24:00.000Z">
+<meta property="article:modified_time" content="2024-03-02T03:48:45.170Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="Emacs">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Using Emacs-like Keybindings, not Emacs</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Posts</a></li><!--
+     --><!--
+       --><li><a href="/studynotes/">Notes</a></li><!--
+     --><!--
+       --><li><a href="/lc/">Leetcode</a></li><!--
+     --><!--
+       --><li><a href="/games/">Games</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">Me</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2021/03/06/050_Stylized-Sky-grass-in-Unity/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/&text=Using Emacs-like Keybindings, not Emacs"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/&title=Using Emacs-like Keybindings, not Emacs"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/&is_video=false&description=Using Emacs-like Keybindings, not Emacs"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Using Emacs-like Keybindings, not Emacs&body=Check out this article: https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/&title=Using Emacs-like Keybindings, not Emacs"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/&title=Using Emacs-like Keybindings, not Emacs"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/&title=Using Emacs-like Keybindings, not Emacs"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/&title=Using Emacs-like Keybindings, not Emacs"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/&name=Using Emacs-like Keybindings, not Emacs&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/&t=Using Emacs-like Keybindings, not Emacs"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-Emacs-and-Why-Not"><span class="toc-number">1.</span> <span class="toc-text">What is Emacs and Why Not?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Taking-from-Emacs"><span class="toc-number">2.</span> <span class="toc-text">Taking from Emacs</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#A-general-idea"><span class="toc-number">2.1.</span> <span class="toc-text">A general idea</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cursor-movement"><span class="toc-number">2.2.</span> <span class="toc-text">Cursor movement</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Extra-Keybindings"><span class="toc-number">3.</span> <span class="toc-text">Extra Keybindings</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Deletion"><span class="toc-number">3.1.</span> <span class="toc-text">Deletion</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Text-selection"><span class="toc-number">3.2.</span> <span class="toc-text">Text selection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Navigation-and-switching-tabs"><span class="toc-number">3.3.</span> <span class="toc-text">Navigation and switching tabs</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">???</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows-Users"><span class="toc-number">5.</span> <span class="toc-text">Windows Users</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Using Emacs-like Keybindings, not Emacs
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Junhao Wang</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-02-25T18:24:00.000Z" class="dt-published" itemprop="datePublished">2024-02-25</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Emacs/">Emacs</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Emacs/" rel="tag">Emacs</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>I am writing this post to share some thoughts about how I have been using Emacs-like keybindings in my Mac and Windows machines. I used Emacs in the past but now I am doing most of my development work in CLion, Visual Studio, and Vscode. I use Emacs occasionally when I want to quickly edit some files (e.g. config files).</p>
+<p>Over time I realized that I would prefer using IDEs on projects rather than being a pure Emacs user. In addition, I developed my own keybinding schema that I really enjoyed, which came from experimentations and other people’s ideas from the Internet.</p>
+<h2 id="What-is-Emacs-and-Why-Not"><a href="#What-is-Emacs-and-Why-Not" class="headerlink" title="What is Emacs and Why Not?"></a>What is Emacs and Why Not?</h2><p>Emacs is a popular text editor designed for POSIX operating systems and it is available on Linux, macOS, and Windows. We love Emacs because it is a powerful “system” that enables users setting up various commands to complete complex actions (keymaps).</p>
+<p>Interestingly, almost all my friends and colleagues use Vim, not Emacs. I used Vim occasionally to edit config files, especially when I am working with a new EC2 instance that does not have a lot of stuff installed. Unfortunately, I decided to use Emacs very long ago and I still sticked to its keybindings that heavily depend on <code>Ctrl</code> and <code>Alt</code>.</p>
+<p>Vim is a very powerful tool for processing texts. Emacs seems to be more than that and some people joke about saying Emacs is an “operating system” (no!) because it is extensible by Lisp and can do a lot of work that a text editor cannot do. In Chinese forums, people said Vim is the god of text editor, while Emacs is the editor of the god (which implies that it is a text editor used by the god). And indeed, using Emacs needs ten fingers (another joke about Emacs).</p>
+<p>Here are the reasons why I stopped using the Emacs app:</p>
+<ol>
+<li><strong>Configuration takes time.</strong> To use Emacs efficiently, you have to put lots of efforts learning from others’ <code>.emacs</code>s and integrate the lines you want to your own config file. Installing extensions (or plugins) is not straightforward.</li>
+<li><strong>Navigation is important in large projects.</strong> Graphical interfaces integrated in IDEs just make life much easier.</li>
+<li><strong>Keybingings are only available in Emacs.</strong> Over time, I realized I wanted to use Emacs keybindings in other apps such as Chrome, Microsoft Word, Notion, etc. But apparently, Emacs cannot extend to that level. </li>
+<li><strong>Emacs is not installed by default.</strong> This happened quite often during work when I had to set up a new burner cloud desktop that is running on an EC2 instance. It did not come with Emacs by default. Plus installation, I figured out how to upload my config files as well. Sigh.</li>
+</ol>
+<p>In the below sections, I will share how I use Emacs keybindings and some additions I came up with. In the end, I also share how it can be achieved on Windows 11. I use Windows 11 at work because I have to work on game engine code in Visual Studio.</p>
+<h2 id="Taking-from-Emacs"><a href="#Taking-from-Emacs" class="headerlink" title="Taking from Emacs"></a>Taking from Emacs</h2><h3 id="A-general-idea"><a href="#A-general-idea" class="headerlink" title="A general idea"></a>A general idea</h3><p>NO Arrow keys</p>
+<h3 id="Cursor-movement"><a href="#Cursor-movement" class="headerlink" title="Cursor movement"></a>Cursor movement</h3><p>Mark mode</p>
+<h2 id="Extra-Keybindings"><a href="#Extra-Keybindings" class="headerlink" title="Extra Keybindings"></a>Extra Keybindings</h2><h3 id="Deletion"><a href="#Deletion" class="headerlink" title="Deletion"></a>Deletion</h3><h3 id="Text-selection"><a href="#Text-selection" class="headerlink" title="Text selection"></a>Text selection</h3><h3 id="Navigation-and-switching-tabs"><a href="#Navigation-and-switching-tabs" class="headerlink" title="Navigation and switching tabs"></a>Navigation and switching tabs</h3><h2 id=""><a href="#" class="headerlink" title="???"></a>???</h2><h2 id="Windows-Users"><a href="#Windows-Users" class="headerlink" title="Windows Users"></a>Windows Users</h2>
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Posts</a></li>
+        
+          <li><a href="/studynotes/">Notes</a></li>
+        
+          <li><a href="/lc/">Leetcode</a></li>
+        
+          <li><a href="/games/">Games</a></li>
+        
+          <li><a href="/links/">Links</a></li>
+        
+          <li><a href="/about/">Me</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-Emacs-and-Why-Not"><span class="toc-number">1.</span> <span class="toc-text">What is Emacs and Why Not?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Taking-from-Emacs"><span class="toc-number">2.</span> <span class="toc-text">Taking from Emacs</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#A-general-idea"><span class="toc-number">2.1.</span> <span class="toc-text">A general idea</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cursor-movement"><span class="toc-number">2.2.</span> <span class="toc-text">Cursor movement</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Extra-Keybindings"><span class="toc-number">3.</span> <span class="toc-text">Extra Keybindings</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Deletion"><span class="toc-number">3.1.</span> <span class="toc-text">Deletion</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Text-selection"><span class="toc-number">3.2.</span> <span class="toc-text">Text selection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Navigation-and-switching-tabs"><span class="toc-number">3.3.</span> <span class="toc-text">Navigation and switching tabs</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">???</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows-Users"><span class="toc-number">5.</span> <span class="toc-text">Windows Users</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/&text=Using Emacs-like Keybindings, not Emacs"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/&title=Using Emacs-like Keybindings, not Emacs"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/&is_video=false&description=Using Emacs-like Keybindings, not Emacs"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Using Emacs-like Keybindings, not Emacs&body=Check out this article: https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/&title=Using Emacs-like Keybindings, not Emacs"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/&title=Using Emacs-like Keybindings, not Emacs"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/&title=Using Emacs-like Keybindings, not Emacs"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/&title=Using Emacs-like Keybindings, not Emacs"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/&name=Using Emacs-like Keybindings, not Emacs&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2024/02/25/051_using_emacs_keybindings_not_emacs/&t=Using Emacs-like Keybindings, not Emacs"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>
