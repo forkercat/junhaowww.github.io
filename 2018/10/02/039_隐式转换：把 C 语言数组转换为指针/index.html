@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="在某些情况下，C 语言中的数组会被隐式转换为指针类型，使得程序员对数组的操作更加灵活。在函数参数传递中，隐式转换总是在发生。比如： 12345678void foo1(int *b) &#123; printf(&quot;%lu\n&quot;, sizeof(b)); &#125;void foo2(int c[]) &#123; printf(&quot;%lu\n&quot;, sizeo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="隐式转换：把 C 语言数组转换为指针">
+<meta property="og:url" content="https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="在某些情况下，C 语言中的数组会被隐式转换为指针类型，使得程序员对数组的操作更加灵活。在函数参数传递中，隐式转换总是在发生。比如： 12345678void foo1(int *b) &#123; printf(&quot;%lu\n&quot;, sizeof(b)); &#125;void foo2(int c[]) &#123; printf(&quot;%lu\n&quot;, sizeo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/l2atv.jpg">
+<meta property="article:published_time" content="2018-10-01T18:01:44.000Z">
+<meta property="article:modified_time" content="2024-02-13T16:16:58.617Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="指针">
+<meta property="article:tag" content="数组">
+<meta property="article:tag" content="二维数组">
+<meta property="article:tag" content="指针数组">
+<meta property="article:tag" content="数组指针">
+<meta property="article:tag" content="隐式转换">
+<meta property="article:tag" content="Expert C Programming">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/l2atv.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>隐式转换：把 C 语言数组转换为指针</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Posts</a></li><!--
+     --><!--
+       --><li><a href="/studynotes/">Notes</a></li><!--
+     --><!--
+       --><li><a href="/lc/">Leetcode</a></li><!--
+     --><!--
+       --><li><a href="/games/">Games</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">Me</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/10/23/040_%E5%A6%82%E4%BD%95%E8%AE%B0%E4%BD%8F%20C%20%E8%AF%AD%E8%A8%80%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%9F/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/09/21/038_C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%EF%BC%9A%E4%B8%8D%E8%A6%81%E5%86%8D%E5%8F%AB%E6%88%91%E6%98%AF%E6%8C%87%E9%92%88%E4%BA%86%EF%BC%81/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/&text=隐式转换：把 C 语言数组转换为指针"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/&title=隐式转换：把 C 语言数组转换为指针"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/&is_video=false&description=隐式转换：把 C 语言数组转换为指针"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=隐式转换：把 C 语言数组转换为指针&body=Check out this article: https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/&title=隐式转换：把 C 语言数组转换为指针"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/&title=隐式转换：把 C 语言数组转换为指针"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/&title=隐式转换：把 C 语言数组转换为指针"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/&title=隐式转换：把 C 语言数组转换为指针"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/&name=隐式转换：把 C 语言数组转换为指针&description=&lt;p&gt;在某些情况下，C 语言中的数组会被隐式转换为指针类型，使得程序员对数组的操作更加灵活。在函数参数传递中，隐式转换总是在发生。比如：&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;type&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;title function_&#34;&gt;foo1&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; *b)&lt;/span&gt; &amp;#123; &lt;span class=&#34;built_in&#34;&gt;printf&lt;/span&gt;(&lt;span class=&#34;string&#34;&gt;&amp;quot;%lu\n&amp;quot;&lt;/span&gt;, &lt;span class=&#34;keyword&#34;&gt;sizeof&lt;/span&gt;(b)); &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;type&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;title function_&#34;&gt;foo2&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; c[])&lt;/span&gt; &amp;#123; &lt;span class=&#34;built_in&#34;&gt;printf&lt;/span&gt;(&lt;span class=&#34;string&#34;&gt;&amp;quot;%lu\n&amp;quot;&lt;/span&gt;, &lt;span class=&#34;keyword&#34;&gt;sizeof&lt;/span&gt;(c)); &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;title function_&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;()&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; a[&lt;span class=&#34;number&#34;&gt;5&lt;/span&gt;];  &lt;span class=&#34;comment&#34;&gt;// 5 x 4 = 20 Bytes&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  foo1(a);   &lt;span class=&#34;comment&#34;&gt;// -&amp;gt; 8 Bytes&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  foo2(a);   &lt;span class=&#34;comment&#34;&gt;// -&amp;gt; 8 Bytes&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;在 main 函数中，a 是一个数组。我们可能会认为在 foo2 中 b 的类型是整型数组类型（输出为 20），而实际上，无论是在 foo1 还是 foo2 中，b 的类型均为指向整型的指针类型，即输出的结果均为指针类型的大小（8 个字节）。&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/&t=隐式转换：把 C 语言数组转换为指针"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        隐式转换：把 C 语言数组转换为指针
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Junhao Wang</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-10-01T18:01:44.000Z" class="dt-published" itemprop="datePublished">2018-10-02</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/C/">C</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Expert-C-Programming/" rel="tag">Expert C Programming</a>, <a class="p-category" href="/tags/%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84/" rel="tag">二维数组</a>, <a class="p-category" href="/tags/%E6%8C%87%E9%92%88/" rel="tag">指针</a>, <a class="p-category" href="/tags/%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84/" rel="tag">指针数组</a>, <a class="p-category" href="/tags/%E6%95%B0%E7%BB%84/" rel="tag">数组</a>, <a class="p-category" href="/tags/%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88/" rel="tag">数组指针</a>, <a class="p-category" href="/tags/%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2/" rel="tag">隐式转换</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>在某些情况下，C 语言中的数组会被隐式转换为指针类型，使得程序员对数组的操作更加灵活。在函数参数传递中，隐式转换总是在发生。比如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo1</span><span class="params">(<span class="type">int</span> *b)</span> &#123; <span class="built_in">printf</span>(<span class="string">&quot;%lu\n&quot;</span>, <span class="keyword">sizeof</span>(b)); &#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">foo2</span><span class="params">(<span class="type">int</span> c[])</span> &#123; <span class="built_in">printf</span>(<span class="string">&quot;%lu\n&quot;</span>, <span class="keyword">sizeof</span>(c)); &#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="type">int</span> a[<span class="number">5</span>];  <span class="comment">// 5 x 4 = 20 Bytes</span></span><br><span class="line">  foo1(a);   <span class="comment">// -&gt; 8 Bytes</span></span><br><span class="line">  foo2(a);   <span class="comment">// -&gt; 8 Bytes</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 main 函数中，a 是一个数组。我们可能会认为在 foo2 中 b 的类型是整型数组类型（输出为 20），而实际上，无论是在 foo1 还是 foo2 中，b 的类型均为指向整型的指针类型，即输出的结果均为指针类型的大小（8 个字节）。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>实参：Actual Parameter<br>形参：Formal Parameter</p>
+</blockquote>
+<p>参数传递的隐式转换规则：</p>
+<ul>
+<li>若实参为一维数组，则形参是指向数组所存元素类型的指针；</li>
+<li>若实参为多维数组，则形参是指向一维或多维数组的指针；</li>
+<li><strong>转换并不是递归的</strong>，数组的数组会被改成为 <code>数组的指针</code>，而不是 <code>指针の指针</code>；而三维数组 <code>char ho[2][3][4]</code> 会被转换为 <code>char (*)[3][4]</code> 类型。</li>
+</ul>
+<p>为了进一步说明参数传递时发生的隐式转换，我们先了解一下以下几个类型以及它们之间的关系。</p>
+<p>指针数组：<code>char *c[10]</code><br>指针の指针：<code>char **c</code></p>
+<ul>
+<li><p><code>指针数组</code> 本身是一个一维数组，存的是字符指针。</p>
+</li>
+<li><p><code>指针の指针</code> 本身是一个指针，指向的还是指针。注意它和 <code>二维数组</code> 的区别，<strong>可以说两者是毫无关系的</strong>。</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> abc[<span class="number">3</span>][<span class="number">4</span>];</span><br><span class="line"><span class="type">char</span> **pp = abc; <span class="comment">// 会给出警告，类型不兼容。</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>二维数组：<code>char c[8][10]</code><br>数组指针（行指针）：<code>char (*c)[10]</code></p>
+<ul>
+<li><p><code>二维数组</code>本身是一个数组，存的还是数组。</p>
+</li>
+<li><p><code>数组指针（行指针）</code> 本身是一个指针，指向的是数组，一般和 <code>二维数组</code> 一起使用。我们要注意它和 <code>指针数组</code> 在写法上的区别（多了括号，先做 <code>*</code> 单目运算）。</p>
+</li>
+</ul>
+<p>接着，我们看一下隐式转换如何被运用到上述类型中。</p>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/l2atv.jpg" alt="实参与所匹配的形参（来源见参考）"></p>
+<p>图中，数组的数组（即二维数组）被隐式转换为 <code>char (*)[10]</code>，称为 <code>数组指针</code> 或 <code>行指针</code>。指针数组 <code>char *c[10]</code> 被隐式转换为 <code>char **c</code>，称为 <code>指针の指针</code>。若实参本身是指针，则无需进行隐式转换。</p>
+<p>最后，举两个例子来验证一下参数传递中是否发生了隐式转换。</p>
+<ul>
+<li><p><strong>例子 1</strong></p>
+<p>  main 函数的 argv 参数被隐式转换为 <code>char **</code> 指针类型。</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// A</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> &#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;%lu\n&quot;</span>, <span class="keyword">sizeof</span>(argv));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// B</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> &#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;%lu\n&quot;</span>, <span class="keyword">sizeof</span>(argv));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  程序 A 会出现 warning：</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">warning: sizeof on array function parameter will return size of &#x27;char *&#x27; instead of &#x27;char []&#x27; [-Wsizeof-array-argument]</span><br></pre></td></tr></table></figure>
+
+<p>  两个程序输出都为 8，即指针类型的大小，而不是 argv 数组的大小，因为 argv 已经被转换为一个指针了。</p>
+</li>
+<li><p><strong>例子 2</strong></p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span><span class="params">(<span class="type">int</span> (*fnum)[<span class="number">5</span>])</span> &#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;foo: %lu\n&quot;</span>, <span class="keyword">sizeof</span>(fnum));</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;foo: %lu\n&quot;</span>, <span class="keyword">sizeof</span>(&amp;fnum));</span><br><span class="line">  fnum++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="type">int</span> num[<span class="number">3</span>][<span class="number">5</span>];</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;main: %lu\n&quot;</span>, <span class="keyword">sizeof</span>(num));</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;main: %lu\n&quot;</span>, <span class="keyword">sizeof</span>(&amp;num));</span><br><span class="line">  foo(num);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  输出：</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">main: 60</span><br><span class="line">main: 8</span><br><span class="line">foo: 8</span><br><span class="line">foo: 8</span><br></pre></td></tr></table></figure>
+<p>  可以看到，在 foo 函数里，sizeof(fnum) 的大小是 8，而不等于 main 函数里的 60。因此，fnum 不再是数组，而是一个指针。如果将 <code>int (*fnum)[5]</code> 改成 <code>int fnum[][5]</code>，fnum 仍然是一个指针。</p>
+<p>  <strong>注意：</strong>如果将 <code>int (*fnum)[5]</code> 改成 <code>int (*fnum)[]</code>，不会有警告和报错。如果此时在添加指针运算 <code>fnum++</code>，则编译器会报错，因为编译器不知道指针运算中偏移量是多少。</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error: arithmetic on a pointer to an incomplete type &#x27;int []&#x27;</span><br></pre></td></tr></table></figure>
+<p>  此外，将 <code>int fnum[][5]</code> 改成 <code>int fnum[][]</code> 也会有报错。</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error: array has incomplete element type &#x27;int []&#x27;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>总结：C is a nightmare.</p>
+<p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/40973588/answer/91761240">C 语言指针的指针和二维数组的区别？</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/stoneJin/archive/2011/09/21/2184211.html">二维数组和指向指针的指针</a></li>
+<li>Expert C Programming</li>
+</ul>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Posts</a></li>
+        
+          <li><a href="/studynotes/">Notes</a></li>
+        
+          <li><a href="/lc/">Leetcode</a></li>
+        
+          <li><a href="/games/">Games</a></li>
+        
+          <li><a href="/links/">Links</a></li>
+        
+          <li><a href="/about/">Me</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/&text=隐式转换：把 C 语言数组转换为指针"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/&title=隐式转换：把 C 语言数组转换为指针"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/&is_video=false&description=隐式转换：把 C 语言数组转换为指针"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=隐式转换：把 C 语言数组转换为指针&body=Check out this article: https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/&title=隐式转换：把 C 语言数组转换为指针"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/&title=隐式转换：把 C 语言数组转换为指针"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/&title=隐式转换：把 C 语言数组转换为指针"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/&title=隐式转换：把 C 语言数组转换为指针"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/&name=隐式转换：把 C 语言数组转换为指针&description=&lt;p&gt;在某些情况下，C 语言中的数组会被隐式转换为指针类型，使得程序员对数组的操作更加灵活。在函数参数传递中，隐式转换总是在发生。比如：&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;type&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;title function_&#34;&gt;foo1&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; *b)&lt;/span&gt; &amp;#123; &lt;span class=&#34;built_in&#34;&gt;printf&lt;/span&gt;(&lt;span class=&#34;string&#34;&gt;&amp;quot;%lu\n&amp;quot;&lt;/span&gt;, &lt;span class=&#34;keyword&#34;&gt;sizeof&lt;/span&gt;(b)); &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;type&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;title function_&#34;&gt;foo2&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; c[])&lt;/span&gt; &amp;#123; &lt;span class=&#34;built_in&#34;&gt;printf&lt;/span&gt;(&lt;span class=&#34;string&#34;&gt;&amp;quot;%lu\n&amp;quot;&lt;/span&gt;, &lt;span class=&#34;keyword&#34;&gt;sizeof&lt;/span&gt;(c)); &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;title function_&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;()&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; a[&lt;span class=&#34;number&#34;&gt;5&lt;/span&gt;];  &lt;span class=&#34;comment&#34;&gt;// 5 x 4 = 20 Bytes&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  foo1(a);   &lt;span class=&#34;comment&#34;&gt;// -&amp;gt; 8 Bytes&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  foo2(a);   &lt;span class=&#34;comment&#34;&gt;// -&amp;gt; 8 Bytes&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;在 main 函数中，a 是一个数组。我们可能会认为在 foo2 中 b 的类型是整型数组类型（输出为 20），而实际上，无论是在 foo1 还是 foo2 中，b 的类型均为指向整型的指针类型，即输出的结果均为指针类型的大小（8 个字节）。&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/10/02/039_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2%EF%BC%9A%E6%8A%8A%20C%20%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8C%87%E9%92%88/&t=隐式转换：把 C 语言数组转换为指针"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2026
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

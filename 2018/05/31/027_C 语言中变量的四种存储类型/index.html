@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="auto The auto and register specifiers give the declared objects automatic storage class, and may be used only within functions. Such declarations also serve as definitions and cause storage to be rese">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C 语言中变量的四种存储类型">
+<meta property="og:url" content="https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="auto The auto and register specifiers give the declared objects automatic storage class, and may be used only within functions. Such declarations also serve as definitions and cause storage to be rese">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-05-30T23:36:33.000Z">
+<meta property="article:modified_time" content="2024-02-13T16:22:41.952Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="auto">
+<meta property="article:tag" content="static">
+<meta property="article:tag" content="register">
+<meta property="article:tag" content="extern">
+<meta property="article:tag" content="全局变量">
+<meta property="article:tag" content="静态变量">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>C 语言中变量的四种存储类型</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Posts</a></li><!--
+     --><!--
+       --><li><a href="/studynotes/">Notes</a></li><!--
+     --><!--
+       --><li><a href="/lc/">Leetcode</a></li><!--
+     --><!--
+       --><li><a href="/games/">Games</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">Me</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/06/11/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/05/22/026_C%20%E7%A8%8B%E5%BA%8F%E5%AD%98%E5%82%A8%E5%92%8C%E8%BF%90%E8%A1%8C%E6%97%B6%E7%9A%84%E5%87%A0%E4%B8%AA%E5%8C%BA%E5%9F%9F/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/&text=C 语言中变量的四种存储类型"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/&title=C 语言中变量的四种存储类型"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/&is_video=false&description=C 语言中变量的四种存储类型"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=C 语言中变量的四种存储类型&body=Check out this article: https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/&title=C 语言中变量的四种存储类型"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/&title=C 语言中变量的四种存储类型"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/&title=C 语言中变量的四种存储类型"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/&title=C 语言中变量的四种存储类型"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/&name=C 语言中变量的四种存储类型&description=&lt;h2 id=&#34;auto&#34;&gt;&lt;a href=&#34;#auto&#34; class=&#34;headerlink&#34; title=&#34;auto&#34;&gt;&lt;/a&gt;auto&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;The auto and register specifiers give the declared objects automatic storage class, and may be used &lt;strong&gt;only within functions&lt;/strong&gt;. Such declarations also serve as definitions and cause storage to be reserved.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;也就是说动态分配和释放存储空间。当我们定义一个变量时，不给它初始值，它的值是不确定的。&lt;/p&gt;
+&lt;p&gt;我们之前编写程序的时候很少显式用到 auto 定义变量。&lt;strong&gt;如果定义的变量前面没有加static，编译系统会默认为是 auto 的存储方式&lt;/strong&gt;，会把变量存放在动态存储区。&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/&t=C 语言中变量的四种存储类型"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#auto"><span class="toc-number">1.</span> <span class="toc-text">auto</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#register"><span class="toc-number">2.</span> <span class="toc-text">register</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#static"><span class="toc-number">3.</span> <span class="toc-text">static</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF-0%EF%BC%9F"><span class="toc-number">3.1.</span> <span class="toc-text">为什么是 0？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#extern"><span class="toc-number">4.</span> <span class="toc-text">extern</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%9C%A8%E4%B8%A4%E4%B8%AA%E6%96%87%E4%BB%B6%E4%B8%AD%E8%AE%BF%E9%97%AE%E5%90%8C%E4%B8%80%E4%B8%AA%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-number">4.1.</span> <span class="toc-text">如何在两个文件中访问同一个全局变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E4%B8%8E%E9%9D%99%E6%80%81%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-number">5.</span> <span class="toc-text">全局变量与静态全局变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">6.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        C 语言中变量的四种存储类型
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Junhao Wang</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-05-30T23:36:33.000Z" class="dt-published" itemprop="datePublished">2018-05-31</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/C/">C</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/auto/" rel="tag">auto</a>, <a class="p-category" href="/tags/extern/" rel="tag">extern</a>, <a class="p-category" href="/tags/register/" rel="tag">register</a>, <a class="p-category" href="/tags/static/" rel="tag">static</a>, <a class="p-category" href="/tags/%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F/" rel="tag">全局变量</a>, <a class="p-category" href="/tags/%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F/" rel="tag">静态变量</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="auto"><a href="#auto" class="headerlink" title="auto"></a>auto</h2><blockquote>
+<p>The auto and register specifiers give the declared objects automatic storage class, and may be used <strong>only within functions</strong>. Such declarations also serve as definitions and cause storage to be reserved.</p>
+</blockquote>
+<p>也就是说动态分配和释放存储空间。当我们定义一个变量时，不给它初始值，它的值是不确定的。</p>
+<p>我们之前编写程序的时候很少显式用到 auto 定义变量。<strong>如果定义的变量前面没有加static，编译系统会默认为是 auto 的存储方式</strong>，会把变量存放在动态存储区。</p>
+<span id="more"></span>
+
+<p>auto 修饰符的定义里有这么一句「进入包含变量声明的代码时，变量开始存在。当程序离开这个代码块时，变量<strong>自动</strong>消失。它所占用的内存可被用来做别的事情」。auto 修饰的变量是存储在堆栈中的，而全局变量存储在静态存储区中，所以我们不能用 auto 修饰全局变量。</p>
+<p>auto 存储类型说明的变量都是<strong>局部于</strong>某个程序范围内的，只能在某个程序范围内使用，通常在函数体内或函数中的复合语句里。</p>
+<p>如，有下述定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> <span class="type">int</span> k ;        <span class="comment">// 说明一个 auto 整型的 k 变量</span></span><br><span class="line"><span class="type">int</span> K ;             <span class="comment">// 省略了 auto，说明一个 auto 整型的 K 变量</span></span><br></pre></td></tr></table></figure>
+
+<p>这两种定义方式是相同的，省略 auto 关键字也是我们常用的方式。</p>
+<p><strong>注意：</strong>auto 只能用在函数体内，而不能用在全局变量中。</p>
+<p>在 C 语言中使用 auto 定义的变量<strong>可以不予初始化</strong>，<strong>但在 C++ 中必须初始化</strong>。</p>
+<p>此外，下面这种形式也是对的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> val;   <span class="comment">// 当省略数据类型，只使用 auto 修饰变量，在 C 语言中默认变量为 int 型（函数参数类型，返回值类型等等很多默认也是 int）</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="register"><a href="#register" class="headerlink" title="register"></a>register</h2><p>register 称为寄存器型，<strong>使用 register 关键词修饰变量的主要目的是想将所说明的变量放入寄存器存储空间中，我们知道寄存器数量有限，且位于 CPU 的内部，这样可以加快程序的运行速度。</strong>但正因为寄存器的资源相对较少，所以编译器会判断程序所指定的需要放在寄存器中的内容有没有必要放入寄存器中去，也就是说，编译器来决定是否将指定内容放入到寄存器中。如果没有必要放入寄存器中，就使用 auto 类型作处理。综上所述，register 是一个<strong>建议性</strong>关键字，编译器可以判断出是否去执行这样一个关键字，所以这个关键字在目前的用处不大。</p>
+<p>例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">register</span> <span class="type">int</span> i，sum = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++)</span><br><span class="line">    sum += i;</span><br></pre></td></tr></table></figure>
+
+<h2 id="static"><a href="#static" class="headerlink" title="static"></a>static</h2><p>这个修饰符和 auto 相对，我们不能同时用<code>auto static int a = 10</code>。</p>
+<p>static：称为静态存储类型，<strong>在 C 语言中，既可以在函数体内，也可在函数体外说明 static 存储类型的变量。</strong></p>
+<p>在函数体内说明的 static 存储类型的变量也是一种局部变量，<strong>与 auto 最大不同点是：static 存储类型的变量在内存中是以固定地址存放的，而不是以堆栈方式存放的。</strong>只要整个程序还在继续运行，静态变量就不会随着程序段的结束而消失；static 修饰的变量只被初始化一次，且变量的值有继承性。</p>
+<p>static 的作用有三条：</p>
+<ul>
+<li>第一个作用：<strong>隐藏</strong>，其他文件不可见</li>
+<li>第二个作用：保持变量内容的<strong>持久</strong></li>
+<li>第三个作用：默认<strong>初始化</strong>为 0</li>
+</ul>
+<p><strong>因此，static 的作用要区分全局（隐藏）和局部（保持持久）两种情况。</strong></p>
+<h3 id="为什么是-0？"><a href="#为什么是-0？" class="headerlink" title="为什么是 0？"></a>为什么是 0？</h3><p>可参考：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/49111720">为什么在C语言中静态变量的初值是 0</a></p>
+<blockquote>
+<ol>
+<li>不同的内存区域在程序运行时特性是不同，大致分为静态空间、栈空间、堆空间。静态空间其实是跟着程序映像一起加载到内存里的，提前就写在映像里了。无论如何都会有个初始值，反正写啥都是写，不如写 0；而栈空间和堆空间是映像加载完之后系统分配的，为了提高效率系统不会主动替你清零，C 也不会，所以未初始化的变量是内存里原有的值。简单来说，原因是效率。全局和静态变量是在编译期就确定了地址和值，并不消耗运行时的时间。局部变量是在每次函数调用时在栈上产生，你可以自行选择是否初始化。</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="2">
+<li>很简单的问题，编译时没有赋值的全局变量会放在 bss 段。编译以后，bss 段是用来占位并且没有意义的。只有当程序加载运行时，虚拟存储器给 bss 段分配空间，在这段空间里请求二进制 0，程序加载时会对整个 bss 段进行清 0 操作，所以 C 语言没有赋值的全局变量是 0。</li>
+</ol>
+</blockquote>
+<p>我觉得 2 比较靠谱，1 没有说到点子上。</p>
+<h2 id="extern"><a href="#extern" class="headerlink" title="extern"></a>extern</h2><p>extern 称为外部参照引用型，使用 extern 修饰的变量是想引用在<strong>其它文件中或在函数体外部</strong>已经声明的变量。</p>
+<p>如下面的程序：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a = %d\n&quot;</span> , a);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该程序可以成功运行，输出 a 的值为 1，而如果改变一下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a = %d\n&quot;</span> , a);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> a = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这样在进行编译时，编译器会报错，提示变量 a 没有被定义，也就是说<strong>全局变量的作用范围是从定义处开始直至程序结束</strong>。现在，我们在该程序的基础上加上一句声明：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="type">int</span> a; <span class="comment">// 注意不加类型 int 会出 warning</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a = %d\n&quot;</span>, a);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> a = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>在编译时，即使后面没有 a 的定义，也不会报错，链接时才报错。</p>
+<p>在这里要注意 extern 关键字对于变量的类型说明可以省略，但对于变量的类型及值是<strong>没有任何改变权限的</strong>，也就是说在上面例子中的 extern 如果写成 extern float a; 或者是 extern int a &#x3D; 3; 编译时会提示错误。</p>
+<p><strong>extern 扩大了外部变量的作用范围。</strong></p>
+<p>我们知道头文件只要是存放函数和变量声明的，所以用 extern 声明的变量也尽量写在头文件中，如果写在 <code>.cpp</code> 或者 <code>.c</code> 文件中容易埋下苦果。</p>
+<h3 id="如何在两个文件中访问同一个全局变量"><a href="#如何在两个文件中访问同一个全局变量" class="headerlink" title="如何在两个文件中访问同一个全局变量"></a>如何在两个文件中访问同一个全局变量</h3><p>方法一：不使用头文件</p>
+<ol>
+<li><code>a.c</code> 中 <code>int foo;</code></li>
+<li><code>b.c</code> 中 <code>extern int foo;</code></li>
+</ol>
+<p>方法二：使用头文件（推荐，即不在 <code>.c</code> 或 <code>.cpp</code> 文件中使用 extern）</p>
+<ol>
+<li><code>a.h</code> 中 <code>extern int foo;</code>（注意如果不加 extern 可能会重复定义，发生冲突）</li>
+<li><code>a.c</code> 中定义 <code>int foo;</code> 不必添加 <code>#include &quot;a.h&quot;</code></li>
+<li><code>b.c</code> 中没有定义（也不能重复定义吧），需要添加 <code>#include &quot;a.h&quot;</code>（推荐）或者在代码中添加 <code>extern int foo;</code>（不推荐）</li>
+</ol>
+<h2 id="全局变量与静态全局变量"><a href="#全局变量与静态全局变量" class="headerlink" title="全局变量与静态全局变量"></a>全局变量与静态全局变量</h2><p>全局与局部对应。与静态 static 相对的是动态 auto 变量，如函数体内用 auto 修饰的变量，动态的意思体现在函数对变量内存空间的分配和释放上，是在函数调用和结束的时候进行的。</p>
+<p>全局变量是不用 static 修饰的全局变量。<strong>我这里也很懵逼！在 C 语言中，全局变量本身是静态存储的，为什么还叫静态全局变量？我觉得叫 static 全局变量比较好。</strong></p>
+<p>静态全局变量是显式用 static 修饰的全局变量，作用域是声明此变量所在的文件，其他的文件即使用 extern 声明也不能使用。</p>
+<p>当程序由一个源文件构成时，全局变量与静态全局变量没有区别；当程序由多个源文件构成时，全局变量与静态静态变量不同。</p>
+<p>静态全局变量的作用：</p>
+<ol>
+<li>不必担心其它源文件使用相同变量名，彼此相互独立；</li>
+<li>在某源文件中定义的静态全局变量不能被其他源文件使用或修改；</li>
+<li>只能在本文件中使用。具有内部链接的静态性，不允许在其他文件里调用。</li>
+</ol>
+<p>总的来说，把局部变量改变为静态变量后是改变了它的存储方式和生存期，而把全局变量改变为静态变量后是改变了它的作用域，限制了它的使用范围。因此 static 这个说明符在不同的地方所起的作用是不同的。为什么当初不设计成 file 关键字呢？表示该变量的作用域是文件。</p>
+<p>Tips：</p>
+<p><strong>（下面这几句话值得记住）</strong></p>
+<ol>
+<li><p>若全局变量仅在<strong>单个 C 文件</strong>中访问，则可以将这个变量修改为静态全局变量，以降低模块间的耦合度；</p>
+</li>
+<li><p>若全局变量仅由<strong>单个函数</strong>访问，则可以将这个变量改为该函数的静态局部变量，以降低模块间的耦合度；</p>
+</li>
+<li><p>如果我们需要一个可重入的函数，那么，我们一定要避免函数中使用 static 变量（这样的函数被称为：带「内部存储器」功能的的函数）；</p>
+</li>
+<li><p>函数中必须要使用 static 变量的情况：当某函数的<strong>返回值为指针类型</strong>时，则必须是 static 的局部变量的地址作为返回值；若为 auto 类型，则返回为错误的指针（返回是值复制）。举个例子：</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *<span class="title function_">foo1</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">5</span>;</span><br><span class="line">    <span class="type">int</span> *p1 = &amp;a; <span class="comment">// a 是局部变量，返回了 a 变量的地址</span></span><br><span class="line">    <span class="keyword">return</span> p1;    <span class="comment">// 所以外部再次访问的时候是随机值，但没 warning</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">char</span> *<span class="title function_">foo2</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">char</span> *p2 = <span class="string">&quot;hahah&quot;</span>;  <span class="comment">// 字符存储在常量区，这种情况不需要 static</span></span><br><span class="line">    <span class="keyword">return</span> p2;    <span class="comment">// 打印 hahah</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">char</span> *<span class="title function_">foo3</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">char</span> p3[] = <span class="string">&quot;hahahhahah&quot;</span>;  <span class="comment">// 字符存储在栈，并非常量</span></span><br><span class="line">    <span class="keyword">return</span> p3;    <span class="comment">// 产生 warning，说返回了栈地址</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> *p = foo1();</span><br><span class="line">    <span class="type">char</span> *pp = foo2();</span><br><span class="line">    <span class="type">char</span> *ppp = foo3();</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, *p);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, pp);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, ppp);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 输出：</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a.c:56:12: warning: address of stack memory associated with local variable &#x27;p3&#x27; returned [-Wreturn-stack-address]</span><br><span class="line">    return p3;</span><br><span class="line">           ^~</span><br><span class="line">1 warning generated.</span><br><span class="line">-2027492106</span><br><span class="line">hahah</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>参考的链接已在对应的标题下，大部分链接忘了记录，以后要记下来。</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Posts</a></li>
+        
+          <li><a href="/studynotes/">Notes</a></li>
+        
+          <li><a href="/lc/">Leetcode</a></li>
+        
+          <li><a href="/games/">Games</a></li>
+        
+          <li><a href="/links/">Links</a></li>
+        
+          <li><a href="/about/">Me</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#auto"><span class="toc-number">1.</span> <span class="toc-text">auto</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#register"><span class="toc-number">2.</span> <span class="toc-text">register</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#static"><span class="toc-number">3.</span> <span class="toc-text">static</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF-0%EF%BC%9F"><span class="toc-number">3.1.</span> <span class="toc-text">为什么是 0？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#extern"><span class="toc-number">4.</span> <span class="toc-text">extern</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%9C%A8%E4%B8%A4%E4%B8%AA%E6%96%87%E4%BB%B6%E4%B8%AD%E8%AE%BF%E9%97%AE%E5%90%8C%E4%B8%80%E4%B8%AA%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-number">4.1.</span> <span class="toc-text">如何在两个文件中访问同一个全局变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E4%B8%8E%E9%9D%99%E6%80%81%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-number">5.</span> <span class="toc-text">全局变量与静态全局变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">6.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/&text=C 语言中变量的四种存储类型"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/&title=C 语言中变量的四种存储类型"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/&is_video=false&description=C 语言中变量的四种存储类型"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=C 语言中变量的四种存储类型&body=Check out this article: https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/&title=C 语言中变量的四种存储类型"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/&title=C 语言中变量的四种存储类型"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/&title=C 语言中变量的四种存储类型"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/&title=C 语言中变量的四种存储类型"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/&name=C 语言中变量的四种存储类型&description=&lt;h2 id=&#34;auto&#34;&gt;&lt;a href=&#34;#auto&#34; class=&#34;headerlink&#34; title=&#34;auto&#34;&gt;&lt;/a&gt;auto&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;The auto and register specifiers give the declared objects automatic storage class, and may be used &lt;strong&gt;only within functions&lt;/strong&gt;. Such declarations also serve as definitions and cause storage to be reserved.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;也就是说动态分配和释放存储空间。当我们定义一个变量时，不给它初始值，它的值是不确定的。&lt;/p&gt;
+&lt;p&gt;我们之前编写程序的时候很少显式用到 auto 定义变量。&lt;strong&gt;如果定义的变量前面没有加static，编译系统会默认为是 auto 的存储方式&lt;/strong&gt;，会把变量存放在动态存储区。&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/05/31/027_C%20%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%8F%98%E9%87%8F%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/&t=C 语言中变量的四种存储类型"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2026
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

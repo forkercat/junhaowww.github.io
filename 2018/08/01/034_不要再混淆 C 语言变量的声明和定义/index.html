@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="一般情况下，我们对变量的 声明（Declaration）和 定义（Definition）的理解如下：  声明：用于向程序表明变量的类型和名字。在程序中，变量可以被多次声明。 定义：用于为变量分配存储空间，还可以为变量指定初始值。在程序中，变量有且只有一个定义。  两者主要区别：是否在内存中分配了空间。  只要记住下面的内容即可分清定义和声明：声明相当于 普通 的声明：它所说明的并非本身，而是描述在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="不要再混淆 C 语言变量的声明和定义">
+<meta property="og:url" content="https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="一般情况下，我们对变量的 声明（Declaration）和 定义（Definition）的理解如下：  声明：用于向程序表明变量的类型和名字。在程序中，变量可以被多次声明。 定义：用于为变量分配存储空间，还可以为变量指定初始值。在程序中，变量有且只有一个定义。  两者主要区别：是否在内存中分配了空间。  只要记住下面的内容即可分清定义和声明：声明相当于 普通 的声明：它所说明的并非本身，而是描述在">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-07-31T23:00:01.000Z">
+<meta property="article:modified_time" content="2024-02-13T16:12:15.089Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="声明">
+<meta property="article:tag" content="定义">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>不要再混淆 C 语言变量的声明和定义</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Posts</a></li><!--
+     --><!--
+       --><li><a href="/studynotes/">Notes</a></li><!--
+     --><!--
+       --><li><a href="/lc/">Leetcode</a></li><!--
+     --><!--
+       --><li><a href="/games/">Games</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">Me</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/08/08/035_%E5%AD%A6%E4%B9%A0%20i++%20%E5%92%8C%20++i%20%E7%9A%84%E6%9C%AC%E8%B4%A8%E5%8C%BA%E5%88%AB/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/&text=不要再混淆 C 语言变量的声明和定义"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/&title=不要再混淆 C 语言变量的声明和定义"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/&is_video=false&description=不要再混淆 C 语言变量的声明和定义"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=不要再混淆 C 语言变量的声明和定义&body=Check out this article: https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/&title=不要再混淆 C 语言变量的声明和定义"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/&title=不要再混淆 C 语言变量的声明和定义"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/&title=不要再混淆 C 语言变量的声明和定义"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/&title=不要再混淆 C 语言变量的声明和定义"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/&name=不要再混淆 C 语言变量的声明和定义&description=&lt;p&gt;一般情况下，我们对变量的 &lt;code&gt;声明&lt;/code&gt;（Declaration）和 &lt;code&gt;定义&lt;/code&gt;（Definition）的理解如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;声明&lt;/strong&gt;：用于向程序表明变量的类型和名字。在程序中，变量可以被多次声明。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：用于为变量分配存储空间，还可以为变量指定初始值。在程序中，变量有且只有一个定义。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;两者主要区别：&lt;/strong&gt;是否在内存中分配了空间。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;只要记住下面的内容即可分清定义和声明：&lt;br&gt;声明相当于 &lt;code&gt;普通&lt;/code&gt; 的声明：它所说明的并非本身，而是描述在其他地方创建的对象。&lt;br&gt;定义相当于 &lt;code&gt;特殊&lt;/code&gt; 的声明：它为对象分配内存。&lt;br&gt;——《Expert C Programming》&lt;/p&gt;
+&lt;/blockquote&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/&t=不要再混淆 C 语言变量的声明和定义"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E8%A7%A3%E8%AF%BB"><span class="toc-number">1.</span> <span class="toc-text">进一步解读</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E6%A8%A1%E5%9D%97%E5%8C%96%E8%AE%BE%E8%AE%A1"><span class="toc-number">2.</span> <span class="toc-text">程序模块化设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        不要再混淆 C 语言变量的声明和定义
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Junhao Wang</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-07-31T23:00:01.000Z" class="dt-published" itemprop="datePublished">2018-08-01</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/C/">C</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%A3%B0%E6%98%8E/" rel="tag">声明</a>, <a class="p-category" href="/tags/%E5%AE%9A%E4%B9%89/" rel="tag">定义</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>一般情况下，我们对变量的 <code>声明</code>（Declaration）和 <code>定义</code>（Definition）的理解如下：</p>
+<ul>
+<li><strong>声明</strong>：用于向程序表明变量的类型和名字。在程序中，变量可以被多次声明。</li>
+<li><strong>定义</strong>：用于为变量分配存储空间，还可以为变量指定初始值。在程序中，变量有且只有一个定义。</li>
+</ul>
+<p><strong>两者主要区别：</strong>是否在内存中分配了空间。</p>
+<blockquote>
+<p>只要记住下面的内容即可分清定义和声明：<br>声明相当于 <code>普通</code> 的声明：它所说明的并非本身，而是描述在其他地方创建的对象。<br>定义相当于 <code>特殊</code> 的声明：它为对象分配内存。<br>——《Expert C Programming》</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="进一步解读"><a href="#进一步解读" class="headerlink" title="进一步解读"></a>进一步解读</h2><ul>
+<li>定义也是声明，定义变量时我们声明了它的类型和名字。  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> i;  <span class="comment">// 可以叫「声明」或「定义」，但「定义」更为准确</span></span><br></pre></td></tr></table></figure></li>
+<li>声明并<strong>不一定</strong>是定义，如 extern 声明。  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="type">int</span> i;  <span class="comment">// 只能叫「声明」</span></span><br></pre></td></tr></table></figure></li>
+<li>带有初始化式的声明是定义。  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="type">int</span> i = <span class="number">5</span>; <span class="comment">// 只能在函数体外初始化</span></span><br></pre></td></tr></table></figure></li>
+<li>函数的声明和定义区别比较简单，带有花括号<code>&#123;&#125;</code>的是定义，否则是声明。  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">foo1</span><span class="params">(<span class="type">int</span> x)</span>;     <span class="comment">// 声明</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">foo2</span><span class="params">(<span class="type">int</span> x)</span> &#123; &#125;  <span class="comment">// 定义</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="程序模块化设计"><a href="#程序模块化设计" class="headerlink" title="程序模块化设计"></a>程序模块化设计</h2><p>模块是一个 <code>.h</code> 文件和一个 <code>.c</code> 文件的结合，头文件 <code>.h</code> 中是对于该模块接口的声明。</p>
+<ul>
+<li>若模块提供给其它模块调用的外部函数及数据需在 <code>.h</code> 中文件中添加 <code>extern</code> 关键字声明。</li>
+<li>模块内的函数和全局变量需在 <code>.c</code> 文件开头添加 <code>static</code> 关键字，注意不是在 <code>.h</code> 文件。</li>
+</ul>
+<p><strong>注意：</strong>不要把变量定义放入 <code>.h</code> 文件，这样容易导致重复定义的错误。</p>
+<p>在 C++ 中，有以下三个例外：</p>
+<ol>
+<li>值在编译时就已知的 const 变量的定义可以放到头文件中 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> <span class="title function_">num</span><span class="params">(<span class="number">10</span>)</span>;</span><br></pre></td></tr></table></figure></li>
+<li>类的定义可以放到头文件中</li>
+<li>inline 函数</li>
+</ol>
+<p>这三个对象可以定义在多个源文件中，只要在每个源文件中的定义相同即可。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/gatieme/article/details/50640424#t1">C 语言中声明和定义详解</a></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Posts</a></li>
+        
+          <li><a href="/studynotes/">Notes</a></li>
+        
+          <li><a href="/lc/">Leetcode</a></li>
+        
+          <li><a href="/games/">Games</a></li>
+        
+          <li><a href="/links/">Links</a></li>
+        
+          <li><a href="/about/">Me</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E8%A7%A3%E8%AF%BB"><span class="toc-number">1.</span> <span class="toc-text">进一步解读</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E6%A8%A1%E5%9D%97%E5%8C%96%E8%AE%BE%E8%AE%A1"><span class="toc-number">2.</span> <span class="toc-text">程序模块化设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/&text=不要再混淆 C 语言变量的声明和定义"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/&title=不要再混淆 C 语言变量的声明和定义"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/&is_video=false&description=不要再混淆 C 语言变量的声明和定义"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=不要再混淆 C 语言变量的声明和定义&body=Check out this article: https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/&title=不要再混淆 C 语言变量的声明和定义"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/&title=不要再混淆 C 语言变量的声明和定义"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/&title=不要再混淆 C 语言变量的声明和定义"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/&title=不要再混淆 C 语言变量的声明和定义"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/&name=不要再混淆 C 语言变量的声明和定义&description=&lt;p&gt;一般情况下，我们对变量的 &lt;code&gt;声明&lt;/code&gt;（Declaration）和 &lt;code&gt;定义&lt;/code&gt;（Definition）的理解如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;声明&lt;/strong&gt;：用于向程序表明变量的类型和名字。在程序中，变量可以被多次声明。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：用于为变量分配存储空间，还可以为变量指定初始值。在程序中，变量有且只有一个定义。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;两者主要区别：&lt;/strong&gt;是否在内存中分配了空间。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;只要记住下面的内容即可分清定义和声明：&lt;br&gt;声明相当于 &lt;code&gt;普通&lt;/code&gt; 的声明：它所说明的并非本身，而是描述在其他地方创建的对象。&lt;br&gt;定义相当于 &lt;code&gt;特殊&lt;/code&gt; 的声明：它为对象分配内存。&lt;br&gt;——《Expert C Programming》&lt;/p&gt;
+&lt;/blockquote&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/&t=不要再混淆 C 语言变量的声明和定义"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2026
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

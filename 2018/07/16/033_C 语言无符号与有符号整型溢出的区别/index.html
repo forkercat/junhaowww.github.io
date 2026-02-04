@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="无符号整型溢出对于无符号整型溢出，在 C 的规范中这是有定义的行为，溢出后的数会以 2^(8 * sizeof(type)) 作模运算，也就是说，如果一个无符号字符型（1 字节，8 位）溢出了，会把溢出的值与 256 求模。 12unsigned char x &#x3D; 0xff; &#x2F;&#x2F; 1111 1111printf(&quot;%d\n&quot;, ++x);    &#x2F;&#x2F; 结果为：0">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C 语言无符号与有符号整型溢出的区别">
+<meta property="og:url" content="https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="无符号整型溢出对于无符号整型溢出，在 C 的规范中这是有定义的行为，溢出后的数会以 2^(8 * sizeof(type)) 作模运算，也就是说，如果一个无符号字符型（1 字节，8 位）溢出了，会把溢出的值与 256 求模。 12unsigned char x &#x3D; 0xff; &#x2F;&#x2F; 1111 1111printf(&quot;%d\n&quot;, ++x);    &#x2F;&#x2F; 结果为：0">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/426yr.jpg">
+<meta property="article:published_time" content="2018-07-15T18:30:32.000Z">
+<meta property="article:modified_time" content="2024-02-13T16:11:39.078Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="溢出">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/426yr.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>C 语言无符号与有符号整型溢出的区别</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Posts</a></li><!--
+     --><!--
+       --><li><a href="/studynotes/">Notes</a></li><!--
+     --><!--
+       --><li><a href="/lc/">Leetcode</a></li><!--
+     --><!--
+       --><li><a href="/games/">Games</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">Me</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/08/01/034_%E4%B8%8D%E8%A6%81%E5%86%8D%E6%B7%B7%E6%B7%86%20C%20%E8%AF%AD%E8%A8%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/07/09/032_typedef%20%E7%9A%84%E5%87%A0%E7%A7%8D%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/&text=C 语言无符号与有符号整型溢出的区别"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/&title=C 语言无符号与有符号整型溢出的区别"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/&is_video=false&description=C 语言无符号与有符号整型溢出的区别"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=C 语言无符号与有符号整型溢出的区别&body=Check out this article: https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/&title=C 语言无符号与有符号整型溢出的区别"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/&title=C 语言无符号与有符号整型溢出的区别"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/&title=C 语言无符号与有符号整型溢出的区别"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/&title=C 语言无符号与有符号整型溢出的区别"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/&name=C 语言无符号与有符号整型溢出的区别&description=&lt;h2 id=&#34;无符号整型溢出&#34;&gt;&lt;a href=&#34;#无符号整型溢出&#34; class=&#34;headerlink&#34; title=&#34;无符号整型溢出&#34;&gt;&lt;/a&gt;无符号整型溢出&lt;/h2&gt;&lt;p&gt;对于无符号整型溢出，在 C 的规范中这是有定义的行为，溢出后的数会以 &lt;code&gt;2^(8 * sizeof(type))&lt;/code&gt; 作模运算，也就是说，如果一个无符号字符型（1 字节，8 位）溢出了，会把溢出的值与 256 求模。&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;type&#34;&gt;unsigned&lt;/span&gt; &lt;span class=&#34;type&#34;&gt;char&lt;/span&gt; x = &lt;span class=&#34;number&#34;&gt;0xff&lt;/span&gt;; &lt;span class=&#34;comment&#34;&gt;// 1111 1111&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;printf&lt;/span&gt;(&lt;span class=&#34;string&#34;&gt;&amp;quot;%d\n&amp;quot;&lt;/span&gt;, ++x);    &lt;span class=&#34;comment&#34;&gt;// 结果为：0&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/&t=C 语言无符号与有符号整型溢出的区别"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA"><span class="toc-number">1.</span> <span class="toc-text">无符号整型溢出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA"><span class="toc-number">2.</span> <span class="toc-text">有符号整型溢出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E5%8F%AF%E8%83%BD%E5%AF%BC%E8%87%B4%E6%AD%BB%E5%BE%AA%E7%8E%AF"><span class="toc-number">3.</span> <span class="toc-text">整型溢出可能导致死循环</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        C 语言无符号与有符号整型溢出的区别
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Junhao Wang</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-07-15T18:30:32.000Z" class="dt-published" itemprop="datePublished">2018-07-16</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/C/">C</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E6%BA%A2%E5%87%BA/" rel="tag">溢出</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="无符号整型溢出"><a href="#无符号整型溢出" class="headerlink" title="无符号整型溢出"></a>无符号整型溢出</h2><p>对于无符号整型溢出，在 C 的规范中这是有定义的行为，溢出后的数会以 <code>2^(8 * sizeof(type))</code> 作模运算，也就是说，如果一个无符号字符型（1 字节，8 位）溢出了，会把溢出的值与 256 求模。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">char</span> x = <span class="number">0xff</span>; <span class="comment">// 1111 1111</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ++x);    <span class="comment">// 结果为：0</span></span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<h2 id="有符号整型溢出"><a href="#有符号整型溢出" class="headerlink" title="有符号整型溢出"></a>有符号整型溢出</h2><p>对于有符号整型的溢出，C 的规范定义是 <strong>Undefined Behavior</strong>，也就是说，编译器爱怎么实现就怎么实现。对于大多数编译器来说，算得啥就是啥。</p>
+<p><strong>注意：</strong>用补码表示。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">signed</span> <span class="type">char</span> x = <span class="number">0x7f</span>;  <span class="comment">// 0111 1111 表示最大的正数</span></span><br><span class="line"><span class="comment">// 0xff就是 -1 了，因为最高位是 1 也就是负数了</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ++x);   <span class="comment">// -128</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://bloggg-1254259681.cos.na-siliconvalley.myqcloud.com/426yr.jpg" alt="数据表示示意图（逆时针看）"></p>
+<p><code>++x</code> 的结果为 <code>1000 0000</code>，因为这是补码，所以值为 <code>-128</code>。</p>
+<p>所以，有符号整型的溢出规律 <code>一般</code> 呈环形变化。</p>
+<p>如果还是觉得不能理解可以看一下补码的表示方法：<a target="_blank" rel="noopener" href="https://www.junhaow.com/2018/04/20/024%20%7C%20%E5%85%B3%E4%BA%8E%E8%A1%A5%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93/">关于补码的总结</a></p>
+<h2 id="整型溢出可能导致死循环"><a href="#整型溢出可能导致死循环" class="headerlink" title="整型溢出可能导致死循环"></a>整型溢出可能导致死循环</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX_LEN 32767</span></span><br><span class="line"><span class="type">short</span> len = <span class="number">0</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">while</span> (len &lt; MAX_LEN) &#123;</span><br><span class="line">    len += <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>short 是 2 字节长的有符号整型类型，能表示 <code>-32768 ~ 32767</code> 范围内的整数。当 len 的值为 <code>32766</code> 时，加 2 运算使得其溢出，值为 <code>-32768</code>，而不是 <code>32768</code>，如此不断循环。加 1 不会出现这样的问题，当 len 为 <code>32767</code> 时，循环将会终止。</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Posts</a></li>
+        
+          <li><a href="/studynotes/">Notes</a></li>
+        
+          <li><a href="/lc/">Leetcode</a></li>
+        
+          <li><a href="/games/">Games</a></li>
+        
+          <li><a href="/links/">Links</a></li>
+        
+          <li><a href="/about/">Me</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA"><span class="toc-number">1.</span> <span class="toc-text">无符号整型溢出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA"><span class="toc-number">2.</span> <span class="toc-text">有符号整型溢出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E5%8F%AF%E8%83%BD%E5%AF%BC%E8%87%B4%E6%AD%BB%E5%BE%AA%E7%8E%AF"><span class="toc-number">3.</span> <span class="toc-text">整型溢出可能导致死循环</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/&text=C 语言无符号与有符号整型溢出的区别"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/&title=C 语言无符号与有符号整型溢出的区别"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/&is_video=false&description=C 语言无符号与有符号整型溢出的区别"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=C 语言无符号与有符号整型溢出的区别&body=Check out this article: https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/&title=C 语言无符号与有符号整型溢出的区别"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/&title=C 语言无符号与有符号整型溢出的区别"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/&title=C 语言无符号与有符号整型溢出的区别"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/&title=C 语言无符号与有符号整型溢出的区别"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/&name=C 语言无符号与有符号整型溢出的区别&description=&lt;h2 id=&#34;无符号整型溢出&#34;&gt;&lt;a href=&#34;#无符号整型溢出&#34; class=&#34;headerlink&#34; title=&#34;无符号整型溢出&#34;&gt;&lt;/a&gt;无符号整型溢出&lt;/h2&gt;&lt;p&gt;对于无符号整型溢出，在 C 的规范中这是有定义的行为，溢出后的数会以 &lt;code&gt;2^(8 * sizeof(type))&lt;/code&gt; 作模运算，也就是说，如果一个无符号字符型（1 字节，8 位）溢出了，会把溢出的值与 256 求模。&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;type&#34;&gt;unsigned&lt;/span&gt; &lt;span class=&#34;type&#34;&gt;char&lt;/span&gt; x = &lt;span class=&#34;number&#34;&gt;0xff&lt;/span&gt;; &lt;span class=&#34;comment&#34;&gt;// 1111 1111&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;printf&lt;/span&gt;(&lt;span class=&#34;string&#34;&gt;&amp;quot;%d\n&amp;quot;&lt;/span&gt;, ++x);    &lt;span class=&#34;comment&#34;&gt;// 结果为：0&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/07/16/033_C%20%E8%AF%AD%E8%A8%80%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB/&t=C 语言无符号与有符号整型溢出的区别"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2026
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

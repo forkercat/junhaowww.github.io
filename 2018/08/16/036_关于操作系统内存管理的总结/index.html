@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="历史许多年以前，当人们还在使用 DOS 或是更古老的操作系统的时候，计算机的内存还非常小。随着应用程序的规模逐渐膨胀，一个难题出现在程序员的面前，那就是应用程序太大以至于内存容纳不下该程序。 通常解决的办法是把程序分割成许多称为 覆盖块（overlay）的片段。覆盖块 0 首先运行，结束时他将调用另一个覆盖块。虽然覆盖块的交换是由操作系统完成的，但是必须先由程序员把程序先进行分割，这是一个费时费力">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于操作系统内存管理的总结">
+<meta property="og:url" content="https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="历史许多年以前，当人们还在使用 DOS 或是更古老的操作系统的时候，计算机的内存还非常小。随着应用程序的规模逐渐膨胀，一个难题出现在程序员的面前，那就是应用程序太大以至于内存容纳不下该程序。 通常解决的办法是把程序分割成许多称为 覆盖块（overlay）的片段。覆盖块 0 首先运行，结束时他将调用另一个覆盖块。虽然覆盖块的交换是由操作系统完成的，但是必须先由程序员把程序先进行分割，这是一个费时费力">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-08-16T03:44:59.000Z">
+<meta property="article:modified_time" content="2024-02-13T16:14:40.915Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="系统内存管理">
+<meta property="article:tag" content="寻址">
+<meta property="article:tag" content="地址">
+<meta property="article:tag" content="虚拟地址">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>关于操作系统内存管理的总结</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Posts</a></li><!--
+     --><!--
+       --><li><a href="/studynotes/">Notes</a></li><!--
+     --><!--
+       --><li><a href="/lc/">Leetcode</a></li><!--
+     --><!--
+       --><li><a href="/games/">Games</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">Me</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/08/28/037_CPU%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%EF%BC%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/08/08/035_%E5%AD%A6%E4%B9%A0%20i++%20%E5%92%8C%20++i%20%E7%9A%84%E6%9C%AC%E8%B4%A8%E5%8C%BA%E5%88%AB/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/&text=关于操作系统内存管理的总结"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于操作系统内存管理的总结"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/&is_video=false&description=关于操作系统内存管理的总结"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=关于操作系统内存管理的总结&body=Check out this article: https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于操作系统内存管理的总结"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于操作系统内存管理的总结"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于操作系统内存管理的总结"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于操作系统内存管理的总结"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/&name=关于操作系统内存管理的总结&description=&lt;h2 id=&#34;历史&#34;&gt;&lt;a href=&#34;#历史&#34; class=&#34;headerlink&#34; title=&#34;历史&#34;&gt;&lt;/a&gt;历史&lt;/h2&gt;&lt;p&gt;许多年以前，当人们还在使用 DOS 或是更古老的操作系统的时候，计算机的内存还非常小。随着应用程序的规模逐渐膨胀，一个难题出现在程序员的面前，那就是应用程序太大以至于内存容纳不下该程序。&lt;/p&gt;
+&lt;p&gt;通常解决的办法是把程序分割成许多称为 &lt;code&gt;覆盖块&lt;/code&gt;（overlay）的片段。覆盖块 0 首先运行，结束时他将调用另一个覆盖块。虽然覆盖块的交换是由操作系统完成的，&lt;strong&gt;但是必须先由程序员把程序先进行分割&lt;/strong&gt;，这是一个费时费力的工作，而且相当枯燥。&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/&t=关于操作系统内存管理的总结"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%86%E5%8F%B2"><span class="toc-number">1.</span> <span class="toc-text">历史</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">虚拟内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AE%B5%E5%BC%8F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-number">2.1.</span> <span class="toc-text">段式内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%A9%B6%E7%AB%9F%E6%98%AF%E4%BB%80%E4%B9%88%F0%9F%91%BB%EF%BC%9F"><span class="toc-number">2.1.1.</span> <span class="toc-text">虚拟地址究竟是什么👻？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B5%E5%BC%8F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-number">2.2.</span> <span class="toc-text">页式内存管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        关于操作系统内存管理的总结
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Junhao Wang</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-08-16T03:44:59.000Z" class="dt-published" itemprop="datePublished">2018-08-16</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/OS/">OS</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%9C%B0%E5%9D%80/" rel="tag">地址</a>, <a class="p-category" href="/tags/%E5%AF%BB%E5%9D%80/" rel="tag">寻址</a>, <a class="p-category" href="/tags/%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="tag">系统内存管理</a>, <a class="p-category" href="/tags/%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80/" rel="tag">虚拟地址</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><p>许多年以前，当人们还在使用 DOS 或是更古老的操作系统的时候，计算机的内存还非常小。随着应用程序的规模逐渐膨胀，一个难题出现在程序员的面前，那就是应用程序太大以至于内存容纳不下该程序。</p>
+<p>通常解决的办法是把程序分割成许多称为 <code>覆盖块</code>（overlay）的片段。覆盖块 0 首先运行，结束时他将调用另一个覆盖块。虽然覆盖块的交换是由操作系统完成的，<strong>但是必须先由程序员把程序先进行分割</strong>，这是一个费时费力的工作，而且相当枯燥。</p>
+<span id="more"></span>
+
+<p>人们必须找到更好的办法从根本上解决这个问题。不久人们找到了一个办法，这就是虚拟存储器（virtual memory）。<strong>虚拟存储器的基本思想是程序、数据、堆栈的总的大小可以超过物理存储器的大小，操作系统把当前使用的部分保留在内存中，而把其他未被使用的部分保存在磁盘上。</strong></p>
+<p>比如，对一个 16 MB 的程序和一个内存只有 4 MB 的机器，操作系统通过选择，可以决定各个时刻将哪 4 MB 的内容保留在内存中，并在需要时在内存和磁盘间交换程序片段。而这个 16 MB 的程序<strong>在运行前不必由程序员进行分割</strong>。</p>
+<ul>
+<li>$1K &#x3D; 2^{10}\ (10\ bits) &#x3D; 1,024$</li>
+<li>$1M &#x3D; 2^{20}\ (20\ bits) &#x3D; 1,048,576$</li>
+<li>$1G &#x3D; 2^{30}\ (30\ bits) &#x3D; 1,073,741,824$</li>
+<li>$1T &#x3D; 2^{40}\ (40\ bits) &#x3D; 1,099,511,627,776$</li>
+</ul>
+<p><strong>注意：</strong>要区分 <code>寻址能力</code> 和 <code>内容大小</code>，且寻址能力和内存大小没什么关系，而是与地址总线有关。每个地址表示一个 Byte（大写 B 表示字节，小写 b 表示位），32 位寻址能力为 $2^{32} &#x3D; 2^2 \times 2^{30} &#x3D; 4 \times G &#x3D; 4G$（没有 B），可表示的内容大小为 $4G \times 1\ Byte &#x3D; 4 GB$。</p>
+<h2 id="虚拟内存管理"><a href="#虚拟内存管理" class="headerlink" title="虚拟内存管理"></a>虚拟内存管理</h2><p>在任何时候，计算机上都存在一个程序能够产生的地址集合，我们称之为 <code>地址范围</code>。这个范围是我们的程序能够产生的地址范围，如一个 32 位的 CPU，地址范围是 <code>0 ~ 0xFFFFFFFF</code>。我们把这个地址范围称为 <code>虚拟地址空间</code>，该空间中的某个地址叫做 <code>虚拟地址</code>（virtual address）。</p>
+<blockquote>
+<p>其实应该使用「逻辑地址」，后文会详细介绍「虚拟地址」的来源和概念，上面这段话使用这个概念只是方便与物理地址做对应，而虚拟地址实际上代表的是「偏移量」。</p>
+</blockquote>
+<p>与虚拟地址空间和虚拟地址相对应的则是 <code>物理地址空间</code> 和 <code>物理地址</code>（physical address），大多数时候系统所具备的物理地址空间只是虚拟地址空间的一个子集。比如，对于一台内存为 256 MB 的 32 位 x86 主机来说，它的虚拟地址空间范围是 <code>0 ~ 0xFFFFFFFF（4G）</code>，而物理地址空间范围是 <code>0 ~ 0x0FFFFFFF（256M，即 2^28）</code>。</p>
+<blockquote>
+<p>256 MB 内存可以存放 256 MB 大小的内容，表示这些内容需要的地址空间为 256 MB &#x2F; 1 Byte &#x3D; 256M。</p>
+</blockquote>
+<p>这里有一个<code>虚拟内存</code>（virtual memory）的概念，是对整个内存（不要和机器上插的那条对上号）的抽象描述，并不与实际的物理内存一一对应。有了这样的抽象，一个程序就能使用比真实物理地址大得多的地址空间，甚至多个进程能使用相同的地址，因为相同的虚拟地址转换后的物理地址并不一定相同。</p>
+<blockquote>
+<p>物理地址中很大一部分是留给内存条中的内存本身，但也常被映射到其他存储器上（显存、BIOS 等）。在没有使用虚拟存储器的机器上，虚拟地址被直接送到内存总线上，使具有相同地址的物理存储器被读写；而在使用了虚拟存储器的情况下，虚拟地址不是被直接送到内存地址总线上，而是送到存储器管理单元 MMU（Memory Management Unit），把虚拟地址映射为物理地址。</p>
+</blockquote>
+<p>进程使用虚拟地址，由操作系统协助相关硬件，把它转换成真正的物理地址。这个 <code>转换</code>，是所有问题讨论的关键，通常包括 <code>段式内存管理</code> 和 <code>分页内存管理</code>。</p>
+<h3 id="段式内存管理"><a href="#段式内存管理" class="headerlink" title="段式内存管理"></a>段式内存管理</h3><p><strong>注意：</strong>读到这里，请读者将前文的 <code>虚拟地址</code> 换成 <code>逻辑地址</code>，下文的 <code>虚拟地址</code> 将是不同的概念。段式内存管理的任务是进行 <code>逻辑地址</code> 与 <code>物理地址</code> 的相互转换。</p>
+<p>逻辑地址是访内指令给出的地址，也叫 <code>相对地址</code>，就是机器语言指令中用来指定一个操作数或是一条指令的地址。但是，它并不是我们平时写代码中遇到的类似 0xFFFF4B1C 的 <code>线性地址</code>。</p>
+<p>在 Intel 32 位平台下，<code>逻辑地址</code>（logical address）是由 <code>段标识符</code>（selector）和 <code>段内偏移</code>（offset）组成。段标识符是段寄存器（CS、DS、SS、ES 等）的值，其中前 13 位为索引信息，后 3 位是硬件信息；段内偏移是 IP、EIP 寄存器的值。通过 <code>段标识符</code> 去 GDT（全局描述符表）里取得 <code>段基址</code>（segment base address）然后加上 <code>段内偏移</code>，这就得到了 <code>线性地址</code>（linear address）。如果不再使用页式内存管理，线性地址也就是 <code>物理地址</code>。</p>
+<ul>
+<li>逻辑地址 &#x3D; 段标识符 : 段内偏移</li>
+<li>段标识符 → 段基址</li>
+<li>线性地址 &#x3D; 段基址 + 段内偏移</li>
+</ul>
+<p>关于寄存器可参考：<a href="https://junhaow.com/2018/06/10/%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/">关于 C 语言编译流程 PCAL 的总结</a></p>
+<h4 id="虚拟地址究竟是什么👻？"><a href="#虚拟地址究竟是什么👻？" class="headerlink" title="虚拟地址究竟是什么👻？"></a>虚拟地址究竟是什么👻？</h4><p>参考知乎上的一个回答（文末有链接）：</p>
+<blockquote>
+<p>问题来了，为什么没提到虚拟地址，这是个什么东西？其实在 Intel IA-32 手册里并没有提到这个术语，但是在内核的确是用到了这个概念，比如 __va 和 __pa 这两个宏定义。看似神秘的虚拟地址究其本质就是程序里面使用的地址比如一个指针值，指针的本质就是 EIP 寄存器里的值，说直白点，<strong>虚拟地址就是 EIP 寄存器的值</strong>。你会发现我们上面说过，逻辑地址由段标识符和段内偏移两部分组成，其中段内偏移也是 EIP 寄存器的值，所以结论为：<strong>逻辑地址的段内偏移正是虚拟地址，它俩是一个东西</strong>。</p>
+</blockquote>
+<p>逻辑地址 &#x3D; 段标识符 : 段内偏移（虚拟地址）</p>
+<blockquote>
+<p>既然搞明白了逻辑地址和虚拟地址的关系，那么我们再来看下，线性地址和虚拟地址是什么关系。在上面讲到的段式内存管理中，Linux 内核会将段基址设成 0，于是就有 <code>线性地址 = 0 + 段内偏移</code>，又因为虚拟地址就是段内偏移，所以算出的<strong>线性地址在数值上等于虚拟地址</strong>，注意，仅仅是数值上等于。</p>
+</blockquote>
+<p>在 Linux（Windows 也是）下：线性地址 &#x3D; 0 + 段内偏移（虚拟地址）</p>
+<blockquote>
+<p><strong>网上很多资料认为逻辑地址是虚拟地址的别名，其实它们不是一个东西</strong>。还有很多资料把线性地址当作虚拟地址的别名，其实它们也不是一个东西，只是 Linux 在 x86 下将它们弄得数值相等而已，虽然值相等但是本质不同。</p>
+</blockquote>
+<p>到这里，三者之间的关系就讲明白了，虽然逻辑地址的概念很清晰，但是虚拟地址和线性地址依然可以不作区分，因为区分了也没什么用，内核里这俩概念是通用的。不过，知道点区别还是不至于在某些时候把自己搞晕，尤其是有些书和教程里面这两个词不说缘由就混着用。</p>
+<p>这三者关系为何如此混乱？</p>
+<blockquote>
+<p>按照 Intel 的设计，段式内存管理中的段类型分为三种：代码段、数据段、系统段（TSS 之类的），实在是太麻烦了。我们只靠页式内存管理就已经可以完成 Linux 内核需要的所有功能，根本不需要段映射，但是段映射这玩意儿又关不掉，那就只能上点手段了。于是，Linux 内核将所有类型的段的段基址都设成 0，段限长都设成最大（具体数值不展开讲了，涉及到段描述符结构，很麻烦，这里理解成地址总线的最大寻址限度即可），那么这样一来所有段都重合了，也就是不分段了，此外由于段限长是地址总线的寻址限度，所以这也相当于所有段跟整个线性空间重合了。</p>
+</blockquote>
+<blockquote>
+<p>虚拟地址本来是在段内的偏移量，现在段就是整个线性空间，所以虚拟地址就成了在整个线性空间内的偏移量，这和线性地址的概念一样，所以内核开发者都已经将虚拟地址和线性地址当作一个东西了。像是《Understand The Linux Kernel》这本书里面为了避免混淆，除了在开头和术语表中引用了虚拟地址这个术语之外，其他地方全是用的线性地址。</p>
+</blockquote>
+<h3 id="页式内存管理"><a href="#页式内存管理" class="headerlink" title="页式内存管理"></a>页式内存管理</h3><p>如果再把线性地址分成四段，用前三段分别作为索引去 PGD（page global directory）、PMD（page middle directory）、PT（page table）里查表，最终就会得到一个 <code>页表项</code>（page table entry），里面存着的值是一页物理内存的起始地址，把它加上线性地址中第四段的内容（页内偏移）就得到了最终的 <code>物理地址</code>。</p>
+<p>大多数使用虚拟存储器的系统都采用这种称为 <code>分页</code>（paging）的机制。虚拟地址空间被划分成 <code>页</code>（page）单位，而相应的物理地址空间也被进行划分，单位是 <code>页桢</code>（frame）。<strong>页和页桢的大小必须相同，因为内存和外围存储器之间的传输总是以页为单位的</strong>。比如，在前文内存为 256 MB 的例子中，页的大小为 4 KB，其对应 4G 的虚拟地址空间和 256M 的物理地址空间，它们分别包含了 1M 个页和 64K 个页桢。</p>
+<blockquote>
+<p>$1G &#x3D; 1M \times 1K$</p>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/29918252/answer/163114415">Linux 线性地址，逻辑地址和虚拟地址的关系？</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/prike/article/details/52722934">逻辑地址、线性地址和物理地址的关系（转）</a></li>
+<li><a target="_blank" rel="noopener" href="http://bbs.chinaunix.net/thread-2083672-1-1.html">我理解的逻辑地址、线性地址、物理地址和虚拟地址</a></li>
+</ul>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Posts</a></li>
+        
+          <li><a href="/studynotes/">Notes</a></li>
+        
+          <li><a href="/lc/">Leetcode</a></li>
+        
+          <li><a href="/games/">Games</a></li>
+        
+          <li><a href="/links/">Links</a></li>
+        
+          <li><a href="/about/">Me</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%86%E5%8F%B2"><span class="toc-number">1.</span> <span class="toc-text">历史</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">虚拟内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AE%B5%E5%BC%8F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-number">2.1.</span> <span class="toc-text">段式内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%A9%B6%E7%AB%9F%E6%98%AF%E4%BB%80%E4%B9%88%F0%9F%91%BB%EF%BC%9F"><span class="toc-number">2.1.1.</span> <span class="toc-text">虚拟地址究竟是什么👻？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B5%E5%BC%8F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-number">2.2.</span> <span class="toc-text">页式内存管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/&text=关于操作系统内存管理的总结"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于操作系统内存管理的总结"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/&is_video=false&description=关于操作系统内存管理的总结"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=关于操作系统内存管理的总结&body=Check out this article: https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于操作系统内存管理的总结"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于操作系统内存管理的总结"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于操作系统内存管理的总结"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/&title=关于操作系统内存管理的总结"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/&name=关于操作系统内存管理的总结&description=&lt;h2 id=&#34;历史&#34;&gt;&lt;a href=&#34;#历史&#34; class=&#34;headerlink&#34; title=&#34;历史&#34;&gt;&lt;/a&gt;历史&lt;/h2&gt;&lt;p&gt;许多年以前，当人们还在使用 DOS 或是更古老的操作系统的时候，计算机的内存还非常小。随着应用程序的规模逐渐膨胀，一个难题出现在程序员的面前，那就是应用程序太大以至于内存容纳不下该程序。&lt;/p&gt;
+&lt;p&gt;通常解决的办法是把程序分割成许多称为 &lt;code&gt;覆盖块&lt;/code&gt;（overlay）的片段。覆盖块 0 首先运行，结束时他将调用另一个覆盖块。虽然覆盖块的交换是由操作系统完成的，&lt;strong&gt;但是必须先由程序员把程序先进行分割&lt;/strong&gt;，这是一个费时费力的工作，而且相当枯燥。&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/08/16/036_%E5%85%B3%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%80%BB%E7%BB%93/&t=关于操作系统内存管理的总结"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2026
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

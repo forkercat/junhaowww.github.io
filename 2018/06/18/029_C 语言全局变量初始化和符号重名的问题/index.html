@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <meta name="description" content="全局变量是 C 语言语法和语义中一个很重要的知识点，首先它存在的意义可以从三个不同角度去理解：  对于程序员来说，它是一个记录内容的 变量（variable）。 对于编译&#x2F;链接器来说，它是一个需要解析的 符号（symbol）。 对于计算机来说，它可能是具有地址的一块 内存（memory）。  跨单元访问和持续生存周期这两个特点使得全局变量往往成为一段受攻击代码的突破口，了解这一点十分重要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C 语言全局变量初始化和符号重名的问题">
+<meta property="og:url" content="https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="forkercat.blog">
+<meta property="og:description" content="全局变量是 C 语言语法和语义中一个很重要的知识点，首先它存在的意义可以从三个不同角度去理解：  对于程序员来说，它是一个记录内容的 变量（variable）。 对于编译&#x2F;链接器来说，它是一个需要解析的 符号（symbol）。 对于计算机来说，它可能是具有地址的一块 内存（memory）。  跨单元访问和持续生存周期这两个特点使得全局变量往往成为一段受攻击代码的突破口，了解这一点十分重要">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-06-17T22:21:33.000Z">
+<meta property="article:modified_time" content="2024-02-13T16:19:34.066Z">
+<meta property="article:author" content="Junhao Wang">
+<meta property="article:tag" content="全局变量">
+<meta property="article:tag" content="符号">
+<meta property="article:tag" content="冲突">
+<meta property="article:tag" content="初始化">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/resources/favicon/me/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/resources/favicon/me/android-chrome-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/resources/favicon/me/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>C 语言全局变量初始化和符号重名的问题</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146643833-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-146643833-1');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Posts</a></li><!--
+     --><!--
+       --><li><a href="/studynotes/">Notes</a></li><!--
+     --><!--
+       --><li><a href="/lc/">Leetcode</a></li><!--
+     --><!--
+       --><li><a href="/games/">Games</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">Me</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/06/30/030_%E5%85%B3%E4%BA%8E%20K&R%20C%E3%80%81ANSI%20C%E3%80%81C89%E3%80%81C99%20%E5%92%8C%20C11%20%E7%9A%84%E5%8E%86%E5%8F%B2%E6%80%BB%E7%BB%93/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/06/11/028_%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B%20PCAL%20%E7%9A%84%E6%80%BB%E7%BB%93/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/&text=C 语言全局变量初始化和符号重名的问题"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/&title=C 语言全局变量初始化和符号重名的问题"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/&is_video=false&description=C 语言全局变量初始化和符号重名的问题"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=C 语言全局变量初始化和符号重名的问题&body=Check out this article: https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/&title=C 语言全局变量初始化和符号重名的问题"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/&title=C 语言全局变量初始化和符号重名的问题"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/&title=C 语言全局变量初始化和符号重名的问题"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/&title=C 语言全局变量初始化和符号重名的问题"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/&name=C 语言全局变量初始化和符号重名的问题&description=&lt;p&gt;全局变量是 C 语言语法和语义中一个很重要的知识点，首先它存在的意义可以从三个不同角度去理解：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于程序员来说，它是一个记录内容的 &lt;code&gt;变量&lt;/code&gt;（variable）。&lt;/li&gt;
+&lt;li&gt;对于编译&amp;#x2F;链接器来说，它是一个需要解析的 &lt;code&gt;符号&lt;/code&gt;（symbol）。&lt;/li&gt;
+&lt;li&gt;对于计算机来说，它可能是具有地址的一块 &lt;code&gt;内存&lt;/code&gt;（memory）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;跨单元访问和持续生存周期这两个特点使得全局变量往往成为一段受攻击代码的突破口，了解这一点十分重要。&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/&t=C 语言全局变量初始化和符号重名的问题"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%BA%E5%BC%B1%E7%AC%A6%E5%8F%B7%E5%AD%A6%E8%AF%B4"><span class="toc-number">1.</span> <span class="toc-text">强弱符号学说</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90-1"><span class="toc-number">2.</span> <span class="toc-text">例子 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90-2"><span class="toc-number">3.</span> <span class="toc-text">例子 2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/resources/images/me_avatar.jpg" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">forkercat.blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Posts</a></li><!--
+   --><!--
+     --><li><a href="/studynotes/">Notes</a></li><!--
+   --><!--
+     --><li><a href="/lc/">Leetcode</a></li><!--
+   --><!--
+     --><li><a href="/games/">Games</a></li><!--
+   --><!--
+     --><li><a href="/links/">Links</a></li><!--
+   --><!--
+     --><li><a href="/about/">Me</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        C 语言全局变量初始化和符号重名的问题
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Junhao Wang</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-06-17T22:21:33.000Z" class="dt-published" itemprop="datePublished">2018-06-18</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/C/">C</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F/" rel="tag">全局变量</a>, <a class="p-category" href="/tags/%E5%86%B2%E7%AA%81/" rel="tag">冲突</a>, <a class="p-category" href="/tags/%E5%88%9D%E5%A7%8B%E5%8C%96/" rel="tag">初始化</a>, <a class="p-category" href="/tags/%E7%AC%A6%E5%8F%B7/" rel="tag">符号</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>全局变量是 C 语言语法和语义中一个很重要的知识点，首先它存在的意义可以从三个不同角度去理解：</p>
+<ul>
+<li>对于程序员来说，它是一个记录内容的 <code>变量</code>（variable）。</li>
+<li>对于编译&#x2F;链接器来说，它是一个需要解析的 <code>符号</code>（symbol）。</li>
+<li>对于计算机来说，它可能是具有地址的一块 <code>内存</code>（memory）。</li>
+</ul>
+<p>跨单元访问和持续生存周期这两个特点使得全局变量往往成为一段受攻击代码的突破口，了解这一点十分重要。</p>
+<span id="more"></span>
+
+<h2 id="强弱符号学说"><a href="#强弱符号学说" class="headerlink" title="强弱符号学说"></a>强弱符号学说</h2><p>在 C 语言里，全局变量如果不初始化的话，默认为 0。<code>int x = 0</code> 跟 <code>int x</code> 的效果看起来是一样的。但其实这里面的差别很大，<strong>强烈建议大家所有的全局变量都要初始化</strong>，因为编译器在编译的时候针对这两种情况会产生两种符号放在目标文件（*.o）的符号表中，对于初始化的，叫 <code>强符号</code>；未初始化的，叫 <code>弱符号</code>。</p>
+<p>链接器在链接目标文件的时候，如果遇到两个重名符号，会有以下处理规则：</p>
+<ol>
+<li>如果有多个重名的强符号，则报错（error）；</li>
+<li>如果有一个强符号，多个弱符号，则以强符号为准；</li>
+<li>如果没有强符号，但有多个重名的弱符号，则「任选一个弱符号」or「先决议到 size 最大的那个，如果同样大小，则按照链接顺序选择第一个」。（具体要看编译器）</li>
+</ol>
+<p>事实上，<strong>这种规则是 C 语言里的一个大坑</strong>，编译器对这种全局变量多重定义的「纵容」很可能会无故修改某个变量，导致程序产生不确定的行为。</p>
+<h2 id="例子-1"><a href="#例子-1" class="headerlink" title="例子 1"></a>例子 1</h2><p>基于以上规则看下面的程序：(gcc 3.4.6)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> x = <span class="number">1</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">foo</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;x1: %d\n&quot;</span>, x);</span><br><span class="line">    foo();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;x2: %d\n&quot;</span>, x);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// var.c</span></span><br><span class="line"><span class="type">int</span> x = <span class="number">0</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">foo</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    x = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为两个文件里面的 x 都被初始化了，所以编译出来的两个目标文件里 x 都是强符号，链接的时候会报错：<code>multiple definition of &#39;x&#39;</code>，符合规则 1。</p>
+<p>把 var.c 里面的 <code>int x = 0;</code> 改成 <code>int x;</code>，编译、链接无任何警告，运行结果为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x: 1</span><br><span class="line">x: 2</span><br></pre></td></tr></table></figure>
+
+<p>说明链接的时候以 main.c 中的 x 为准，foo 函数修改的是 main.c 中定义的 x，符合规则 2。</p>
+<p>把 main.c 中的初始化也去掉，改成 <code>int x;</code>，编译、链接仍然很顺利，运行结果为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x: 0      （全局变量初始化为 0）</span><br><span class="line">x: 2</span><br></pre></td></tr></table></figure>
+
+<p>说明 main 函数和 foo 函数修改的是同一个 x，链接器自己选择了一个 x，符合规则3。</p>
+<p>然而，在大部分情况下，我们不希望链接器为我们做决定。也许写 var.c 的人根本不知道 main.c 里面也有一个 x，foo 函数的本意也许并不是要修改 main.c 中的 x。因为这种问题引起的 bug 会很难查。</p>
+<p>所以，我们要尽量把全局变量初始化，对于不想给别的文件引用的变量，也尽量用 static 修饰。除了链接时的表现不一样外，未初始化的符号在目标文件的 bss 段中，而初始化的符号在 data 段中。</p>
+<h2 id="例子-2"><a href="#例子-2" class="headerlink" title="例子 2"></a>例子 2</h2><p>先看 <code>t.h</code>、<code>foo.c</code> 和 <code>main.c</code> 这三个文件：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* t.h */</span></span><br><span class="line"><span class="comment">// #ifndef _H_</span></span><br><span class="line"><span class="comment">// #define _H_</span></span><br><span class="line"><span class="type">int</span> a;</span><br><span class="line"><span class="comment">// #endif</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* foo.c */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;t.h&quot;</span>  <span class="comment">// 包含t.h</span></span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">   <span class="type">char</span> a; <span class="comment">// 1 byte</span></span><br><span class="line">   <span class="type">int</span> b;  <span class="comment">// 3 + 4 = 7 bytes</span></span><br><span class="line">&#125; b = &#123; <span class="number">2</span>, <span class="number">4</span> &#125;;</span><br><span class="line"> </span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>;</span><br><span class="line"> </span><br><span class="line"><span class="type">void</span> <span class="title function_">foo</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;foo:\t(&amp;a)=0x%08x\n\t(&amp;b)=0x%08x\n</span></span><br><span class="line"><span class="string">        \tsizeof(b)=%d\n\tb.a=%d\n\tb.b=%d\n\tmain:0x%08x\n&quot;</span>,</span><br><span class="line">        &amp;a, &amp;b, <span class="keyword">sizeof</span> b, b.a, b.b, main);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* main.c */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;t.h&quot;</span>    <span class="comment">// 再次包含t.h</span></span></span><br><span class="line"> </span><br><span class="line"><span class="type">int</span> b; <span class="comment">// 4 bytes</span></span><br><span class="line"><span class="type">int</span> c;</span><br><span class="line"> </span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    foo();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;main:\t(&amp;a)=0x%08x\n\t(&amp;b)=0x%08x\n</span></span><br><span class="line"><span class="string">        \t(&amp;c)=0x%08x\n\tsize(b)=%d\n\tb=%d\n\tc=%d\n&quot;</span>,</span><br><span class="line">        &amp;a, &amp;b, &amp;c, <span class="keyword">sizeof</span> b, b, c);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>程序解答：</p>
+<p>这个程序里我们定义了四个全局变量，t.h 头文件定义了一个整型 a 且未初始化，main.c 里定义了两个整型 b 和 c 并且未初始化，foo.c 里定义了一个已初始化的结构体 b，还定义了一个函数指针变量 main。两个源文件里变量 b 和函数指针变量 main 被重复定义了（实际上可以看做代码段的地址）。但编译器并<strong>未报错（符合规则二）</strong>，只给出一条警告：</p>
+<pre><code>/usr/bin/ld: Warning: size of symbol &#39;b&#39; changed from 4 in main.o to 8 in foo.o
+</code></pre>
+<p>运行程序发现，main.c 打印中 b 大小是 4 个字节，而 foo.c 是 8 个字节，<strong>因为 sizeof 关键字是编译时决议的，而且两个源文件中对 b 类型定义不一样</strong>。但令人惊奇的是无论是在 main.c 还是 foo.c 中，a 和 b 都具有<strong>相同的地址</strong>，也就是说，b 被定义了两次，b 还是不同类型，但内存映像中只有一份拷贝。我们还看到：main.c 中 b 的值居然就是 foo.c 中结构体第一个成员变量 b.a 的值，这证实了前面的推断，<strong>即便存在多次定义（类型还可以不同），内存中只有一份初始化的拷贝。另外，在这里 c 是置身事外的一个独立变量</strong>。</p>
+<pre><code>根据强弱符号学说，全局变量 a 和 b 存在重复定义。如果我们将 main.c 中的 b 初始化赋值，那么就存在两个强符号而违反了规则一，编译器报错。如果满足规则二，则仅仅提出警告，实际运行时决议的是 foo.c 中的强符号。而变量 a 都是弱符号，所以只选择一个，且由于类型大小相同，因按照目标文件链接时的顺序（这里假定没有`#ifndef _H_`，不然不会发生重复定义）。
+</code></pre>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://coolshell.cn/articles/10115.html">C 语言全局变量那些事儿</a></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Posts</a></li>
+        
+          <li><a href="/studynotes/">Notes</a></li>
+        
+          <li><a href="/lc/">Leetcode</a></li>
+        
+          <li><a href="/games/">Games</a></li>
+        
+          <li><a href="/links/">Links</a></li>
+        
+          <li><a href="/about/">Me</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%BA%E5%BC%B1%E7%AC%A6%E5%8F%B7%E5%AD%A6%E8%AF%B4"><span class="toc-number">1.</span> <span class="toc-text">强弱符号学说</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90-1"><span class="toc-number">2.</span> <span class="toc-text">例子 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90-2"><span class="toc-number">3.</span> <span class="toc-text">例子 2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/&text=C 语言全局变量初始化和符号重名的问题"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/&title=C 语言全局变量初始化和符号重名的问题"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/&is_video=false&description=C 语言全局变量初始化和符号重名的问题"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=C 语言全局变量初始化和符号重名的问题&body=Check out this article: https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/&title=C 语言全局变量初始化和符号重名的问题"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/&title=C 语言全局变量初始化和符号重名的问题"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/&title=C 语言全局变量初始化和符号重名的问题"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/&title=C 语言全局变量初始化和符号重名的问题"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/&name=C 语言全局变量初始化和符号重名的问题&description=&lt;p&gt;全局变量是 C 语言语法和语义中一个很重要的知识点，首先它存在的意义可以从三个不同角度去理解：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于程序员来说，它是一个记录内容的 &lt;code&gt;变量&lt;/code&gt;（variable）。&lt;/li&gt;
+&lt;li&gt;对于编译&amp;#x2F;链接器来说，它是一个需要解析的 &lt;code&gt;符号&lt;/code&gt;（symbol）。&lt;/li&gt;
+&lt;li&gt;对于计算机来说，它可能是具有地址的一块 &lt;code&gt;内存&lt;/code&gt;（memory）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;跨单元访问和持续生存周期这两个特点使得全局变量往往成为一段受攻击代码的突破口，了解这一点十分重要。&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://junhaow.com/2018/06/18/029_C%20%E8%AF%AD%E8%A8%80%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%AC%A6%E5%8F%B7%E9%87%8D%E5%90%8D%E7%9A%84%E9%97%AE%E9%A2%98/&t=C 语言全局变量初始化和符号重名的问题"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2026
+    Junhao Wang
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'junhaow';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>
